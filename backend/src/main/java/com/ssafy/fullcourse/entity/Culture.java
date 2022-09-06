@@ -27,7 +27,6 @@ public class Culture {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = true)
     private String gugun;
 
     @Column(nullable = false)
@@ -36,13 +35,10 @@ public class Culture {
     @Column(nullable = false)
     private String day;
 
-    @Column(nullable = true)
     private String content;
 
-    @Column(nullable = true)
     private String imgUrl;
 
-    @Column(nullable = true)
     private Long count;
 
     @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)

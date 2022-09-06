@@ -20,7 +20,6 @@ public class HotelReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @Column(nullable = true)
     private String reviewImg;
 
     @Column(nullable = false)

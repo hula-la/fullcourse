@@ -33,10 +33,8 @@ public class Hotel {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = true)
     private String url;
 
-    @Column(nullable = true)
     private String tel;
 
     @Column(nullable = false)

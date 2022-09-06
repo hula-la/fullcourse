@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 public class TravelReview {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long travelId;
+    private Long reviewId;
 
     private String reviewImg;
 
