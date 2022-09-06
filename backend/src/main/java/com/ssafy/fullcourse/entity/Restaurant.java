@@ -57,6 +57,6 @@ public class Restaurant {
     @Column(nullable = false)
     private Long count; // 담긴횟수
 
-    @OneToMany(mappedBy = "RestaurantReview")
+    @OneToMany(mappedBy = "RestaurantReview", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 }

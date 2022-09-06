@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -32,4 +31,7 @@ public class RestaurantReview {
     @JoinColumn(name = "userId")
     private User user;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "restaurantId")
+    private Restaurant restaurant;
 }

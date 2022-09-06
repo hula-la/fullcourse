@@ -31,4 +31,7 @@ public class TravelReview {
     @JoinColumn(name = "userId")
     private User user;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "travelId")
+    private Travel travel;
 }

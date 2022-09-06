@@ -59,6 +59,6 @@ public class Travel {
     @Column(nullable = false)
     private Long count;
 
-    @OneToMany(mappedBy = "TravelReview")
+    @OneToMany(mappedBy = "TravelReview", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 }

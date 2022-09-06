@@ -29,4 +29,8 @@ public class ActivityReview {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "activityId")
+    private Activity activity;
 }

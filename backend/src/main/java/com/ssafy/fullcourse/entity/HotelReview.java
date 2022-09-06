@@ -32,4 +32,8 @@ public class HotelReview {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "hotelId")
+    private Hotel hotel;
 }

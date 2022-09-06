@@ -31,4 +31,8 @@ public class CultureReview {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "cultureId")
+    private Culture culture;
 }
