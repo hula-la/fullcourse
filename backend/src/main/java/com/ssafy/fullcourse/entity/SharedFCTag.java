@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -19,4 +21,8 @@ public class SharedFCTag {
 
     @Column(nullable = false)
     private String tagContent;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "sharedFcId")
+    private SharedFullCourse sharedFullCourse;
 }
