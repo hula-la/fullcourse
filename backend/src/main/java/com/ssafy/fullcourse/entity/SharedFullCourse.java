@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -25,5 +29,18 @@ public class SharedFullCourse {
 
     @Column(nullable = false)
     private Date regDate;
+
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
+    private List<SharedFCComment> sharedFCComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
+    private List<SharedFCTag> sharedFCTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
+    private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "fcId")
+    private FullCourse fullCourse;
 
 }

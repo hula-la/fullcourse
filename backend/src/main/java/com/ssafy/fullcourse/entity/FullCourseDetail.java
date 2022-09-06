@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -27,4 +29,8 @@ public class FullCourseDetail {
 
     @Column(nullable = false)
     private Long placeId;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "fcId")
+    private FullCourse fullCourse;
 }

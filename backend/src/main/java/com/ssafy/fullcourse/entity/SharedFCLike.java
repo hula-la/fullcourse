@@ -22,4 +22,8 @@ public class SharedFCLike {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "sharedFcId")
+    private SharedFullCourse sharedFullCourse;
 }
