@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,4 +48,7 @@ public class Activity {
     private String transport;
 
     private Long count;
+
+    @OneToMany(mappedBy = "ActivityReview")
+    List<ActivityReview> reviews = new ArrayList<>();
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -55,4 +57,6 @@ public class Restaurant {
     @Column(nullable = false)
     private Long count; // 담긴횟수
 
+    @OneToMany(mappedBy = "RestaurantReview")
+    List<RestaurantReview> reviews = new ArrayList<>();
 }
