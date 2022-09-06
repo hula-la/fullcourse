@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,4 +41,7 @@ public class Hotel {
 
     @Column(nullable = false)
     private Long count;
+
+    @OneToMany(mappedBy = "HotelReview")
+    List<HotelReview> reviews = new ArrayList<>();
 }
