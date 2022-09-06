@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -19,5 +21,9 @@ public class TravelTagCnt {
 
     @Column(nullable = false)
     private Long clickCnt;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
 }

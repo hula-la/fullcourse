@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -30,4 +32,9 @@ public class Custom {
 
     @Column(nullable = false)
     private String content;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
 }
