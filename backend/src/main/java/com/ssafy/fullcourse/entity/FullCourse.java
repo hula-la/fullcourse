@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -23,4 +27,15 @@ public class FullCourse {
 
     @Column(nullable = false, length = 3)
     private Integer period;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
+    private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "sharedFcId")
+    private SharedFullCourse sharedFullCourse;
 }

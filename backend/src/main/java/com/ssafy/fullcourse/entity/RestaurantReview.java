@@ -27,7 +27,6 @@ public class RestaurantReview {
     @Column(nullable = false)
     private Float score;
 
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;

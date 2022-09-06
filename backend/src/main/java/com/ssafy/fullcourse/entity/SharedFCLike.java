@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -20,4 +19,11 @@ public class SharedFCLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fcLikeId;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "sharedFcId")
+    private SharedFullCourse sharedFullCourse;
 }
