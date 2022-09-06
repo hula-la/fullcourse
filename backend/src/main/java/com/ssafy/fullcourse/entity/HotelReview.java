@@ -8,6 +8,8 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -26,4 +28,12 @@ public class HotelReview {
 
     @Column(nullable = false)
     private Float score;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "hotelId")
+    private Hotel hotel;
 }

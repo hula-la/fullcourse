@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -25,4 +27,12 @@ public class TravelReview {
     @Column(nullable = false)
     private Float score;
 
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "travelId")
+    private Travel travel;
 }
