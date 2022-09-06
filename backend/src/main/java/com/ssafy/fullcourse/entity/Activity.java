@@ -49,6 +49,6 @@ public class Activity {
 
     private Long count;
 
-    @OneToMany(mappedBy = "ActivityReview", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();
 }

@@ -45,6 +45,6 @@ public class Culture {
     @Column(nullable = true)
     private Long count;
 
-    @OneToMany(mappedBy = "CultureReview", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
     List<CultureReview> reviews = new ArrayList<>();
 }
