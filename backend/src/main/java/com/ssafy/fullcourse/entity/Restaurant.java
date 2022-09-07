@@ -55,7 +55,10 @@ public class Restaurant {
     private String imgUrl;
 
     @Column(nullable = false)
-    private Long count; // 담긴횟수
+    private Long addedCnt;
+
+    @Column(nullable = false)
+    private Long reviewCnt;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();

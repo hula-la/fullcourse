@@ -38,7 +38,10 @@ public class Hotel {
     private String tel;
 
     @Column(nullable = false)
-    private Long count;
+    private Long addedCnt;
+
+    @Column(nullable = false)
+    private Long reviewCnt;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
