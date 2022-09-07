@@ -9,6 +9,7 @@ const NavBar = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   .logo {
     height: 3rem;

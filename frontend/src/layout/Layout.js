@@ -20,7 +20,6 @@ const Layout = () => {
     <Wrapper>
       <div className="content">
         <Header />
-        <hr />
         <div>
           <Outlet />
         </div>

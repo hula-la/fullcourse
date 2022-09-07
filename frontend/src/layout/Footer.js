@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 150px;
+  height: 100px;
   position: relative;
   transform: translateY(-100%);
   display: flex;
@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 
 const FooterDiv = styled.div`
   width: 100%;
+  border-top: 2px solid #333333;
   padding-top: 1rem;
 `;
 
