@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -47,7 +48,11 @@ public class Activity {
 
     private String transport;
 
-    private Long count;
+    @Column(nullable = false)
+    private Long addedCnt;
+
+    @Column(nullable = false)
+    private Long reviewCnt;
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();

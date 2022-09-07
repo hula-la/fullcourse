@@ -39,7 +39,11 @@ public class Culture {
 
     private String imgUrl;
 
-    private Long count;
+    @Column(nullable = false)
+    private Long addedCnt;
+
+    @Column(nullable = false)
+    private Long reviewCnt;
 
     @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
     List<CultureReview> reviews = new ArrayList<>();
