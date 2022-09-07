@@ -18,7 +18,7 @@ public class Custom {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(nullable = false)
@@ -27,10 +27,10 @@ public class Custom {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String content;
 
     @ManyToOne(fetch = LAZY)

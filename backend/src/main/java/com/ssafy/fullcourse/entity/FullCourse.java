@@ -31,7 +31,7 @@ public class FullCourse {
     @Column(nullable = false)
     private Date endDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String thumbnail;
 
     @ManyToOne(fetch = LAZY)

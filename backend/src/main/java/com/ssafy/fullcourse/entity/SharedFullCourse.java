@@ -22,9 +22,10 @@ public class SharedFullCourse {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sharedFcId;
 
+    @Column(length = 500)
     private String detail;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String title;
 
     @Column(nullable = false)
@@ -39,7 +40,7 @@ public class SharedFullCourse {
     @Column(nullable = false)
     private Long viewCnt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String thumbnail;
 
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)

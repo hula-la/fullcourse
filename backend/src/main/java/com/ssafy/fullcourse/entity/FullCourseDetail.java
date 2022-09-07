@@ -21,10 +21,10 @@ public class FullCourseDetail {
     @Column(nullable = false)
     private Integer day;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false)
     private Integer order;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String type;
 
     @Column(nullable = false)

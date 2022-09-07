@@ -19,10 +19,10 @@ public class Restaurant {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long restaurantId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String address;
 
     @Column(nullable = false)
@@ -31,27 +31,33 @@ public class Restaurant {
     @Column(nullable = false)
     private Float lng;
 
+    @Column(length = 20)
     private String tel;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String category; // 카테고리
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String intro; // 소개
 
+    @Column(length = 20)
     private String holiday;
 
+    @Column(length = 20)
     private String openTime;
 
+    @Column(length = 100)
     private String url; // 홈페이지
 
     @Column(nullable = false)
     private Float stgScore; // 수용태세지수
 
+    @Column(length = 50)
     private String award; // 어워드
 
     private Float naverScore;
 
+    @Column(length = 100)
     private String imgUrl;
 
     @Column(nullable = false)
