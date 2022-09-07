@@ -77,4 +77,6 @@ public class Travel {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelTag> travelTags = new ArrayList<>();
 
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+    List<TravelLike> likes = new ArrayList<>();
 }

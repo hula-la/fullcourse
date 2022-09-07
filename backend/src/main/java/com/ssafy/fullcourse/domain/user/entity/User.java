@@ -1,8 +1,7 @@
 package com.ssafy.fullcourse.domain.user.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import com.ssafy.fullcourse.domain.place.entity.Custom;
-import com.ssafy.fullcourse.domain.place.entity.TravelTagCnt;
+import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReview;
 import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReviewLike;
 import com.ssafy.fullcourse.domain.review.culture.entity.CultureReview;
@@ -101,4 +100,19 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityReviewLike> activityReviewLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<RestaurantLike> restaurantLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<TravelLike> travelLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<HotelLike> hotelLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<CultureLike> cultureLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<ActivityLike> activityLikes = new ArrayList<>();
 }

@@ -61,4 +61,7 @@ public class Activity {
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
+    List<ActivityLike> likes = new ArrayList<>();
 }

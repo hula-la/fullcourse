@@ -69,4 +69,7 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    List<RestaurantLike> likes = new ArrayList<>();
 }

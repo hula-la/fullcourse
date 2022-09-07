@@ -48,4 +48,7 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
+    List<HotelLike> likes = new ArrayList<>();
 }

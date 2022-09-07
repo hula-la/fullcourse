@@ -51,4 +51,7 @@ public class Culture {
 
     @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
     List<CultureReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
+    List<CultureLike> likes = new ArrayList<>();
 }
