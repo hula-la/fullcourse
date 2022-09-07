@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -28,6 +30,9 @@ public class HotelReview {
     @Column(nullable = false)
     private Float score;
 
+    @Column(nullable = false)
+    private Long likeCnt;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -35,4 +40,7 @@ public class HotelReview {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<HotelReviewLike> reviewLikes = new ArrayList<>();
 }

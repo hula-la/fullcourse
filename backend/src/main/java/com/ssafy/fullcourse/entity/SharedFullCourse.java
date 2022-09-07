@@ -30,6 +30,18 @@ public class SharedFullCourse {
     @Column(nullable = false)
     private Date regDate;
 
+    @Column(nullable = false)
+    private Long likeCnt;
+
+    @Column(nullable = false)
+    private Long commentCnt;
+
+    @Column(nullable = false)
+    private Long viewCnt;
+
+    @Column(nullable = false)
+    private String thumbnail;
+
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 

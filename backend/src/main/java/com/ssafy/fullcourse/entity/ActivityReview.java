@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -26,6 +29,9 @@ public class ActivityReview {
     @Column(nullable = false)
     private Float score;
 
+    @Column(nullable = false)
+    private Long likeCnt;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -33,4 +39,7 @@ public class ActivityReview {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "activityId")
     private Activity activity;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<ActivityReviewLike> reviewLikes = new ArrayList<>();
 }
