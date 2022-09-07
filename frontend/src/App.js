@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 // Main
 import Layout from "./layout/Layout";
-import MainPage from "./pages/MainPage";
+import MainPage from "./pages/main/MainPage";
 // User
 import LoginPage from "./pages/user/LoginPage";
 // 404
