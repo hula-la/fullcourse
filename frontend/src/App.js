@@ -3,6 +3,10 @@ import "./App.css";
 // Main
 import Layout from "./layout/Layout";
 import MainPage from "./pages/MainPage";
+// User
+import LoginPage from "./pages/user/LoginPage";
+// 404
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -11,9 +15,12 @@ function App() {
         {/* Main */}
         <Route path="" element={<MainPage />} />
         {/* user */}
-        <Route path="user" element={<Layout />}></Route>
+        <Route path="user" element={<Layout />}>
+          <Route path="login" element={<LoginPage />} />
+        </Route>
         {/* trip */}
         <Route path="trip" element={<Layout />}></Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
