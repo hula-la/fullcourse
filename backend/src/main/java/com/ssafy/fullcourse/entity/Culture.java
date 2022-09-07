@@ -18,7 +18,7 @@ public class Culture {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cultureId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(nullable = false)
@@ -27,16 +27,19 @@ public class Culture {
     @Column(nullable = false)
     private Float lng;
 
+    @Column(length = 20)
     private String gugun;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String day;
 
+    @Column(length = 500)
     private String content;
 
+    @Column(length = 100)
     private String imgUrl;
 
     @Column(nullable = false)

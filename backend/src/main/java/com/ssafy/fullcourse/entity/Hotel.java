@@ -19,12 +19,12 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hotelId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String sido;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String gugun;
 
     @Column(nullable = false)
@@ -33,8 +33,10 @@ public class Hotel {
     @Column(nullable = false)
     private Float lng;
 
+    @Column(length = 100)
     private String url;
 
+    @Column(length = 20)
     private String tel;
 
     @Column(nullable = false)

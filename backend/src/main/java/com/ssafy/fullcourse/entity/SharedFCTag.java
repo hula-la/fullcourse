@@ -19,7 +19,7 @@ public class SharedFCTag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fcTagId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String tagContent;
 
     @ManyToOne(fetch = LAZY)

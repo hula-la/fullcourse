@@ -19,7 +19,7 @@ public class SharedFCComment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fcCommentId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String comment;
 
     @ManyToOne(fetch = LAZY)

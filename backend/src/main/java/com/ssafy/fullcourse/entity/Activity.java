@@ -20,9 +20,10 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(length = 100)
     private String subtitle;
 
     @Column(nullable = false)
@@ -31,21 +32,25 @@ public class Activity {
     @Column(nullable = false)
     private Float lng;
 
+    @Column(length = 20)
     private String tel;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String gugun;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String place;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 100)
     private String activityImg;
 
+    @Column(length = 30)
     private String holiday;
 
+    @Column(length = 30)
     private String openTime;
 
+    @Column(length = 200)
     private String transport;
 
     @Column(nullable = false)

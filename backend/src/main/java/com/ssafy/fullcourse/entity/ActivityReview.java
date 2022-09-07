@@ -18,9 +18,10 @@ public class ActivityReview {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String content;
 
+    @Column(length = 100)
     private String reviewImg;
 
     @Column(nullable = false)

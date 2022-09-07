@@ -25,8 +25,15 @@ public class FullCourse {
     @Column(nullable = false)
     private Date regDate;
 
-    @Column(nullable = false, length = 3)
-    private Integer period;
+
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Date endDate;
+
+    @Column(nullable = false, length = 100)
+    private String thumbnail;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")

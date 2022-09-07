@@ -19,10 +19,10 @@ public class Travel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long travelId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String gugun;
 
     @Column(nullable = false)
@@ -31,29 +31,37 @@ public class Travel {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String title;
 
+    @Column(length = 100)
     private String subtitle;
 
+    @Column(length = 100)
     private String address;
 
+    @Column(length = 100)
     private String tel;
 
+    @Column(length = 100)
     private String url;
 
+    @Column(length = 200)
     private String transport;
 
+    @Column(length = 100)
     private String openDay;
 
+    @Column(length = 100)
     private String fee;
 
+    @Column(length = 100)
     private String facilities;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String imgUrl;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @Column(nullable = false)
