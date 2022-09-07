@@ -1,7 +1,6 @@
 import React from "react";
 import LoginForm from "../../components/user/LoginForm";
 import styled from "styled-components";
-import login from "../../img/Login.jpg";
 
 const LoginBox = styled.div`
   display: flex;
@@ -15,7 +14,7 @@ const LoginBox = styled.div`
 const LoginPage = () => {
   return (
     <LoginBox>
-      <img src={login} alt="loginimg" />
+      <img src="/img/Login.jpg" alt="loginimg" />
       <LoginForm />
     </LoginBox>
   );

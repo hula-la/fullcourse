@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../img/Logo.png";
 
 const NavBar = styled.div`
   display: flex;
@@ -41,7 +40,7 @@ const Header = () => {
   return (
     <NavBar>
       <NavLink to="/">
-        <img className="logo" src={logo} alt="logo" />
+        <img className="logo" src="/img/Logo.png" alt="logo" />
       </NavLink>
       <Menu>
         <button className="login">login</button>
