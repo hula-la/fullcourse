@@ -18,7 +18,7 @@ public class FullCourseDetail {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fcDetailId;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false)
     private Integer day;
 
     @Column(nullable = false, length = 3)

@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -57,8 +59,15 @@ public class Travel {
     private String content;
 
     @Column(nullable = false)
-    private Long count;
+    private Long addedCnt;
+
+    @Column(nullable = false)
+    private Long reviewCnt;
 
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+    List<TravelTag> travelTags = new ArrayList<>();
+
 }

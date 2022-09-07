@@ -25,8 +25,14 @@ public class FullCourse {
     @Column(nullable = false)
     private Date regDate;
 
-    @Column(nullable = false, length = 3)
-    private Integer period;
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Date endDate;
+
+    @Column(nullable = false)
+    private String thumbnail;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
@@ -34,8 +40,4 @@ public class FullCourse {
 
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
-
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "sharedFcId")
-    private SharedFullCourse sharedFullCourse;
 }
