@@ -25,7 +25,6 @@ public class FullCourse {
     @Column(nullable = false)
     private Date regDate;
 
-
     @Column(nullable = false)
     private Date startDate;
 

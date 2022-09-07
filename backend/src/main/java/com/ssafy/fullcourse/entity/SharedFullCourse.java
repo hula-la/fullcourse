@@ -31,8 +31,6 @@ public class SharedFullCourse {
     @Column(nullable = false)
     private Date regDate;
 
-<<<<<<< Updated upstream
-=======
     @Column(nullable = false)
     private Long likeCnt;
 
@@ -45,7 +43,6 @@ public class SharedFullCourse {
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
->>>>>>> Stashed changes
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
