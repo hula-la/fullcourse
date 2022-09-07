@@ -40,8 +40,4 @@ public class FullCourse {
 
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
-
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "sharedFcId")
-    private SharedFullCourse sharedFullCourse;
 }

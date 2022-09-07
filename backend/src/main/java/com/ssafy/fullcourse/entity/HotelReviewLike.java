@@ -14,20 +14,16 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TravelTagCnt {
+public class HotelReviewLike {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long TravelTagCntId;
-
-    @Column(nullable = false)
-    private Long clickCnt;
+    private Long reviewLikeId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "travelTagId")
-    private TravelTag travelTag;
-
+    @JoinColumn(name = "reviewId")
+    private HotelReview review;
 }
