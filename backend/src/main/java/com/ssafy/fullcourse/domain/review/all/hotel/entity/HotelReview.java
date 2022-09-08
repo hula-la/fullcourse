@@ -1,6 +1,6 @@
-package com.ssafy.fullcourse.domain.review.activity.entity;
+package com.ssafy.fullcourse.domain.review.all.hotel.entity;
 
-import com.ssafy.fullcourse.domain.place.entity.Activity;
+import com.ssafy.fullcourse.domain.place.entity.Hotel;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,15 +19,16 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActivityReview {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class HotelReview {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
-
-    @Column(nullable = false, length = 500)
-    private String content;
 
     @Column(length = 100)
     private String reviewImg;
+
+    @Column(nullable = false, length = 500)
+    private String content;
 
     @Column(nullable = false)
     private Float score;
@@ -40,9 +41,9 @@ public class ActivityReview {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "activityId")
-    private Activity activity;
+    @JoinColumn(name = "hotelId")
+    private Hotel hotel;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-    private List<ActivityReviewLike> reviewLikes = new ArrayList<>();
+    private List<HotelReviewLike> reviewLikes = new ArrayList<>();
 }

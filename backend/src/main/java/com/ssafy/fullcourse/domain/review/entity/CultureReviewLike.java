@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.review.culture.entity;
+package com.ssafy.fullcourse.domain.review.entity;
 
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;

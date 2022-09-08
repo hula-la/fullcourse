@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReview;
+import com.ssafy.fullcourse.domain.review.all.activity.entity.ActivityReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

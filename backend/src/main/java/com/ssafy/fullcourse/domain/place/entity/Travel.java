@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.travel.entity.TravelReview;
+import com.ssafy.fullcourse.domain.review.all.travel.entity.TravelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
