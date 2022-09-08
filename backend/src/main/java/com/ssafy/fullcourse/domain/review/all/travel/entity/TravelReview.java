@@ -1,6 +1,6 @@
-package com.ssafy.fullcourse.domain.review.culture.entity;
+package com.ssafy.fullcourse.domain.review.all.travel.entity;
 
-import com.ssafy.fullcourse.domain.place.entity.Culture;
+import com.ssafy.fullcourse.domain.place.entity.Travel;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +19,9 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CultureReview {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TravelReview {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
     @Column(length = 100)
@@ -41,9 +41,9 @@ public class CultureReview {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "cultureId")
-    private Culture culture;
+    @JoinColumn(name = "travelId")
+    private Travel travel;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-    private List<CultureReviewLike> reviewLikes = new ArrayList<>();
+    private List<TravelReviewLike> reviewLikes = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.review.travel.entity;
+package com.ssafy.fullcourse.domain.review.all.hotel.entity;
 
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TravelReviewLike {
+public class HotelReviewLike {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewLikeId;
@@ -26,5 +26,5 @@ public class TravelReviewLike {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "reviewId")
-    private TravelReview review;
+    private HotelReview review;
 }

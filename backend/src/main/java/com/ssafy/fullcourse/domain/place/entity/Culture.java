@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.culture.entity.CultureReview;
+import com.ssafy.fullcourse.domain.review.all.culture.entity.CultureReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
