@@ -1,10 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class SharedFullCourse {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,5 +54,7 @@ public class SharedFullCourse {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
+
+
 
 }
