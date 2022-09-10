@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class CultureReview {
     private Float score;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private Long likeCnt;
 
     @ManyToOne(fetch = LAZY)
