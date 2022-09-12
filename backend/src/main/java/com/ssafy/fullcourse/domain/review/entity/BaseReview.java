@@ -1,30 +1,26 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
-import com.ssafy.fullcourse.domain.place.entity.Activity;
-import com.ssafy.fullcourse.domain.review.all.activity.entity.ActivityReviewLike;
-import com.ssafy.fullcourse.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ssafy.fullcourse.domain.place.entity.BasePlace;
+import com.ssafy.fullcourse.domain.place.repository.user.entity.User;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Entity
+//@DynamicInsert
+@MappedSuperclass
 @Getter
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
-@DynamicInsert
-public class BaseReview {
+@AllArgsConstructor
+@ToString
+public class BaseReview<P extends BasePlace> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long placeId;
+    private Long reviewId;
 
     @Column(nullable = false, length = 500)
     private String content;
@@ -43,9 +39,20 @@ public class BaseReview {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "activityId")
-    private Activity activity;
+    @JoinColumn(name = "placeId")
+    private P place;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-    private List<ActivityReviewLike> reviewLikes = new ArrayList<>();
+//    @Builder
+//    public BaseReview(String content, String reviewImg, Float score, Long likeCnt, User user, P place) {
+//        this.content = content;
+//        this.reviewImg = reviewImg;
+//        this.score = score;
+//        this.likeCnt = likeCnt;
+//        this.user = user;
+//        this.place = place;
+//    }
+//
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+//    List<ReviewLike> likes = new ArrayList<>();
+
 }

@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.all.restaurant.entity.RestaurantReview;
+import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,9 +67,11 @@ public class Restaurant {
     @Column(nullable = false)
     private Long reviewCnt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
 }

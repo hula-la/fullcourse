@@ -1,12 +1,12 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
 import com.ssafy.fullcourse.domain.place.entity.Culture;
-import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,35 +16,17 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CultureReview {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+@DynamicInsert
+@SuperBuilder
+public class CultureReview extends BaseReview<Culture>{
 
-    @Column(length = 100)
-    private String reviewImg;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "cultureId")
+//    private Culture culture;
 
-    @Column(nullable = false, length = 500)
-    private String content;
-
-    @Column(nullable = false)
-    private Float score;
-
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Long likeCnt;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "cultureId")
-    private Culture culture;
-
+    @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<CultureReviewLike> reviewLikes = new ArrayList<>();
 }

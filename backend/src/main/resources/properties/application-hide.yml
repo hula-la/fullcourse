@@ -1,0 +1,41 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true
+    show-sql: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      password: 'chukka'
+      username: 'chukka'
+    url: jdbc:mysql://localhost:3306/fullcourse?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: 'true'
+  mvc:
+    throw-exception-if-no-handler-found: 'true'
+  devtools:
+    livereload:
+      enabled: 'true'
+  resources:
+    static-locations: classpath:/dist/
+    add-mappings: 'false'
+  h2:
+    console:
+      enabled: true
+#    jpa:
+#      hibernate:
+#        ddl-auto: create
+#      defer-datasource-initialization: true

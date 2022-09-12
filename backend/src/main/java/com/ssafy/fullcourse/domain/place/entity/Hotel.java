@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.all.hotel.entity.HotelReview;
+import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,9 +46,11 @@ public class Hotel {
     @Column(nullable = false)
     private Long reviewCnt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelLike> likes = new ArrayList<>();
 }

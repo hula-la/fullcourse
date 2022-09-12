@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.all.travel.entity.TravelReview;
+import com.ssafy.fullcourse.domain.review.entity.TravelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,12 +71,15 @@ public class Travel {
     @Column(nullable = false)
     private Long reviewCnt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelTag> travelTags = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();
 }

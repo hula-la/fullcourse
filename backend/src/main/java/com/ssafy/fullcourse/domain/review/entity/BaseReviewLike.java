@@ -1,31 +1,29 @@
-package com.ssafy.fullcourse.domain.place.entity;
+package com.ssafy.fullcourse.domain.review.entity;
 
 import com.ssafy.fullcourse.domain.place.repository.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-@Entity
+@MappedSuperclass
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ActivityLike {
+@Setter
+public class BaseReviewLike<Review extends BaseReview> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long reviewLikeId;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "activityId")
-    private Activity activity;
+    @JoinColumn(name = "reviewId")
+    private Review review;
+
 }
