@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Integer> {
     SharedFullCourse findBySharedFcId(Long shareFcId);
+    SharedFullCourse findByFullCourseFcId(Long fcId);
 }

@@ -10,6 +10,8 @@ import lombok.*;
 @ToString
 public class SharedFCTagDto {
 
+    private Long fcTagId;
     private String tagContent;
-    private SharedFullCourse sharedFullCourse;
+    private Long sharedFcId;
+
 }

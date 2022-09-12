@@ -12,7 +12,6 @@ public interface SharedFCMapper extends EntityMapper<SharedFCDto, SharedFullCour
     SharedFCMapper MAPPER = Mappers.getMapper(SharedFCMapper.class);
 
     @Override
-    @Mapping(target="sharedFcId", constant="777L")
     SharedFullCourse toEntity(final SharedFCDto dto);
 
 }

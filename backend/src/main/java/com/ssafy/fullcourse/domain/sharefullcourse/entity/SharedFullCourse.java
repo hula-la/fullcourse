@@ -45,7 +45,7 @@ public class SharedFullCourse {
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SharedFCTag> sharedFCTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)

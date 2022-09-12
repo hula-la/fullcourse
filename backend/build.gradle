@@ -32,8 +32,18 @@ dependencies {
 //	mapstruct
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
+//   junit5
+	testImplementation(platform('org.junit:junit-bom:5.9.0'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
+//  spring boot test
+	testCompileOnly('org.springframework.boot:spring-boot-starter-test')
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+test{
+	useJUnitPlatform()
+
 }

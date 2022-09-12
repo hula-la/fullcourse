@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SharedFCDto {
+public class SharedFCGetRes {
 
-    private FullCourse fullCourse;
+    private Long fcId;
     private Long sharedFcId;
     private String detail;
     private String title;
@@ -22,9 +22,7 @@ public class SharedFCDto {
     @Builder.Default private Long likeCnt = 0l;
     @Builder.Default private Long commentCnt = 0l;
     @Builder.Default private Long viewCnt = 0l;
-    private List<SharedFCTagDto> sharedFCTags;
+    private List<String> sharedFCTags;
     private String thumbnail;
-
-
 
 }

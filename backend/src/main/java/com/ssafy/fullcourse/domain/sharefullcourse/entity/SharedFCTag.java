@@ -1,9 +1,6 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -25,4 +22,8 @@ public class SharedFCTag {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "sharedFcId")
     private SharedFullCourse sharedFullCourse;
+
+    public void setSharedFullCourse(SharedFullCourse sharedFullCourse){
+        this.sharedFullCourse = sharedFullCourse;
+    }
 }
