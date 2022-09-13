@@ -1,9 +1,8 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
-import com.ssafy.fullcourse.domain.place.repository.user.entity.User;
+import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 

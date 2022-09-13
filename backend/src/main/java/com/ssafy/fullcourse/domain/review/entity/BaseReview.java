@@ -1,10 +1,9 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
-import com.ssafy.fullcourse.domain.place.repository.user.entity.User;
+import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -41,16 +40,6 @@ public class BaseReview<P extends BasePlace> {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "placeId")
     private P place;
-
-//    @Builder
-//    public BaseReview(String content, String reviewImg, Float score, Long likeCnt,  P place) {
-//        this.content = content;
-//        this.reviewImg = reviewImg;
-//        this.score = score;
-//        this.likeCnt = likeCnt;
-//        this.place = place;
-//    }
-
 
 
 }
