@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.review.application;
 
+import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
@@ -48,13 +49,16 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace> im
 
     @Override
     public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
-        System.out.println(R.builder());
+//        System.out.println(R.builder().build());
 
         Optional<P> place = basePlaceRepositoryMap.get("activityRepository").findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
         // NotFoundException 턴지기
         if(!place.isPresent()) throw new PlaceNotFoundException();
+
+        R review = (R) new BaseReview();
+        System.out.println((review instanceof ActivityReview) +"***1***"+review);
 
         R baseReview = (R) R.builder()
                 .score(reviewPostReq.getScore())
@@ -63,21 +67,25 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace> im
                 .place(place.get())
                 .build();
 
-        System.out.println((baseReview instanceof ActivityReview) +"******"+baseReview);
+//        R baseReview = (R) new BaseReview(reviewPostReq.getContent()
+//                , null
+//                ,reviewPostReq.getScore()
+//                ,reviewPostReq.getScore()
+//        ,0L
+//        ,place.get());
+
+        System.out.println((baseReview instanceof ActivityReview) +"**2****"+baseReview);
 //        new BaseReview<R>(reviewPostReq.getScore(),)
         return ((R)baseReviewRepository.save(baseReview)).getReviewId();
     }
 
     @Override
     public Page<ReviewRes> getReviews(PlaceEnum Type, Long placeId, Pageable pageable) {
-        for(String s:basePlaceRepositoryMap.keySet()){
-            System.out.println(s);
-        }
-        System.out.println(basePlaceRepositoryMap.keySet());
 
 
         Optional<P> place = basePlaceRepositoryMap.get("activityRepository").findByPlaceId(placeId);
-        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findAll(pageable);
+        if(!place.isPresent()) throw new PlaceNotFoundException();
+        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findByPlaceContaining((Activity)place.get(), pageable);
         return page.map(ReviewRes::new);
     }
 

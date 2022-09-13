@@ -43,16 +43,14 @@ public class BaseReview<P extends BasePlace> {
     private P place;
 
 //    @Builder
-//    public BaseReview(String content, String reviewImg, Float score, Long likeCnt, User user, P place) {
+//    public BaseReview(String content, String reviewImg, Float score, Long likeCnt,  P place) {
 //        this.content = content;
 //        this.reviewImg = reviewImg;
 //        this.score = score;
 //        this.likeCnt = likeCnt;
-//        this.user = user;
 //        this.place = place;
 //    }
-//
-//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-//    List<ReviewLike> likes = new ArrayList<>();
+
+
 
 }
