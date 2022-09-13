@@ -52,7 +52,7 @@ public class BaseReviewController {
         PlaceEnum placeEnum = PlaceEnum.valueOf(type);
         BaseReviewService baseReviewService = baseReviewServiceMap.get(placeEnum.getService());
 
-        System.out.println("컨트롤러에서 서비스 인스턴스" + (baseReviewService instanceof ActivityReviewService));
+//        System.out.println("컨트롤러에서 서비스 인스턴스" + (baseReviewService instanceof ActivityReviewService)+" ** "+placeEnum.getService());
 
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", baseReviewService.createReview(placeEnum,placeId,reviewPostReq)));

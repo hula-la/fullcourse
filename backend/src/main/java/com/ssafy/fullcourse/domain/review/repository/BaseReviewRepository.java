@@ -1,23 +1,17 @@
 package com.ssafy.fullcourse.domain.review.repository;
 
+import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.review.entity.BaseReview;
-import com.ssafy.fullcourse.global.model.PlaceEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.LockModeType;
-import java.time.LocalDateTime;
-import java.util.List;
 
 
 //@Repository
 @NoRepositoryBean
 public interface BaseReviewRepository<R extends BaseReview> extends JpaRepository<R, Long> {
+    Page<R> findByPlaceContaining(Activity place, Pageable pageable);
 
 //    List<BaseReview> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 //

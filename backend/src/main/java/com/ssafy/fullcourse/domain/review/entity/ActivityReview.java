@@ -25,6 +25,6 @@ public class ActivityReview extends BaseReview<Activity> {
 
     @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-    List<ActivityReviewLike> reviewlikes = new ArrayList<>();
+    List<ActivityReviewLike> reviewLikes = new ArrayList<>();
 
 }
