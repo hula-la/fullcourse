@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.place.repository.user.entity;
+package com.ssafy.fullcourse.domain.user.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.place.entity.*;

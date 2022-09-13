@@ -57,8 +57,6 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace> im
         // NotFoundException 턴지기
         if(!place.isPresent()) throw new PlaceNotFoundException();
 
-        R review = (R) new BaseReview();
-        System.out.println((review instanceof ActivityReview) +"***1***"+review);
 
         R baseReview = (R) R.builder()
                 .score(reviewPostReq.getScore())
@@ -67,12 +65,6 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace> im
                 .place(place.get())
                 .build();
 
-//        R baseReview = (R) new BaseReview(reviewPostReq.getContent()
-//                , null
-//                ,reviewPostReq.getScore()
-//                ,reviewPostReq.getScore()
-//        ,0L
-//        ,place.get());
 
         System.out.println((baseReview instanceof ActivityReview) +"**2****"+baseReview);
 //        new BaseReview<R>(reviewPostReq.getScore(),)
