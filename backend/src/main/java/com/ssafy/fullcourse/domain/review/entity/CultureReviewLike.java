@@ -1,19 +1,16 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
-import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
-@Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class CultureReviewLike extends BaseReviewLike<CultureReview>{
+@SuperBuilder
+public class CultureReviewLike extends BaseReviewLike<CultureReview> {
 }

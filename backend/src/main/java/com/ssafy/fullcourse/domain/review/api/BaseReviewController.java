@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.review.api;
 
-import com.ssafy.fullcourse.domain.review.application.BaseService.BaseReviewService;
+import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
@@ -120,9 +120,10 @@ public class BaseReviewController {
         PlaceEnum placeEnum = PlaceEnum.valueOf(type);
         BaseReviewService baseReviewService = baseReviewServiceMap.get(placeEnum.getService());
 
-        baseReviewService.update(placeEnum,reviewId,reviewPostReq);
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "수정"));
+        baseReviewService.reviewLike(placeEnum,userId,reviewId);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "좋아요"));
 
     }
 

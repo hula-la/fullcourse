@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.review.entity;
+package com.ssafy.fullcourse.domain.review.entity.baseentity;
 
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
 import com.ssafy.fullcourse.domain.user.entity.User;
@@ -6,8 +6,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-
-import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -50,6 +48,10 @@ public class BaseReview<P extends BasePlace> {
     public void update(String content, Float score){
         this.content = content;
         this.score = score;
+    }
+    
+    public void addLikeCnt(int plus){
+        this.likeCnt += plus;
     }
 
 

@@ -1,16 +1,19 @@
-package com.ssafy.fullcourse.domain.review.application.BaseService;
+package com.ssafy.fullcourse.domain.review.application.baseservice;
 
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.dto.ReviewRes;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
-import com.ssafy.fullcourse.domain.review.entity.BaseReview;
-import com.ssafy.fullcourse.domain.review.entity.BaseReviewLike;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReview;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.review.exception.ReviewNotFoundException;
-import com.ssafy.fullcourse.domain.review.repository.BaseReviewLikeRepository;
-import com.ssafy.fullcourse.domain.review.repository.BaseReviewRepository;
+import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLikeRepository;
+import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewRepository;
+import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +24,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
-public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL extends BaseReviewLike> implements BaseReviewService<R,P> {
+public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL extends BaseReviewLike>
+        implements BaseReviewService<R,P> {
 
 
 
@@ -29,6 +33,9 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
 
     protected final Map<String, BaseReviewRepository> baseReviewRepositoryMap;
     protected final Map<String, BaseReviewLikeRepository> baseReviewLikeMap;
+
+    @Autowired
+    protected UserRepository userRepository;
 
     @Autowired
     public BaseReviewServiceImpl(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
@@ -103,46 +110,28 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
         return reviewId;
     }
 
+
     @Override
     @Transactional
-    public Long reviewLike(PlaceEnum Type, Long reviewId,Long userId) {
+    public Boolean reviewLike(PlaceEnum Type, Long userId, Long reviewId) {
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
-        Optional<R> review = baseReviewRepository.findById(reviewId);
+        BaseReviewLikeRepository baseReviewRLikeRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
 
-        BaseReviewLikeRepository baseReviewRLikeepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
+        Optional<R> reviewOpt = baseReviewRepository.findById(reviewId);
+        Optional<User> userOpt = userRepository.findById(userId);
 
-        Optional<RL> reviewLike= baseReviewRLikeepository.findByUser_UserIdAndReview_ReviewId(userId,reviewId);
-
-        if(!review.isPresent()) throw new ReviewNotFoundException();
-        review.get().update(reviewPostReq.getContent(), reviewPostReq.getScore());
-
-        return reviewId;
-    }
-
-    @Transactional
-    public boolean checkLike(PlaceEnum Type, Long userId, Long reviewId) {
-        BaseReviewLikeRepository baseReviewRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
-
-        Optional<RL> reviewLike= baseReviewRepository.findByUser_UserIdAndReview_ReviewId(userId,reviewId);
-
-        return reviewLike.isPresent();
-    }
+        if (!userOpt.isPresent()) throw new UserNotFoundException();
+        if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
 
 
+        Optional<RL> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
-    @Transactional
-    public long getPostLikeNum(PostLikeDto postLikeDto) {
-        return postLikeRepository.findPostLikeNum(postLikeDto.getBoardId());
-    }
+        if(reviewLike.isPresent()){
+            baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
+        } else {
+            baseReviewRLikeRepository.save(new BaseReviewLike(userOpt.get(),reviewOpt.get()));
+        }
 
-    public Boolean pushLikeButton(PostLikeDto postLikeDto) {
-        postLikeRepository.exist(postLikeDto.getStudent().getId(), postLikeDto.getBoardId())
-                .ifPresentOrElse(
-                        postLike -> postLikeRepository.deleteById(postLike.getId()),
-                        () -> {
-                            Board board = getBoard(postLikeDto);
-                            postLikeRepository.save(new PostLike(postLikeDto.getStudent(), board, LocalDateTime.now()));
-                        });
 
         return true;
     }

@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
 import com.ssafy.fullcourse.domain.place.entity.Culture;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,15 +13,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
 @SuperBuilder
-public class CultureReview extends BaseReview<Culture>{
+public class CultureReview extends BaseReview<Culture> {
 
 
     @Builder.Default

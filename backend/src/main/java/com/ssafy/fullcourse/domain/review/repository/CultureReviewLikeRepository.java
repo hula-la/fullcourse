@@ -1,12 +1,10 @@
 package com.ssafy.fullcourse.domain.review.repository;
 
-import com.ssafy.fullcourse.domain.review.entity.ActivityReviewLike;
-import com.ssafy.fullcourse.domain.review.entity.BaseReview;
+import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import com.ssafy.fullcourse.domain.review.entity.CultureReviewLike;
-import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLikeRepository;
 
-import java.util.Optional;
-
-public interface CultureReviewLikeRepository extends BaseReviewLikeRepository<CultureReviewLike>{
+public interface CultureReviewLikeRepository
+        extends BaseReviewLikeRepository<CultureReviewLike, CultureReview> {
 
 }

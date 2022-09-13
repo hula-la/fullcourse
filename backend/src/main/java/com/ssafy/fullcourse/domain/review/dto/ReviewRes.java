@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.review.dto;
 
-import com.ssafy.fullcourse.domain.review.entity.BaseReview;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReview;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
