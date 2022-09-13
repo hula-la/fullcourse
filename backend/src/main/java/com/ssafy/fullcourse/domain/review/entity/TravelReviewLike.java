@@ -1,30 +1,17 @@
 package com.ssafy.fullcourse.domain.review.entity;
 
-import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
-@Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class TravelReviewLike {
+@SuperBuilder
+public class TravelReviewLike extends BaseReviewLike<TravelReview> {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewLikeId;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "reviewId")
-    private TravelReview review;
 }

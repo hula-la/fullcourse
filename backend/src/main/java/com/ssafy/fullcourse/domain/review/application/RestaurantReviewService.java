@@ -1,11 +1,12 @@
 package com.ssafy.fullcourse.domain.review.application;
 
-import com.ssafy.fullcourse.domain.place.entity.Activity;
+import com.ssafy.fullcourse.domain.place.entity.Restaurant;
 import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
-import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
-import com.ssafy.fullcourse.domain.review.entity.ActivityReviewLike;
+import com.ssafy.fullcourse.domain.review.entity.*;
+import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
+import com.ssafy.fullcourse.domain.review.entity.RestaurantReviewLike;
 import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.review.exception.ReviewNotFoundException;
@@ -21,16 +22,15 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview, Activity, ActivityReviewLike> {
-    public ActivityReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
+public class RestaurantReviewService extends BaseReviewServiceImpl<RestaurantReview, Restaurant, RestaurantReviewLike> {
+    public RestaurantReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
+                              Map<String, BasePlaceRepository> basePlaceRepositoryMap,
+                              Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
         super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap);
     }
-
     @Override
     public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
-        Optional<Activity> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
+        Optional<Restaurant> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
 
@@ -38,13 +38,12 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
         if(!place.isPresent()) throw new PlaceNotFoundException();
 
 
-        ActivityReview baseReview = ActivityReview.builder()
+        RestaurantReview baseReview = RestaurantReview.builder()
                 .score(reviewPostReq.getScore())
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
                 .build();
-
 
         baseReviewRepository.save(baseReview);
         return baseReview.getReviewId();
@@ -56,19 +55,19 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
         BaseReviewLikeRepository baseReviewRLikeRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
 
-        Optional<ActivityReview> reviewOpt = baseReviewRepository.findById(reviewId);
+        Optional<RestaurantReview> reviewOpt = baseReviewRepository.findById(reviewId);
         Optional<User> userOpt = userRepository.findById(userId);
 
         if (!userOpt.isPresent()) throw new UserNotFoundException();
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
 
 
-        Optional<ActivityReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
+        Optional<RestaurantReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
-            baseReviewRLikeRepository.save(ActivityReviewLike.builder()
+            baseReviewRLikeRepository.save(RestaurantReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())
                     .build());

@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.review.entity;
+package com.ssafy.fullcourse.domain.review.entity.baseentity;
 
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
 import com.ssafy.fullcourse.domain.user.entity.User;
@@ -12,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 //@DynamicInsert
 @MappedSuperclass
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,6 +41,18 @@ public class BaseReview<P extends BasePlace> {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "placeId")
     private P place;
+
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+//    private List<BaseReviewLike> reviewLikes;
+
+    public void update(String content, Float score){
+        this.content = content;
+        this.score = score;
+    }
+    
+    public void addLikeCnt(int plus){
+        this.likeCnt += plus;
+    }
 
 
 }

@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Restaurant {
+public class Restaurant extends BasePlace {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantId;
+//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long restaurantId;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -68,7 +68,7 @@ public class Restaurant {
     private Long reviewCnt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 
     @Builder.Default

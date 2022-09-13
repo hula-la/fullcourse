@@ -26,6 +26,6 @@ public class ActivityLike {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "activityId")
+    @JoinColumn(name = "placeId")
     private Activity activity;
 }

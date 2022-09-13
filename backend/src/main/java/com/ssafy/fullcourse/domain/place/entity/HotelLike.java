@@ -26,6 +26,6 @@ public class HotelLike {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "hotelId")
+    @JoinColumn(name = "placeId")
     private Hotel hotel;
 }
