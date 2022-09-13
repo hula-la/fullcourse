@@ -27,25 +27,28 @@ public class User {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 20)
-    private String password;
+    @Column(nullable = false)
+    private String socialId;
 
-    @Column(nullable = false, unique = true, length = 24)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+//    @Column(nullable = false, length = 10)
     private Gender gender;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String birth;
 
     @Column(length = 100)
-    private String img_url;
+    private String imgUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private LoginType loginType;
+
+//    @OneToMany(mappedBy = "user")
+//    private Set<Authority> authorities;
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
