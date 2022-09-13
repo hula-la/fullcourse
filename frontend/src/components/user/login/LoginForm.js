@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import NaverLogin from './NaverLogin';
 
 const Wrapper = styled.div`
   position: relative;
@@ -25,6 +26,28 @@ const Wrapper = styled.div`
     font-size: 0px;
     line-height: 0px;
     margin: 10px 16px;
+  }
+
+  .kakao {
+    padding: 0.6em 1em;
+    border-radius: 0.25em;
+    border: none;
+    font-size: 1rem;
+    margin-top: 0.7em;
+    display: flex;
+    width: 60%;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    box-shadow: var(--shadow-1);
+    background-color: #fee500;
+    color: #000000 85%;
+    margin: 0 auto;
+  }
+  .kakaologo {
+    height: 2.5rem;
+    width: auto;
   }
 `;
 
@@ -144,12 +167,10 @@ const GoogleLogin = styled.button`
   color: #7a7a7a;
 
   .googlelogo {
-    width: 80px;
+    width: 20%;
     height: 50px;
   }
 `;
-
-const LoginFormBlock = styled.form``;
 
 const LeftCircle = () => {
   return (
@@ -184,18 +205,20 @@ const LoginForm = () => {
         FULLCOURSE
       </FormTitle>
       <GoogleLogin>
-        <img src="/img/GoogleLogo.webp" alt="" className="googlelogo" />
+        <img
+          src="/img/GoogleLogo.webp"
+          alt="googlelogo"
+          className="googlelogo"
+        />
         Login through Google
       </GoogleLogin>
       <div className="hr-sect">or</div>
-      {/* <LoginFormBlock>
-        <form>
-          <div>
-            <label for="userEmail">Email*</label>
-            <input id="userEmail" name="userEmail" />
-          </div>
-        </form>
-      </LoginFormBlock> */}
+      <button className="kakao">
+        <img src="/img/kakao.png" alt="kakao" className="kakaologo" />
+        Login with Kakao
+      </button>
+      <div className="hr-sect">or</div>
+      <NaverLogin />
     </Wrapper>
   );
 };
