@@ -1,15 +1,37 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
+  .hr-sect {
+    display: flex;
+    flex-basis: 50%;
+    width: 65%;
+    margin: auto 0;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 16px;
+    font-weight: 700;
+    margin: 1.5rem auto;
+  }
+  .hr-sect::before,
+  .hr-sect::after {
+    content: '';
+    flex-grow: 1;
+    background: rgba(8, 0, 0, 0.35);
+    height: 3px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 10px 16px;
+  }
 `;
 
 const Circle1 = styled.div`
   position: absolute;
-  width: 87px;
-  height: 87px;
+  width: 65px;
+  height: 65px;
   left: 0px;
   top: 0px;
   border-radius: 50%;
@@ -18,38 +40,38 @@ const Circle1 = styled.div`
 
 const Circle2 = styled.div`
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: 35px;
+  height: 35px;
   left: 20px;
-  top: 122px;
+  top: 100px;
   border-radius: 50%;
   background: #a6dcef;
 `;
 
 const Circle3 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
-  left: 87px;
-  top: 79px;
+  width: 48px;
+  height: 48px;
+  left: 77px;
+  top: 69px;
   border-radius: 50%;
   background: #a6dcef;
 `;
 
 const Circle4 = styled.div`
   position: absolute;
-  width: 36px;
-  height: 36px;
-  left: 161px;
-  top: 43px;
+  width: 22px;
+  height: 22px;
+  left: 131px;
+  top: 33px;
   border-radius: 50%;
   background: #a6dcef;
 `;
 
 const Circle5 = styled.div`
   position: absolute;
-  width: 87px;
-  height: 87px;
+  width: 65px;
+  height: 65px;
   right: 0px;
   top: 0px;
   border-radius: 50%;
@@ -58,30 +80,30 @@ const Circle5 = styled.div`
 
 const Circle6 = styled.div`
   position: absolute;
-  width: 44px;
-  height: 44px;
+  width: 35px;
+  height: 35px;
   right: 20px;
-  top: 122px;
+  top: 100px;
   border-radius: 50%;
   background: #a6dcef;
 `;
 
 const Circle7 = styled.div`
   position: absolute;
-  width: 65px;
-  height: 65px;
-  right: 87px;
-  top: 79px;
+  width: 48px;
+  height: 48px;
+  right: 77px;
+  top: 69px;
   border-radius: 50%;
   background: #a6dcef;
 `;
 
 const Circle8 = styled.div`
   position: absolute;
-  width: 36px;
-  height: 36px;
-  right: 161px;
-  top: 43px;
+  width: 22px;
+  height: 22px;
+  right: 131px;
+  top: 33px;
   border-radius: 50%;
   background: #a6dcef;
 `;
@@ -97,6 +119,38 @@ const RightWrapper = styled.div`
   right: 20px;
   top: 20px;
 `;
+
+const FormTitle = styled.div`
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  margin-top: 100px;
+  color: #7fbcd2;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`;
+
+const GoogleLogin = styled.button`
+  display: flex;
+  width: 60%;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 2rem;
+  padding-right: 1rem;
+  background: #ffffff;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #7a7a7a;
+
+  .googlelogo {
+    width: 80px;
+    height: 50px;
+  }
+`;
+
+const LoginFormBlock = styled.form``;
+
 const LeftCircle = () => {
   return (
     <LeftWrapper>
@@ -124,7 +178,24 @@ const LoginForm = () => {
     <Wrapper>
       <LeftCircle />
       <RightCircle />
-      <div></div>
+      <FormTitle>
+        BUSAN
+        <br />
+        FULLCOURSE
+      </FormTitle>
+      <GoogleLogin>
+        <img src="/img/GoogleLogo.webp" alt="" className="googlelogo" />
+        Login through Google
+      </GoogleLogin>
+      <div className="hr-sect">or</div>
+      {/* <LoginFormBlock>
+        <form>
+          <div>
+            <label for="userEmail">Email*</label>
+            <input id="userEmail" name="userEmail" />
+          </div>
+        </form>
+      </LoginFormBlock> */}
     </Wrapper>
   );
 };
