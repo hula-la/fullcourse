@@ -1,6 +1,6 @@
-import React from "react";
-import LoginForm from "../../components/user/LoginForm";
-import styled from "styled-components";
+import React from 'react';
+import LoginForm from '../../components/user/login/LoginForm';
+import styled from 'styled-components';
 
 const LoginBox = styled.div`
   display: flex;
