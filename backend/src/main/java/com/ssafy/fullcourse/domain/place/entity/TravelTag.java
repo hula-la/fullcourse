@@ -30,6 +30,6 @@ public class TravelTag {
     private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "travelId")
+    @JoinColumn(name = "placeId")
     private Travel travel;
 }

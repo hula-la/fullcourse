@@ -22,11 +22,10 @@ import static javax.persistence.FetchType.LAZY;
 @SuperBuilder
 public class CultureReview extends BaseReview<Culture>{
 
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "cultureId")
-//    private Culture culture;
 
     @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<CultureReviewLike> reviewLikes = new ArrayList<>();
+
+
 }

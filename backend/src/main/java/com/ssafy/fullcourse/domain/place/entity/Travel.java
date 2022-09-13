@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Travel {
+public class Travel extends BasePlace {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long travelId;
+//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long travelId;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -72,7 +72,7 @@ public class Travel {
     private Long reviewCnt;
 
     @Builder.Default
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
     @Builder.Default

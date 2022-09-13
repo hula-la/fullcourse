@@ -11,7 +11,7 @@ import static javax.persistence.FetchType.LAZY;
 @MappedSuperclass
 @Getter
 @Setter
-public class BaseReviewLike<Review extends BaseReview> {
+public class BaseReviewLike<R extends BaseReview> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,6 @@ public class BaseReviewLike<Review extends BaseReview> {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "reviewId")
-    private Review review;
+    private R review;
 
 }

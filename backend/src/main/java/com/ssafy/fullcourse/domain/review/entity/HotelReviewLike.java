@@ -15,16 +15,6 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelReviewLike {
+public class HotelReviewLike extends BaseReviewLike<CultureReview>{
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewLikeId;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "reviewId")
-    private HotelReview review;
 }

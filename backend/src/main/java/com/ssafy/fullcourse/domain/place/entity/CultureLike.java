@@ -26,7 +26,7 @@ public class CultureLike {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "cultureId")
+    @JoinColumn(name = "placeId")
     private Culture culture;
 
 }

@@ -7,11 +7,14 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 
 //@DynamicInsert
 @MappedSuperclass
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,6 +43,14 @@ public class BaseReview<P extends BasePlace> {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "placeId")
     private P place;
+
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+//    private List<BaseReviewLike> reviewLikes;
+
+    public void update(String content, Float score){
+        this.content = content;
+        this.score = score;
+    }
 
 
 }

@@ -21,15 +21,30 @@ public class ReviewRes {
 //    Long reviewId;
 
     @ApiModelProperty(name="리뷰 내용", example="좋아요")
+    Long reviewId;
+
+    @ApiModelProperty(name="리뷰 내용", example="좋아요")
+    Long placeId;
+
+//    @ApiModelProperty(name="리뷰 아이디디", example="좋아요")
+//    Long userId;
+
+    @ApiModelProperty(name="리뷰 좋아요 수", example="좋아요")
+    Long likeCnt;
+
+    @ApiModelProperty(name="리뷰 내용", example="좋아요")
     String content;
 
     @ApiModelProperty(name="평점", example="3")
     Float score;
 
     public ReviewRes(BaseReview baseReview) {
-//        this.reviewId = baseReview.getReviewId();
+        this.reviewId = baseReview.getReviewId();
         this.content = baseReview.getContent();
         this.score = baseReview.getScore();
+        this.placeId = baseReview.getPlace().getPlaceId();
+//        this.userId = baseReview.getUser().getUserId();
+        this.likeCnt = baseReview.getLikeCnt();
     }
 
 //    public static ReviewRes of(BaseReview baseReview) {

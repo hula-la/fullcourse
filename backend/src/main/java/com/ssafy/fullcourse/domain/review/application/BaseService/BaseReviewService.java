@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.review.application;
+package com.ssafy.fullcourse.domain.review.application.BaseService;
 
 import com.ssafy.fullcourse.domain.place.entity.BasePlace;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
@@ -16,7 +16,6 @@ public interface BaseReviewService<R extends BaseReview, P extends BasePlace> {
 
     void deleteReviewById(PlaceEnum Type, Long reviewId);
 
-//    void setBaseReviewRepository(List<BaseReviewRepository> baseReviewRepositoryList);
-//
-//    void setBasePlaceRepository(List<BasePlaceRepository> basePlaceRepositoryList);
+    Long update(PlaceEnum Type, Long reviewId,ReviewPostReq reviewPostReq);
+
 }
