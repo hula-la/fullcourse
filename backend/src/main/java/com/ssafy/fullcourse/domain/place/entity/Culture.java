@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.all.culture.entity.CultureReview;
+import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +15,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Culture {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cultureId;
+public class Culture extends BasePlace{
+//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long cultureId;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -49,9 +49,11 @@ public class Culture {
     @Column(nullable = false)
     private Long reviewCnt;
 
-    @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<CultureReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
     List<CultureLike> likes = new ArrayList<>();
 }

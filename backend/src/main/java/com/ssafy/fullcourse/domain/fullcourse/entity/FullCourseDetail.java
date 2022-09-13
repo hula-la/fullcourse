@@ -22,7 +22,7 @@ public class FullCourseDetail {
     private Integer day;
 
     @Column(nullable = false)
-    private Integer order;
+    private Integer courseOrder;
 
     @Column(nullable = false, length = 20)
     private String type;
