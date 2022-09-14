@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import {
+  fetchUserInfo,
+  userLoginNaver,
+} from '../../../features/user/userActions';
 
 const Wrapper = styled.div`
   #naverIdLogin {
@@ -36,6 +41,9 @@ const NaverLogin = () => {
   const { naver } = window;
   const naverRef = useRef();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const NAVER_CLIENT_ID = 'nD3LMlh8XVw9Vkf10kQL';
   const NAVER_CALLBACK_URL = 'http://localhost:3000/user/login';
 
@@ -53,7 +61,9 @@ const NaverLogin = () => {
   const getNaverToken = () => {
     if (!location.hash) return;
     const token = location.hash.split('=')[1].split('&')[0];
-    console.log(token);
+    dispatch(userLoginNaver(token));
+    dispatch(fetchUserInfo());
+    navigate('/');
   };
 
   useEffect(() => {
