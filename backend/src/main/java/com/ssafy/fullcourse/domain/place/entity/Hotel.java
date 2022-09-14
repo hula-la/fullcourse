@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.hotel.entity.HotelReview;
+import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hotel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
+public class Hotel extends BasePlace {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long hotelId;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -46,9 +46,11 @@ public class Hotel {
     @Column(nullable = false)
     private Long reviewCnt;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelLike> likes = new ArrayList<>();
 }

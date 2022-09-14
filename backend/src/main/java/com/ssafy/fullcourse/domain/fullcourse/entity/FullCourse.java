@@ -39,6 +39,7 @@ public class FullCourse {
     @JoinColumn(name = "userId")
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
 }

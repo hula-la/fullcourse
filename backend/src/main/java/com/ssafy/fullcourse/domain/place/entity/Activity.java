@@ -1,12 +1,15 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReview;
+import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Activity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long activityId;
+public class Activity extends BasePlace{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long activityId;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -59,9 +62,11 @@ public class Activity {
     @Column(nullable = false)
     private Long reviewCnt;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     List<ActivityLike> likes = new ArrayList<>();
 }

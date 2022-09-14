@@ -2,16 +2,7 @@ package com.ssafy.fullcourse.domain.user.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.place.entity.*;
-import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReview;
-import com.ssafy.fullcourse.domain.review.activity.entity.ActivityReviewLike;
-import com.ssafy.fullcourse.domain.review.culture.entity.CultureReview;
-import com.ssafy.fullcourse.domain.review.culture.entity.CultureReviewLike;
-import com.ssafy.fullcourse.domain.review.hotel.entity.HotelReview;
-import com.ssafy.fullcourse.domain.review.hotel.entity.HotelReviewLike;
-import com.ssafy.fullcourse.domain.review.restaurant.entity.RestaurantReview;
-import com.ssafy.fullcourse.domain.review.restaurant.entity.RestaurantReviewLike;
-import com.ssafy.fullcourse.domain.review.travel.entity.TravelReview;
-import com.ssafy.fullcourse.domain.review.travel.entity.TravelReviewLike;
+import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import lombok.AllArgsConstructor;
@@ -36,83 +27,106 @@ public class User {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable = false, length = 20)
-    private String password;
+    @Column(nullable = false)
+    private String socialId;
 
-    @Column(nullable = false, unique = true, length = 24)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+//    @Column(nullable = false, length = 10)
     private Gender gender;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String birth;
 
     @Column(length = 100)
-    private String img_url;
+    private String imgUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private LoginType loginType;
 
+//    @OneToMany(mappedBy = "user")
+//    private Set<Authority> authorities;
+
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantReview> restaurantReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelReview> travelReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelReview> hotelReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureReview> cultureReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityReview> activityReviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Custom> customs = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<FullCourse> fullCourses = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantReviewLike> restaurantReviewLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelReviewLike> travelReviewLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelReviewLike> hotelReviewLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureReviewLike> cultureReviewLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityReviewLike> activityReviewLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantLike> restaurantLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelLike> travelLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelLike> hotelLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureLike> cultureLikes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityLike> activityLikes = new ArrayList<>();
 }

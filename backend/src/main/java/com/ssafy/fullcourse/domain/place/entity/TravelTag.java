@@ -25,10 +25,11 @@ public class TravelTag {
     @Column(nullable = false)
     private Tag tagContent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "travelTag", cascade = CascadeType.REMOVE)
     private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "travelId")
+    @JoinColumn(name = "placeId")
     private Travel travel;
 }

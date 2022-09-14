@@ -42,12 +42,15 @@ public class SharedFullCourse {
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
+    @Builder.Default
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCTag> sharedFCTags = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
 

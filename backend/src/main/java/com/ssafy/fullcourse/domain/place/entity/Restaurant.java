@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.review.restaurant.entity.RestaurantReview;
+import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Restaurant {
+public class Restaurant extends BasePlace {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantId;
+//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long restaurantId;
 
     @Column(nullable = false, length = 50)
     private String name;
@@ -67,9 +67,11 @@ public class Restaurant {
     @Column(nullable = false)
     private Long reviewCnt;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
 }
