@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -33,6 +34,8 @@ const Wrapper = styled.div`
 
 const NaverLogin = () => {
   const { naver } = window;
+  const naverRef = useRef();
+  const location = useLocation();
   const NAVER_CLIENT_ID = 'nD3LMlh8XVw9Vkf10kQL';
   const NAVER_CALLBACK_URL = 'http://localhost:3000/user/login';
 
@@ -47,11 +50,16 @@ const NaverLogin = () => {
     naverLogin.init();
   };
 
+  const getNaverToken = () => {
+    if (!location.hash) return;
+    const token = location.hash.split('=')[1].split('&')[0];
+    console.log(token);
+  };
+
   useEffect(() => {
     initializeNaverLogin();
+    getNaverToken();
   }, []);
-
-  const naverRef = useRef();
 
   const handleClick = () => {
     naverRef.current.children[0].click();
