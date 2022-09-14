@@ -1,0 +1,73 @@
+package com.ssafy.fullcourse.domain.fullcourse.api;
+
+import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
+import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
+import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
+import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.model.PlaceEnum;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Api(value = "풀코스 API", tags = {"fullcourse"})
+@RestController
+@RequestMapping("/fullcourse")
+public class FullCourseController {
+
+    @Autowired
+    FullCourseService fullCourseService;
+
+    @PostMapping("/")
+    @ApiOperation(value = "풀코스 등록", notes = "type")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> registerFullCourse(@RequestParam Long userId,
+                                                           @RequestBody FullCoursePostReq fullCoursePostReq) {
+
+        Long fcId = fullCourseService.createFullCourse(userId, fullCoursePostReq);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fcId));
+    }
+
+    @GetMapping("/{fcId}")
+    @ApiOperation(value = "풀코스 조회", notes = "type")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> registerFullCourse(@PathVariable Long fcId) {
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourseDetailById(fcId)));
+    }
+
+    @DeleteMapping("/{fcId}")
+    @ApiOperation(value = "풀코스 삭제", notes = "type")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> deleteFullCourse(@PathVariable Long fcId) {
+
+        fullCourseService.deleteFullCourse(fcId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "삭제"));
+    }
+
+    @PutMapping("/{fcId}/{userId}")
+    @ApiOperation(value = "풀코스 업데이트", notes = "type")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> updateFullCourse(@PathVariable Long fcId,
+                                                             @PathVariable Long userId,
+                                                             @RequestBody FullCoursePostReq fullCoursePostReq) {
+
+        Long newFcId = fullCourseService.updateFullCourse(userId,fcId,fullCoursePostReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", newFcId));
+    }
+
+}

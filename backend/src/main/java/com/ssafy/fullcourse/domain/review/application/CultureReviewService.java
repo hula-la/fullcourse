@@ -71,7 +71,9 @@ public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, C
 
         if(reviewLike.isPresent()){
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
+            reviewOpt.get().addLikeCnt(-1);
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(CultureReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

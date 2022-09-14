@@ -1,10 +1,12 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,12 +25,15 @@ public class FullCourse {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fcId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-DD")
     @Column(nullable = false)
     private Date regDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-DD")
     @Column(nullable = false)
     private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-DD")
     @Column(nullable = false)
     private Date endDate;
 
@@ -42,4 +47,8 @@ public class FullCourse {
     @Builder.Default
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
+
+//    public void update(FullCoursePostReq fullCoursePostReq){
+//        this.thumbnail = fullCoursePostReq.getThumbnail();
+//    }
 }

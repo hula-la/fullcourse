@@ -124,11 +124,14 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
 
 
+
         Optional<RL> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
+            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(new BaseReviewLike(userOpt.get(),reviewOpt.get()));
         }
 
