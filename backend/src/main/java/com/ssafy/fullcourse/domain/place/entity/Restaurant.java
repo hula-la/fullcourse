@@ -16,10 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Restaurant extends BasePlace {
-
-//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long restaurantId;
-
     @Column(nullable = false, length = 50)
     private String name;
 
@@ -66,6 +62,9 @@ public class Restaurant extends BasePlace {
 
     @Column(nullable = false)
     private Long reviewCnt;
+
+    @Column(nullable = false)
+    private Long likeCnt;
 
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)

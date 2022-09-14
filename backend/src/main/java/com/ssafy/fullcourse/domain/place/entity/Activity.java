@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Activity extends BasePlace{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long activityId;
-
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -45,7 +39,7 @@ public class Activity extends BasePlace{
     private String place;
 
     @Column(nullable = false,length = 100)
-    private String activityImg;
+    private String imgUrl;
 
     @Column(length = 30)
     private String holiday;
@@ -61,6 +55,9 @@ public class Activity extends BasePlace{
 
     @Column(nullable = false)
     private Long reviewCnt;
+
+    @Column(nullable = false)
+    private Long likeCnt;
 
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)

@@ -15,10 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Custom {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customId;
-
+public class Custom extends BasePlace{
     @Column(nullable = false, length = 30)
     private String name;
 

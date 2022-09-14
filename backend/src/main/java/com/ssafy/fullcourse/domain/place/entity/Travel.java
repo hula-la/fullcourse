@@ -16,10 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Travel extends BasePlace {
-
-//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long travelId;
-
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -70,6 +66,9 @@ public class Travel extends BasePlace {
 
     @Column(nullable = false)
     private Long reviewCnt;
+
+    @Column(nullable = false)
+    private Long likeCnt;
 
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)

@@ -15,11 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hotel extends BasePlace {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long hotelId;
-
+public class Hotel extends BasePlace{
     @Column(nullable = false, length = 30)
     private String name;
     @Column(nullable = false, length = 20)
@@ -45,6 +41,9 @@ public class Hotel extends BasePlace {
 
     @Column(nullable = false)
     private Long reviewCnt;
+
+    @Column(nullable = false)
+    private Long likeCnt;
 
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
