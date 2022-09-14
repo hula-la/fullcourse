@@ -5,6 +5,7 @@ import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -81,6 +82,10 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<FullCourse> fullCourses = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<SharedFullCourse> shareFullCourses = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
