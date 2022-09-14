@@ -11,6 +11,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagReposit
 import com.ssafy.fullcourse.domain.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class SharedFCServiceImpl implements SharedFCService{
 
     // 공유 풀코스 생성
     @Override
+    @Transactional
     public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFullCourse().getFcId()));
         if(!opt.isPresent()){ // 새로 생성
@@ -55,6 +57,7 @@ public class SharedFCServiceImpl implements SharedFCService{
 
     // 공유 풀코스 상세 조회
     @Override
+    @Transactional
     public SharedFCGetRes detailSharedFC(Long sharedFcId) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFcId));
         SharedFullCourse sharedFullCourse = opt.orElseThrow(NullPointerException::new);
@@ -74,12 +77,13 @@ public class SharedFCServiceImpl implements SharedFCService{
                                 .nickname(comment.getUser().getNickname())
                                 .comment(comment.getComment()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFullCourse.getThumbnail()).build();
-
+        sharedFCRepository.plusViewCnt(sharedFcId);
         return res;
     }
 
     // 공유 풀코스 상세 수정
     @Override
+    @Transactional
     public Long updateSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFCDto.getSharedFcId()));
         if(opt.isPresent()){ // 수정
@@ -119,6 +123,7 @@ public class SharedFCServiceImpl implements SharedFCService{
 
     // 공유 풀코스 삭제
     @Override
+    @Transactional
     public boolean deleteSharedFC(Long sharedFdId) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFdId));
         if(opt.isPresent()){
@@ -128,7 +133,9 @@ public class SharedFCServiceImpl implements SharedFCService{
         return false;
     }
 
+
     @Override
+    @Transactional
     public int likeSharedFC(Long sharedId, User user) {
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedId);
@@ -138,17 +145,16 @@ public class SharedFCServiceImpl implements SharedFCService{
 
         if(opt.isPresent()){ // 좋아요 취소
             sharedFCLikeRepository.delete(opt.get());
-
+            sharedFCRepository.minusLikeCnt(sharedId);
             return 0;
         }else{ // 좋아요
 
             sharedFCLikeRepository.save(SharedFCLike.builder()
                     .user(user)
                     .sharedFullCourse(sharedFullCourse).build());
-            /** 공유풀코스에 like cnt 수정 추가 */
+            sharedFCRepository.plusLikeCnt(sharedId);
             return 1;
         }
-
 
     }
 }

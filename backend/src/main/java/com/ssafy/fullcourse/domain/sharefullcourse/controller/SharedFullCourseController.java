@@ -196,4 +196,5 @@ public class SharedFullCourseController {
         List<SharedFCCommentRes> commentResList = sharedFCCommentService.listFCComment(sharedFcId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentResList));
     }
+
 }
