@@ -67,7 +67,10 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
 
         if(reviewLike.isPresent()){
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
+            baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
+
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(ActivityReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

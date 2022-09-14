@@ -67,8 +67,10 @@ public class HotelReviewService extends BaseReviewServiceImpl<HotelReview, Hotel
         Optional<HotelReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
+            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(HotelReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

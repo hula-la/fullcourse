@@ -22,5 +22,5 @@ import java.util.List;
 public class HotelReview extends BaseReview<Hotel> {
     @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-    private List<CultureReviewLike> reviewLikes = new ArrayList<>();
+    private List<HotelReviewLike> reviewLikes = new ArrayList<>();
 }
