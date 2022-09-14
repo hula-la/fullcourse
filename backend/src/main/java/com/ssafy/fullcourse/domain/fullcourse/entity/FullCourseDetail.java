@@ -33,4 +33,6 @@ public class FullCourseDetail {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
+
+
 }

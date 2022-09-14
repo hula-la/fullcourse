@@ -39,7 +39,7 @@ public class User {
     private Gender gender;
 
 //    @Column(nullable = false)
-    private String birth;
+    private String ageRange;
 
     @Column(length = 100)
     private String imgUrl;
@@ -134,4 +134,21 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityLike> activityLikes = new ArrayList<>();
+
+    public User update(String nickname, String imgUrl) {
+        this.nickname = nickname;
+        this.imgUrl = imgUrl;
+        return this;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .imgUrl(this.imgUrl)
+                .loginType(this.loginType.toString())
+                .gender(this.gender)
+                .ageRange(this.ageRange)
+                .build();
+    }
 }
