@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
+import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,7 +48,7 @@ public class SharedFullCourse {
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SharedFCTag> sharedFCTags = new ArrayList<>();
 
     @Builder.Default
@@ -57,6 +58,10 @@ public class SharedFullCourse {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
 
 
