@@ -1,6 +1,10 @@
 package com.ssafy.fullcourse.domain.place.dto;
 
-public class RestaurantRes {
+import lombok.Setter;
+
+@Setter
+public class PlaceRes {
+    Long placeId;
     String name;
     Float lat;
     Float lng;

@@ -1,11 +1,11 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -66,4 +66,15 @@ public class Activity extends BasePlace{
     @Builder.Default
     @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     List<ActivityLike> likes = new ArrayList<>();
+
+    public PlaceRes toDto(){
+        PlaceRes res = new PlaceRes();
+        res.setLat(this.getLat());
+        res.setName(this.getName());
+        res.setLng(this.getLng());
+        res.setLikeCnt(this.getLikeCnt());
+        res.setPlaceId(this.getPlaceId());
+        res.setReviewCnt(this.getReviewCnt());
+        return res;
+    }
 }

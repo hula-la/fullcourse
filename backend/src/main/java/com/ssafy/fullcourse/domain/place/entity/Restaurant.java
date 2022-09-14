@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,4 +74,18 @@ public class Restaurant extends BasePlace {
     @Builder.Default
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
+
+    public PlaceRes toDto(){
+        PlaceRes res = new PlaceRes();
+        res.setImgUrl(this.getImgUrl());
+        res.setLat(this.getLat());
+        res.setName(this.getName());
+        res.setLng(this.getLng());
+        res.setLikeCnt(this.getLikeCnt());
+        res.setPlaceId(this.getPlaceId());
+        res.setReviewCnt(this.getReviewCnt());
+        return res;
+    }
+
+
 }
