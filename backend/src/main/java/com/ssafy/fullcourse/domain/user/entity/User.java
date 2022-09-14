@@ -6,6 +6,7 @@ import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
+import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -151,4 +152,5 @@ public class User {
                 .ageRange(this.ageRange)
                 .build();
     }
+
 }

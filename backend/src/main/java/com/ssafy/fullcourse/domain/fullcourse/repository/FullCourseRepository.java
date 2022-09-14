@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface FullCourseRepository  extends JpaRepository<FullCourse,Long> {
     Page<FullCourse> findByUser_UserId(Long userId, Pageable pageable);
-
+    FullCourse findByFcId(Long fcId);
 }

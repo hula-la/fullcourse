@@ -3,7 +3,7 @@ package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
-import com.ssafy.fullcourse.domain.sharefullcourse.repository.FullCourseRepository;
+import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
