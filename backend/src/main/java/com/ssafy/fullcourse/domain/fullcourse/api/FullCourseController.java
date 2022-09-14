@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +42,20 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> registerFullCourse(@PathVariable Long fcId) {
+    public ResponseEntity<BaseResponseBody> findFullCourse(@PathVariable Long fcId) {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourseDetailById(fcId)));
+    }
+
+    @GetMapping("/my/{userId}")
+    @ApiOperation(value = "나의 풀코스 조회", notes = "type")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> findMyFullCourse(@PathVariable Long userId,
+                                                           Pageable pageable) {
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(userId,pageable)));
     }
 
     @DeleteMapping("/{fcId}")

@@ -2,6 +2,7 @@ package com.ssafy.fullcourse.domain.fullcourse.dto;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReview;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import java.util.List;
 @ApiModel("FullCourseRes")
 @AllArgsConstructor
 public class FullCourseRes {
+    @ApiModelProperty(name="풀코스 식별자", example="1")
+    Long fcId;
 
     @ApiModelProperty(name="등록 날짜", example="2022-07-06")
     Date regDate;
@@ -29,6 +32,7 @@ public class FullCourseRes {
     String thumbnail;
 
     public FullCourseRes(FullCourse fullCourse) {
+        this.fcId = fullCourse.getFcId();
         this.regDate = fullCourse.getRegDate();
         this.startDate = fullCourse.getStartDate();
         this.endDate = fullCourse.getEndDate();

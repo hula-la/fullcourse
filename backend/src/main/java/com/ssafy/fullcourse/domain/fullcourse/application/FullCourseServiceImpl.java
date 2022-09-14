@@ -72,7 +72,7 @@ public class FullCourseServiceImpl implements FullCourseService{
 
     @Override
     public Page<FullCourseRes> getFullCourse(Long fcId, Pageable pageable) {
-        Page<FullCourse> fcs = fullCourseRepository.findByFcId(fcId, pageable);
+        Page<FullCourse> fcs = fullCourseRepository.findByUser_UserId(fcId,pageable);
         return fcs.map(FullCourseRes::new);
     }
 
