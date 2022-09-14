@@ -8,8 +8,15 @@ import LoginPage from './pages/user/LoginPage';
 import ProfilePage from './pages/user/ProfilePage';
 // 404
 import NotFound from './pages/NotFound';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchUserInfo } from './features/user/userActions';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUserInfo());
+  }, []);
   return (
     <div className="App">
       <Routes>

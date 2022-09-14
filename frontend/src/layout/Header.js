@@ -1,6 +1,8 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../features/user/userSlice';
+import styled from 'styled-components';
 
 const NavBar = styled.div`
   display: flex;
@@ -37,14 +39,25 @@ const Menu = styled.div`
 `;
 
 const Header = () => {
+  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   return (
     <NavBar>
       <NavLink to="/">
         <img className="logo" src="/img/Logo.png" alt="logo" />
       </NavLink>
       <Menu>
-        <button className="login">login</button>
-        <button className="signup">signup</button>
+        {!userInfo ? (
+          <NavLink to="/user/login">
+            <button className="login">login</button>
+          </NavLink>
+        ) : (
+          <Link to="/">
+            <button className="login" onClick={() => dispatch(logout())}>
+              logout
+            </button>
+          </Link>
+        )}
       </Menu>
     </NavBar>
   );
