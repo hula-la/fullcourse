@@ -40,7 +40,7 @@ public class SharedFCCommentService {
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedFCCommentReq.getSharedFcId());
 
-        if(sharedFullCourse ==null) throw new NullPointerException(); //공유 풀코스가 없을 경우
+        if(sharedFullCourse == null) throw new NullPointerException(); //공유 풀코스가 없을 경우
 
         SharedFCComment sharedFCComment = SharedFCComment.builder()
                 .comment(sharedFCCommentReq.getComment())
@@ -49,9 +49,7 @@ public class SharedFCCommentService {
 
         SharedFCComment saved = sharedFCCommentRepository.save(sharedFCComment);
         if(saved == null) return false;
-
-
-
+        sharedFCRepository.plusCommentCnt(saved.getSharedFullCourse().getSharedFcId());
         return true;
 
     }
@@ -75,12 +73,13 @@ public class SharedFCCommentService {
     }
 
     // 공유 풀코스 댓글 삭제
-    public void deleteFCComment(Long commentId, User user ){
+    public void deleteFCComment(Long commentId, User user){
         SharedFCComment saved = sharedFCCommentRepository.findByFcCommentId(commentId);
         if(saved == null) throw new NullPointerException();
         if(saved.getUser().getUserId() != user.getUserId()) throw new UserNotMathException("댓글단 사용자만 삭제 가능");
 
         sharedFCCommentRepository.delete(saved);
+        sharedFCRepository.minusCommentCnt(saved.getSharedFullCourse().getSharedFcId());
 
     }
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface SharedFCCommentRepository extends JpaRepository<SharedFCComment, Integer> {
+public interface SharedFCCommentRepository extends JpaRepository<SharedFCComment, Long> {
     SharedFCComment findByFcCommentId(Long commentId);
     List<SharedFCComment> findAllBySharedFullCourse_SharedFcId(Long sharedFcId);
 }
