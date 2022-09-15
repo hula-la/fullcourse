@@ -1,5 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserInfo, loginKakao, loginNaver } from '../../api/user';
+import {
+  getMyFullcourse,
+  getUserInfo,
+  loginKakao,
+  loginNaver,
+  updateUserInfo,
+} from '../../api/user';
 
 export const userLoginNaver = createAsyncThunk(
   'user/loginNaver',
@@ -38,6 +44,39 @@ export const fetchUserInfo = createAsyncThunk(
   async (temp, { rejectWithValue }) => {
     try {
       const { data } = await getUserInfo();
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const fetchMyFullcourse = createAsyncThunk(
+  'user/fetchMyfullcourse',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const { data } = await getMyFullcourse(userId);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const putUserInfo = createAsyncThunk(
+  'user/putUserInfo',
+  async ({ userNickname, imgFile }, { rejectWithValue }) => {
+    console.log(userNickname);
+    try {
+      const { data } = await updateUserInfo(userNickname, imgFile);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

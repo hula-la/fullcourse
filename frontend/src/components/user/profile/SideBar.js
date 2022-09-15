@@ -45,21 +45,30 @@ const StyledButton = styled.div`
   align-items: center;
 `;
 
-const SideBar = () => {
+const SideBar = ({
+  onClickPageOne,
+  onClickPageTwo,
+  onClickPageThree,
+  userInfo,
+}) => {
   return (
-    <Side>
-      <div id="userInfo">
-        <div id="imgBlock">
-          <img src="/img/default.jpeg" alt="profileImg" />
-        </div>
-        <p>nickname</p>
-      </div>
-      <div id="buttonWrapper">
-        <StyledButton>나의 풀코스</StyledButton>
-        <StyledButton>회원정보 수정</StyledButton>
-        <StyledButton>회원 탈퇴</StyledButton>
-      </div>
-    </Side>
+    <>
+      {userInfo ? (
+        <Side>
+          <div id="userInfo">
+            <div id="imgBlock">
+              <img src="/img/default.jpeg" alt="profileImg" />
+            </div>
+            <p>{userInfo.nickname}</p>
+          </div>
+          <div id="buttonWrapper">
+            <StyledButton onClick={onClickPageOne}>나의 풀코스</StyledButton>
+            <StyledButton onClick={onClickPageTwo}>회원정보 수정</StyledButton>
+            <StyledButton onClick={onClickPageThree}>회원 탈퇴</StyledButton>
+          </div>
+        </Side>
+      ) : null}
+    </>
   );
 };
 
