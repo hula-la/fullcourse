@@ -36,10 +36,10 @@ public class User {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10)
     private Gender gender;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String ageRange;
 
     @Column(length = 100)
