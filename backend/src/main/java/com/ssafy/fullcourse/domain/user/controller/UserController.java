@@ -43,7 +43,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<BaseResponseBody> getInfo(HttpServletRequest request) {
-        return userManageService.getInfo(request);
+        UserDto userInfo = userManageService.getInfo(request);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", userInfo));
     }
 
     @PostMapping
@@ -51,12 +52,23 @@ public class UserController {
             @RequestPart(value = "file", required = false) MultipartFile file,
             @RequestPart(value = "userDto", required = false) UserDto userDto,
             HttpServletRequest request) {
-        return userManageService.modify(userDto,file,request);
+        UserDto modifyUser = userManageService.modify(userDto, file, request);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", modifyUser));
     }
 
     @DeleteMapping
     public ResponseEntity<BaseResponseBody> delete(HttpServletRequest request) {
-        return userManageService.delete(request);
+        boolean delete = userManageService.delete(request);
+        if(!delete) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
+    }
+
+    @PostMapping("/nickname")
+    public ResponseEntity<BaseResponseBody> checkNickname(@RequestBody HashMap<String, String> param) {
+        String nickname = param.get("nickname");
+        boolean check = userManageService.checkNickname(nickname);
+        if(check) return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
+        else return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
     }
 
 }
