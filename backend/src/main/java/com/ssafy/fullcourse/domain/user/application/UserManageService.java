@@ -27,24 +27,23 @@ public class UserManageService {
     private final AwsS3Service awsS3Service;
     private final String defaultImg = "https://busanfullcourse.s3.ap-northeast-2.amazonaws.com/user/%ED%94%84%EB%A1%9C%ED%95%84.png";
 
-    public ResponseEntity<BaseResponseBody> getInfo(HttpServletRequest request) {
+    public UserDto getInfo(HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "유효하지 않은 토큰", null));
+            return null;
         }
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
         User findUser = userRepository.findByEmail(userEmail).get();
 
-        UserDto userDto = findUser.toDto();
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", userDto));
+        return findUser.toDto();
     }
+
     @Transactional
-    public ResponseEntity<BaseResponseBody> modify(UserDto userDto, MultipartFile file, HttpServletRequest request) {
+    public UserDto modify(UserDto userDto, MultipartFile file, HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "유효하지 않은 토큰", null));
+            return null;
         }
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
@@ -61,16 +60,15 @@ public class UserManageService {
         }
 
         userRepository.save(findUser);
-
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
+        return findUser.toDto();
     }
 
 
     @Transactional
-    public ResponseEntity<BaseResponseBody> delete(HttpServletRequest request) {
+    public boolean delete(HttpServletRequest request) {
         String token = request.getHeader("access-token");
         if (!tokenProvider.validateToken(token)) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "유효하지 않은 토큰", null));
+            return false;
         }
 
         String userEmail = String.valueOf(tokenProvider.getPayload(token).get("sub"));
@@ -79,13 +77,19 @@ public class UserManageService {
         userRepository.delete(findUser);
 
         if (userRepository.findByEmail(userEmail).orElse(null) != null) {
-            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "삭제에 실패했습니다.", null));
+            return false;
         }
 
         if (!findUser.getImgUrl().equals(defaultImg)) {
             awsS3Service.delete(findUser.getImgUrl());
         }
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
+        return true;
     }
+
+    public boolean checkNickname(String nickname) {
+        User user = userRepository.findByNickname(nickname).orElse(null);
+        return user == null;
+    }
+
 }
