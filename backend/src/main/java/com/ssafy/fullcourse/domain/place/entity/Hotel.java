@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.HotelDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import lombok.AllArgsConstructor;
@@ -54,14 +55,19 @@ public class Hotel extends BasePlace{
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
     List<HotelLike> likes = new ArrayList<>();
 
-    public PlaceRes toDto(){
-        PlaceRes res = new PlaceRes();
-        res.setLat(this.getLat());
+
+    public HotelDetailRes toDetailDto(){
+        HotelDetailRes res = new HotelDetailRes();
         res.setName(this.getName());
+        res.setSido(this.getSido());
+        res.setGugun(this.getGugun());
+        res.setLat(this.getLat());
         res.setLng(this.getLng());
-        res.setLikeCnt(this.getLikeCnt());
-        res.setPlaceId(this.getPlaceId());
+        res.setUrl(this.getUrl());
+        res.setTel(this.getTel());
+        res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
+        res.setLikeCnt(this.getLikeCnt());
         return res;
     }
 }

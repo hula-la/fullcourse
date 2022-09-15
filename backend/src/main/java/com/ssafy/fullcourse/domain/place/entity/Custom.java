@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.CustomDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -36,12 +37,14 @@ public class Custom extends BasePlace{
     @JoinColumn(name = "userId")
     private User user;
 
-    public PlaceRes toDto(){
-        PlaceRes res = new PlaceRes();
-        res.setLat(this.getLat());
+
+    public CustomDetailRes toDetailDto(){
+        CustomDetailRes res = new CustomDetailRes();
         res.setName(this.getName());
+        res.setLat(this.getLat());
         res.setLng(this.getLng());
-        res.setPlaceId(this.getPlaceId());
+        res.setAddress(this.getAddress());
+        res.setContent(this.getContent());
         return res;
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.CultureDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import lombok.AllArgsConstructor;
@@ -58,14 +59,20 @@ public class Culture extends BasePlace{
     @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
     List<CultureLike> likes = new ArrayList<>();
 
-    public PlaceRes toDto(){
-        PlaceRes res = new PlaceRes();
-        res.setLat(this.getLat());
+
+    public CultureDetailRes toDetailDto(){
+        CultureDetailRes res = new CultureDetailRes();
         res.setName(this.getName());
+        res.setLat(this.getLat());
         res.setLng(this.getLng());
-        res.setLikeCnt(this.getLikeCnt());
-        res.setPlaceId(this.getPlaceId());
+        res.setGugun(this.getGugun());
+        res.setAddress(this.getAddress());
+        res.setDay(this.getDay());
+        res.setContent(this.getContent());
+        res.setImgUrl(this.getImgUrl());
+        res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
+        res.setLikeCnt(this.getLikeCnt());
         return res;
     }
 }

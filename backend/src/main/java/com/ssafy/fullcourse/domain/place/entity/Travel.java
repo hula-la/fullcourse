@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
 import com.ssafy.fullcourse.domain.review.entity.TravelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -83,15 +84,25 @@ public class Travel extends BasePlace {
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();
 
-    public PlaceRes toDto(){
-        PlaceRes res = new PlaceRes();
-        res.setImgUrl(this.getImgUrl());
+    public TravelDetailRes toDetailDto(){
+        TravelDetailRes res = new TravelDetailRes();
+        res.setFee(this.getFee());
+        res.setAddress(this.getAddress());
+        res.setContent(this.getContent());
+        res.setGugun(this.getGugun());
+        res.setFacilities(this.getFacilities());
+        res.setOpenDay(this.getOpenDay());
+        res.setTel(this.getTel());
         res.setLat(this.getLat());
-        res.setName(this.getName());
         res.setLng(this.getLng());
-        res.setLikeCnt(this.getLikeCnt());
-        res.setPlaceId(this.getPlaceId());
+        res.setUrl(this.getUrl());
+        res.setTitle(this.getTitle());
+        res.setSubtitle(this.getSubtitle());
         res.setReviewCnt(this.getReviewCnt());
+        res.setAddedCnt(this.getAddedCnt());
+        res.setLikeCnt(this.getLikeCnt());
+        res.setTransport(this.getTransport());
+        res.setImgUrl(this.getImgUrl());
         return res;
     }
 

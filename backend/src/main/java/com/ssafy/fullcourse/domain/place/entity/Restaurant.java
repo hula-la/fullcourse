@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.dto.RestaurantDetailRes;
 import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -75,17 +76,27 @@ public class Restaurant extends BasePlace {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
 
-    public PlaceRes toDto(){
-        PlaceRes res = new PlaceRes();
-        res.setImgUrl(this.getImgUrl());
-        res.setLat(this.getLat());
+
+    public RestaurantDetailRes toDetailDto(){
+        RestaurantDetailRes res = new RestaurantDetailRes();
         res.setName(this.getName());
+        res.setAddress(this.getAddress());
+        res.setLat(this.getLat());
         res.setLng(this.getLng());
-        res.setLikeCnt(this.getLikeCnt());
-        res.setPlaceId(this.getPlaceId());
+        res.setTel(this.getTel());
+        res.setCategory(this.getCategory());
+        res.setIntro(this.getIntro());
+        res.setHoliday(this.getHoliday());
+        res.setOpenTime(this.getOpenTime());
+        res.setUrl(this.getUrl());
+        res.setStgScore(this.getStgScore());
+        res.setAward(this.getAward());
+        res.setNaverScore(this.getNaverScore());
+        res.setImgUrl(this.getImgUrl());
+        res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
+        res.setLikeCnt(this.getLikeCnt());
         return res;
     }
-
 
 }
