@@ -68,8 +68,10 @@ public class TravelReviewService extends BaseReviewServiceImpl<TravelReview, Tra
         Optional<TravelReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
+            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(TravelReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

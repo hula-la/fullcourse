@@ -5,6 +5,7 @@ import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -85,6 +86,10 @@ public class User {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<SharedFullCourse> shareFullCourses = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
     @Builder.Default
@@ -147,4 +152,5 @@ public class User {
                 .ageRange(this.ageRange)
                 .build();
     }
+
 }
