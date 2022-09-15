@@ -56,7 +56,7 @@ public class UserManageService {
                 awsS3Service.delete(findUser.getImgUrl());
             }
             userDto.setFile(file);
-            findUser.update(userDto.getNickname(), awsS3Service.uploadImge(userDto.getFile()));
+            findUser.update(userDto.getNickname(), awsS3Service.uploadImage(userDto.getFile()));
         }
 
         userRepository.save(findUser);
