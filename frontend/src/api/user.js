@@ -32,8 +32,12 @@ export const updateUserInfo = async (nickname, imgFile) => {
       'Content-Type': 'multipart/form-data',
     },
   };
-  console.log(formData);
   const res = await client.post('api/user', formData, config);
+  return res;
+};
+
+export const deleteUser = async () => {
+  const res = await client.delete('api/user');
   console.log(res);
   return res;
 };
