@@ -56,7 +56,7 @@ public class Culture extends BasePlace {
     List<CultureReview> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "culture", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<CultureLike> likes = new ArrayList<>();
 
 

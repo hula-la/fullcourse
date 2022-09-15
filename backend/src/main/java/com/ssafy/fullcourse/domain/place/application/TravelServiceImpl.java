@@ -58,7 +58,7 @@ public class TravelServiceImpl implements TravelService {
         if (travelLike.isPresent()){
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
         }else{
-            travelLikeRepository.save(new TravelLike(user, travel));
+            travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
         }
 
         return true;

@@ -52,7 +52,7 @@ public class Hotel extends BasePlace {
     List<HotelReview> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<HotelLike> likes = new ArrayList<>();
 
 

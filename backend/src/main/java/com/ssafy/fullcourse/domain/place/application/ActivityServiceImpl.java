@@ -5,6 +5,7 @@ import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.entity.ActivityLike;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BaseLike;
 import com.ssafy.fullcourse.domain.place.repository.ActivityLikeRepository;
 import com.ssafy.fullcourse.domain.place.repository.ActivityRepository;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -55,7 +56,7 @@ public class ActivityServiceImpl implements ActivityService{
         if(activityLike.isPresent()){
             activityLikeRepository.deleteById(activityLike.get().getLikeId());
         } else {
-            activityLikeRepository.save(new ActivityLike(user, activity));
+            activityLikeRepository.save(ActivityLike.builder().user(user).place(activity).build());
         }
         return true;
     }

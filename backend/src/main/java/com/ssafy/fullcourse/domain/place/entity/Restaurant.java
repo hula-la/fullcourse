@@ -73,7 +73,7 @@ public class Restaurant extends BasePlace {
     List<RestaurantReview> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
 
 

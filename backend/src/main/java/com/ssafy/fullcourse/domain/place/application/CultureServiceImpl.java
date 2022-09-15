@@ -56,7 +56,7 @@ public class CultureServiceImpl implements CultureService{
         if(cultureLike.isPresent()){
             cultureLikeRepository.deleteById(cultureLike.get().getLikeId());
         }else{
-            cultureLikeRepository.save(new CultureLike(user, culture));
+            cultureLikeRepository.save(CultureLike.builder().user(user).place(culture).build());
         }
 
         return true;

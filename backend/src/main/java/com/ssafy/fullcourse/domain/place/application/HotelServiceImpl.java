@@ -57,7 +57,7 @@ public class HotelServiceImpl implements HotelService {
         if (hotelLike.isPresent()) {
             hotelLikeRepository.deleteById(hotelLike.get().getLikeId());
         } else {
-            hotelLikeRepository.save(new HotelLike(user, hotel));
+            hotelLikeRepository.save(HotelLike.builder().user(user).place(hotel).build());
         }
 
         return true;

@@ -28,4 +28,9 @@ public class BaseLike <P extends BasePlace>{
     @JoinColumn(name = "placeId")
     private P place;
 
+    public BaseLike(User user, P place){
+        this.user = user;
+        this.place = place;
+    }
+
 }

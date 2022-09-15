@@ -81,7 +81,7 @@ public class Travel extends BasePlace {
     List<TravelTag> travelTags = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();
 
     public TravelDetailRes toDetailDto(){

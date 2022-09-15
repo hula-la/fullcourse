@@ -62,7 +62,7 @@ public class Activity extends BasePlace {
     List<ActivityReview> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<ActivityLike> likes = new ArrayList<>();
 
 
