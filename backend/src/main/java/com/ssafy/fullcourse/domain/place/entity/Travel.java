@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.TravelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -86,6 +86,7 @@ public class Travel extends BasePlace {
 
     public TravelDetailRes toDetailDto(){
         TravelDetailRes res = new TravelDetailRes();
+        res.setName(this.getName());
         res.setFee(this.getFee());
         res.setAddress(this.getAddress());
         res.setContent(this.getContent());

@@ -1,10 +1,14 @@
 package com.ssafy.fullcourse.domain.place.dto;
 
+import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 
 @Setter
+@Getter
+@ToString
 public class TravelDetailRes {
     private String name;
     private String gugun;

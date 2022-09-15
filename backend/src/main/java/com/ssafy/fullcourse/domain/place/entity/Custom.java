@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.CustomDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Custom extends BasePlace{
+public class Custom extends BasePlace {
     @Column(nullable = false, length = 30)
     private String name;
 

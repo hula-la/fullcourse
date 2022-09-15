@@ -32,55 +32,55 @@ public class PlaceController {
     @GetMapping("/{type}/list")
     public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, @RequestBody ListReq listReq, Pageable pageable) throws Exception{
         if(type.equals("travel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.travelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelList(listReq, pageable)));
         }else if(type.equals("restaurant")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.restaurantList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantList(listReq, pageable)));
         }else if(type.equals("hotel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.hotelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelList(listReq, pageable)));
         }else if(type.equals("culture")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.cultureList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureList(listReq, pageable)));
         }else if(type.equals("activity")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.activityList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityList(listReq, pageable)));
         }else if(type.equals("custom")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.customList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomList(listReq, pageable)));
         }else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }
     }
 
-    @ApiOperation(value = "여행지 상세 조회", notes = "여행지의 상세정보를 반환함.")
+    @ApiOperation(value = "장소 상세 조회", notes = "장소의 상세정보를 반환함.")
     @GetMapping("/{type}/detail/{placeId}")
     public ResponseEntity<BaseResponseBody> detailTravel(@PathVariable String type, @PathVariable Long placeId) throws Exception{
         if(type.equals("travel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.travelDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelDetail(placeId)));
         }else if(type.equals("restaurant")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.restaurantDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantDetail(placeId)));
         }else if(type.equals("hotel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.hotelDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelDetail(placeId)));
         }else if(type.equals("culture")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.cultureDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureDetail(placeId)));
         }else if(type.equals("activity")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.activityDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityDetail(placeId)));
         }else if(type.equals("custom")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.customDetail(placeId)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomDetail(placeId)));
         }else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }
     }
 
-    @ApiOperation(value = "여행지 좋아요 버튼", notes = "좋아요 성공 여부를 반환")
+    @ApiOperation(value = "장소 좋아요 버튼", notes = "좋아요 성공 여부를 반환")
     @PostMapping("/{type}/like/{placeId}")
-    public ResponseEntity<BaseResponseBody> likeTravel(@PathVariable String type, @PathVariable Long placeId) throws Exception{
+    public ResponseEntity<BaseResponseBody> likeTravel(@PathVariable String type, @PathVariable Long placeId, @RequestBody Long userId) throws Exception{
         if(type.equals("travel")) {
-            return null;
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.travelLike(placeId, userId)));
         }else if(type.equals("restaurant")) {
-            return null;
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.restaurantLike(placeId, userId)));
         }else if(type.equals("hotel")) {
-            return null;
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.hotelLike(placeId, userId)));
         }else if(type.equals("culture")) {
-            return null;
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.cultureLike(placeId, userId)));
         }else if(type.equals("activity")) {
-            return null;
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.activityLike(placeId, userId)));
         }else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }

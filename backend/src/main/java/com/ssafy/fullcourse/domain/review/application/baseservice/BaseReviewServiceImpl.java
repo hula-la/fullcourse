@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.review.application.baseservice;
 
-import com.ssafy.fullcourse.domain.place.entity.BasePlace;
-import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
+import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.dto.ReviewRes;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 

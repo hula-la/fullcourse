@@ -6,10 +6,8 @@ import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ActivityService {
-    public Page<PlaceRes> activityList(ListReq listReq, Pageable pageable) throws Exception;
-    public ActivityDetailRes activityDetail(Long placeId) throws Exception;
-    public boolean activityLike(Long placeId) throws Exception;
+    public Page<PlaceRes> getActivityList(ListReq listReq, Pageable pageable) throws Exception;
+    public ActivityDetailRes getActivityDetail(Long placeId) throws Exception;
+    public boolean activityLike(Long placeId, Long userId) throws Exception;
 }

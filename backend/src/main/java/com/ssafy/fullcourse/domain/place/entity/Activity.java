@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
 import lombok.*;
 

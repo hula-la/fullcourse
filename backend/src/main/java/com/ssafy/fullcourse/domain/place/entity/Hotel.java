@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.HotelDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hotel extends BasePlace{
+public class Hotel extends BasePlace {
     @Column(nullable = false, length = 30)
     private String name;
     @Column(nullable = false, length = 20)

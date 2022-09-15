@@ -6,10 +6,8 @@ import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface CustomService {
-    public Page<PlaceRes> customList(ListReq listReq, Pageable pageable) throws Exception;
-    public CustomDetailRes customDetail(Long placeId) throws Exception;
-    public boolean customLike(Long placeId) throws Exception;
+    public Page<PlaceRes> getCustomList(ListReq listReq, Pageable pageable) throws Exception;
+    public CustomDetailRes getCustomDetail(Long placeId) throws Exception;
+    public Long createCustom(Long placeId, Long userId) throws Exception;
 }

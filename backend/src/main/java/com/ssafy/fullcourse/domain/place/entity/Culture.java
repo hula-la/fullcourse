@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
 import com.ssafy.fullcourse.domain.place.dto.CultureDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Culture extends BasePlace{
+public class Culture extends BasePlace {
     @Column(nullable = false, length = 30)
     private String name;
 

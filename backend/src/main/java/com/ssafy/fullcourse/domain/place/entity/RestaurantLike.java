@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BaseLike;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,17 +16,9 @@ import static javax.persistence.FetchType.LAZY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestaurantLike {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "placeId")
-    private Restaurant restaurant;
-
+public class RestaurantLike extends BaseLike {
+    public RestaurantLike(User user, Restaurant restaurant){
+        this.setUser(user);
+        this.setPlace(restaurant);
+    }
 }

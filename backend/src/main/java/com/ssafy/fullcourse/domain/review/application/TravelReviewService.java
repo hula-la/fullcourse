@@ -1,13 +1,11 @@
 package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Travel;
-import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
+import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
-import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.review.entity.TravelReview;
 import com.ssafy.fullcourse.domain.review.entity.TravelReviewLike;
-import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.review.exception.ReviewNotFoundException;
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLikeRepository;
