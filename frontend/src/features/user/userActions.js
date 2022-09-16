@@ -75,9 +75,11 @@ export const fetchMyFullcourse = createAsyncThunk(
 export const putUserInfo = createAsyncThunk(
   'user/putUserInfo',
   async ({ userNickname, imgFile }, { rejectWithValue }) => {
-    console.log(userNickname);
     try {
-      const { data } = await updateUserInfo(userNickname, imgFile);
+      const { data } = await updateUserInfo(
+        { nickname: userNickname },
+        imgFile,
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

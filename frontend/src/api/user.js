@@ -16,7 +16,7 @@ export const getUserInfo = async () => {
 };
 
 export const getMyFullcourse = async (userId) => {
-  const res = await client.get(`fullcourse/my/${userId}`);
+  const res = await client.get(`api/fullcourse/my/${userId}`);
   return res;
 };
 
@@ -38,6 +38,10 @@ export const updateUserInfo = async (nickname, imgFile) => {
 
 export const deleteUser = async () => {
   const res = await client.delete('api/user');
-  console.log(res);
   return res;
+};
+
+export const checkNickname = async (data) => {
+  const res = await client.post('api/user/nickname', { nickname: data });
+  return res.data;
 };
