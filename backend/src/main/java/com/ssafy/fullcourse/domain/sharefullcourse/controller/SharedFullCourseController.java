@@ -9,6 +9,7 @@ import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,6 @@ public class SharedFullCourseController {
     }
 
     /** 공유 풀코스 상세 수정 **/
-
     @PutMapping("/fullcourse")
     @ApiOperation(value = "공유풀코스 상세 수정", notes = "공유 풀코스의 상세 내용(제목, 내용, 썸네일, 태그)을 수정합니다")
     public ResponseEntity<BaseResponseBody> updateSharedFC(@RequestBody SharedFCPutReq sharedFCPutReq) {
@@ -142,6 +142,7 @@ public class SharedFullCourseController {
 
     /** 공유 풀코스 좋아요 **/
     @PostMapping("/like/{sharedFcId}")
+    @ApiOperation(value = "공유풀코스 좋아요", notes = "공유 풀코스 좋아요시, 사용자식별자(userId), 공유풀코스식별자(sharedFcId)를 추가하고 취소시 삭제합니다.")
     public ResponseEntity<BaseResponseBody> likeSharedFC(@PathVariable Long sharedFcId){
 
         Optional<User> user = userRepository.findByEmail("1");
@@ -156,6 +157,7 @@ public class SharedFullCourseController {
 
     /** 풀코스 댓글 등록 **/
     @PostMapping("/comment")
+    @ApiOperation(value = "공유풀코스 댓글 등록", notes = "공유 풀코스 댓글을 등록합니다. 댓글내용, 공유풀코스식별자(sharedFcId), header : access-token 필요")
     public ResponseEntity<BaseResponseBody> registComment(@RequestBody SharedFCCommentReq sharedFCCommentReq) {
 
         Optional<User> user = userRepository.findByEmail("1");
@@ -169,6 +171,7 @@ public class SharedFullCourseController {
 
     /** 풀코스 댓글 수정 **/
     @PutMapping("/comment/{commentId}")
+    @ApiOperation(value = "공유풀코스 댓글 수정", notes = "공유 풀코스 댓글을 수정합니다. 댓글내용, 공유풀코스식별자(sharedFcId), header : access-token 필요")
     public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long commentId, @RequestBody SharedFCCommentReq sharedFCCommentReq) {
 
         Optional<User> user = userRepository.findByEmail("1");
@@ -181,6 +184,7 @@ public class SharedFullCourseController {
     }
 
     /** 풀코스 댓글 삭제 **/
+    @ApiOperation(value = "공유풀코스 댓글 삭제", notes = "공유 풀코스 댓글을 삭제합니다. 댓글식별자(commentId), header : access-token 필요")
     @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long commentId) {
 
@@ -192,6 +196,7 @@ public class SharedFullCourseController {
     }
     /** 풀코스 댓글 조회 **/
     @GetMapping("/comment/{sharedFcId}")
+    @ApiOperation(value = "공유풀코스 댓글 조회", notes = "공유 풀코스 댓글을 모두 불러옵니다. 공유 풀코스 식별자(sharedFcId) 필요")
     public ResponseEntity<BaseResponseBody> listComment(@PathVariable Long sharedFcId){
         List<SharedFCCommentRes> commentResList = sharedFCCommentService.listFCComment(sharedFcId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentResList));
