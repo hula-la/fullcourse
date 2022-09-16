@@ -58,6 +58,8 @@ public class FullCourseServiceImpl implements FullCourseService{
             }
         }
 
+//        fullCoursePostReq.getPlaces().forEach((day, places)->places.stream().map((a)->createFullCourseDetail(day,fullCourse,a)));
+
         return fullCourse.getFcId();
     }
 
