@@ -1,5 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.TravelReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Travel extends BasePlace {
-
-//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long travelId;
-
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -71,6 +69,9 @@ public class Travel extends BasePlace {
     @Column(nullable = false)
     private Long reviewCnt;
 
+    @Column(nullable = false)
+    private Long likeCnt;
+
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
@@ -80,6 +81,30 @@ public class Travel extends BasePlace {
     List<TravelTag> travelTags = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();
+
+    public TravelDetailRes toDetailDto(){
+        TravelDetailRes res = new TravelDetailRes();
+        res.setName(this.getName());
+        res.setFee(this.getFee());
+        res.setAddress(this.getAddress());
+        res.setContent(this.getContent());
+        res.setGugun(this.getGugun());
+        res.setFacilities(this.getFacilities());
+        res.setOpenDay(this.getOpenDay());
+        res.setTel(this.getTel());
+        res.setLat(this.getLat());
+        res.setLng(this.getLng());
+        res.setUrl(this.getUrl());
+        res.setTitle(this.getTitle());
+        res.setSubtitle(this.getSubtitle());
+        res.setReviewCnt(this.getReviewCnt());
+        res.setAddedCnt(this.getAddedCnt());
+        res.setLikeCnt(this.getLikeCnt());
+        res.setTransport(this.getTransport());
+        res.setImgUrl(this.getImgUrl());
+        return res;
+    }
+
 }

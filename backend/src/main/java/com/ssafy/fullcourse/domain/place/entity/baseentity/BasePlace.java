@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.place.entity;
+package com.ssafy.fullcourse.domain.place.entity.baseentity;
 
 import lombok.Getter;
 import lombok.Setter;

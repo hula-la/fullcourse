@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.review.entity.baseentity;
 
-import com.ssafy.fullcourse.domain.place.entity.BasePlace;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

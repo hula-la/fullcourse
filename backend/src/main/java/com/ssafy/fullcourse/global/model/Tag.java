@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.domain.place.entity;
+package com.ssafy.fullcourse.global.model;
 
 import lombok.Getter;
 

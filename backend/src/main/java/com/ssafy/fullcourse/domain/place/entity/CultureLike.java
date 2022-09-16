@@ -1,32 +1,13 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
-import com.ssafy.fullcourse.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BaseLike;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
-
-import static javax.persistence.FetchType.LAZY;
+import javax.persistence.Entity;
 
 @Entity
-@Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class CultureLike {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "placeId")
-    private Culture culture;
-
+@SuperBuilder
+public class CultureLike extends BaseLike <Culture>{
 }
