@@ -52,11 +52,15 @@ const Header = () => {
             <button className="login">login</button>
           </NavLink>
         ) : (
-          <Link to="/">
-            <button className="login" onClick={() => dispatch(logout())}>
-              logout
-            </button>
-          </Link>
+          <div>
+            <Link to="/user/profile/1">{userInfo.nickname}</Link>
+            <img src="" alt="" />
+            <Link to="/">
+              <button className="login" onClick={() => dispatch(logout())}>
+                logout
+              </button>
+            </Link>
+          </div>
         )}
       </Menu>
     </NavBar>
