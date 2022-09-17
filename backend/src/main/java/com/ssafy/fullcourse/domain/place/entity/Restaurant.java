@@ -1,5 +1,7 @@
 package com.ssafy.fullcourse.domain.place.entity;
 
+import com.ssafy.fullcourse.domain.place.dto.RestaurantDetailRes;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Restaurant extends BasePlace {
-
-//    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long restaurantId;
-
     @Column(nullable = false, length = 50)
     private String name;
 
@@ -38,7 +36,7 @@ public class Restaurant extends BasePlace {
     @Column(nullable = false, length = 20)
     private String category; // 카테고리
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 5000)
     private String intro; // 소개
 
     @Column(length = 20)
@@ -67,11 +65,38 @@ public class Restaurant extends BasePlace {
     @Column(nullable = false)
     private Long reviewCnt;
 
+    @Column(nullable = false)
+    private Long likeCnt;
+
     @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
+
+
+    public RestaurantDetailRes toDetailDto(){
+        RestaurantDetailRes res = new RestaurantDetailRes();
+        res.setName(this.getName());
+        res.setAddress(this.getAddress());
+        res.setLat(this.getLat());
+        res.setLng(this.getLng());
+        res.setTel(this.getTel());
+        res.setCategory(this.getCategory());
+        res.setIntro(this.getIntro());
+        res.setHoliday(this.getHoliday());
+        res.setOpenTime(this.getOpenTime());
+        res.setUrl(this.getUrl());
+        res.setStgScore(this.getStgScore());
+        res.setAward(this.getAward());
+        res.setNaverScore(this.getNaverScore());
+        res.setImgUrl(this.getImgUrl());
+        res.setAddedCnt(this.getAddedCnt());
+        res.setReviewCnt(this.getReviewCnt());
+        res.setLikeCnt(this.getLikeCnt());
+        return res;
+    }
+
 }

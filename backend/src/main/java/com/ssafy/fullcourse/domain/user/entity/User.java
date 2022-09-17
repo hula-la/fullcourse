@@ -5,6 +5,8 @@ import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
+import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,11 +36,11 @@ public class User {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10)
     private Gender gender;
 
-//    @Column(nullable = false)
-    private String birth;
+    @Column(nullable = false)
+    private String ageRange;
 
     @Column(length = 100)
     private String imgUrl;
@@ -81,6 +83,10 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<FullCourse> fullCourses = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<SharedFullCourse> shareFullCourses = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -129,4 +135,22 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityLike> activityLikes = new ArrayList<>();
+
+    public User update(String nickname, String imgUrl) {
+        this.nickname = nickname;
+        this.imgUrl = imgUrl;
+        return this;
+    }
+
+    public UserDto toDto() {
+        return UserDto.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .imgUrl(this.imgUrl)
+                .loginType(this.loginType.toString())
+                .gender(this.gender)
+                .ageRange(this.ageRange)
+                .build();
+    }
+
 }

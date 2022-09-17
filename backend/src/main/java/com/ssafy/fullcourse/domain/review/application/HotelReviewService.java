@@ -1,13 +1,11 @@
 package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Hotel;
-import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
+import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
-import com.ssafy.fullcourse.domain.review.entity.*;
 import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import com.ssafy.fullcourse.domain.review.entity.HotelReviewLike;
-import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.review.exception.ReviewNotFoundException;
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLikeRepository;
@@ -67,8 +65,10 @@ public class HotelReviewService extends BaseReviewServiceImpl<HotelReview, Hotel
         Optional<HotelReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
+            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(HotelReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

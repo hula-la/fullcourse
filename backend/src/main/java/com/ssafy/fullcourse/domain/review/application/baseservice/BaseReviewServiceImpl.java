@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.review.application.baseservice;
 
-import com.ssafy.fullcourse.domain.place.entity.BasePlace;
-import com.ssafy.fullcourse.domain.place.repository.BasePlaceRepository;
+import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
+import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.dto.ReviewRes;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -124,11 +123,14 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
 
 
+
         Optional<RL> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
+            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
+            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(new BaseReviewLike(userOpt.get(),reviewOpt.get()));
         }
 
