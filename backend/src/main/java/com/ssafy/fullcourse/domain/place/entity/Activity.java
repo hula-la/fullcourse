@@ -48,6 +48,9 @@ public class Activity extends BasePlace {
     @Column(length = 200)
     private String transport;
 
+    @Column(nullable = false, length = 5000)
+    private String content;
+
     @Column(nullable = false)
     private Long addedCnt;
 
@@ -78,6 +81,7 @@ public class Activity extends BasePlace {
         res.setImgUrl(this.getImgUrl());
         res.setHoliday(this.getHoliday());
         res.setOpenTime(this.getOpenTime());
+        res.setContent(this.getContent());
         res.setTransport(this.getTransport());
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
