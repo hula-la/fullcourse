@@ -28,4 +28,6 @@ public class SharedFCDto {
     private String thumbnail;
     private User user;
 
+
+
 }

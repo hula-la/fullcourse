@@ -21,6 +21,8 @@ public class TravelDetailRes {
     private String url;
     private String transport;
     private String openDay;
+    private String holiday;
+    private String openTime;
     private String fee;
     private String facilities;
     private String imgUrl;

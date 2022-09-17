@@ -23,6 +23,15 @@ public class FullCourseDetailPostReq {
     @ApiModelProperty(name="장소 식별자", example="1")
     Long placeId;
 
+    @ApiModelProperty(name="이미지", example="url")
+    String img;
+
+    @ApiModelProperty(name="메모", example="url")
+    String comment;
+
+    @ApiModelProperty(name="방문 여부", example="true")
+    boolean isVisited;
+
     public FullCourseDetail toEntity(FullCourse fullCourse,int day){
         return FullCourseDetail.builder()
                 .day(day)
@@ -30,6 +39,9 @@ public class FullCourseDetailPostReq {
                 .type(this.type)
                 .placeId(this.placeId)
                 .fullCourse(fullCourse)
+                .img(this.img)
+                .comment(this.comment)
+                .isVisited(this.isVisited)
                 .build();
     }
 
