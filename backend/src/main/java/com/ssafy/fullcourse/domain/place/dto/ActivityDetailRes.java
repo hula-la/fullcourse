@@ -13,6 +13,7 @@ public class ActivityDetailRes {
     private String place;
     private String imgUrl;
     private String holiday;
+    private String content;
     private String openTime;
     private String transport;
     private Long addedCnt;
