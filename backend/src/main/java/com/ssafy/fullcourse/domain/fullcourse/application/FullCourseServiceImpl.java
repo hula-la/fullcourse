@@ -51,14 +51,17 @@ public class FullCourseServiceImpl implements FullCourseService{
 
 
         // 풀코스 디테일에 저장
-        for(int d:fullCoursePostReq.getPlaces().keySet()){
-            List<FullCourseDetailPostReq> placeByDay = fullCoursePostReq.getPlaces().get(d);
-            for(FullCourseDetailPostReq fcDetail:placeByDay){
-                createFullCourseDetail(d,fullCourse,fcDetail);
-            }
-        }
+//        for(int d:fullCoursePostReq.getPlaces().keySet()){
+//            List<FullCourseDetailPostReq> placeByDay = fullCoursePostReq.getPlaces().get(d);
+//            for(FullCourseDetailPostReq fcDetail:placeByDay){
+//                createFullCourseDetail(d,fullCourse,fcDetail);
+//            }
+//        }
 
-//        fullCoursePostReq.getPlaces().forEach((day, places)->places.stream().map((a)->createFullCourseDetail(day,fullCourse,a)));
+        fullCoursePostReq.getPlaces().forEach((day, places)->{
+            System.out.println(day+" "+places);
+            places.forEach((detail)->createFullCourseDetail(day,fullCourse,detail));
+        });
 
         return fullCourse.getFcId();
     }
@@ -91,20 +94,10 @@ public class FullCourseServiceImpl implements FullCourseService{
         for(FullCourseDetail fcd:fullCourseList){
             if (!places.containsKey(fcd.getDay())) places.put(fcd.getDay(),new ArrayList<>());
             places.get(fcd.getDay())
-                    .add(FullCourseDetailPostReq.builder()
-                    .courseOrder(fcd.getCourseOrder())
-                    .type(fcd.getType())
-                    .placeId(fcd.getPlaceId())
-                    .build());
+                    .add(fcd.toDto());
         }
 
-        return FullCourseTotalRes.builder()
-                .regDate(fullCourse.getRegDate())
-                .startDate(fullCourse.getStartDate())
-                .endDate(fullCourse.getEndDate())
-                .thumbnail(fullCourse.getThumbnail())
-                .places(places)
-                .build();
+        return fullCourse.toDto(places);
     }
 
     @Override
