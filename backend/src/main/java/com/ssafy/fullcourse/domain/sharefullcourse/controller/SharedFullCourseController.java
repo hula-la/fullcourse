@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
+import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
@@ -8,13 +9,16 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.model.PageDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +39,9 @@ public class SharedFullCourseController {
     SharedFCCommentService sharedFCCommentService;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SharedFCListService sharedFCListService;
 
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")
@@ -196,5 +203,22 @@ public class SharedFullCourseController {
         List<SharedFCCommentRes> commentResList = sharedFCCommentService.listFCComment(sharedFcId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentResList));
     }
+
+    // 풀코스 리스트 조회
+    @GetMapping("/fullcourse")
+    public ResponseEntity<BaseResponseBody> getSharedFCList(@RequestBody PageDto pageDto) {
+        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(pageDto);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
+    }
+
+    // 찜한 풀코스 리스트 조회
+    @GetMapping("/fullcourse/like")
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(HttpServletRequest request, @RequestBody PageDto pageDto) {
+        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(request, pageDto);
+
+        if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
+    }
+
 
 }

@@ -1,6 +1,10 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.repository;
 
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
+import com.ssafy.fullcourse.domain.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,10 +12,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long> {
+public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long>{
     SharedFullCourse findBySharedFcId(Long shareFcId);
     SharedFullCourse findByFullCourseFcId(Long fcId);
 
@@ -38,5 +43,9 @@ public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE shared_full_course sfc SET sfc.comment_cnt = sfc.comment_cnt - 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
     int minusCommentCnt(@Param(value="sharedFcId") Long sharedFcId);
+
+
+    Page<SharedFullCourse> findFCListByTitleContains(String keyword, Pageable pageable);
+    Page<SharedFullCourse> findAll(Pageable pageable);
 
 }
