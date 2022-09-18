@@ -11,6 +11,7 @@ import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService {
-    @Autowired
-    RestaurantRepository restaurantRepository;
-    @Autowired
-    RestaurantLikeRepository restaurantLikeRepository;
-    @Autowired
-    UserRepository userRepository;
+
+    private final RestaurantRepository restaurantRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Page<PlaceRes> getRestaurantList(ListReq listReq, Pageable pageable) throws Exception {
