@@ -7,13 +7,11 @@ import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 //Card 관련
 import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
-import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
-import Favorite from '@mui/icons-material/Favorite';
 import Avatar from '@mui/joy/Avatar';
+import CardOverflow from '@mui/joy/CardOverflow';
+import { FaCommentDots } from 'react-icons/fa';
+import { GoHeart } from 'react-icons/go';
 
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
@@ -25,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const Container = styled.div`
   animation: fadeInUp 2s;
   margin: 10vh;
+  /* display: flex; */
 `;
 
 const Text = styled.div`
@@ -34,8 +33,8 @@ const Text = styled.div`
   background: url('/img/baseline.png') center no-repeat;
   background-position-y: 0;
   background-position-x: 0;
- 
-  background-size: 10vw 5vh;  
+
+  background-size: 10vw 5vh;
   font-size: 4vmin;
   font-family: Tmoney;
   color: #333333;
@@ -43,7 +42,47 @@ const Text = styled.div`
   padding: 0;
 `;
 
+const Nickname = styled.div`
+  font-family: Tmoney;
+  font-size: 1vmin;
+  color: #333333;
+  text-align: center;
+`;
 
+const CardTitle = styled.div`
+  font-family: Tmoney;
+  font-size: 4vmin;
+  color: #333333;
+  margin-top: 2vh;
+`;
+
+const CardContent = styled.div`
+  font-family: Tmoney;
+  font-size: 2vmin;
+  color: #333333;
+  margin-top: 1vh;
+`;
+
+const CardFooter = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 2vh;
+
+  span {
+    font-family: Tmoney;
+    font-size: 1vmin;
+    margin-right: 1vw;
+  }
+`;
+
+const Like = styled(GoHeart)`
+  color: #e36387;
+  font-size: 2.5vmin;
+`;
+const Comment = styled(FaCommentDots)`
+  color: #e36387;
+  font-size: 2.2vmin;
+`;
 
 const FullCourseList = () => {
   const classes = useStyles();
@@ -52,7 +91,6 @@ const FullCourseList = () => {
     <div>
       {/* card fadeinup 시도해보자 */}
       <Container>
-
         <Text>추천 풀코스</Text>
         <Card
           className={isMobile ? classes.cardMobile : null}
@@ -61,7 +99,7 @@ const FullCourseList = () => {
             width: 1 / 5,
             // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
             boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
-            marginTop: '10vh'
+            marginTop: '10vh',
           }}
         >
           <CardOverflow>
@@ -78,39 +116,39 @@ const FullCourseList = () => {
               sx={{
                 position: 'absolute',
                 zIndex: 2,
-                right: '8.7vw',
+                right: '7.7vw',
                 bottom: 0,
                 transform: 'translateY(50%)',
+                border: "2px solid white"
               }}
-            >
-              {/* <Favorite /> */}
-            </Avatar>
+            ></Avatar>
           </CardOverflow>
           <CardOverflow
             variant="soft"
             sx={{
-              display: 'flex',
-              gap: 1.5,
-              py: 2.5,
+              display: 'flex-column',
+              textAlign: 'start',
+              // gap: 1.5,
+              py: 3,
               px: 'var(--Card-padding)',
-              borderTop: '1px solid',
-              borderColor: 'neutral.outlinedBorder',
-              bgcolor: 'background.level1',
+              // borderTop: '1px solid',
+              // borderColor: 'neutral.outlinedBorder',
+              // bgcolor: 'background.level1',
+              marginTop: '0',
+              paddingTop: '4vh',
             }}
           >
-            <Typography
-              level="body3"
-              sx={{ fontWeight: 'md', color: 'text.secondary' }}
-            >
-              6.3k views
-            </Typography>
-            <Box sx={{ width: 2, bgcolor: 'divider' }} />
-            <Typography
-              level="body3"
-              sx={{ fontWeight: 'md', color: 'text.secondary' }}
-            >
-              1 hour ago
-            </Typography>
+            <Nickname>닉네임1</Nickname>
+            <CardTitle>제목1</CardTitle>
+            <CardContent>내용1</CardContent>
+            {/* 이 자리에 호준이가 만든 태그 */}
+
+            <CardFooter>
+              <Like />
+              <span>좋아요횟수</span>
+              <Comment />
+              <span>댓글갯수</span>
+            </CardFooter>
           </CardOverflow>
         </Card>
       </Container>
