@@ -49,9 +49,6 @@ public class Travel extends BasePlace {
     private String transport;
 
     @Column(length = 100)
-    private String openDay;
-
-    @Column(length = 100)
     private String holiday;
 
     @Column(length = 100)
@@ -98,7 +95,6 @@ public class Travel extends BasePlace {
         res.setContent(this.getContent());
         res.setGugun(this.getGugun());
         res.setFacilities(this.getFacilities());
-        res.setOpenDay(this.getOpenDay());
         res.setHoliday(this.getHoliday());
         res.setOpenTime(this.getOpenTime());
         res.setTel(this.getTel());
