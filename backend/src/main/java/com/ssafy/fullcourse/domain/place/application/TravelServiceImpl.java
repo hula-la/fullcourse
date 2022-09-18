@@ -12,6 +12,7 @@ import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +22,12 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TravelServiceImpl implements TravelService {
 
-    @Autowired
-    TravelRepository travelRepository;
-    @Autowired
-    TravelLikeRepository travelLikeRepository;
-    @Autowired
-    UserRepository userRepository;
+    private final TravelRepository travelRepository;
+    private final TravelLikeRepository travelLikeRepository;
+    private final UserRepository userRepository;
     @Override
     public Page<PlaceRes> getTravelList(ListReq listReq, Pageable pageable) throws Exception {
         Page<Travel> page = travelRepository.findAll(pageable);

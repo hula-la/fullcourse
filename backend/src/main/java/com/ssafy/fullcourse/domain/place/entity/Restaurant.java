@@ -33,7 +33,7 @@ public class Restaurant extends BasePlace {
     @Column(length = 20)
     private String tel;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String category; // 카테고리
 
     @Column(nullable = false, length = 5000)

@@ -6,6 +6,7 @@ import com.ssafy.fullcourse.domain.place.entity.Custom;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +15,15 @@ import org.springframework.data.domain.Pageable;
 @Api(value = "장소 API", tags = {"place"})
 @RestController
 @RequestMapping("/place")
+@RequiredArgsConstructor
 public class PlaceController {
-    @Autowired
-    private TravelService travelService;
-    @Autowired
-    private ActivityService activityService;
-    @Autowired
-    private CultureService cultureService;
-    @Autowired
-    private HotelService hotelService;
-    @Autowired
-    private RestaurantService restaurantService;
-    @Autowired
-    private CustomService customService;
+
+    private final TravelService travelService;
+    private final ActivityService activityService;
+    private final CultureService cultureService;
+    private final HotelService hotelService;
+    private final RestaurantService restaurantService;
+    private final CustomService customService;
 
     @ApiOperation(value = "장소 리스트 조회", notes = "장소 리스트를 반환함.")
     @GetMapping("/{type}/list")
