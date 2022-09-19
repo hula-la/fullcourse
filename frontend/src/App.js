@@ -11,12 +11,14 @@ import NotFound from './pages/NotFound';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchUserInfo } from './features/user/userActions';
+import FullcourseShare from './pages/share/FullcourseShare';
+import FullcourseDetail from './pages/share/FullcourseDetail';
 
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserInfo());
-  }, []);
+  }, [dispatch]);
   return (
     <div className="App">
       <Routes>
@@ -26,6 +28,10 @@ function App() {
         <Route path="user" element={<Layout />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="profile/:pageNum" element={<ProfilePage />} />
+        </Route>
+        <Route path="fullcourse" element={<Layout />}>
+          <Route path="" element={<FullcourseShare />} />
+          <Route path="detail" element={<FullcourseDetail />} />
         </Route>
         {/* trip */}
         <Route path="trip" element={<Layout />}></Route>
