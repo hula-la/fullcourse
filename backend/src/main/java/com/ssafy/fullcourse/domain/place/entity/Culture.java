@@ -36,7 +36,7 @@ public class Culture extends BasePlace {
     @Column(nullable = false, length = 30)
     private String day;
 
-    @Column(length = 500)
+    @Column(length = 5000)
     private String content;
 
     @Column(length = 100)

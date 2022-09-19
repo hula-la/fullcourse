@@ -14,7 +14,7 @@ public interface SharedFCService {
     Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags);
     SharedFCGetRes detailSharedFC(Long sharedFcId);
     Long updateSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags);
-    boolean deleteSharedFC(Long sharedFdId);
+    void deleteSharedFC(Long sharedFdId);
     int likeSharedFC(Long sharedId, User user);
 
 }
