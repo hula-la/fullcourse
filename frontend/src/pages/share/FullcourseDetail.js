@@ -20,7 +20,7 @@ const FullcourseDetail = () => {
 
   useEffect(() => {
     dispatch(fetchSharedFc(sharedFcId));
-  }, [dispatch]);
+  }, [dispatch, sharedFcId]);
 
   return (
     <DetailBlock>
