@@ -31,7 +31,7 @@ function App() {
         </Route>
         <Route path="fullcourse" element={<Layout />}>
           <Route path="" element={<FullcourseShare />} />
-          <Route path="detail" element={<FullcourseDetail />} />
+          <Route path="detail/:sharedFcId" element={<FullcourseDetail />} />
         </Route>
         {/* trip */}
         <Route path="trip" element={<Layout />}></Route>
