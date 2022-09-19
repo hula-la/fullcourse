@@ -6,43 +6,40 @@ import com.ssafy.fullcourse.domain.place.entity.Custom;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Pageable;
 
 @Api(value = "장소 API", tags = {"place"})
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/place")
+@RequiredArgsConstructor
 public class PlaceController {
-    @Autowired
-    private TravelService travelService;
-    @Autowired
-    private ActivityService activityService;
-    @Autowired
-    private CultureService cultureService;
-    @Autowired
-    private HotelService hotelService;
-    @Autowired
-    private RestaurantService restaurantService;
-    @Autowired
-    private CustomService customService;
+
+    private final TravelService travelService;
+    private final ActivityService activityService;
+    private final CultureService cultureService;
+    private final HotelService hotelService;
+    private final RestaurantService restaurantService;
+    private final CustomService customService;
 
     @ApiOperation(value = "장소 리스트 조회", notes = "장소 리스트를 반환함.")
     @GetMapping("/{type}/list")
-    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, @RequestBody ListReq listReq, Pageable pageable) throws Exception{
+    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable) throws Exception{
         if(type.equals("travel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelList( pageable)));
         }else if(type.equals("restaurant")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantList(pageable)));
         }else if(type.equals("hotel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelList( pageable)));
         }else if(type.equals("culture")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureList(pageable)));
         }else if(type.equals("activity")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityList(pageable)));
         }else if(type.equals("custom")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomList( pageable)));
         }else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }

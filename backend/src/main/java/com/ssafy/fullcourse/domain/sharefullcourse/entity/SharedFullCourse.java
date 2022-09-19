@@ -33,26 +33,23 @@ public class SharedFullCourse {
     private Date regDate;
 
     @Column(nullable = false)
-    private Long likeCnt;
+    private Long likeCnt = 0L;
 
     @Column(nullable = false)
-    private Long commentCnt;
+    private Long commentCnt = 0L;
 
     @Column(nullable = false)
-    private Long viewCnt;
+    private Long viewCnt = 0L;
 
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
-    @Builder.Default
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SharedFCTag> sharedFCTags = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
 
@@ -63,6 +60,22 @@ public class SharedFullCourse {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
+    public static SharedFullCourse of(SharedFCDto sharedFCDto){
+
+        return SharedFullCourse.builder()
+                .sharedFcId(sharedFCDto.getSharedFcId())
+                .detail(sharedFCDto.getDetail())
+                .title(sharedFCDto.getTitle())
+                .regDate(sharedFCDto.getRegDate())
+                .likeCnt(sharedFCDto.getLikeCnt())
+                .commentCnt(sharedFCDto.getCommentCnt())
+                .viewCnt(sharedFCDto.getViewCnt())
+                .sharedFCTags(new ArrayList<>())
+                .thumbnail(sharedFCDto.getThumbnail())
+                .fullCourse(sharedFCDto.getFullCourse())
+                .build();
+    }
 
     public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now){
 

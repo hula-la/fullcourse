@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface TravelService {
-    public Page<PlaceRes> getTravelList(ListReq listReq, Pageable pageable) throws Exception;
+    public Page<Travel> getTravelList(Pageable pageable) throws Exception;
     public TravelDetailRes getTravelDetail(Long placeId) throws Exception;
     public boolean travelLike(Long placeId, Long userId) throws Exception;
 }

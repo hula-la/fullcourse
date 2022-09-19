@@ -1,13 +1,12 @@
 package com.ssafy.fullcourse.domain.fullcourse.application;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
-import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseRes;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 public interface FullCourseService {
     Long createFullCourse(Long userId, FullCoursePostReq fullCoursePostReq);

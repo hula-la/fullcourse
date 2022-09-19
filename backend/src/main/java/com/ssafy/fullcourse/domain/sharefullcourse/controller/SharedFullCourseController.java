@@ -1,11 +1,11 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
+import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
-import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
@@ -13,10 +13,9 @@ import com.ssafy.fullcourse.global.error.ServerError;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import com.ssafy.fullcourse.global.model.PageDto;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +26,17 @@ import java.util.stream.Collectors;
 
 
 @Api(value="Share Fullcourse", tags={"share fullcourse"})
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/share")
+@RequiredArgsConstructor
 public class SharedFullCourseController {
 
-    @Autowired
-    SharedFCService sharedFCService;
-    @Autowired
-    FullCourseRepository fullCourseRepository;
-    @Autowired
-    SharedFCCommentService sharedFCCommentService;
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    SharedFCListService sharedFCListService;
+    private final SharedFCService sharedFCService;
+    private final FullCourseRepository fullCourseRepository;
+    private final SharedFCCommentService sharedFCCommentService;
+    private final UserRepository userRepository;
+    private final SharedFCListService sharedFCListService;
 
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")

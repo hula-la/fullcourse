@@ -12,8 +12,6 @@ import lombok.Getter;
 @Builder
 public class FullCourseDetailPostReq {
 
-
-
     @ApiModelProperty(name="순서", example="0")
     int courseOrder;
 

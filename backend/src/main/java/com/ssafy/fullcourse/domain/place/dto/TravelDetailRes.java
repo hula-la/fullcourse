@@ -20,7 +20,6 @@ public class TravelDetailRes {
     private String tel;
     private String url;
     private String transport;
-    private String openDay;
     private String holiday;
     private String openTime;
     private String fee;

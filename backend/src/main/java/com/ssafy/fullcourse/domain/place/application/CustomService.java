@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomService {
-    public Page<PlaceRes> getCustomList(ListReq listReq, Pageable pageable) throws Exception;
+    public Page<PlaceRes> getCustomList(Pageable pageable) throws Exception;
     public CustomDetailRes getCustomDetail(Long placeId) throws Exception;
     public Long createCustom(Long placeId, Long userId) throws Exception;
 }

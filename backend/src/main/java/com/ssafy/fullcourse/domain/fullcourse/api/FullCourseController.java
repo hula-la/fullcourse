@@ -2,27 +2,24 @@ package com.ssafy.fullcourse.domain.fullcourse.api;
 
 import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
-import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
-import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
-import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
-import com.ssafy.fullcourse.global.model.PlaceEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "풀코스 API", tags = {"fullcourse"})
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/fullcourse")
+@RequiredArgsConstructor
 public class FullCourseController {
 
-    @Autowired
-    FullCourseService fullCourseService;
+    private final FullCourseService fullCourseService;
 
     @PostMapping("/")
     @ApiOperation(value = "풀코스 등록", notes = "type")
