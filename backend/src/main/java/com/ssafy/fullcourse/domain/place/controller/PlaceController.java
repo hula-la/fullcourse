@@ -26,19 +26,19 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 리스트 조회", notes = "장소 리스트를 반환함.")
     @GetMapping("/{type}/list")
-    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, @RequestBody ListReq listReq, Pageable pageable) throws Exception{
+    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable) throws Exception{
         if(type.equals("travel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", travelService.getTravelList( pageable)));
         }else if(type.equals("restaurant")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", restaurantService.getRestaurantList(pageable)));
         }else if(type.equals("hotel")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.getHotelList( pageable)));
         }else if(type.equals("culture")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", cultureService.getCultureList(pageable)));
         }else if(type.equals("activity")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", activityService.getActivityList(pageable)));
         }else if(type.equals("custom")) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomList(listReq, pageable)));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", customService.getCustomList( pageable)));
         }else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }

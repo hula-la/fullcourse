@@ -28,7 +28,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getRestaurantList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getRestaurantList(Pageable pageable) throws Exception {
         Page<Restaurant> page = restaurantRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }

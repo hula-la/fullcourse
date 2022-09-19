@@ -28,7 +28,7 @@ public class ActivityServiceImpl implements ActivityService{
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getActivityList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getActivityList(Pageable pageable) throws Exception {
         Page<Activity> page = activityRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }

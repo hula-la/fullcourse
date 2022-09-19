@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface RestaurantService {
-    public Page<PlaceRes> getRestaurantList(ListReq listReq, Pageable pageable) throws Exception;
+    public Page<PlaceRes> getRestaurantList(Pageable pageable) throws Exception;
     public RestaurantDetailRes getRestaurantDetail(Long placeId) throws Exception;
     public boolean restaurantLike(Long placeId, Long userId) throws Exception;
 }

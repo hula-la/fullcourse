@@ -28,7 +28,7 @@ public class HotelServiceImpl implements HotelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getHotelList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getHotelList(Pageable pageable) throws Exception {
         Page<Hotel> page = hotelRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }
