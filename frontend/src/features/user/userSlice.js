@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserInfo } from './userActions';
+import { fetchMyFullcourse, fetchUserInfo } from './userActions';
 
 const initialState = {
   userInfo: null,
   error: null,
+  myFullcourseList: null,
 };
 
 const userSlice = createSlice({
@@ -20,6 +21,13 @@ const userSlice = createSlice({
       state.userInfo = payload.data;
     },
     [fetchUserInfo.rejected]: (state, { payload }) => {
+      state.error = payload.data;
+    },
+    [fetchMyFullcourse.fulfilled]: (state, { payload }) => {
+      state.myFullcourseList = payload.data;
+      console.log(state.myFullcourseList);
+    },
+    [fetchMyFullcourse.rejected]: (state, { payload }) => {
       state.error = payload.data;
     },
   },
