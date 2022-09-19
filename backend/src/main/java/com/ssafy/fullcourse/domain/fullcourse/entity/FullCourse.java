@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
-import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -47,7 +46,6 @@ public class FullCourse {
     @JoinColumn(name = "userId")
     private User user;
 
-    @Builder.Default
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
 

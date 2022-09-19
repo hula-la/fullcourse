@@ -11,7 +11,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCCommentRep
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.global.error.ServerError;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SharedFCCommentService {
 
-    @Autowired
-    SharedFCCommentRepository sharedFCCommentRepository;
-    @Autowired
-    SharedFCRepository sharedFCRepository;
+    private final SharedFCCommentRepository sharedFCCommentRepository;
+    private final SharedFCRepository sharedFCRepository;
 
     // 공유 풀코스 댓글 전체 조회
     public List<SharedFCCommentRes> listFCComment(Long sharedFcId){

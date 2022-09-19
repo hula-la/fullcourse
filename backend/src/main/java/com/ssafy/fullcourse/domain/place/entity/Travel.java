@@ -8,7 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,15 +78,12 @@ public class Travel extends BasePlace {
     @Column(nullable = false)
     private Long likeCnt = 0L;
 
-    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
     List<TravelTag> travelTags = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();
 

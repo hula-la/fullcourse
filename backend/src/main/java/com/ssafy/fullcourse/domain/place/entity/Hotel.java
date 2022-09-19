@@ -8,7 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,19 +42,17 @@ public class Hotel extends BasePlace {
     private String tel;
 
     @Column(nullable = false)
-    private Long addedCnt;
+    private Long addedCnt = 0L;
 
     @Column(nullable = false)
-    private Long reviewCnt;
+    private Long reviewCnt = 0L;
 
     @Column(nullable = false)
-    private Long likeCnt;
+    private Long likeCnt = 0L;
 
-    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<HotelLike> likes = new ArrayList<>();
 
