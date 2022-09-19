@@ -11,7 +11,7 @@ import StartPlaceList from './StartPlaceList';
 const Container = styled.div`
   overflow: overlay;
   display: grid;
-  grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분
+  grid-template-rows: 1fr 0.5fr 5fr; //가로로 구분
 `;
 
 const Introduce = styled.div`
@@ -100,10 +100,10 @@ const PreviewTip = styled.p`
 `;
 
 const FullCourses = styled.div`
-  margin: 0 5vw;
+  margin: 0 7vw;
 `;
 const StartPlaces = styled.div`
-  margin: 0 5vw;
+  margin: 0 7vw;
 `;
 
 const MainPage = () => {

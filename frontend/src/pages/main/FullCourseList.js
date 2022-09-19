@@ -95,11 +95,16 @@ const FullCourseList = () => {
         <Card
           className={isMobile ? classes.cardMobile : null}
           variant="soft"
+          
           sx={{
-            width: 1 / 5,
+            width: '16.5vw',
             // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
             boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
             marginTop: '10vh',
+            ":hover": {transform: 'scale(1.05)', cursor:'pointer'},
+            ":active": {transform: 'scale(0.95)'},
+            
+
           }}
         >
           <CardOverflow>

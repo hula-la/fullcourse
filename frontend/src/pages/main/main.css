@@ -18,3 +18,7 @@
     transform: translateZ(0);
   }
 }
+
+.startPlaceImg {
+  mask-image: linear-gradient(to top, transparent 5%, black 40%);
+}
