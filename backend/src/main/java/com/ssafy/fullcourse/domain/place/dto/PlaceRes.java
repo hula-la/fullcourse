@@ -1,9 +1,14 @@
 package com.ssafy.fullcourse.domain.place.dto;
 
 import com.ssafy.fullcourse.domain.place.entity.*;
-import lombok.Setter;
+import io.swagger.annotations.ApiModel;
+import lombok.*;
 
 @Setter
+@Getter
+@ApiModel("PlaceRes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlaceRes {
     Long placeId;
     String name;

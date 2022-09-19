@@ -29,9 +29,10 @@ public class TravelServiceImpl implements TravelService {
     private final TravelLikeRepository travelLikeRepository;
     private final UserRepository userRepository;
     @Override
-    public Page<PlaceRes> getTravelList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<Travel> getTravelList(Pageable pageable) throws Exception {
         Page<Travel> page = travelRepository.findAll(pageable);
-        return page.map(PlaceRes::new);
+//        return page.map(PlaceRes::new);
+            return page;
     }
 
     @Override

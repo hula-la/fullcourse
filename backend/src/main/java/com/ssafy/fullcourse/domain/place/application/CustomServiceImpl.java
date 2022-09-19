@@ -18,7 +18,7 @@ public class CustomServiceImpl implements CustomService{
     @Autowired
     CustomRepository customRepository;
     @Override
-    public Page<PlaceRes> getCustomList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getCustomList(Pageable pageable) throws Exception {
         Page<Custom> page = customRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }

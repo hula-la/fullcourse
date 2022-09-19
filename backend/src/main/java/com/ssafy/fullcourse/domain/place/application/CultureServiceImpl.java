@@ -28,7 +28,7 @@ public class CultureServiceImpl implements CultureService{
     private final CultureLikeRepository cultureLikeRepository;
     private final UserRepository userRepository;
     @Override
-    public Page<PlaceRes> getCultureList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getCultureList(Pageable pageable) throws Exception {
         Page<Culture> page = cultureRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }
