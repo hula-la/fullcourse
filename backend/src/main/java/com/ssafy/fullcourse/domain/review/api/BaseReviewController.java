@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Api(value = "리뷰 API", tags = {"review"})
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/review")
 public class BaseReviewController {

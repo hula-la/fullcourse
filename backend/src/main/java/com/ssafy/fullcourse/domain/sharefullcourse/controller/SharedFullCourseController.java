@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Api(value="Share Fullcourse", tags={"share fullcourse"})
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/share")
 @RequiredArgsConstructor
