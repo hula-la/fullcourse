@@ -1,10 +1,6 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.dto;
 
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
-import com.ssafy.fullcourse.domain.sharefullcourse.exception.SharedFCNotFoundException;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.Date;
@@ -23,9 +19,9 @@ public class SharedFCGetRes {
     private String detail;
     private String title;
     private Date regDate;
-    @Builder.Default private Long likeCnt = 0l;
-    @Builder.Default private Long commentCnt = 0l;
-    @Builder.Default private Long viewCnt = 0l;
+    private Long likeCnt = 0L;
+    private Long commentCnt = 0L;
+    private Long viewCnt = 0L;
     private List<String> sharedFCTags;
     private List<SharedFCCommentRes> sharedFCComments;
     private String thumbnail;

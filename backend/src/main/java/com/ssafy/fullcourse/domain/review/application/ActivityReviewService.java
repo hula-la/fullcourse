@@ -12,7 +12,11 @@ import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLi
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,10 +25,12 @@ import java.util.Optional;
 
 @Service
 public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview, Activity, ActivityReviewLike> {
+
     public ActivityReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
                                 Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap);
+                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
+                                UserRepository userRepository) {
+        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
     }
 
     @Override

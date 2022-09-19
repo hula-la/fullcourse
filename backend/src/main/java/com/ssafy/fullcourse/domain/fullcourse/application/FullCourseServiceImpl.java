@@ -1,9 +1,9 @@
 package com.ssafy.fullcourse.domain.fullcourse.application;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
-import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseRes;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseNotFoundException;
@@ -12,25 +12,23 @@ import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class FullCourseServiceImpl implements FullCourseService{
-    @Autowired
-    FullCourseRepository fullCourseRepository;
 
-    @Autowired
-    FullCourseDetailRepository fullCourseDetailRepository;
+    private final FullCourseRepository fullCourseRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final FullCourseDetailRepository fullCourseDetailRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

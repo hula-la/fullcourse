@@ -1,37 +1,33 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.application;
 
-import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCDto;
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCGetRes;
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.exception.AlreadyExistException;
 import com.ssafy.fullcourse.domain.sharefullcourse.exception.SharedFCNotFoundException;
-import com.ssafy.fullcourse.domain.sharefullcourse.mapper.SharedFCMapper;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.global.error.ServerError;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class SharedFCServiceImpl implements SharedFCService{
 
-    @Autowired
-    SharedFCRepository sharedFCRepository;
-    @Autowired
-    SharedFCTagRepository sharedFCTagRepository;
-    @Autowired
-    SharedFCLikeRepository sharedFCLikeRepository;
+    private final SharedFCRepository sharedFCRepository;
+    private final SharedFCTagRepository sharedFCTagRepository;
+    private final SharedFCLikeRepository sharedFCLikeRepository;
 
     // 공유 풀코스 생성
     @Override
@@ -41,7 +37,7 @@ public class SharedFCServiceImpl implements SharedFCService{
 
         if(opt.isPresent()) throw new AlreadyExistException("이미 공유한 풀코스 입니다.");
 
-        SharedFullCourse sharedFullCourse = SharedFCMapper.MAPPER.toEntity(sharedFCDto);
+        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto);
 
         tagDtoE(tags,sharedFullCourse);
 

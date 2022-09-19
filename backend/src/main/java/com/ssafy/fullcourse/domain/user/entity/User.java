@@ -52,87 +52,66 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private Set<Authority> authorities;
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantReview> restaurantReviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelReview> travelReviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelReview> hotelReviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureReview> cultureReviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityReview> activityReviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Custom> customs = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<FullCourse> fullCourses = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFullCourse> shareFullCourses = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantReviewLike> restaurantReviewLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelReviewLike> travelReviewLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelReviewLike> hotelReviewLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureReviewLike> cultureReviewLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityReviewLike> activityReviewLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantLike> restaurantLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TravelLike> travelLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<HotelLike> hotelLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<CultureLike> cultureLikes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<ActivityLike> activityLikes = new ArrayList<>();
 
