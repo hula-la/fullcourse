@@ -21,7 +21,7 @@ public class TravelTagCnt {
     private Long TravelTagCntId;
 
     @Column(nullable = false)
-    private Long clickCnt;
+    private Long clickCnt = 0L;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")

@@ -6,7 +6,6 @@ import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCGetRes;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import com.ssafy.fullcourse.domain.user.entity.User;
 
-
 import java.util.List;
 
 public interface SharedFCService {

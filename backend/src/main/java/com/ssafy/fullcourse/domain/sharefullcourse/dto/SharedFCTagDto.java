@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.dto;
 
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
-import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import lombok.*;
 
 @Getter

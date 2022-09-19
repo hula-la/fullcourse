@@ -1,16 +1,12 @@
 package com.ssafy.fullcourse.domain.fullcourse.dto;
 
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import com.ssafy.fullcourse.domain.review.entity.baseentity.BaseReview;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 @Getter
 @ApiModel("FullCourseRes")

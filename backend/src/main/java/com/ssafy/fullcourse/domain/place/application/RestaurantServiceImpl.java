@@ -12,7 +12,6 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getRestaurantList(ListReq listReq, Pageable pageable) throws Exception {
+    public Page<PlaceRes> getRestaurantList(Pageable pageable) throws Exception {
         Page<Restaurant> page = restaurantRepository.findAll(pageable);
         return page.map(PlaceRes::new);
     }
