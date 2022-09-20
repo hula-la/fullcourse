@@ -142,7 +142,8 @@ public class SharedFullCourseController {
 
         int result =sharedFCCommentService.createFCComment(sharedFCCommentReq, user.get());
         if(result==1){
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "댓글 등록"));
+            List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFCCommentReq.getSharedFcId());
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
         }else throw new ServerError("댓글 등록 중 오류 발생");
     }
 
@@ -155,20 +156,24 @@ public class SharedFullCourseController {
         if (!user.isPresent()) throw new UserNotFoundException();
 
         sharedFCCommentService.updateFCComment(commentId, sharedFCCommentReq, user.get());
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "댓글 수정"));
+
+        List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFCCommentReq.getSharedFcId());
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
 
     }
 
     /** 풀코스 댓글 삭제 **/
     @ApiOperation(value = "공유풀코스 댓글 삭제", notes = "공유 풀코스 댓글을 삭제합니다. 댓글식별자(commentId), header : access-token 필요")
-    @DeleteMapping("/comment/{commentId}")
-    public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long commentId) {
+    @DeleteMapping("/comment/{sharedFcId}/{commentId}")
+    public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long sharedFcId, @PathVariable Long commentId) {
 
         Optional<User> user = userRepository.findByEmail("1");
         if (!user.isPresent()) throw new UserNotFoundException();
 
-        if(sharedFCCommentService.deleteFCComment(commentId,user.get())==1)
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "댓글 삭제"));
+        if(sharedFCCommentService.deleteFCComment(commentId,user.get())==1){
+            List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFcId);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
+        }
         else throw new ServerError("댓글 삭제 중 오류 발생");
     }
     /** 풀코스 댓글 조회 **/
