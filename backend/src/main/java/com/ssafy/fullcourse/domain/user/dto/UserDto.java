@@ -4,12 +4,14 @@ package com.ssafy.fullcourse.domain.user.dto;
 import com.ssafy.fullcourse.domain.user.entity.Gender;
 import com.ssafy.fullcourse.domain.user.entity.LoginType;
 import com.ssafy.fullcourse.domain.user.entity.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private String email;
@@ -18,7 +20,7 @@ public class UserDto {
     private String imgUrl;
     private String loginType;
     private Gender gender;
-    private String birth;
+    private String ageRange;
     private MultipartFile file;
 
 
@@ -35,7 +37,7 @@ public class UserDto {
                 .nickname(this.getNickname())
                 .loginType(loginType)
                 .gender(this.getGender())
-                .birth(this.getBirth())
+                .ageRange(this.getAgeRange())
 //                .authorities(Collections.singleton(authority))
                 .build();
     }

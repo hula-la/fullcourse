@@ -21,7 +21,6 @@ import java.util.List;
 @SuperBuilder
 public class RestaurantReview extends BaseReview<Restaurant> {
 
-    @Builder.Default
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<RestaurantReviewLike> reviewLikes = new ArrayList<>();
 }
