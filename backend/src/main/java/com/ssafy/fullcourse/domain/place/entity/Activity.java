@@ -3,9 +3,15 @@ package com.ssafy.fullcourse.domain.place.entity;
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,20 +54,21 @@ public class Activity extends BasePlace {
     @Column(length = 200)
     private String transport;
 
-    @Column(nullable = false)
-    private Long addedCnt;
+    @Column(nullable = false, length = 5000)
+    private String content;
 
     @Column(nullable = false)
-    private Long reviewCnt;
+    private Long addedCnt = 0L;
 
     @Column(nullable = false)
-    private Long likeCnt;
+    private Long reviewCnt = 0L;
 
-    @Builder.Default
+    @Column(nullable = false)
+    private Long likeCnt = 0L;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<ActivityLike> likes = new ArrayList<>();
 
@@ -78,6 +85,7 @@ public class Activity extends BasePlace {
         res.setImgUrl(this.getImgUrl());
         res.setHoliday(this.getHoliday());
         res.setOpenTime(this.getOpenTime());
+        res.setContent(this.getContent());
         res.setTransport(this.getTransport());
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
