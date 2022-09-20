@@ -84,7 +84,7 @@ public class SharedFCService {
 
         if(saved == null) throw new SharedFCNotFoundException();
 
-        sharedFCRepository.delete(SharedFullCourse.builder().sharedFcId(sharedFdId).build());
+        sharedFCRepository.delete(saved);
 
     }
 
