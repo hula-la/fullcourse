@@ -116,7 +116,7 @@ const MyFullcourseShare = (props) => {
     e.preventDefault();
     dispatch(
       createSharedFc({
-        fcId: fullcourse.fcID,
+        fcId: fullcourse.fcId,
         title: inputs.title,
         detail: inputs.content,
         tags: fullcourseTags,
