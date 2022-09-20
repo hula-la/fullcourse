@@ -89,7 +89,7 @@ public class SharedFCService {
     }
 
 
-
+    // 공유 풀코스 좋아요
     @Transactional
     public int likeSharedFC(Long sharedId, User user) {
 
@@ -112,7 +112,14 @@ public class SharedFCService {
         }
     }
 
-    public void tagDtoE(List<SharedFCTagDto> tags, SharedFullCourse sharedFullCourse){
+    // 공유된 풀코스인지 확인
+    public boolean isShared(Long fcId){
+        SharedFullCourse sharedFullCourse = sharedFCRepository.findByFullCourseFcId(fcId);
+        if(sharedFullCourse == null ) return false;
+        return true;
+    }
+
+   public void tagDtoE(List<SharedFCTagDto> tags, SharedFullCourse sharedFullCourse){
         for(SharedFCTagDto tag : tags) {
             System.out.println("?"+tag.getTagContent());
             SharedFCTag sharedFCTag = SharedFCTag.of(tag,sharedFullCourse);
