@@ -41,7 +41,7 @@ public class SharedFullCourseController {
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")
     @ApiOperation(value = "공유풀코스 등록", notes = "풀코스 id, 제목, 상세내용, 썸네일 이미지, 태그 리스트를 입력받아 공유 풀코스를 동록합니다.")
-    public ResponseEntity<BaseResponseBody> registSharedFC(@RequestBody SharedFCPostReq sharedFCPostReq) {
+    public ResponseEntity<BaseResponseBody> registSharedFC(@RequestBody SharedFCReq sharedFCReq) {
         /** [수정 필요]
          * - 사용자 불러오는거 수정
          * **/
@@ -49,26 +49,19 @@ public class SharedFullCourseController {
         Optional<User> user = userRepository.findByEmail("1");
         if (!user.isPresent()) throw new UserNotFoundException();
 
+        FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCReq.getFcId());
 
-        SharedFCDto sharedFCDto = SharedFCDto.builder()
-                .fullCourse(fullCourseRepository.findByFcId(sharedFCPostReq.getFcId()))
-                .detail(sharedFCPostReq.getDetail())
-                .title(sharedFCPostReq.getTitle())
-                .thumbnail(sharedFCPostReq.getThumbnail())
-                .regDate(new Date())
-                .sharedFCTags(new ArrayList<>())
-                .user(user.get())
-                .build();
+        SharedFCDto sharedFCDto = SharedFCDto.of(fullCourse, sharedFCReq);
 
-        List<SharedFCTagDto> tags = sharedFCPostReq.getTags().stream()
+        List<SharedFCTagDto> tags = sharedFCReq.getTags().stream()
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
         // 공유 풀코스 등록
         Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags);
-        HashMap<String,Long> res = new HashMap<>();
-        res.put("sharedFcId",sharedFcId);
         if (sharedFcId != null) {
+            HashMap<String,Long> res = new HashMap<>();
+            res.put("sharedFcId",sharedFcId);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", res));
         } else {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "공유 풀코스 생성 중 오류", null));
@@ -89,28 +82,23 @@ public class SharedFullCourseController {
     }
 
     /** 공유 풀코스 상세 수정 **/
-    @PutMapping("/fullcourse")
+    @PutMapping("/fullcourse/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 상세 수정", notes = "공유 풀코스의 상세 내용(제목, 내용, 썸네일, 태그)을 수정합니다")
-    public ResponseEntity<BaseResponseBody> updateSharedFC(@RequestBody SharedFCPutReq sharedFCPutReq) {
+    public ResponseEntity<BaseResponseBody> updateSharedFC(@PathVariable Long sharedFcId, @RequestBody SharedFCReq sharedFCReq) {
 
-        FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCPutReq.getFcId());
-        SharedFCDto sharedFCDto = SharedFCDto.builder()
-                .fullCourse(fullCourse)
-                .sharedFcId(sharedFCPutReq.getSharedFcId())
-                .detail(sharedFCPutReq.getDetail())
-                .title(sharedFCPutReq.getTitle())
-                .thumbnail(sharedFCPutReq.getThumbnail())
-                .regDate(new Date())
-                .sharedFCTags(new ArrayList<>())
-                .build();
+        FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCReq.getFcId());
 
-        List<SharedFCTagDto> tags = sharedFCPutReq.getTags().stream()
-                .map(tag->SharedFCTagDto.builder().tagContent(tag).sharedFcId(sharedFCPutReq.getSharedFcId()).build())
+        SharedFCDto sharedFCDto  = SharedFCDto.of(fullCourse, sharedFCReq);
+
+        List<SharedFCTagDto> tags = sharedFCReq.getTags().stream()
+                .map(tag->SharedFCTagDto.builder().tagContent(tag).sharedFcId(sharedFcId).build())
                 .collect(Collectors.toList());
 
         // 공유 풀코스 상세 수정
-        Long sharedFcId = sharedFCService.updateSharedFC(sharedFCDto, tags);
+        Long updated = sharedFCService.updateSharedFC(sharedFCDto, tags, sharedFcId);
         if(sharedFcId!=null){
+            HashMap<String,Long> res = new HashMap<>();
+            res.put("sharedFcId",updated);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFcId));
         }else{
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "fail", null));
