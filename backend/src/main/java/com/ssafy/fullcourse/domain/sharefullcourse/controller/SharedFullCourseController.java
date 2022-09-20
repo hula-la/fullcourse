@@ -19,9 +19,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -193,8 +193,9 @@ public class SharedFullCourseController {
 
     // 찜한 풀코스 리스트 조회
     @GetMapping("/fullcourse/like")
-    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(HttpServletRequest request, @RequestBody PageDto pageDto) {
-        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(request, pageDto);
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(Authentication authentication, @RequestBody PageDto pageDto) {
+        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, pageDto);
 
         if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
