@@ -1,6 +1,5 @@
 package com.ssafy.fullcourse.domain.place.application;
 
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.dto.RestaurantDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.Restaurant;
@@ -28,8 +27,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getRestaurantList(Pageable pageable) throws Exception {
-        Page<Restaurant> page = restaurantRepository.findAll(pageable);
+    public Page<PlaceRes> getRestaurantList(Pageable pageable, String keyword) throws Exception {
+        Page<Restaurant> page;
+        if (keyword.equals("")) {
+            page = restaurantRepository.findAll(pageable);
+        } else {
+            page = restaurantRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 

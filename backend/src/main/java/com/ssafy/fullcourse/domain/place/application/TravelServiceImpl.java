@@ -1,6 +1,5 @@
 package com.ssafy.fullcourse.domain.place.application;
 
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.Travel;
@@ -28,10 +27,14 @@ public class TravelServiceImpl implements TravelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<Travel> getTravelList(Pageable pageable) throws Exception {
-        Page<Travel> page = travelRepository.findAll(pageable);
-//        return page.map(PlaceRes::new);
-            return page;
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword) throws Exception {
+        Page<Travel> page;
+        if (keyword.equals("")) {
+            page = travelRepository.findAll(pageable);
+        } else {
+            page = travelRepository.findByNameContaining(keyword, pageable);
+        }
+        return page.map(PlaceRes::new);
     }
 
     @Override
@@ -45,18 +48,18 @@ public class TravelServiceImpl implements TravelService {
         User user = userRepository.findById(userId).get();
         Travel travel = travelRepository.findByPlaceId(placeId).get();
 
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException();
         }
-        if(travel == null){
+        if (travel == null) {
             throw new PlaceNotFoundException();
         }
 
         Optional<TravelLike> travelLike = travelLikeRepository.findByUserAndPlace(user, travel);
 
-        if (travelLike.isPresent()){
+        if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
-        }else{
+        } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
         }
 
