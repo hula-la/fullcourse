@@ -8,10 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +33,10 @@ public class Restaurant extends BasePlace {
     @Column(length = 20)
     private String tel;
 
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     private String category; // 카테고리
 
-    @Column(nullable = false, length = 5000)
+    @Column(nullable = false, length = 500)
     private String intro; // 소개
 
     @Column(length = 20)
@@ -63,17 +60,19 @@ public class Restaurant extends BasePlace {
     private String imgUrl;
 
     @Column(nullable = false)
-    private Long addedCnt = 0L;
+    private Long addedCnt;
 
     @Column(nullable = false)
-    private Long reviewCnt = 0L;
+    private Long reviewCnt;
 
     @Column(nullable = false)
-    private Long likeCnt = 0L;
+    private Long likeCnt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantLike> likes = new ArrayList<>();
 

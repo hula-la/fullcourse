@@ -33,7 +33,7 @@ public class NaverUserService implements SocialUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserLoginService userLoginService;
-    private final String defaultImg = "https://busanfullcourse.s3.ap-northeast-2.amazonaws.com/user/%ED%94%84%EB%A1%9C%ED%95%84.png";
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Override
     @Transactional
@@ -123,9 +123,9 @@ public class NaverUserService implements SocialUserService {
                 userDto.setGender(Gender.WOMAN);
             }
 
-            String ageRange = account.get("age").toString();
-            userDto.setAgeRange(ageRange);
-            System.out.println(ageRange);
+            String birthyear = account.get("birthyear").toString();
+            String birthday = account.get("birthday").toString();
+            userDto.setBirth(birthyear + "-" + birthday);
 
         } catch (ParseException e) {
             e.printStackTrace();

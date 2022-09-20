@@ -1,6 +1,5 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.entity;
 
-import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,9 +25,5 @@ public class SharedFCTag {
 
     public void setSharedFullCourse(SharedFullCourse sharedFullCourse){
         this.sharedFullCourse = sharedFullCourse;
-    }
-
-    public static SharedFCTag of(SharedFCTagDto tag, SharedFullCourse sharedFullCourse){
-        return SharedFCTag.builder().tagContent(tag.getTagContent()).sharedFullCourse(sharedFullCourse).build();
     }
 }

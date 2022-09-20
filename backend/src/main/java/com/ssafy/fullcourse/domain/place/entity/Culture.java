@@ -8,10 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,24 +36,26 @@ public class Culture extends BasePlace {
     @Column(nullable = false, length = 30)
     private String day;
 
-    @Column(length = 5000)
+    @Column(length = 500)
     private String content;
 
     @Column(length = 100)
     private String imgUrl;
 
     @Column(nullable = false)
-    private Long addedCnt = 0L;
+    private Long addedCnt;
 
     @Column(nullable = false)
-    private Long reviewCnt = 0L;
+    private Long reviewCnt;
 
     @Column(nullable = false)
-    private Long likeCnt = 0L;
+    private Long likeCnt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<CultureReview> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<CultureLike> likes = new ArrayList<>();
 

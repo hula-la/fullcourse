@@ -25,7 +25,6 @@ public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final TravelLikeRepository travelLikeRepository;
     private final UserRepository userRepository;
-
     @Override
     public Page<PlaceRes> getTravelList(Pageable pageable, String keyword) throws Exception {
         Page<Travel> page;

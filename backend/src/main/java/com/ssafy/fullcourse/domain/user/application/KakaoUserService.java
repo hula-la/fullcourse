@@ -2,7 +2,6 @@ package com.ssafy.fullcourse.domain.user.application;
 
 import com.ssafy.fullcourse.domain.user.dto.LoginDto;
 import com.ssafy.fullcourse.domain.user.dto.UserDto;
-import com.ssafy.fullcourse.domain.user.entity.Gender;
 import com.ssafy.fullcourse.domain.user.entity.LoginType;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
@@ -34,7 +33,7 @@ public class KakaoUserService implements SocialUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserLoginService userLoginService;
-    private final String defaultImg = "https://busanfullcourse.s3.ap-northeast-2.amazonaws.com/user/%ED%94%84%EB%A1%9C%ED%95%84.png";
+    private final String defaultImg = "https://onsikgo.s3.ap-northeast-2.amazonaws.com/user/pngwing.com.png";
 
     @Override
     @Transactional
@@ -120,18 +119,6 @@ public class KakaoUserService implements SocialUserService {
 
             String profile_image_url= (String)profile.getOrDefault("profile_image_url",defaultImg);
             userDto.setImgUrl(profile_image_url);
-
-
-            if(kakao_account.get("gender").toString().equals("male")) {
-                userDto.setGender(Gender.MAN);
-            } else {
-                userDto.setGender(Gender.WOMAN);
-            }
-
-            System.out.println("gender : " + userDto.getGender());
-            String ageRange = kakao_account.get("age_range").toString();
-            userDto.setAgeRange(ageRange);
-            System.out.println("ageRange : " + ageRange);
 
         } catch (ParseException e) {
             e.printStackTrace();

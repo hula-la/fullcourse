@@ -12,7 +12,6 @@ import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLi
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
-import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, Culture, CultureReviewLike> {
+public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, Culture, CultureReviewLike
+        > {
 
 
     public CultureReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                 Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                 Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
-                                 UserRepository userRepository) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
+                                Map<String, BasePlaceRepository> basePlaceRepositoryMap,
+                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
+        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap);
     }
 
     @Override
@@ -70,9 +69,7 @@ public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, C
 
         if(reviewLike.isPresent()){
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
-            reviewOpt.get().addLikeCnt(-1);
         } else {
-            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(CultureReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

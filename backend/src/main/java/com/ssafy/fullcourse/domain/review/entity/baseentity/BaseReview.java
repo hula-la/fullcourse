@@ -32,7 +32,7 @@ public class BaseReview<P extends BasePlace> {
     private Float score;
 
     @Column(nullable = false)
-    private Long likeCnt = 0L;
+    private Long likeCnt;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")

@@ -4,10 +4,7 @@ import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServ
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Api(value = "리뷰 API", tags = {"review"})
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/review")
 public class BaseReviewController {

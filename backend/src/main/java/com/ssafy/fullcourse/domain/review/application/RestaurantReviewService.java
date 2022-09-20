@@ -12,7 +12,6 @@ import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLi
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
-import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,10 @@ import java.util.Optional;
 @Service
 public class RestaurantReviewService extends BaseReviewServiceImpl<RestaurantReview, Restaurant, RestaurantReviewLike> {
     public RestaurantReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
-                                UserRepository userRepository) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
+                              Map<String, BasePlaceRepository> basePlaceRepositoryMap,
+                              Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
+        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap);
     }
-
     @Override
     public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
         Optional<Restaurant> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
@@ -66,10 +63,8 @@ public class RestaurantReviewService extends BaseReviewServiceImpl<RestaurantRev
         Optional<RestaurantReviewLike> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
-            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
-            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(RestaurantReviewLike.builder()
                     .user(userOpt.get())
                     .review(reviewOpt.get())

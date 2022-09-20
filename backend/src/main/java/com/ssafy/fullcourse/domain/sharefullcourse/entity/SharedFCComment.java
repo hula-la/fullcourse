@@ -31,5 +31,4 @@ public class SharedFCComment {
     @JoinColumn(name = "sharedFcId")
     private SharedFullCourse sharedFullCourse;
 
-
 }

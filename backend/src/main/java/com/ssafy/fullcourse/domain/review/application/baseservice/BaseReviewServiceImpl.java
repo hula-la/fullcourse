@@ -15,7 +15,6 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,30 +23,31 @@ import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL extends BaseReviewLike>
         implements BaseReviewService<R,P> {
 
 
 
-    protected final Map<String, BaseReviewRepository> baseReviewRepositoryMap;
     protected final Map<String, BasePlaceRepository> basePlaceRepositoryMap;
+
+    protected final Map<String, BaseReviewRepository> baseReviewRepositoryMap;
     protected final Map<String, BaseReviewLikeRepository> baseReviewLikeMap;
 
-    protected final UserRepository userRepository;
+    @Autowired
+    protected UserRepository userRepository;
 
-//    @Autowired
-//    public BaseReviewServiceImpl(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-//                                 Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-//                                 Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
-//        this.baseReviewRepositoryMap = baseReviewRepositoryMap;
-//        this.basePlaceRepositoryMap = basePlaceRepositoryMap;
-//        this.baseReviewLikeMap = baseReviewLikeMap;
-//
-//        //의존관계 주입 확인을 위해 출력
-//        System.out.println("baseReviewRepositoryMap = " + baseReviewRepositoryMap);
-//        System.out.println("basePlaceRepositoryMap = " + basePlaceRepositoryMap);
-//    }
+    @Autowired
+    public BaseReviewServiceImpl(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
+                                 Map<String, BasePlaceRepository> basePlaceRepositoryMap,
+                                 Map<String, BaseReviewLikeRepository> baseReviewLikeMap) {
+        this.baseReviewRepositoryMap = baseReviewRepositoryMap;
+        this.basePlaceRepositoryMap = basePlaceRepositoryMap;
+        this.baseReviewLikeMap = baseReviewLikeMap;
+
+        //의존관계 주입 확인을 위해 출력
+        System.out.println("baseReviewRepositoryMap = " + baseReviewRepositoryMap);
+        System.out.println("basePlaceRepositoryMap = " + basePlaceRepositoryMap);
+    }
 
 
 
@@ -123,14 +123,11 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
 
 
-
         Optional<RL> reviewLike= baseReviewRLikeRepository.findByUserAndReview(userOpt.get(),reviewOpt.get());
 
         if(reviewLike.isPresent()){
-            reviewOpt.get().addLikeCnt(-1);
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
-            reviewOpt.get().addLikeCnt(1);
             baseReviewRLikeRepository.save(new BaseReviewLike(userOpt.get(),reviewOpt.get()));
         }
 
