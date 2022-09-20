@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 @Setter
@@ -12,7 +13,5 @@ import lombok.Setter;
 public class PageDto {
 
     String keyword;
-    Integer page;
-    Integer size;
-    String sort;
+    Pageable pageable;
 }
