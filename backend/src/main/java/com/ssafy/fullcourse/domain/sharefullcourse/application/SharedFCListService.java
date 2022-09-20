@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +34,10 @@ public class SharedFCListService {
     private final TokenProvider tokenProvider;
 
 
-    public Page<SharedFCListDto> getSharedFCList(PageDto pageDto) {
-
-        Page<SharedFullCourse> page=sharedFCRepository.findFCListByTitleContains(pageDto.getKeyword(), pageDto.getPageable());
+    public Page<SharedFCListDto> getSharedFCList(String keyword, Pageable pageable) {
+        Page<SharedFullCourse> page;
+        if (keyword==null) page=sharedFCRepository.findAll(pageable);
+        else page=sharedFCRepository.findFCListByTitleContains(keyword, pageable);
 
         return page.map(share -> new SharedFCListDto(share, share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
