@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -180,8 +181,8 @@ public class SharedFullCourseController {
 
     // 풀코스 리스트 조회
     @GetMapping("/fullcourse")
-    public ResponseEntity<BaseResponseBody> getSharedFCList(PageDto pageDto) {
-        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(pageDto);
+    public ResponseEntity<BaseResponseBody> getSharedFCList(String keyword, Pageable pageable) {
+        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(keyword,pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
