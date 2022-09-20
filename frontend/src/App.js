@@ -13,6 +13,8 @@ import { useDispatch } from 'react-redux';
 import { fetchUserInfo } from './features/user/userActions';
 import FullcourseShare from './pages/share/FullcourseShare';
 import FullcourseDetail from './pages/share/FullcourseDetail';
+// Plan
+import PlanPage from './pages/trip/PlanPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,7 +36,9 @@ function App() {
           <Route path="detail/:sharedFcId" element={<FullcourseDetail />} />
         </Route>
         {/* trip */}
-        <Route path="trip" element={<Layout />}></Route>
+        <Route path="trip" element={<Layout />}>
+          <Route path="plan" element={<PlanPage />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
