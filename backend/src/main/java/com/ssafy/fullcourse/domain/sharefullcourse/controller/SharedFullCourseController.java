@@ -192,7 +192,7 @@ public class SharedFullCourseController {
 
     // 풀코스 리스트 조회
     @GetMapping("/fullcourse")
-    public ResponseEntity<BaseResponseBody> getSharedFCList(@RequestBody PageDto pageDto) {
+    public ResponseEntity<BaseResponseBody> getSharedFCList(PageDto pageDto) {
         Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(pageDto);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }

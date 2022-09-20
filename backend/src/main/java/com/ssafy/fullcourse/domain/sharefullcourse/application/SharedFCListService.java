@@ -32,21 +32,11 @@ public class SharedFCListService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
 
-    private PageRequest getPageRequest(PageDto pageDto) {
-        if (pageDto.getSort() == null) return PageRequest.of(pageDto.getPage(), pageDto.getSize());
-        else return PageRequest.of(pageDto.getPage(), pageDto.getSize(), Sort.Direction.DESC, pageDto.getSort());
-    }
 
     public Page<SharedFCListDto> getSharedFCList(PageDto pageDto) {
 
-        Page<SharedFullCourse> page;
-        if(pageDto.getKeyword() == null) {
-            PageRequest pageRequest = getPageRequest(pageDto);
-            page = sharedFCRepository.findAll(pageRequest);
-        } else {
-            PageRequest pageRequest = getPageRequest(pageDto);
-            page = sharedFCRepository.findFCListByTitleContains(pageDto.getKeyword(), pageRequest);
-        }
+        Page<SharedFullCourse> page=sharedFCRepository.findFCListByTitleContains(pageDto.getKeyword(), pageDto.getPageable());
+
         return page.map(share -> new SharedFCListDto(share, share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
 
@@ -72,8 +62,7 @@ public class SharedFCListService {
 //            page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageDto.getKeyword(), pageRequest);
 //        }
 
-        PageRequest pageRequest = getPageRequest(pageDto);
-        Page<SharedFCLike> page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageRequest);
+        Page<SharedFCLike> page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageDto.getPageable());
 
         return page.map(share -> new SharedFCListDto(share.getSharedFullCourse(),
                 share.getSharedFullCourse().getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
