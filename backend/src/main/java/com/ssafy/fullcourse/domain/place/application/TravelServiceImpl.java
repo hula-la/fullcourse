@@ -1,11 +1,9 @@
 package com.ssafy.fullcourse.domain.place.application;
 
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.Travel;
 import com.ssafy.fullcourse.domain.place.entity.TravelLike;
-import com.ssafy.fullcourse.domain.place.entity.TravelTag;
 import com.ssafy.fullcourse.domain.place.repository.TravelLikeRepository;
 import com.ssafy.fullcourse.domain.place.repository.TravelRepository;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -13,7 +11,6 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,8 +26,13 @@ public class TravelServiceImpl implements TravelService {
     private final TravelLikeRepository travelLikeRepository;
     private final UserRepository userRepository;
     @Override
-    public Page<PlaceRes> getTravelList(ListReq listReq, Pageable pageable) throws Exception {
-        Page<Travel> page = travelRepository.findAll(pageable);
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword) throws Exception {
+        Page<Travel> page;
+        if (keyword.equals("")) {
+            page = travelRepository.findAll(pageable);
+        } else {
+            page = travelRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 
@@ -45,18 +47,18 @@ public class TravelServiceImpl implements TravelService {
         User user = userRepository.findById(userId).get();
         Travel travel = travelRepository.findByPlaceId(placeId).get();
 
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException();
         }
-        if(travel == null){
+        if (travel == null) {
             throw new PlaceNotFoundException();
         }
 
         Optional<TravelLike> travelLike = travelLikeRepository.findByUserAndPlace(user, travel);
 
-        if (travelLike.isPresent()){
+        if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
-        }else{
+        } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
         }
 

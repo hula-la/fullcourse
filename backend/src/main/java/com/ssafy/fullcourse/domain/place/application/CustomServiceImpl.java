@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.CustomDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.Custom;
 import com.ssafy.fullcourse.domain.place.repository.CustomRepository;
@@ -14,12 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomServiceImpl implements CustomService{
-
-    @Autowired
-    CustomRepository customRepository;
+    private final CustomRepository customRepository;
     @Override
-    public Page<PlaceRes> getCustomList(ListReq listReq, Pageable pageable) throws Exception {
-        Page<Custom> page = customRepository.findAll(pageable);
+    public Page<PlaceRes> getCustomList(Pageable pageable, String keyword) throws Exception {
+        Page<Custom> page;
+        if (keyword.equals("")) {
+            page = customRepository.findAll(pageable);
+        } else {
+            page = customRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 

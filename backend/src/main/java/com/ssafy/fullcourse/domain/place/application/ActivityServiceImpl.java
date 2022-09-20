@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.entity.ActivityLike;
@@ -28,8 +27,13 @@ public class ActivityServiceImpl implements ActivityService{
     private final ActivityLikeRepository activityLikeRepository;
     private final UserRepository userRepository;
     @Override
-    public Page<PlaceRes> getActivityList(ListReq listReq, Pageable pageable) throws Exception {
-        Page<Activity> page = activityRepository.findAll(pageable);
+    public Page<PlaceRes> getActivityList(Pageable pageable, String keyword) throws Exception {
+        Page<Activity> page;
+        if (keyword.equals("")) {
+            page = activityRepository.findAll(pageable);
+        } else {
+            page = activityRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 

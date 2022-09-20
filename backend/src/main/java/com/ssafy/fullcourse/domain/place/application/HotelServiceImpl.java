@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.HotelDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.Hotel;
 import com.ssafy.fullcourse.domain.place.entity.HotelLike;
@@ -29,8 +28,13 @@ public class HotelServiceImpl implements HotelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getHotelList(ListReq listReq, Pageable pageable) throws Exception {
-        Page<Hotel> page = hotelRepository.findAll(pageable);
+    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword) throws Exception {
+        Page<Hotel> page;
+        if (keyword.equals("")) {
+            page = hotelRepository.findAll(pageable);
+        } else {
+            page = hotelRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 

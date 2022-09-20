@@ -1,10 +1,10 @@
 package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.CultureDetailRes;
-import com.ssafy.fullcourse.domain.place.dto.ListReq;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.Culture;
 import com.ssafy.fullcourse.domain.place.entity.CultureLike;
+import com.ssafy.fullcourse.domain.place.entity.Hotel;
 import com.ssafy.fullcourse.domain.place.repository.CultureLikeRepository;
 import com.ssafy.fullcourse.domain.place.repository.CultureRepository;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -28,8 +28,13 @@ public class CultureServiceImpl implements CultureService{
     private final CultureLikeRepository cultureLikeRepository;
     private final UserRepository userRepository;
     @Override
-    public Page<PlaceRes> getCultureList(ListReq listReq, Pageable pageable) throws Exception {
-        Page<Culture> page = cultureRepository.findAll(pageable);
+    public Page<PlaceRes> getCultureList(Pageable pageable, String keyword) throws Exception {
+        Page<Culture> page;
+        if (keyword.equals("")) {
+            page = cultureRepository.findAll(pageable);
+        } else {
+            page = cultureRepository.findByNameContaining(keyword, pageable);
+        }
         return page.map(PlaceRes::new);
     }
 
