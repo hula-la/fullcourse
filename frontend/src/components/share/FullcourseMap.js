@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const MapBlock = styled.div`
-  width: 80%;
+  width: 60%;
   height: 85vh;
   #map {
     width: 100%;
