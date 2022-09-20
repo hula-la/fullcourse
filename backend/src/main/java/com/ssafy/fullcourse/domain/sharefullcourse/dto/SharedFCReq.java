@@ -1,18 +1,21 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.dto;
 
+import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SharedFCPostReq {
+public class SharedFCReq {
 
     @ApiModelProperty(name = "풀코스 아이디", example = "1")
     private Long fcId;
@@ -24,5 +27,6 @@ public class SharedFCPostReq {
     private String thumbnail;
     @ApiModelProperty(name = "공유 풀코스 태그", example = "['먹방','부산','바다']")
     private List<String> tags;
+
 
 }
