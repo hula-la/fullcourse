@@ -18,9 +18,9 @@ public class JwtFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_HEADER = "access-token";
 
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     public JwtFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
@@ -51,9 +51,14 @@ public class JwtFilter extends GenericFilterBean {
     // Request Header에서 토큰 정보를 꺼내오는 메서드
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken)) {
+            return bearerToken;
         }
+
+//        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+
         return null;
     }
 }
