@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.Authenticator;
-
 @Api(value = "풀코스 API", tags = {"fullcourse"})
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
@@ -52,10 +50,10 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> findMyFullCourse(@PathVariable Long userId,
+    public ResponseEntity<BaseResponseBody> findMyFullCourse(@AuthenticationPrincipal String email,
                                                            Pageable pageable) {
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(userId,pageable)));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(email,pageable)));
     }
 
     @DeleteMapping("/{fcId}")

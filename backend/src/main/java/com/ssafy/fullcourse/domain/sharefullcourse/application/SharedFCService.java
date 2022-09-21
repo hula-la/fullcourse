@@ -12,6 +12,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeReposi
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class SharedFCService {
     private final SharedFCRepository sharedFCRepository;
     private final SharedFCTagRepository sharedFCTagRepository;
     private final SharedFCLikeRepository sharedFCLikeRepository;
+    private final UserRepository userRepository;
 
     // 공유 풀코스 생성
     @Transactional
@@ -91,21 +93,20 @@ public class SharedFCService {
 
     // 공유 풀코스 좋아요
     @Transactional
-    public int likeSharedFC(Long sharedId, User user) {
+    public int likeSharedFC(Long sharedId, String email) {
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedId);
         if(sharedFullCourse == null) throw new SharedFCNotFoundException();
         // 좋아요 확인
-        Optional<SharedFCLike> opt = Optional.ofNullable(sharedFCLikeRepository.findByUser_UserIdAndSharedFullCourse_SharedFcId(user.getUserId(), sharedId));
+        Optional<SharedFCLike> opt = sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email, sharedFullCourse);
 
         if(opt.isPresent()){ // 좋아요 취소
             sharedFCLikeRepository.delete(opt.get());
             sharedFCRepository.updateLikeCnt(sharedId, -1);
             return 0;
         }else{ // 좋아요
-
             sharedFCLikeRepository.save(SharedFCLike.builder()
-                    .user(user)
+                    .user(userRepository.findByEmail(email).get())
                     .sharedFullCourse(sharedFullCourse).build());
             sharedFCRepository.updateLikeCnt(sharedId, 1);
             return 1;
