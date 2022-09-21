@@ -43,13 +43,7 @@ public class SharedFullCourseController {
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")
     @ApiOperation(value = "공유풀코스 등록", notes = "풀코스 id, 제목, 상세내용, 썸네일 이미지, 태그 리스트를 입력받아 공유 풀코스를 동록합니다.")
-    public ResponseEntity<BaseResponseBody> registSharedFC(@RequestBody SharedFCReq sharedFCReq) {
-        /** [수정 필요]
-         * - 사용자 불러오는거 수정
-         * **/
-
-        Optional<User> user = userRepository.findByEmail("1");
-        if (!user.isPresent()) throw new UserNotFoundException();
+    public ResponseEntity<BaseResponseBody> registSharedFC(@AuthenticationPrincipal String email, @RequestBody SharedFCReq sharedFCReq) {
 
         FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCReq.getFcId());
 
@@ -123,8 +117,8 @@ public class SharedFullCourseController {
     @ApiOperation(value = "공유풀코스 좋아요", notes = "공유 풀코스 좋아요시, 사용자식별자(userId), 공유풀코스식별자(sharedFcId)를 추가하고 취소시 삭제합니다.")
     public ResponseEntity<BaseResponseBody> likeSharedFC(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId){
 
-        Optional<User> user = userRepository.findByEmail("1");
-        if(!user.isPresent()) throw new UserNotFoundException();
+        Optional<User> opt = userRepository.findByEmail(email);
+        User user = opt.orElseThrow(()-> new UserNotFoundException());
 
         if(sharedFCService.likeSharedFC(sharedFcId,email)==1){ // 좋아요
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "좋아요 완료"));
@@ -160,10 +154,12 @@ public class SharedFullCourseController {
     /** 풀코스 댓글 삭제 **/
     @ApiOperation(value = "공유풀코스 댓글 삭제", notes = "공유 풀코스 댓글을 삭제합니다. 댓글식별자(commentId), header : access-token 필요")
     @DeleteMapping("/comment/{sharedFcId}/{commentId}")
-    public ResponseEntity<BaseResponseBody> updateComment(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId, @PathVariable Long commentId) {
+    public ResponseEntity<BaseResponseBody> updateComment(@AuthenticationPrincipal String email,
+                                                          @PathVariable Long sharedFcId,
+                                                          @PathVariable Long commentId) {
 
-        Optional<User> user = userRepository.findByEmail("1");
-        if (!user.isPresent()) throw new UserNotFoundException();
+        Optional<User> opt = userRepository.findByEmail(email);
+        User user = opt.orElseThrow(()-> new UserNotFoundException());
 
         if(sharedFCCommentService.deleteFCComment(commentId,email)==1){
             List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFcId);

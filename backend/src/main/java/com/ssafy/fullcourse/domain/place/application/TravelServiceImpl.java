@@ -12,11 +12,15 @@ import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +31,30 @@ public class TravelServiceImpl implements TravelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword) throws Exception {
-        Page<Travel> page;
-        if (keyword.equals("")) {
-            page = travelRepository.findAll(pageable);
-        } else {
-            page = travelRepository.findByNameContaining(keyword, pageable);
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag) throws Exception {
+
+        if(tag.equals("")){
+            Page<Travel> page;
+            if (keyword.equals("")) {
+                page = travelRepository.findAll(pageable);
+            } else {
+                page = travelRepository.findByNameContaining(keyword, pageable);
+            }
+            return page.map(PlaceRes::new);
         }
-        return page.map(PlaceRes::new);
+        else {
+            StringTokenizer st = new StringTokenizer(tag, "|");
+            List<String> tagList = new ArrayList<>();
+            for(int i = 0; i < st.countTokens(); i++){
+                tagList.add(st.nextToken());
+            }
+            List<Travel> list = new ArrayList<>();
+            list = travelRepository.findAll();
+            
+
+            Page<Travel> page = new PageImpl(list, pageable, list.size());
+            return page.map(PlaceRes::new);
+        }
     }
 
     @Override
