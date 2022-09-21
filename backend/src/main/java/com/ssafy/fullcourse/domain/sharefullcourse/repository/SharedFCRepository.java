@@ -15,28 +15,19 @@ public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long
     SharedFullCourse findByFullCourseFcId(Long fcId);
 
     @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE shared_full_course sfc SET sfc.like_cnt = sfc.like_cnt + 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
-    int plusLikeCnt(@Param(value="sharedFcId") Long sharedFcId);
+    @Query(value = "UPDATE shared_full_course sfc SET sfc.like_cnt = sfc.like_cnt + :count where shared_fc_id = :sharedFcId",nativeQuery = true)
+    int updateLikeCnt(@Param(value="sharedFcId") Long sharedFcId, @Param(value="count") int count);
 
 
     @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE shared_full_course sfc SET sfc.comment_cnt = sfc.comment_cnt + 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
-    int plusCommentCnt(@Param(value="sharedFcId") Long sharedFcId);
+    @Query(value = "UPDATE shared_full_course sfc SET sfc.comment_cnt = sfc.comment_cnt + :count where shared_fc_id = :sharedFcId",nativeQuery = true)
+    int updateCommentCnt(@Param(value="sharedFcId") Long sharedFcId, @Param(value="count")int count);
 
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE shared_full_course sfc SET sfc.view_cnt = sfc.view_cnt + 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
-    int plusViewCnt(@Param(value="sharedFcId") Long sharedFcId);
+    int updateViewCnt(@Param(value="sharedFcId") Long sharedFcId);
 
-
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE shared_full_course sfc SET sfc.like_cnt = sfc.like_cnt - 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
-    int minusLikeCnt(@Param(value="sharedFcId") Long sharedFcId);
-
-
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE shared_full_course sfc SET sfc.comment_cnt = sfc.comment_cnt - 1 where shared_fc_id = :sharedFcId",nativeQuery = true)
-    int minusCommentCnt(@Param(value="sharedFcId") Long sharedFcId);
 
 
     Page<SharedFullCourse> findFCListByTitleContains(String keyword, Pageable pageable);

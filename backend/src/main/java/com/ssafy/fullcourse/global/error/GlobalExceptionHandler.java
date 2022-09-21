@@ -16,7 +16,7 @@ class ErrorMessage{
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {ServerError.class})
-    public ResponseEntity<Object> handleServerException(SharedFCNotFoundException ex){
+    public ResponseEntity<Object> handleServerException(ServerError ex){
         return ResponseEntity.status(500).body(ErrorResponseBody.of(500,ex.getMessage()));
     }
 
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {CommentNotFoundException.class})
-    public ResponseEntity<Object> handleSharedFCCommentException(SharedFCNotFoundException ex){
+    public ResponseEntity<Object> handleSharedFCCommentException(CommentNotFoundException ex){
         return ResponseEntity.status(400).body(ErrorResponseBody.of(400,ErrorMessage.COMMENT_NOT_FOUNDS));
     }
 

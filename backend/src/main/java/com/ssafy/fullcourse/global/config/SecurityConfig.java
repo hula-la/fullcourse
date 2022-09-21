@@ -1,9 +1,6 @@
 package com.ssafy.fullcourse.global.config;
 
-import com.ssafy.fullcourse.global.util.JwtAccessDeniedHandler;
-import com.ssafy.fullcourse.global.util.JwtAuthenticationEntryPoint;
-import com.ssafy.fullcourse.global.util.JwtSecurityConfig;
-import com.ssafy.fullcourse.global.util.TokenProvider;
+import com.ssafy.fullcourse.global.util.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,18 +43,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
+                // 토큰 기반 인증이므로 세션 사용 하지않음, 세션을 사용하지 않기 때문에 STATELESS로 설정
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                /**
-                 * security
-                 */
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().permitAll()
+
                 // 인증없이 접근을 허용하는 path 추가
 //                .and()
 //                .authorizeRequests()
@@ -65,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().authenticated()
 
 
+                //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스도 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

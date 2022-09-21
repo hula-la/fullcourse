@@ -50,7 +50,7 @@ public class SharedFCCommentService {
 
         SharedFCComment saved = sharedFCCommentRepository.save(sharedFCComment);
         if(saved == null) throw new ServerError("댓글 등록 중 에러 발생");
-        return sharedFCRepository.plusCommentCnt(saved.getSharedFullCourse().getSharedFcId());
+        return sharedFCRepository.updateCommentCnt(saved.getSharedFullCourse().getSharedFcId(),1);
 
 
     }
@@ -82,7 +82,7 @@ public class SharedFCCommentService {
         if(saved.getUser().getUserId() != user.getUserId()) throw new UserNotMatchException("댓글단 사용자만 삭제 가능");
 
         sharedFCCommentRepository.delete(saved);
-        return sharedFCRepository.minusCommentCnt(saved.getSharedFullCourse().getSharedFcId());
+        return sharedFCRepository.updateCommentCnt(saved.getSharedFullCourse().getSharedFcId(),-1);
 
     }
 

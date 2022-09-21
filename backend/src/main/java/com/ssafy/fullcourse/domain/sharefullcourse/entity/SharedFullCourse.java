@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -44,13 +45,13 @@ public class SharedFullCourse {
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sharedFullCourse",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SharedFCTag> sharedFCTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCLike> sharedFCLikes = new ArrayList<>();
 
     @OneToOne(fetch = LAZY)
@@ -71,16 +72,16 @@ public class SharedFullCourse {
                 .likeCnt(sharedFCDto.getLikeCnt())
                 .commentCnt(sharedFCDto.getCommentCnt())
                 .viewCnt(sharedFCDto.getViewCnt())
-                .sharedFCTags(new ArrayList<>())
+                .sharedFCTags(sharedFCDto.getSharedFCTags().stream().map(tag->SharedFCTag.builder().fcTagId(tag.getFcTagId()).tagContent(tag.getTagContent()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFCDto.getThumbnail())
                 .fullCourse(sharedFCDto.getFullCourse())
                 .build();
     }
 
-    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now){
+    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now, Long sharedFcId){
 
         return SharedFullCourse.builder()
-                .sharedFcId(sharedFCDto.getSharedFcId())
+                .sharedFcId(sharedFcId)
                 .detail(sharedFCDto.getDetail())
                 .title(sharedFCDto.getTitle())
                 .regDate(now.getRegDate())
@@ -88,10 +89,12 @@ public class SharedFullCourse {
                 .commentCnt(now.getCommentCnt())
                 .viewCnt(now.getViewCnt())
                 .sharedFCTags(new ArrayList<>())
+                .sharedFCComments(now.getSharedFCComments())
                 .thumbnail(now.getThumbnail())
-                .fullCourse(now.getFullCourse())
+                .fullCourse(sharedFCDto.getFullCourse())
                 .build();
     }
+
 
 
 }
