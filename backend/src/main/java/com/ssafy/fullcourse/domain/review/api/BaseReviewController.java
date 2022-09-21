@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -49,6 +50,7 @@ public class BaseReviewController {
     })
     public ResponseEntity<BaseResponseBody> registerReview(@PathVariable String type,
                                                            @PathVariable Long placeId,
+                                                           @AuthenticationPrincipal String email,
                                                            @RequestBody ReviewPostReq reviewPostReq) {
 
         PlaceEnum placeEnum = PlaceEnum.valueOf(type);
@@ -57,7 +59,7 @@ public class BaseReviewController {
 //        System.out.println("컨트롤러에서 서비스 인스턴스" + (baseReviewService instanceof ActivityReviewService)+" ** "+placeEnum.getService());
 
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", baseReviewService.createReview(placeEnum,placeId,reviewPostReq)));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", baseReviewService.createReview(placeEnum,placeId,email,reviewPostReq)));
 
     }
 
@@ -119,13 +121,13 @@ public class BaseReviewController {
     })
     public ResponseEntity<BaseResponseBody> likeReview(@PathVariable String type,
                                                          @PathVariable Long reviewId,
-                                                         @RequestBody Long userId) {
+                                                       @AuthenticationPrincipal String email) {
 
         PlaceEnum placeEnum = PlaceEnum.valueOf(type);
         BaseReviewService baseReviewService = baseReviewServiceMap.get(placeEnum.getService());
 
 
-        baseReviewService.reviewLike(placeEnum,userId,reviewId);
+        baseReviewService.reviewLike(placeEnum,email,reviewId);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "좋아요"));
 

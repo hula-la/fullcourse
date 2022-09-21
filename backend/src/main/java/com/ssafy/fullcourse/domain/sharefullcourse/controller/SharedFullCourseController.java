@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -193,9 +194,9 @@ public class SharedFullCourseController {
 
     // 찜한 풀코스 리스트 조회
     @GetMapping("/fullcourse/like")
-    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(Authentication authentication, @RequestBody PageDto pageDto) {
-        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, pageDto);
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
+//        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
+        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, keyword,pageable);
 
         if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
