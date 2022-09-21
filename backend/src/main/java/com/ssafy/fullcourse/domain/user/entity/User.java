@@ -21,12 +21,14 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "User", indexes = {
+        @Index(name = "idx__email", columnList = "email")
+})
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, unique = true, length = 50)
     private String email;
 
     @Column(nullable = false)

@@ -4,6 +4,7 @@ import com.ssafy.fullcourse.domain.place.entity.Culture;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
+import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
 import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import com.ssafy.fullcourse.domain.review.entity.CultureReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -32,7 +33,7 @@ public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, C
     }
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
         Optional<Culture> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -41,11 +42,12 @@ public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, C
         if(!place.isPresent()) throw new PlaceNotFoundException();
 
 
-        CultureReview baseReview = CultureReview.builder()
+        CultureReview baseReview = com.ssafy.fullcourse.domain.review.entity.CultureReview.builder()
                 .score(reviewPostReq.getScore())
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
+                .user(userRepository.findByEmail(userId).get())
                 .build();
 
 
@@ -55,12 +57,12 @@ public class CultureReviewService extends BaseReviewServiceImpl<CultureReview, C
 
     @Override
     @Transactional
-    public Boolean reviewLike(PlaceEnum Type, Long userId, Long reviewId) {
+    public Boolean reviewLike(PlaceEnum Type, String userId, Long reviewId) {
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
         BaseReviewLikeRepository baseReviewRLikeRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
 
         Optional<CultureReview> reviewOpt = baseReviewRepository.findById(reviewId);
-        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findByEmail(userId);
 
         if (!userOpt.isPresent()) throw new UserNotFoundException();
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();

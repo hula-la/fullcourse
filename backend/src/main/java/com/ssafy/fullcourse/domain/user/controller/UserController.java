@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,10 +43,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponseBody> getInfo(Authentication authentication) {
-        String email = ((User)authentication.getPrincipal()).getUsername();
+    public ResponseEntity<BaseResponseBody> getInfo(@AuthenticationPrincipal String email) {
+//        UserDto userInfo = userManageService.getInfo(user.getUsername());
         UserDto userInfo = userManageService.getInfo(email);
-        if(userInfo == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
+//        if(userInfo == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", userInfo));
     }
 

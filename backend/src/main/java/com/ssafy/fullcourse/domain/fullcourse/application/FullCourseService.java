@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface FullCourseService {
-    Long createFullCourse(Long userId, FullCoursePostReq fullCoursePostReq);
+    Long createFullCourse(String userId, FullCoursePostReq fullCoursePostReq);
 
     Long createFullCourseDetail(int day, FullCourse fullCourse, FullCourseDetailPostReq fcDetail);
 
@@ -19,6 +19,6 @@ public interface FullCourseService {
 
     void deleteFullCourse(Long fcId);
 
-    Long updateFullCourse(Long userId, Long fcId, FullCoursePostReq fullCoursePostReq);
+    Long updateFullCourse(String userId, Long fcId, FullCoursePostReq fullCoursePostReq);
 
 }

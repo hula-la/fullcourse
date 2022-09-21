@@ -32,13 +32,13 @@ public class FullCourseServiceImpl implements FullCourseService{
 
     @Override
     @Transactional
-    public Long createFullCourse(Long userId, FullCoursePostReq fullCoursePostReq) {
+    public Long createFullCourse(String userId, FullCoursePostReq fullCoursePostReq) {
 //        날짜 설정
 //        LocalDate now = LocalDate.now();
         Date now = new Date();
         fullCoursePostReq.setRegDate(now);
 
-        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findByEmail(userId);
 
 
         if (!userOpt.isPresent()) throw new UserNotFoundException();
@@ -46,15 +46,6 @@ public class FullCourseServiceImpl implements FullCourseService{
         // 풀코스에 저장
         FullCourse fullCourse = fullCourseRepository
                 .save(fullCoursePostReq.toEntity(userOpt.get()));
-
-
-        // 풀코스 디테일에 저장
-//        for(int d:fullCoursePostReq.getPlaces().keySet()){
-//            List<FullCourseDetailPostReq> placeByDay = fullCoursePostReq.getPlaces().get(d);
-//            for(FullCourseDetailPostReq fcDetail:placeByDay){
-//                createFullCourseDetail(d,fullCourse,fcDetail);
-//            }
-//        }
 
         fullCoursePostReq.getPlaces().forEach((day, places)->{
             System.out.println(day+" "+places);
@@ -107,7 +98,7 @@ public class FullCourseServiceImpl implements FullCourseService{
 
     @Override
     @Transactional
-    public Long updateFullCourse(Long userId, Long fcId, FullCoursePostReq fullCoursePostReq) {
+    public Long updateFullCourse(String userId, Long fcId, FullCoursePostReq fullCoursePostReq) {
         deleteFullCourse(fcId);
         return createFullCourse(userId,fullCoursePostReq);
     }

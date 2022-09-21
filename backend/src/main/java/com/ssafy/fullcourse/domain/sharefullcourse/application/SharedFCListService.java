@@ -38,24 +38,13 @@ public class SharedFCListService {
         return page.map(share -> new SharedFCListDto(share, share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
 
-    public Page<SharedFCListDto> getSharedFCLikeList(String email, PageDto pageDto) {
+    public Page<SharedFCListDto> getSharedFCLikeList(String email, String keyword, Pageable pageable) {
         Optional<User> user = userRepository.findByEmail(email);
         if(!user.isPresent()) return null;
         User findUser = user.get();
 
-        /**
-         * 고민
-         */
-//        Page<SharedFCLike> page;
-//        if(pageDto.getKeyword() == null) {
-//            PageRequest pageRequest = getPageRequest(pageDto);
-//            page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageRequest);
-//        } else {
-//            PageRequest pageRequest = getPageRequest(pageDto);
-//            page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageDto.getKeyword(), pageRequest);
-//        }
 
-        Page<SharedFCLike> page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageDto.getPageable());
+        Page<SharedFCLike> page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageable);
 
         return page.map(share -> new SharedFCListDto(share.getSharedFullCourse(),
                 share.getSharedFullCourse().getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
