@@ -121,12 +121,12 @@ public class SharedFullCourseController {
     /** 공유 풀코스 좋아요 **/
     @PostMapping("/like/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 좋아요", notes = "공유 풀코스 좋아요시, 사용자식별자(userId), 공유풀코스식별자(sharedFcId)를 추가하고 취소시 삭제합니다.")
-    public ResponseEntity<BaseResponseBody> likeSharedFC(@PathVariable Long sharedFcId){
+    public ResponseEntity<BaseResponseBody> likeSharedFC(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId){
 
         Optional<User> user = userRepository.findByEmail("1");
         if(!user.isPresent()) throw new UserNotFoundException();
 
-        if(sharedFCService.likeSharedFC(sharedFcId,user.get())==1){ // 좋아요
+        if(sharedFCService.likeSharedFC(sharedFcId,email)==1){ // 좋아요
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "좋아요 완료"));
         }else {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "좋아요 취소"));
@@ -136,12 +136,9 @@ public class SharedFullCourseController {
     /** 풀코스 댓글 등록 **/
     @PostMapping("/comment")
     @ApiOperation(value = "공유풀코스 댓글 등록", notes = "공유 풀코스 댓글을 등록합니다. 댓글내용, 공유풀코스식별자(sharedFcId), header : access-token 필요")
-    public ResponseEntity<BaseResponseBody> registComment(@RequestBody SharedFCCommentReq sharedFCCommentReq) {
+    public ResponseEntity<BaseResponseBody> registComment(@AuthenticationPrincipal String email,@RequestBody SharedFCCommentReq sharedFCCommentReq) {
 
-        Optional<User> user = userRepository.findByEmail("1");
-        if (!user.isPresent()) throw new UserNotFoundException();
-
-        int result =sharedFCCommentService.createFCComment(sharedFCCommentReq, user.get());
+        int result =sharedFCCommentService.createFCComment(sharedFCCommentReq,email);
         if(result==1){
             List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFCCommentReq.getSharedFcId());
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
@@ -151,12 +148,9 @@ public class SharedFullCourseController {
     /** 풀코스 댓글 수정 **/
     @PutMapping("/comment/{commentId}")
     @ApiOperation(value = "공유풀코스 댓글 수정", notes = "공유 풀코스 댓글을 수정합니다. 댓글내용, 공유풀코스식별자(sharedFcId), header : access-token 필요")
-    public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long commentId, @RequestBody SharedFCCommentReq sharedFCCommentReq) {
+    public ResponseEntity<BaseResponseBody> updateComment(@AuthenticationPrincipal String email, @PathVariable Long commentId, @RequestBody SharedFCCommentReq sharedFCCommentReq) {
 
-        Optional<User> user = userRepository.findByEmail("1");
-        if (!user.isPresent()) throw new UserNotFoundException();
-
-        sharedFCCommentService.updateFCComment(commentId, sharedFCCommentReq, user.get());
+        sharedFCCommentService.updateFCComment(commentId, sharedFCCommentReq, email);
 
         List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFCCommentReq.getSharedFcId());
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
@@ -166,12 +160,12 @@ public class SharedFullCourseController {
     /** 풀코스 댓글 삭제 **/
     @ApiOperation(value = "공유풀코스 댓글 삭제", notes = "공유 풀코스 댓글을 삭제합니다. 댓글식별자(commentId), header : access-token 필요")
     @DeleteMapping("/comment/{sharedFcId}/{commentId}")
-    public ResponseEntity<BaseResponseBody> updateComment(@PathVariable Long sharedFcId, @PathVariable Long commentId) {
+    public ResponseEntity<BaseResponseBody> updateComment(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId, @PathVariable Long commentId) {
 
         Optional<User> user = userRepository.findByEmail("1");
         if (!user.isPresent()) throw new UserNotFoundException();
 
-        if(sharedFCCommentService.deleteFCComment(commentId,user.get())==1){
+        if(sharedFCCommentService.deleteFCComment(commentId,email)==1){
             List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFcId);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));
         }
@@ -187,8 +181,8 @@ public class SharedFullCourseController {
 
     // 풀코스 리스트 조회
     @GetMapping("/fullcourse")
-    public ResponseEntity<BaseResponseBody> getSharedFCList(String keyword, Pageable pageable) {
-        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(keyword,pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCList(String email, String keyword, Pageable pageable) {
+        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(email,keyword,pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
