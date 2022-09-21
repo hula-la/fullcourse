@@ -49,12 +49,15 @@ public class SharedFullCourseController {
 
         SharedFCDto sharedFCDto = SharedFCDto.of(fullCourse, sharedFCReq);
 
+        Optional<User> opt = userRepository.findByEmail(email);
+        User user = opt.orElseThrow(()-> new UserNotFoundException());
+
         List<SharedFCTagDto> tags = sharedFCReq.getTags().stream()
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
         // 공유 풀코스 등록
-        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags);
+        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags, user);
         if (sharedFcId != null) {
             HashMap<String,Long> res = new HashMap<>();
             res.put("sharedFcId",sharedFcId);
