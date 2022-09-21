@@ -34,7 +34,7 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
     }
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
         Optional<Activity> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -48,6 +48,7 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
+                .user(userRepository.findByEmail(userId).get())
                 .build();
 
 
@@ -57,12 +58,12 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
 
     @Override
     @Transactional
-    public Boolean reviewLike(PlaceEnum Type, Long userId, Long reviewId) {
+    public Boolean reviewLike(PlaceEnum Type, String userId,  Long reviewId) {
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
         BaseReviewLikeRepository baseReviewRLikeRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
 
         Optional<ActivityReview> reviewOpt = baseReviewRepository.findById(reviewId);
-        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findByEmail(userId);
 
         if (!userOpt.isPresent()) throw new UserNotFoundException();
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();
