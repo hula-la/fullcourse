@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import DateBox from './DateBox';
+import DateRanger from './DateRanger';
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ const PlanBar = () => {
   return (
     <div>
       <Container>
-        <DateBox/>
+        <DateRanger/>
         
       </Container>
     </div>
