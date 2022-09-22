@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import SharedFcDayTagItem from './SharedFcDayTagItem';
 import FullcourseTagItem from './SharedFcTagItem';
 
 const Wrapper = styled.div`
@@ -37,36 +39,11 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     justify-content: center;
   }
-
-  .daylistitem {
-    border: #0aa1dd 1px solid;
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin: 10px 4px;
-    cursor: pointer;
-    color: #0aa1dd;
-    transition: background-color 500ms;
-    &:hover {
-      background-color: #0aa1dd;
-      color: #ffffff;
-      font-weight: bold;
-    }
-  }
-
-  .daytag-selected {
-    z-index: 100;
-    opacity: 1;
-    background-color: #0aa1dd;
-    color: #ffffff;
-    font-weight: bold;
-    margin-right: 0px;
-  }
 `;
 
 const Text = styled.div`
   background: url('/img/baseline.png') no-repeat;
   background-position-x: 0;
-
   height: 100%;
   font-family: Tmoney;
   color: #333333;
@@ -74,58 +51,27 @@ const Text = styled.div`
 `;
 
 const FullcourseTag = () => {
-  const tagList1 = [
-    '산',
-    '바다',
-    '힐링',
-    '계곡',
-    '핫플',
-    '현지맛집',
-    '돼지국밥',
-    '산책',
-    '데이트',
-    '맛집',
-    '힐링',
-    '계곡',
-    '핫플',
-  ];
-  const tagList2 = ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'];
-
-  const [checkedTagList, setCheckedTagList] = useState([]);
-  const [daycheckedTagList, setDayCheckedTagList] = useState([]);
-
-  const onClickTag = (tag) => {
-    if (checkedTagList.includes(tag)) {
-      setCheckedTagList(checkedTagList.filter((el) => el !== tag));
-    } else {
-      setCheckedTagList([...checkedTagList, tag]);
-    }
-  };
+  const { tagList } = useSelector((state) => state.share);
+  const { dayTagList } = useSelector((state) => state.share);
 
   return (
     <Wrapper>
       <Text className="ttl">풀코스 검색</Text>
       <div className="tag">
         <ul className="nonelist">
-          {tagList1.map((tag, index) => {
+          {tagList.map((tag, index) => {
             return (
               <li key={index}>
-                <FullcourseTagItem onClickTag={onClickTag} tag={tag} />
+                <FullcourseTagItem tag={tag} />
               </li>
             );
           })}
         </ul>
         <ul className="daynonelist">
-          {tagList2.map((tag, index) => {
+          {dayTagList.map((tag, index) => {
             return (
-              <li
-                className={
-                  'daylistitem' + (tag.selected ? ' tag-selected' : '')
-                }
-                key={index}
-                // onClick={onClickTags}
-              >
-                <div id={tag.tag}># {tag}</div>
+              <li key={index}>
+                <SharedFcDayTagItem tag={tag} />
               </li>
             );
           })}
