@@ -1,7 +1,7 @@
 package com.ssafy.fullcourse.domain.place.controller;
 
 import com.ssafy.fullcourse.domain.place.application.*;
-import com.ssafy.fullcourse.domain.place.entity.Custom;
+import com.ssafy.fullcourse.domain.place.dto.CreateCustomReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,7 @@ public class PlaceController {
     public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable,
                                                        @RequestParam(required = false, defaultValue = "") String keyword,
                                                        @RequestParam(required = false, defaultValue = "") String tag
-                                                       ) throws Exception {
+    ) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     travelService.getTravelList(pageable, keyword, tag)));
@@ -107,8 +107,9 @@ public class PlaceController {
 
     @ApiOperation(value = "커스텀 장소 생성", notes = "성공여부를 반환함.")
     @PostMapping("/custom/create")
-    public ResponseEntity<BaseResponseBody> createCustom(@RequestBody Custom custom) throws Exception {
-        return null;
+    public ResponseEntity<BaseResponseBody> customCreate(@RequestBody CreateCustomReq createCustomReq) throws Exception {
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
+                customService.createCustom(createCustomReq)));
     }
 
 
