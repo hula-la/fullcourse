@@ -74,9 +74,11 @@ public class SharedFullCourseController {
     @ApiOperation(value = "공유풀코스 상세 조회", notes = "공유 풀코스 id 로 공유 풀코스 상세 정보를 조회합니다.")
     public ResponseEntity<BaseResponseBody> detailSharedFC(
             @ApiParam(value="공유 풀코스 id", required = true)
-            @PathVariable  Long sharedFcId) {
+            @PathVariable  Long sharedFcId,
+            @RequestParam String email
+            ) {
 
-        SharedFCGetRes res = sharedFCService.detailSharedFC(sharedFcId);
+        SharedFCGetRes res = sharedFCService.detailSharedFC(sharedFcId, email);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", res));
 
     }
