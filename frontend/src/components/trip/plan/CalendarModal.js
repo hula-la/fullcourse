@@ -14,17 +14,57 @@ const Modalbackdrop = styled.div`
 `;
 
 const ModalView = styled.div`
-  border: 1px dashed black;
+  border: 1px dashed #0aa1dd;
   border-radius: 0.5rem;
-  width: 42vw;
+  margin-top: 1vh;
+  margin-left: 1.5vw;
+  padding: 0.5vh 0.5vh 0.5vh 0.5vh;
+
+  width: 41vw;
   display: flex;
   flex-direction: column;
-  
+  .Btns {
+    margin: 1vh 0 0.5vh 0;
+    display: flex;
+    justify-content: end;
+  }
+`;
 
-  
-`
+const CloseBtn = styled.button`
+  background-color: #a4d8ff;
+  border: 0;
+  width: 4vw;
+  height: 4vh;
 
-const CalendarModal = ({ refOne, open, range, setRange }) => {
+  border-radius: 0.5rem;
+  margin-right: 1vh;
+  font-family: Tmoney;
+  font-size: 1.8vmin;
+  color: #333333;
+  cursor: pointer;
+  &:hover {
+    background-color: #8fbcde;
+    color: #4e4e4e;
+  }
+`;
+
+const OkBtn = styled.button`
+  background-color: #a4d8ff;
+  border: 0;
+  width: 6vw;
+  height: 4vh;
+  border-radius: 0.5rem;
+  font-family: Tmoney;
+  font-size: 1.8vmin;
+  color: #333333;
+  cursor: pointer;
+  &:hover {
+    background-color: #8fbcde;
+    color: #4e4e4e;
+  }
+`;
+
+const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
   return (
     <Modalbackdrop ref={refOne}>
       {open && (
@@ -41,24 +81,12 @@ const CalendarModal = ({ refOne, open, range, setRange }) => {
             minDate={new Date()}
             className="DateRange"
           />
-          메롱
+          <div className="Btns">
+            <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn>
+            <OkBtn onClick={() => setOpen((open) => !open)}>적용하기</OkBtn>
+          </div>
         </ModalView>
       )}
-
-      {/* {open && (
-          <DateRange
-            locale={ko}
-            onChange={(item) => setRange([item.selection])}
-            editableDateInputs={true}
-            moveRangeOnFirstSelection={false}
-            ranges={range}
-            rangeColors={['#0AA1DD']}
-            months={2}
-            direction="horizontal"
-            minDate={new Date()}
-            className="DateRange"
-          />
-        )} */}
     </Modalbackdrop>
   );
 };

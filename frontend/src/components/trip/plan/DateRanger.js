@@ -27,6 +27,12 @@ const Calendar = styled(FaCalendarAlt)`
   cursor: pointer;
 `;
 
+const Bar = styled.div`
+  font-size: 2vmin;
+  color: #d9d9d9;
+  font-weight: bold;
+`;
+
 const StyledInput = styled.input`
   background-color: white;
   border: 2px solid #d9d9d9;
@@ -51,9 +57,10 @@ const StyledInput = styled.input`
 const TripDate = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
-const DateRanger = () => {
+const DateRanger = ({tripDay, setTripDay}) => {
   // get the target element to toggle
   const refOne = useRef(null);
 
@@ -69,7 +76,7 @@ const DateRanger = () => {
   // open close
   const [open, setOpen] = useState(true);
 
-  const [tripDay, setTripDay] = useState(3);
+  
   useEffect(() => {
     // event listeners
     document.addEventListener('click', hideOnClickOutside, true);
@@ -113,6 +120,7 @@ const DateRanger = () => {
           onClick={() => setOpen((open) => !open)}
           id="startDate"
         />
+        <Bar>~</Bar>
         <StyledInput
           value={
             range[0].startDate && `${format(range[0].endDate, 'MM/dd/yyyy')}`
@@ -127,6 +135,7 @@ const DateRanger = () => {
         refOne={refOne}
         open={open}
         range={range}
+        setOpen={setOpen}
         setRange={setRange}
       />
     </div>

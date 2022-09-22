@@ -7,19 +7,16 @@ import PlaceBar from '../../components/trip/place/PlaceBar';
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  height: 90vh;
-`
+  height: 75vh;
+`;
 
 const PlanPage = () => {
   return (
     <div>
       <Container>
-        <PlanBar>
-        </PlanBar>
-        <PlanMap>
-        </PlanMap>
-        <PlaceBar>
-        </PlaceBar>
+        <PlanBar></PlanBar>
+        <PlanMap></PlanMap>
+        <PlaceBar></PlaceBar>
       </Container>
     </div>
   );
