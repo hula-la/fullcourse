@@ -12,10 +12,8 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeReposi
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
-import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,9 +53,9 @@ public class SharedFCService {
     public SharedFCGetRes detailSharedFC(Long sharedFcId, String email) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFcId));
         SharedFullCourse sharedFullCourse = opt.orElseThrow(()->new SharedFCNotFoundException());
+
         Boolean isLike = false;
-        User user = userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException());
-        if(sharedFCLikeRepository.findByUser_UserIdAndSharedFullCourse_SharedFcId(user.getUserId(),sharedFcId)!=null){
+        if(sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,sharedFullCourse)!=null){
             isLike = true;
         }
 

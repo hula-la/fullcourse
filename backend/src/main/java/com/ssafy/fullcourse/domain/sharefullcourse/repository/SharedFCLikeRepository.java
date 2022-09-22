@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.repository;
 
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
