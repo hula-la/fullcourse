@@ -33,12 +33,12 @@ public class SharedFCService {
 
     // 공유 풀코스 생성
     @Transactional
-    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags) {
+    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, User user) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFullCourse().getFcId()));
 
         if(opt.isPresent()) throw new AlreadyExistException("이미 공유한 풀코스 입니다.");
 
-        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto);
+        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto, user);
 
         tagDtoE(tags,sharedFullCourse);
 

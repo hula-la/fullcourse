@@ -11,7 +11,6 @@ import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
-import com.ssafy.fullcourse.global.model.PageDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,11 +18,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -49,12 +49,15 @@ public class SharedFullCourseController {
 
         SharedFCDto sharedFCDto = SharedFCDto.of(fullCourse, sharedFCReq);
 
+        Optional<User> opt = userRepository.findByEmail(email);
+        User user = opt.orElseThrow(()-> new UserNotFoundException());
+
         List<SharedFCTagDto> tags = sharedFCReq.getTags().stream()
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
         // 공유 풀코스 등록
-        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags);
+        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags, user);
         if (sharedFcId != null) {
             HashMap<String,Long> res = new HashMap<>();
             res.put("sharedFcId",sharedFcId);
@@ -192,5 +195,11 @@ public class SharedFullCourseController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
     }
 
+    // 공유 풀코스 태그 조회
+    @PostMapping("/fullcourse/tag")
+    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@RequestBody List<String> tags, Pageable pageable){
+        List<SharedFCGetRes> sharedFCList = sharedFCListService.searchByTags(tags, pageable);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
+    }
 
 }
