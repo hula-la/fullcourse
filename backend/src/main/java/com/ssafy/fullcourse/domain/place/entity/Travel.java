@@ -78,6 +78,8 @@ public class Travel extends BasePlace {
     @Column(nullable = false)
     private Long likeCnt = 0L;
 
+    private String tag;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
