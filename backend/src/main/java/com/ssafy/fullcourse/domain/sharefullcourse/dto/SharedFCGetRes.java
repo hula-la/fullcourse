@@ -16,6 +16,7 @@ public class SharedFCGetRes {
 
     private Long fcId;
     private Long sharedFcId;
+    private String userEmail;
     private String detail;
     private String title;
     private Date regDate;
@@ -31,6 +32,7 @@ public class SharedFCGetRes {
         return SharedFCGetRes.builder()
                 .fcId(sharedFullCourse.getFullCourse().getFcId())
                 .sharedFcId(sharedFullCourse.getSharedFcId())
+                .userEmail(sharedFullCourse.getUser().getEmail())
                 .detail(sharedFullCourse.getDetail())
                 .title(sharedFullCourse.getTitle())
                 .regDate(sharedFullCourse.getRegDate())

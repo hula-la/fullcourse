@@ -76,16 +76,17 @@ public class SharedFullCourseController {
             @PathVariable  Long sharedFcId,
             @RequestParam String email
             ) {
-
-        SharedFCGetRes res = sharedFCService.detailSharedFC(sharedFcId, email);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", res));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCService.detailSharedFC(sharedFcId, email)));
 
     }
 
     /** 공유 풀코스 상세 수정 **/
     @PutMapping("/fullcourse/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 상세 수정", notes = "공유 풀코스의 상세 내용(제목, 내용, 썸네일, 태그)을 수정합니다")
-    public ResponseEntity<BaseResponseBody> updateSharedFC(@PathVariable Long sharedFcId, @RequestBody SharedFCReq sharedFCReq) {
+    public ResponseEntity<BaseResponseBody> updateSharedFC(
+            @PathVariable Long sharedFcId,
+            @RequestBody SharedFCReq sharedFCReq,
+            @RequestParam String email) {
 
         FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCReq.getFcId());
 
@@ -96,14 +97,8 @@ public class SharedFullCourseController {
                 .collect(Collectors.toList());
 
         // 공유 풀코스 상세 수정
-        Long updated = sharedFCService.updateSharedFC(sharedFCDto, tags, sharedFcId);
-        if(sharedFcId!=null){
-            HashMap<String,Long> res = new HashMap<>();
-            res.put("sharedFcId",updated);
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFcId));
-        }else{
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "fail", null));
-        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCService.updateSharedFC(sharedFCDto, tags, sharedFcId, email)));
+
     }
 
 
@@ -121,15 +116,7 @@ public class SharedFullCourseController {
     @PostMapping("/like/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 좋아요", notes = "공유 풀코스 좋아요시, 사용자식별자(userId), 공유풀코스식별자(sharedFcId)를 추가하고 취소시 삭제합니다.")
     public ResponseEntity<BaseResponseBody> likeSharedFC(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId){
-
-        Optional<User> opt = userRepository.findByEmail(email);
-        User user = opt.orElseThrow(()-> new UserNotFoundException());
-
-        if(sharedFCService.likeSharedFC(sharedFcId,email)==1){ // 좋아요
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "좋아요 완료"));
-        }else {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", "좋아요 취소"));
-        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCService.likeSharedFC(sharedFcId,email)));
     }
 
     /** 풀코스 댓글 등록 **/
