@@ -12,12 +12,49 @@ const initialState = {
   sharedFcInfo: null,
   error: null,
   sharedFcLikeList: null,
+  tagList: [
+    '산',
+    '바다',
+    '힐링',
+    '계곡',
+    '핫플',
+    '현지맛집',
+    '돼지국밥',
+    '산책',
+    '데이트',
+    '맛집',
+    '힐링',
+    '계곡',
+  ],
+  dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
+  checkedTagList: [],
+  checkedDayTagList: [],
 };
 
 const shareSlice = createSlice({
   name: 'share',
   initialState,
-  reducers: {},
+  reducers: {
+    checkTag: (state, { payload }) => {
+      if (state.checkedTagList.includes(payload)) {
+        const tmp = state.checkedTagList.filter((el) => el !== payload);
+        state.checkedTagList = tmp;
+      } else {
+        const tmp = [...state.checkedTagList, payload];
+        state.checkedTagList = tmp;
+      }
+    },
+    checkDayTag: (state, { payload }) => {
+      const day = payload.slice(0, 1);
+      if (state.checkedDayTagList.includes(day)) {
+        const tmp = state.checkedDayTagList.filter((el) => el !== day);
+        state.checkedDayTagList = tmp;
+      } else {
+        const tmp = [...state.checkedDayTagList, day];
+        state.checkedDayTagList = tmp;
+      }
+    },
+  },
   extraReducers: {
     // 공유풀코스 목록 조회
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
@@ -66,5 +103,7 @@ const shareSlice = createSlice({
     },
   },
 });
+
+export const { checkTag, checkDayTag } = shareSlice.actions;
 
 export default shareSlice.reducer;

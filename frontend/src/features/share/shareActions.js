@@ -10,9 +10,12 @@ import {
 
 export const fetchSharedFc = createAsyncThunk(
   'share/fetchSharedFc',
-  async (tmp, { rejectWithValue }) => {
+  async ({ checkedTagList, checkedDayTagList }, { rejectWithValue }) => {
     try {
-      const { data } = await getSharedFc();
+      const { data } = await getSharedFc({
+        tags: checkedTagList,
+        days: checkedDayTagList,
+      });
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
