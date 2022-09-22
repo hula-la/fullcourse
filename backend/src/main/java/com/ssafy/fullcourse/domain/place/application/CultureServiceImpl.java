@@ -59,10 +59,12 @@ public class CultureServiceImpl implements CultureService{
 
         if(cultureLike.isPresent()){
             cultureLikeRepository.deleteById(cultureLike.get().getLikeId());
+            culture.setLikeCnt(culture.getLikeCnt() - 1);
         }else{
             cultureLikeRepository.save(CultureLike.builder().user(user).place(culture).build());
+            culture.setLikeCnt(culture.getLikeCnt() + 1);
         }
-
+        cultureRepository.save(culture);
         return true;
     }
 }

@@ -34,12 +34,7 @@ public class TravelServiceImpl implements TravelService {
     public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag) throws Exception {
 
         if (tag.equals("")) {
-            Page<Travel> page;
-            if (keyword.equals("")) {
-                page = travelRepository.findAll(pageable);
-            } else {
-                page = travelRepository.findByNameContaining(keyword, pageable);
-            }
+            Page<Travel> page = travelRepository.findByNameContaining(keyword, pageable);
             return page.map(PlaceRes::new);
         } else {
             StringTokenizer st = new StringTokenizer(tag, ",");
@@ -50,7 +45,7 @@ public class TravelServiceImpl implements TravelService {
                 tagList.add(st.nextToken());
             }
 
-            List<Travel> list = travelRepository.findAll();
+            List<Travel> list = travelRepository.findByNameContaining(keyword);
             for (int i = 0; i < list.size(); i++) {
                 int cnt = 0;
                 Travel t = list.get(i);
@@ -58,6 +53,7 @@ public class TravelServiceImpl implements TravelService {
                     if (t.getTag() != null) {
                         if (t.getTag().contains(tg)) {
                             cnt++;
+                            break;
                         }
                     }
                 }
@@ -95,10 +91,12 @@ public class TravelServiceImpl implements TravelService {
 
         if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
+            travel.setLikeCnt(travel.getLikeCnt() - 1);
         } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
+            travel.setLikeCnt(travel.getLikeCnt() + 1);
         }
-
+        travelRepository.save(travel);
         return true;
     }
 }
