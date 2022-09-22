@@ -20,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,8 +60,27 @@ public class SharedFCListService {
     }
 
 
-    // 공유 풀코스 태그 조회
-    public List<SharedFCGetRes> searchByTags(List<String> tags, Pageable pageable){
+//    // 공유 풀코스 태그 조회
+//    public List<SharedFCListDto> searchByTags(List<String> tags, Pageable pageable){
+//        Specification<SharedFCTag> specification = null;
+//
+//        for(String tag : tags){
+//            System.out.print(tag+", ");
+//            Specification<SharedFCTag> tagSpecification = SharedFCTagSpecification.tagContains(tag);
+//            if(specification == null)
+//                specification = tagSpecification;
+//            else
+//                specification = specification.or(tagSpecification);
+//        }
+//
+//        List<Long> sharedFcIds = sharedFCTagRepository.findAll(specification).stream().map(tag->tag.getSharedFullCourse().getSharedFcId()).collect(Collectors.toList());
+//        return sharedFCRepository.findAllBySharedFcIdIdIn(sharedFcIds, pageable).stream().map(
+//                share->new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList()))).collect(Collectors.toList());
+//
+//    }
+
+    // 공유 풀코스 태그&날짜 조회
+    public List<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
         Specification<SharedFCTag> specification = null;
 
         for(String tag : tags){
@@ -71,13 +91,20 @@ public class SharedFCListService {
             else
                 specification = specification.or(tagSpecification);
         }
+        List<Long> fromTags = sharedFCTagRepository.findAll(specification).stream().map(tag->tag.getSharedFullCourse().getSharedFcId())
+                .collect(Collectors.toList());
+        if(days.size()==0) {
+            return sharedFCRepository.findAllBySharedFcIdIdIn(fromTags,pageable).stream().map(
+                    share-> new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())))
+                    .collect(Collectors.toList());
+        }else{
+            return sharedFCRepository.findALLByTagAndDay(days, fromTags,pageable).stream().map(
+                    share->new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())))
+                    .collect(Collectors.toList());
+        }
 
-        List<Long> sharedFcIds = sharedFCTagRepository.findAll(specification).stream().map(tag->tag.getSharedFullCourse().getSharedFcId()).collect(Collectors.toList());
-        List<SharedFCGetRes> sharedFCGetRes = sharedFCRepository.findAllBySharedFcIdIdIn(sharedFcIds, pageable).stream().map(
-                sharedFc->SharedFCGetRes.of(sharedFc)).collect(Collectors.toList());
 
-        return sharedFCGetRes;
+
+
     }
-
-
 }
