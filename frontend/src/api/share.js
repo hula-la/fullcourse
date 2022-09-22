@@ -1,9 +1,7 @@
 import client from './client';
 
 export const getSharedFc = async () => {
-  const res = await client.get('api/share/fullcourse', {
-    params: { size: 3 },
-  });
+  const res = await client.get('api/share/fullcourse');
   console.log(res);
   return res;
 };
@@ -28,5 +26,10 @@ export const deleteSharedFcComment = async (sharedFcId, commentId) => {
   const res = await client.delete(
     `api/share/comment/${sharedFcId}/${commentId}`,
   );
+  return res;
+};
+
+export const getSharedFcLikeList = async () => {
+  const res = await client.get('api/share/fullcourse/like');
   return res;
 };

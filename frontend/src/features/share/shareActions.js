@@ -3,6 +3,7 @@ import {
   deleteSharedFcComment,
   getSharedFc,
   getSharedFcDetail,
+  getSharedFcLikeList,
   postSharedFc,
   postSharedFcComment,
 } from '../../api/share';
@@ -80,6 +81,22 @@ export const dropSharedFcComment = createAsyncThunk(
   async ({ sharedFcId, commentId }, { rejectWithValue }) => {
     try {
       const { data } = await deleteSharedFcComment(sharedFcId, commentId);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const fetchSharedFcLikeList = createAsyncThunk(
+  'share/fetchSharedFcLikeList',
+  async (tmp, { rejectWithValue }) => {
+    try {
+      const { data } = await getSharedFcLikeList();
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
