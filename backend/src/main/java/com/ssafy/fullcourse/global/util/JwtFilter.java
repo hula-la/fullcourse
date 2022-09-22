@@ -50,13 +50,12 @@ public class JwtFilter extends GenericFilterBean {
 //        if (jwt==null) return;
 
         // 토큰의 유효성을 검사하고 (validateToken(jwt))
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+        if (jwt!=null&&StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             // 정상이면 Authentication 객체를 받아와서
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             // SecurityContext에 set 해준다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String email = (String) authentication.getPrincipal();
-            System.out.println("sdfs*"+userRepository);
 
             Optional<User> user = userRepository.findByEmail(email);
 
@@ -68,7 +67,6 @@ public class JwtFilter extends GenericFilterBean {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
-        System.out.println("필터나감");
     }
 
     // Request Header에서 토큰 정보를 꺼내오는 메서드

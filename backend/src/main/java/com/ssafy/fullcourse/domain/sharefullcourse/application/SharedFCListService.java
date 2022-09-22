@@ -37,12 +37,14 @@ public class SharedFCListService {
     private final UserRepository userRepository;
 
 
-    public Page<SharedFCListDto> getSharedFCList(String keyword, Pageable pageable) {
+    public Page<SharedFCListDto> getSharedFCList(String email, String keyword, Pageable pageable) {
         Page<SharedFullCourse> page;
         if (keyword==null) page=sharedFCRepository.findAll(pageable);
         else page=sharedFCRepository.findFCListByTitleContains(keyword, pageable);
 
-        return page.map(share -> new SharedFCListDto(share, share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
+        return page.map(share -> new SharedFCListDto(share,
+                sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,share).isPresent(),
+                share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
 
     public Page<SharedFCListDto> getSharedFCLikeList(String email, String keyword, Pageable pageable) {
