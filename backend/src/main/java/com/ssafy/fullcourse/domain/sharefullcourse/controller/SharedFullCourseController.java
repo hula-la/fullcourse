@@ -14,6 +14,7 @@ import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -204,9 +205,17 @@ public class SharedFullCourseController {
     }
 
     // 공유 풀코스 태그 조회
-    @PostMapping("/fullcourse/tag")
-    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@RequestBody List<String> tags, Pageable pageable){
-        List<SharedFCGetRes> sharedFCList = sharedFCListService.searchByTags(tags, pageable);
+//    @PostMapping("/fullcourse/tag")
+//    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@RequestBody List<String> tags, Pageable pageable){
+//        List<SharedFCGetRes> sharedFCList = sharedFCListService.searchByTags(tags, pageable);
+//        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
+//    }
+
+    // 공유 풀코스 조건(태그, 날짜) 검색
+    @PostMapping("/fullcourse/search")
+    public ResponseEntity<BaseResponseBody> getSharedFCByTagAndDays(@RequestBody SharedFCSearchReq sharedFCSearchReq,
+                                                                    Pageable pageable){
+        List<SharedFCListDto> sharedFCList = sharedFCListService.searchByTagAndDay(sharedFCSearchReq.getTags(),sharedFCSearchReq.getDays(),pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
