@@ -6,6 +6,7 @@ import DeleteUser from '../../components/user/profile/DeleteUser';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import MyLikeSharedFc from '../../components/user/profile/MyLikeSharedFc';
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,7 +41,12 @@ const ProfilePage = () => {
         onClickPageThree={onClickPageThree}
         userInfo={userInfo}
       />
-      {pageNum === '1' && userInfo && <MyFullcourse userInfo={userInfo} />}
+      {pageNum === '1' && userInfo && (
+        <>
+          <MyFullcourse userInfo={userInfo} />
+          <MyLikeSharedFc />
+        </>
+      )}
       {pageNum === '2' && userInfo && <UpdateProfile userInfo={userInfo} />}
       {pageNum === '3' && <DeleteUser userInfo={userInfo} />}
     </Wrapper>
