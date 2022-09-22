@@ -130,7 +130,6 @@ const MainPage = () => {
           </Link>
 
           <a
-            href
             onClick={(e) => {
               e.preventDefault(e);
               section2.current.scrollIntoView({ behavior: 'smooth' });
@@ -145,10 +144,10 @@ const MainPage = () => {
         </MainTitle>
       </Introduce>
       <FullCourses ref={section2}>
-        <FullCourseList/>
+        <FullCourseList />
       </FullCourses>
       <StartPlaces>
-        <StartPlaceList/>
+        <StartPlaceList />
       </StartPlaces>
     </Container>
   );

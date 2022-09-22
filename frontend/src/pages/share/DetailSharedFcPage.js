@@ -2,10 +2,11 @@ import React from 'react';
 import FullcourseMap from '../../components/share/FullcourseMap';
 import FullcourseSide from '../../components/share/FullcourseSide';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import { fetchSharedFc } from '../../features/share/shareActions';
+import { fetchSharedFcDetail } from '../../features/share/shareActions';
+import FullcourseComment from '../../components/share/FullcourseComment';
 
 const DetailBlock = styled.div`
   display: flex;
@@ -17,15 +18,17 @@ const FullcourseDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const sharedFcId = params.sharedFcId;
+  const { sharedFcInfo } = useSelector((state) => state.share);
 
   useEffect(() => {
-    dispatch(fetchSharedFc(sharedFcId));
+    dispatch(fetchSharedFcDetail(sharedFcId));
   }, [dispatch, sharedFcId]);
 
   return (
     <DetailBlock>
-      <FullcourseSide />
+      <FullcourseSide sharedFcInfo={sharedFcInfo} />
       <FullcourseMap />
+      <FullcourseComment sharedFcInfo={sharedFcInfo} />
     </DetailBlock>
   );
 };

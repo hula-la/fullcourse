@@ -50,7 +50,7 @@ const GridBox = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 5vh 0; //세로간격 가로간격
   justify-items: center;
-`
+`;
 
 const StartPlaceList = () => {
   const startPlaceInfoList = [
@@ -62,7 +62,7 @@ const StartPlaceList = () => {
     ['/img/startplace/jagalchi.jpg', '자갈치 시장', 'Jagalchi Market'],
     ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon'],
   ];
-  
+
   return (
     <div>
       <Container>
@@ -70,6 +70,7 @@ const StartPlaceList = () => {
         <GridBox>
           {startPlaceInfoList.map((item, idx) => (
             <Card
+              key={idx}
               sx={{
                 border: '1px solid white',
                 minHeight: '280px',
@@ -94,7 +95,6 @@ const StartPlaceList = () => {
               </CardContent>
             </Card>
           ))}
-
         </GridBox>
       </Container>
     </div>
