@@ -25,8 +25,9 @@ public class SharedFCGetRes {
     private List<String> sharedFCTags;
     private List<SharedFCCommentRes> sharedFCComments;
     private String thumbnail;
+    private boolean isLike;
 
-    public static SharedFCGetRes of(SharedFullCourse sharedFullCourse){
+    public static SharedFCGetRes of(SharedFullCourse sharedFullCourse, Boolean isLike){
         return SharedFCGetRes.builder()
                 .fcId(sharedFullCourse.getFullCourse().getFcId())
                 .sharedFcId(sharedFullCourse.getSharedFcId())
@@ -42,7 +43,9 @@ public class SharedFCGetRes {
                                 .commentId(comment.getFcCommentId())
                                 .nickname(comment.getUser().getNickname())
                                 .comment(comment.getComment()).build()).collect(Collectors.toList()))
-                .thumbnail(sharedFullCourse.getThumbnail()).build();
+                .thumbnail(sharedFullCourse.getThumbnail())
+                .isLike(isLike)
+                .build();
     }
 
 }
