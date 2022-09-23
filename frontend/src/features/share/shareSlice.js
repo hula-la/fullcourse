@@ -5,6 +5,7 @@ import {
   fetchSharedFcDetail,
   dropSharedFcComment,
   fetchSharedFcLikeList,
+  createSharedFcLike,
 } from './shareActions';
 
 const initialState = {
@@ -66,10 +67,10 @@ const shareSlice = createSlice({
     // 공유풀코스 상세정보 조회
     [fetchSharedFcDetail.fulfilled]: (state, { payload }) => {
       state.sharedFcInfo = payload.data;
+      console.log(state.sharedFcInfo);
     },
     [fetchSharedFcDetail.rejected]: (state, { payload }) => {
       state.error = payload.data;
-      console.log(state.error);
     },
     // 공유풀코스 댓글 생성
     [createSharedFcComment.fulfilled]: (state, { payload }) => {
@@ -100,6 +101,13 @@ const shareSlice = createSlice({
     [fetchSharedFcLikeList.rejected]: (state, { payload }) => {
       state.error = payload.data;
       console.log(state.sharedFcLikeList);
+    },
+    // 공유 풀코스 좋아요
+    [createSharedFcLike.fulfilled]: (state, { payload }) => {
+      state.sharedFcInfo = {
+        ...state.sharedFcInfo,
+        like: payload.data,
+      };
     },
   },
 });

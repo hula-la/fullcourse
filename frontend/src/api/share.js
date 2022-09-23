@@ -5,9 +5,10 @@ export const getSharedFc = async (data) => {
   return res;
 };
 
-export const getSharedFcDetail = async (data) => {
-  const res = await client.get(`api/share/fullcourse/${data}`);
-  console.log(res);
+export const getSharedFcDetail = async (sharedFcId, email) => {
+  const res = await client.get(`api/share/fullcourse/${sharedFcId}`, {
+    params: { email },
+  });
   return res;
 };
 
@@ -30,5 +31,11 @@ export const deleteSharedFcComment = async (sharedFcId, commentId) => {
 
 export const getSharedFcLikeList = async () => {
   const res = await client.get('api/share/fullcourse/like');
+  return res;
+};
+
+export const postSharedFcLike = async (sharedFcId) => {
+  const res = await client.post(`api/share/like/${sharedFcId}`);
+  console.log(res);
   return res;
 };

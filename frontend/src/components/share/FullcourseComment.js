@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   createSharedFcComment,
+  createSharedFcLike,
   dropSharedFcComment,
 } from '../../features/share/shareActions';
 import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const CommentBlock = styled.div`
   width: 20%;
@@ -49,6 +51,10 @@ const FullcourseComment = ({ sharedFcInfo }) => {
     );
   };
 
+  const onClickLike = () => {
+    dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
+  };
+
   return (
     <CommentBlock>
       {sharedFcInfo ? (
@@ -67,7 +73,18 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         </>
       ) : null}
       <div className="commentForm">
-        <FavoriteIcon />
+        {sharedFcInfo ? (
+          <>
+            {sharedFcInfo.like ? (
+              <FavoriteIcon onClick={onClickLike} />
+            ) : (
+              <FavoriteBorderIcon onClick={onClickLike} />
+            )}
+          </>
+        ) : null}
+
+        {/* <FavoriteIcon onClick={onClickLike} />
+        <FavoriteBorderIcon onClick={onClickLike} /> */}
         <form onSubmit={onSubmit}>
           <input
             type="text"
