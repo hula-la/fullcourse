@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import MyFullcourseShare from './MyFullcourseShare';
 
 const MyfullcourseItem = ({ fullcourse }) => {
@@ -24,7 +25,9 @@ const MyfullcourseItem = ({ fullcourse }) => {
         header={modalHeader}
         fullcourse={fullcourse}
       ></MyFullcourseShare>
-      <p>{fullcourse.thumbnail}</p>
+      <NavLink to="/fullcourse/detail/:sharedFcId">
+        <p>{fullcourse.thumbnail}</p>
+      </NavLink>
       <button onClick={onClick}>공유</button>
     </div>
   );

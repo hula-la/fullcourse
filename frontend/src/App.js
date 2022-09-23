@@ -3,6 +3,7 @@ import './App.css';
 // Main
 import Layout from './layout/Layout';
 import MainPage from './pages/main/MainPage';
+import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
 import LoginPage from './pages/user/LoginPage';
 import ProfilePage from './pages/user/ProfilePage';
@@ -11,8 +12,10 @@ import NotFound from './pages/NotFound';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchUserInfo } from './features/user/userActions';
-import FullcourseShare from './pages/share/FullcourseShare';
-import FullcourseDetail from './pages/share/FullcourseDetail';
+import ShareFcPage from './pages/share/SharedFcPage';
+import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
+// Plan
+import PlanPage from './pages/trip/PlanPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,11 +33,13 @@ function App() {
           <Route path="profile/:pageNum" element={<ProfilePage />} />
         </Route>
         <Route path="fullcourse" element={<Layout />}>
-          <Route path="" element={<FullcourseShare />} />
-          <Route path="detail/:sharedFcId" element={<FullcourseDetail />} />
+          <Route path="" element={<ShareFcPage />} />
+          <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
         </Route>
         {/* trip */}
-        <Route path="trip" element={<Layout />}></Route>
+        <Route path="trip" element={<OnlyHeaderLayout />}>
+          <Route path="plan" element={<PlanPage />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
