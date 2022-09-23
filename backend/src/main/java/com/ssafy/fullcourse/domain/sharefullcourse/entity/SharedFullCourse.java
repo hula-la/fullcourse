@@ -45,6 +45,9 @@ public class SharedFullCourse {
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
+    @Column(nullable = false)
+    private int day;
+
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
@@ -69,6 +72,7 @@ public class SharedFullCourse {
                 .detail(sharedFCDto.getDetail())
                 .title(sharedFCDto.getTitle())
                 .regDate(sharedFCDto.getRegDate())
+                .day(sharedFCDto.getDay())
                 .likeCnt(sharedFCDto.getLikeCnt())
                 .commentCnt(sharedFCDto.getCommentCnt())
                 .viewCnt(sharedFCDto.getViewCnt())
@@ -86,6 +90,7 @@ public class SharedFullCourse {
                 .detail(sharedFCDto.getDetail())
                 .title(sharedFCDto.getTitle())
                 .regDate(now.getRegDate())
+                .day(sharedFCDto.getDay())
                 .likeCnt(now.getLikeCnt())
                 .commentCnt(now.getCommentCnt())
                 .viewCnt(now.getViewCnt())

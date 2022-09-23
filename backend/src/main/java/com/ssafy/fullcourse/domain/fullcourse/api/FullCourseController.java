@@ -2,6 +2,7 @@ package com.ssafy.fullcourse.domain.fullcourse.api;
 
 import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseVisitConfirmReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +23,7 @@ public class FullCourseController {
 
     private final FullCourseService fullCourseService;
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation(value = "풀코스 등록", notes = "type")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
@@ -78,6 +79,12 @@ public class FullCourseController {
 
         Long newFcId = fullCourseService.updateFullCourse(email,fcId,fullCoursePostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", newFcId));
+    }
+
+    @PutMapping("/visitconfirm")
+    @ApiOperation(value = "풀코스 장소 방문인증")
+    public ResponseEntity<BaseResponseBody> visitConfirm(@RequestBody FullCourseVisitConfirmReq fullCourseVisitConfirmReq){
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success", fullCourseService.confirmVisit(fullCourseVisitConfirmReq)));
     }
 
 }

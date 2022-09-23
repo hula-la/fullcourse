@@ -20,6 +20,7 @@ public class SharedFCDto {
     private String detail;
     private String title;
     private Date regDate;
+    private int day;
     @Builder.Default private Long likeCnt = 0L;
     @Builder.Default private Long commentCnt = 0L;
     @Builder.Default private Long viewCnt = 0L;
@@ -35,6 +36,7 @@ public class SharedFCDto {
                 .title(sharedFCReq.getTitle())
                 .thumbnail(sharedFCReq.getThumbnail())
                 .regDate(new Date())
+                .day(sharedFCReq.getDay())
                 .sharedFCTags(new ArrayList<>())
                 .build();
     }

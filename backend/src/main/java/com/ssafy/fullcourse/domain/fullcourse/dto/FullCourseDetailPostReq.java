@@ -15,7 +15,7 @@ public class FullCourseDetailPostReq {
     @ApiModelProperty(name="순서", example="0")
     int courseOrder;
 
-    @ApiModelProperty(name="장소 종류", example="ACTIVITY")
+    @ApiModelProperty(name="장소 종류", example="activity")
     String type;
 
     @ApiModelProperty(name="장소 식별자", example="1")
