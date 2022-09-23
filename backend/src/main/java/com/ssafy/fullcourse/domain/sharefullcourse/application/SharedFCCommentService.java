@@ -10,6 +10,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.exception.UserNotMatchExcepti
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCCommentRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class SharedFCCommentService {
     private final SharedFCCommentRepository sharedFCCommentRepository;
     private final SharedFCRepository sharedFCRepository;
 
+    private final UserRepository userRepository;
+
     // 공유 풀코스 댓글 전체 조회
     public List<SharedFCCommentRes> listFCComment(Long sharedFcId){
         List<SharedFCComment> commentList = sharedFCCommentRepository.findAllBySharedFullCourse_SharedFcId(sharedFcId);
@@ -37,7 +40,7 @@ public class SharedFCCommentService {
 
     // 공유 풀코스 댓글 등록
     @Transactional
-    public int createFCComment(SharedFCCommentReq sharedFCCommentReq, User user){
+    public int createFCComment(SharedFCCommentReq sharedFCCommentReq, String email){
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedFCCommentReq.getSharedFcId());
 
@@ -46,7 +49,7 @@ public class SharedFCCommentService {
         SharedFCComment sharedFCComment = SharedFCComment.builder()
                 .comment(sharedFCCommentReq.getComment())
                 .sharedFullCourse(sharedFullCourse)
-                .user(user).build();
+                .user(userRepository.findByEmail(email).get()).build();
 
         SharedFCComment saved = sharedFCCommentRepository.save(sharedFCComment);
         if(saved == null) throw new ServerError("댓글 등록 중 에러 발생");
@@ -57,10 +60,10 @@ public class SharedFCCommentService {
 
     //공유 풀코스 댓글 수정
     @Transactional
-    public void updateFCComment(Long commentId, SharedFCCommentReq sharedFCCommentReq, User user){
+    public void updateFCComment(Long commentId, SharedFCCommentReq sharedFCCommentReq, String email){
         SharedFCComment saved = sharedFCCommentRepository.findByFcCommentId(commentId);
         if(saved == null) throw new CommentNotFoundException();
-        if(saved.getUser().getUserId() != user.getUserId()) throw new UserNotMatchException("댓글단 사용자만 수정 가능");
+        if(saved.getUser().getEmail() != email) throw new UserNotMatchException("댓글단 사용자만 수정 가능");
 
         SharedFCComment sharedFCComment = SharedFCComment.builder()
                 .fcCommentId(saved.getFcCommentId())
@@ -76,10 +79,10 @@ public class SharedFCCommentService {
 
     // 공유 풀코스 댓글 삭제
     @Transactional
-    public int deleteFCComment(Long commentId, User user){
+    public int deleteFCComment(Long commentId, String email){
         SharedFCComment saved = sharedFCCommentRepository.findByFcCommentId(commentId);
         if(saved == null) throw new SharedFCNotFoundException();
-        if(saved.getUser().getUserId() != user.getUserId()) throw new UserNotMatchException("댓글단 사용자만 삭제 가능");
+        if(saved.getUser().getEmail() != email) throw new UserNotMatchException("댓글단 사용자만 삭제 가능");
 
         sharedFCCommentRepository.delete(saved);
         return sharedFCRepository.updateCommentCnt(saved.getSharedFullCourse().getSharedFcId(),-1);

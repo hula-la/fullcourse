@@ -12,11 +12,15 @@ import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +31,42 @@ public class TravelServiceImpl implements TravelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword) throws Exception {
-        Page<Travel> page;
-        if (keyword.equals("")) {
-            page = travelRepository.findAll(pageable);
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag) throws Exception {
+
+        if (tag.equals("")) {
+            Page<Travel> page = travelRepository.findByNameContaining(keyword, pageable);
+            return page.map(PlaceRes::new);
         } else {
-            page = travelRepository.findByNameContaining(keyword, pageable);
+            StringTokenizer st = new StringTokenizer(tag, ",");
+            List<String> tagList = new ArrayList<>();
+
+            int n = st.countTokens();
+            for (int i = 0; i < n; i++) {
+                tagList.add(st.nextToken());
+            }
+
+            List<Travel> list = travelRepository.findByNameContaining(keyword);
+            for (int i = 0; i < list.size(); i++) {
+                int cnt = 0;
+                Travel t = list.get(i);
+                for (String tg : tagList) {
+                    if (t.getTag() != null) {
+                        if (t.getTag().contains(tg)) {
+                            cnt++;
+                            break;
+                        }
+                    }
+                }
+                if (cnt == 0) {
+                    list.remove(t);
+                    i--;
+                }
+
+            }
+
+            Page<Travel> page = new PageImpl(list, pageable, list.size());
+            return page.map(PlaceRes::new);
         }
-        return page.map(PlaceRes::new);
     }
 
     @Override
@@ -59,10 +91,12 @@ public class TravelServiceImpl implements TravelService {
 
         if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
+            travel.setLikeCnt(travel.getLikeCnt() - 1);
         } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
+            travel.setLikeCnt(travel.getLikeCnt() + 1);
         }
-
+        travelRepository.save(travel);
         return true;
     }
 }

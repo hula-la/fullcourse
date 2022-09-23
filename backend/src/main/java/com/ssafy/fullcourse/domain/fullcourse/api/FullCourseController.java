@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "풀코스 API", tags = {"fullcourse"})
@@ -26,10 +27,10 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> registerFullCourse(@RequestParam Long userId,
-                                                           @RequestBody FullCoursePostReq fullCoursePostReq) {
+    public ResponseEntity<BaseResponseBody> registerFullCourse(@AuthenticationPrincipal String email,
+                                                               @RequestBody FullCoursePostReq fullCoursePostReq) {
 
-        Long fcId = fullCourseService.createFullCourse(userId, fullCoursePostReq);
+        Long fcId = fullCourseService.createFullCourse(email, fullCoursePostReq);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fcId));
     }
@@ -49,10 +50,10 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> findMyFullCourse(@PathVariable Long userId,
+    public ResponseEntity<BaseResponseBody> findMyFullCourse(@AuthenticationPrincipal String email,
                                                            Pageable pageable) {
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(userId,pageable)));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(email,pageable)));
     }
 
     @DeleteMapping("/{fcId}")
@@ -66,16 +67,16 @@ public class FullCourseController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "삭제"));
     }
 
-    @PutMapping("/{fcId}/{userId}")
+    @PutMapping("/{fcId}")
     @ApiOperation(value = "풀코스 업데이트", notes = "type")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
     public ResponseEntity<BaseResponseBody> updateFullCourse(@PathVariable Long fcId,
-                                                             @PathVariable Long userId,
+                                                             @AuthenticationPrincipal String email,
                                                              @RequestBody FullCoursePostReq fullCoursePostReq) {
 
-        Long newFcId = fullCourseService.updateFullCourse(userId,fcId,fullCoursePostReq);
+        Long newFcId = fullCourseService.updateFullCourse(email,fcId,fullCoursePostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", newFcId));
     }
 

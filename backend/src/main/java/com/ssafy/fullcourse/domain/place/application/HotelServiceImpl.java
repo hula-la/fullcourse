@@ -58,10 +58,12 @@ public class HotelServiceImpl implements HotelService {
 
         if (hotelLike.isPresent()) {
             hotelLikeRepository.deleteById(hotelLike.get().getLikeId());
+            hotel.setLikeCnt(hotel.getLikeCnt() - 1);
         } else {
             hotelLikeRepository.save(HotelLike.builder().user(user).place(hotel).build());
+            hotel.setLikeCnt(hotel.getLikeCnt() + 1);
         }
-
+        hotelRepository.save(hotel);
         return true;
     }
 }

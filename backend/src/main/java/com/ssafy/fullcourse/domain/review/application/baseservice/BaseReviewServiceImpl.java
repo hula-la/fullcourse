@@ -67,7 +67,7 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
 
     @Override
     @Transactional
-    public Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
         Optional<P> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -112,12 +112,12 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
 
     @Override
     @Transactional
-    public Boolean reviewLike(PlaceEnum Type, Long userId, Long reviewId) {
+    public Boolean reviewLike(PlaceEnum Type, String userId, Long reviewId) {
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
         BaseReviewLikeRepository baseReviewRLikeRepository = baseReviewLikeMap.get(Type.getReviewLikeRepository());
 
         Optional<R> reviewOpt = baseReviewRepository.findById(reviewId);
-        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<User> userOpt = userRepository.findByEmail(userId);
 
         if (!userOpt.isPresent()) throw new UserNotFoundException();
         if (!reviewOpt.isPresent()) throw new ReviewNotFoundException();

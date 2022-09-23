@@ -59,10 +59,10 @@ public class SharedFullCourse {
     private FullCourse fullCourse;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public static SharedFullCourse of(SharedFCDto sharedFCDto){
+    public static SharedFullCourse of(SharedFCDto sharedFCDto, User user){
 
         return SharedFullCourse.builder()
                 .sharedFcId(sharedFCDto.getSharedFcId())
@@ -75,6 +75,7 @@ public class SharedFullCourse {
                 .sharedFCTags(sharedFCDto.getSharedFCTags().stream().map(tag->SharedFCTag.builder().fcTagId(tag.getFcTagId()).tagContent(tag.getTagContent()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFCDto.getThumbnail())
                 .fullCourse(sharedFCDto.getFullCourse())
+                .user(user)
                 .build();
     }
 
@@ -92,9 +93,8 @@ public class SharedFullCourse {
                 .sharedFCComments(now.getSharedFCComments())
                 .thumbnail(now.getThumbnail())
                 .fullCourse(sharedFCDto.getFullCourse())
+                .user(now.getUser())
                 .build();
     }
-
-
 
 }

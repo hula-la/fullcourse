@@ -58,9 +58,12 @@ public class ActivityServiceImpl implements ActivityService{
 
         if(activityLike.isPresent()){
             activityLikeRepository.deleteById(activityLike.get().getLikeId());
+            activity.setLikeCnt(activity.getLikeCnt() - 1);
         } else {
             activityLikeRepository.save(ActivityLike.builder().user(user).place(activity).build());
+            activity.setLikeCnt(activity.getLikeCnt() + 1);
         }
+        activityRepository.save(activity);
         return true;
     }
 }
