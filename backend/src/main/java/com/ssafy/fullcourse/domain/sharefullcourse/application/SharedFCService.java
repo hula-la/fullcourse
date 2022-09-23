@@ -129,7 +129,6 @@ public class SharedFCService {
 
    public void tagDtoE(List<SharedFCTagDto> tags, SharedFullCourse sharedFullCourse){
         for(SharedFCTagDto tag : tags) {
-            System.out.println("?"+tag.getTagContent());
             SharedFCTag sharedFCTag = SharedFCTag.of(tag,sharedFullCourse);
             sharedFullCourse.getSharedFCTags().add(sharedFCTag);
             sharedFCTag.setSharedFullCourse(sharedFullCourse);
