@@ -59,7 +59,7 @@ public class SharedFullCourse {
     private FullCourse fullCourse;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public static SharedFullCourse of(SharedFCDto sharedFCDto, User user){
