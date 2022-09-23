@@ -1,10 +1,7 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +36,7 @@ public class FullCourseDetail {
     private String comment;
 
     @Column(nullable = false)
-    private boolean isVisited;
+    private boolean isVisited = false;
 
 
     @ManyToOne(fetch = LAZY)
