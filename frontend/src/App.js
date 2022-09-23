@@ -3,6 +3,7 @@ import './App.css';
 // Main
 import Layout from './layout/Layout';
 import MainPage from './pages/main/MainPage';
+import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
 import LoginPage from './pages/user/LoginPage';
 import ProfilePage from './pages/user/ProfilePage';
@@ -36,7 +37,7 @@ function App() {
           <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
         </Route>
         {/* trip */}
-        <Route path="trip" element={<Layout />}>
+        <Route path="trip" element={<OnlyHeaderLayout />}>
           <Route path="plan" element={<PlanPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
