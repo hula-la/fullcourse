@@ -22,7 +22,7 @@ public class FullCourseController {
 
     private final FullCourseService fullCourseService;
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation(value = "풀코스 등록", notes = "type")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
