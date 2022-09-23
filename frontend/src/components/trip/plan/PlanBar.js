@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
 import DateRanger from './DateRanger';
+import DailyPlanner from './DailyPlanner';
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const PlanBar = () => {
   return (
     <Container>
       <DateRanger tripDay={tripDay} setTripDay={setTripDay} />
+      <DailyPlanner tripDay={tripDay}/>
     </Container>
   );
 };

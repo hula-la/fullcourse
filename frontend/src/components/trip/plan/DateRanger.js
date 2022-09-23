@@ -84,8 +84,8 @@ const DateRanger = ({tripDay, setTripDay}) => {
 
   // Hide on outside click //모달백드롭을 useRef를 사용해서 구현하는법
   const hideOnClickOutside = (e) => {
-    // console.log(refOne.current)
-    // console.log(e.target)
+    console.log(refOne.current)
+    console.log(e.target)
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false);
     }
