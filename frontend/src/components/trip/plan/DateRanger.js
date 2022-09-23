@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
 //모달
 import CalendarModal from './CalendarModal';
 
@@ -13,6 +13,13 @@ import './date-range.css';
 
 //icon
 import { FaCalendarAlt } from 'react-icons/fa';
+
+//slice import
+import {
+  setStartDate,
+  setEndDate,
+  calcTripDay,
+} from '../../../features/trip/tripSlice';
 
 const TripDay = styled.div`
   font-family: Tmoney;
@@ -60,7 +67,9 @@ const TripDate = styled.div`
   align-items: center;
 `;
 
-const DateRanger = ({tripDay, setTripDay}) => {
+const DateRanger = ({ tripDay, setTripDay }) => {
+  const dispatch = useDispatch();
+
   // get the target element to toggle
   const refOne = useRef(null);
 
@@ -76,25 +85,29 @@ const DateRanger = ({tripDay, setTripDay}) => {
   // open close
   const [open, setOpen] = useState(true);
 
-  
   useEffect(() => {
     // event listeners
     document.addEventListener('click', hideOnClickOutside, true);
   }, []);
 
+  //여기 이부분 적용하기 버튼으로 옮겨야함 지금 아무데나 클릭하면 작동되게 되어있음
   // Hide on outside click //모달백드롭을 useRef를 사용해서 구현하는법
   const hideOnClickOutside = (e) => {
-    console.log(refOne.current)
-    console.log(e.target)
+    console.log(refOne.current);
+    console.log(e.target);
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false);
     }
+    //이게 아마 outside를 클릭하면 current랑 달라지는 원리로 모달 밖 클릭했을 때 닫히나봄
 
     // string을 Date type으로 바꾸는 법(정해진 형태의 string만 가능)
     const sD = new Date(document.getElementById('startDate').value);
     const eD = new Date(document.getElementById('endDate').value);
     const res = days_between(sD, eD);
     setTripDay(res);
+    dispatch(setStartDate(sD));
+    dispatch(setEndDate(eD));
+    dispatch(calcTripDay(res));
   };
 
   //일 수 세기
