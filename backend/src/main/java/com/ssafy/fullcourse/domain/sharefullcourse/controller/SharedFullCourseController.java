@@ -150,9 +150,6 @@ public class SharedFullCourseController {
                                                           @PathVariable Long sharedFcId,
                                                           @PathVariable Long commentId) {
 
-        Optional<User> opt = userRepository.findByEmail(email);
-        User user = opt.orElseThrow(()-> new UserNotFoundException());
-
         if(sharedFCCommentService.deleteFCComment(commentId,email)==1){
             List<SharedFCCommentRes> commentList = sharedFCCommentService.listFCComment(sharedFcId);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", commentList));

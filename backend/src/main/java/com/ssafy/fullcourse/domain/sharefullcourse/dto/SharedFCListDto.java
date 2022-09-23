@@ -42,6 +42,7 @@ public class SharedFCListDto {
         this.isLiked = isLiked;
     }
     public SharedFCListDto(SharedFullCourse sharedFullCourse, List<SharedFCTagDto> tagDto) {
+        System.out.println(sharedFullCourse.getUser().getEmail());
         this.sharedFcId = sharedFullCourse.getSharedFcId();
         this.detail = sharedFullCourse.getDetail();
         this.title = sharedFullCourse.getTitle();

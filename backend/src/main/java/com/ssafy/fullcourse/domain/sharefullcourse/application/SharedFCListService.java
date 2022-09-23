@@ -103,8 +103,5 @@ public class SharedFCListService {
                     .collect(Collectors.toList());
         }
 
-
-
-
     }
 }
