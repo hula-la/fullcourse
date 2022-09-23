@@ -21,7 +21,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,7 +80,7 @@ public class SharedFCListService {
 //    }
 
     // 공유 풀코스 태그&날짜 조회
-    public Slice<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
+    public Page<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
         Specification<SharedFCTag> specification = null;
 
         for(String tag : tags){

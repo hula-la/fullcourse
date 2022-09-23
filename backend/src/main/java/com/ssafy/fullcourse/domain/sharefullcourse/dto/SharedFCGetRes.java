@@ -20,6 +20,7 @@ public class SharedFCGetRes {
     private String detail;
     private String title;
     private Date regDate;
+    private int day;
     private Long likeCnt = 0L;
     private Long commentCnt = 0L;
     private Long viewCnt = 0L;
@@ -36,6 +37,7 @@ public class SharedFCGetRes {
                 .detail(sharedFullCourse.getDetail())
                 .title(sharedFullCourse.getTitle())
                 .regDate(sharedFullCourse.getRegDate())
+                .day(sharedFullCourse.getDay())
                 .likeCnt(sharedFullCourse.getLikeCnt())
                 .commentCnt(sharedFullCourse.getCommentCnt())
                 .viewCnt(sharedFullCourse.getViewCnt())

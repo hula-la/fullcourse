@@ -37,8 +37,9 @@ public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long
     Page<SharedFullCourse> findAll(Pageable pageable);
 
     @Query(value = "select sfc from SharedFullCourse sfc where sfc.sharedFcId in (:sharedFcIds)")
-    Slice<SharedFullCourse> findAllBySharedFcIdIdIn(List<Long> sharedFcIds, Pageable pageable);
+    Page<SharedFullCourse> findAllBySharedFcIdIdIn(List<Long> sharedFcIds, Pageable pageable);
 
-    @Query(value = "select sfc.* from shared_full_course sfc left join full_course f on sfc.fc_id = f.fc_id where (ABS(DATEDIFF( f.start_date, f.end_date)) + 1 ) in (:days) and sfc.shared_fc_id in (:ids)", nativeQuery = true)
-    Slice<SharedFullCourse> findALLByTagAndDay(@Param(value="days") List<Integer> days, @Param(value="ids") List<Long> ids, Pageable pageable);
+    @Query(value = "select sfc from SharedFullCourse sfc " +
+            "where sfc.day in (:days) and sfc.sharedFcId in (:ids)")
+    Page<SharedFullCourse> findALLByTagAndDay(@Param(value="days") List<Integer> days, @Param(value="ids") List<Long> ids, Pageable pageable);
 }

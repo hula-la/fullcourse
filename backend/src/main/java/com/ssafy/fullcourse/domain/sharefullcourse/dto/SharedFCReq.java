@@ -25,6 +25,8 @@ public class SharedFCReq {
     private String title;
     @ApiModelProperty(name = "공유 풀코스 썸네일 이미지 url", example = "img url")
     private String thumbnail;
+    @ApiModelProperty(name = "공유 풀코스 일수", example = "2")
+    private int day;
     @ApiModelProperty(name = "공유 풀코스 태그", example = "['먹방','부산','바다']")
     private List<String> tags;
 
