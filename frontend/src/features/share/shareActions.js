@@ -6,6 +6,7 @@ import {
   getSharedFcLikeList,
   postSharedFc,
   postSharedFcComment,
+  postSharedFcLike,
 } from '../../api/share';
 
 export const fetchSharedFc = createAsyncThunk(
@@ -29,9 +30,10 @@ export const fetchSharedFc = createAsyncThunk(
 
 export const fetchSharedFcDetail = createAsyncThunk(
   'share/fetchSharedFcDetail',
-  async (sharedFcId, { rejectWithValue }) => {
+  async ({ sharedFcId, email }, { rejectWithValue }) => {
+    console.log(email);
     try {
-      const { data } = await getSharedFcDetail(sharedFcId);
+      const { data } = await getSharedFcDetail(sharedFcId, email);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -100,6 +102,22 @@ export const fetchSharedFcLikeList = createAsyncThunk(
   async (tmp, { rejectWithValue }) => {
     try {
       const { data } = await getSharedFcLikeList();
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const createSharedFcLike = createAsyncThunk(
+  'share/createSharedFcLike',
+  async (sharedFcId, { rejectWithValue }) => {
+    try {
+      const { data } = await postSharedFcLike(sharedFcId);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

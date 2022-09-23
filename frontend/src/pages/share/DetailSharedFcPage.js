@@ -17,12 +17,15 @@ const DetailBlock = styled.div`
 const FullcourseDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const sharedFcId = params.sharedFcId;
   const { sharedFcInfo } = useSelector((state) => state.share);
+  const { userInfo } = useSelector((state) => state.user);
+
+  const sharedFcId = params.sharedFcId;
+  const email = userInfo ? userInfo.email : '';
 
   useEffect(() => {
-    dispatch(fetchSharedFcDetail(sharedFcId));
-  }, [dispatch, sharedFcId]);
+    dispatch(fetchSharedFcDetail({ sharedFcId, email }));
+  }, [dispatch, sharedFcId, email]);
 
   return (
     <DetailBlock>
