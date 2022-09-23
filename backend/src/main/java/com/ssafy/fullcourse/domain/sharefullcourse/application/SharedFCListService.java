@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +81,7 @@ public class SharedFCListService {
 //    }
 
     // 공유 풀코스 태그&날짜 조회
-    public List<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
+    public Slice<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
         Specification<SharedFCTag> specification = null;
 
         for(String tag : tags){
@@ -94,13 +95,11 @@ public class SharedFCListService {
         List<Long> fromTags = sharedFCTagRepository.findAll(specification).stream().map(tag->tag.getSharedFullCourse().getSharedFcId())
                 .collect(Collectors.toList());
         if(days.size()==0) {
-            return sharedFCRepository.findAllBySharedFcIdIdIn(fromTags,pageable).stream().map(
-                    share-> new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())))
-                    .collect(Collectors.toList());
+            return sharedFCRepository.findAllBySharedFcIdIdIn(fromTags,pageable).map(
+                    share-> new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
         }else{
-            return sharedFCRepository.findALLByTagAndDay(days, fromTags,pageable).stream().map(
-                    share->new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())))
-                    .collect(Collectors.toList());
+            return sharedFCRepository.findALLByTagAndDay(days, fromTags,pageable).map(
+                    share->new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
         }
 
     }

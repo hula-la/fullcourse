@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -192,7 +193,7 @@ public class SharedFullCourseController {
     @PostMapping("/fullcourse/search")
     public ResponseEntity<BaseResponseBody> getSharedFCByTagAndDays(@RequestBody SharedFCSearchReq sharedFCSearchReq,
                                                                     Pageable pageable){
-        List<SharedFCListDto> sharedFCList = sharedFCListService.searchByTagAndDay(sharedFCSearchReq.getTags(),sharedFCSearchReq.getDays(),pageable);
+        Slice<SharedFCListDto> sharedFCList = sharedFCListService.searchByTagAndDay(sharedFCSearchReq.getTags(),sharedFCSearchReq.getDays(),pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
