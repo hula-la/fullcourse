@@ -12,6 +12,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeReposi
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,15 +29,16 @@ public class SharedFCService {
     private final SharedFCRepository sharedFCRepository;
     private final SharedFCTagRepository sharedFCTagRepository;
     private final SharedFCLikeRepository sharedFCLikeRepository;
+    private final UserRepository userRepository;
 
     // 공유 풀코스 생성
     @Transactional
-    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags) {
+    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, User user) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFullCourse().getFcId()));
 
         if(opt.isPresent()) throw new AlreadyExistException("이미 공유한 풀코스 입니다.");
 
-        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto);
+        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto, user);
 
         tagDtoE(tags,sharedFullCourse);
 
@@ -48,31 +50,41 @@ public class SharedFCService {
 
     // 공유 풀코스 상세 조회
     @Transactional
-    public SharedFCGetRes detailSharedFC(Long sharedFcId) {
+    public SharedFCGetRes detailSharedFC(Long sharedFcId, String email) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFcId));
         SharedFullCourse sharedFullCourse = opt.orElseThrow(()->new SharedFCNotFoundException());
-        SharedFCGetRes res = SharedFCGetRes.of(sharedFullCourse);
+
+        Boolean isLike = false;
+        if(sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,sharedFullCourse).isPresent()){
+            isLike = true;
+        }
+
+        SharedFCGetRes res = SharedFCGetRes.of(sharedFullCourse, isLike);
         sharedFCRepository.updateViewCnt(sharedFcId);
         return res;
     }
 
     // 공유 풀코스 상세 수정
     @Transactional
-    public Long updateSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, Long sharedFcId) {
+    public SharedFCGetRes updateSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, Long sharedFcId, String email) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFcId));
 
         SharedFullCourse now = opt.orElseThrow(()->new SharedFCNotFoundException());
         for(int i = 0 ; i < now.getSharedFCTags().size();i++) {
-            System.out.println(now.getSharedFCTags().get(i).getTagContent());
             now.getSharedFCTags().remove(i);
         }
         SharedFullCourse sharedFullCourse = SharedFullCourse.sharedFCUpdate(sharedFCDto,now, sharedFcId);
+
+        Boolean isLike = false;
+        if(sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,sharedFullCourse).isPresent()){
+            isLike = true;
+        }
 
         tagDtoE(tags,sharedFullCourse);
 
         SharedFullCourse saved = sharedFCRepository.save(sharedFullCourse);
 
-        if(saved != null) return saved.getSharedFcId(); // 수정 성공
+        if(saved != null) return SharedFCGetRes.of(saved, isLike); // 수정 성공
         else throw new ServerError("상세 풀코스 수정 중 오류가 발생했습니다."); // 수정 중 오류
 
     }
@@ -81,34 +93,30 @@ public class SharedFCService {
     @Transactional
     public void deleteSharedFC(Long sharedFdId) {
         SharedFullCourse saved =sharedFCRepository.findBySharedFcId(sharedFdId);
-
         if(saved == null) throw new SharedFCNotFoundException();
-
         sharedFCRepository.delete(saved);
-
     }
 
 
     // 공유 풀코스 좋아요
     @Transactional
-    public int likeSharedFC(Long sharedId, User user) {
+    public boolean likeSharedFC(Long sharedId, String email) {
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedId);
         if(sharedFullCourse == null) throw new SharedFCNotFoundException();
         // 좋아요 확인
-        Optional<SharedFCLike> opt = Optional.ofNullable(sharedFCLikeRepository.findByUser_UserIdAndSharedFullCourse_SharedFcId(user.getUserId(), sharedId));
+        Optional<SharedFCLike> opt = sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email, sharedFullCourse);
 
         if(opt.isPresent()){ // 좋아요 취소
             sharedFCLikeRepository.delete(opt.get());
             sharedFCRepository.updateLikeCnt(sharedId, -1);
-            return 0;
+            return false;
         }else{ // 좋아요
-
             sharedFCLikeRepository.save(SharedFCLike.builder()
-                    .user(user)
+                    .user(userRepository.findByEmail(email).get())
                     .sharedFullCourse(sharedFullCourse).build());
             sharedFCRepository.updateLikeCnt(sharedId, 1);
-            return 1;
+            return true;
         }
     }
 
@@ -121,7 +129,6 @@ public class SharedFCService {
 
    public void tagDtoE(List<SharedFCTagDto> tags, SharedFullCourse sharedFullCourse){
         for(SharedFCTagDto tag : tags) {
-            System.out.println("?"+tag.getTagContent());
             SharedFCTag sharedFCTag = SharedFCTag.of(tag,sharedFullCourse);
             sharedFullCourse.getSharedFCTags().add(sharedFCTag);
             sharedFCTag.setSharedFullCourse(sharedFullCourse);

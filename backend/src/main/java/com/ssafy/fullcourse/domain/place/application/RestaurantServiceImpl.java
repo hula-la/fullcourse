@@ -59,10 +59,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         if (restaurantLike.isPresent()) {
             restaurantLikeRepository.deleteById(restaurantLike.get().getLikeId());
+            restaurant.setLikeCnt(restaurant.getLikeCnt() - 1);
         } else {
             restaurantLikeRepository.save(RestaurantLike.builder().user(user).place(restaurant).build());
+            restaurant.setLikeCnt(restaurant.getLikeCnt() + 1);
         }
-
+        restaurantRepository.save(restaurant);
 
         return true;
     }

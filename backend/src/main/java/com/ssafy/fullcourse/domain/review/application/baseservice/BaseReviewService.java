@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BaseReviewService<R extends BaseReview, P extends BasePlace> {
 
-    Long createReview(PlaceEnum Type, Long placeId, ReviewPostReq reviewPostReq);
+    Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq);
 
     Page<ReviewRes> getReviews(PlaceEnum Type, Long placeId,Pageable pageable);
 
@@ -18,6 +18,6 @@ public interface BaseReviewService<R extends BaseReview, P extends BasePlace> {
 
     Long update(PlaceEnum Type, Long reviewId,ReviewPostReq reviewPostReq);
 
-    Boolean reviewLike(PlaceEnum Type, Long userId, Long reviewId);
+    Boolean reviewLike(PlaceEnum Type, String userId, Long reviewId);
 
 }
