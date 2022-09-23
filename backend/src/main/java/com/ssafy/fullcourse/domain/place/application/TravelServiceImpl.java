@@ -33,7 +33,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag) throws Exception {
 
-        if(tag.equals("")){
+        if (tag.equals("")) {
             Page<Travel> page;
             if (keyword.equals("")) {
                 page = travelRepository.findAll(pageable);
@@ -41,16 +41,32 @@ public class TravelServiceImpl implements TravelService {
                 page = travelRepository.findByNameContaining(keyword, pageable);
             }
             return page.map(PlaceRes::new);
-        }
-        else {
-            StringTokenizer st = new StringTokenizer(tag, "|");
+        } else {
+            StringTokenizer st = new StringTokenizer(tag, ",");
             List<String> tagList = new ArrayList<>();
-            for(int i = 0; i < st.countTokens(); i++){
+
+            int n = st.countTokens();
+            for (int i = 0; i < n; i++) {
                 tagList.add(st.nextToken());
             }
-            List<Travel> list = new ArrayList<>();
-            list = travelRepository.findAll();
-            
+
+            List<Travel> list = travelRepository.findAll();
+            for (int i = 0; i < list.size(); i++) {
+                int cnt = 0;
+                Travel t = list.get(i);
+                for (String tg : tagList) {
+                    if (t.getTag() != null) {
+                        if (t.getTag().contains(tg)) {
+                            cnt++;
+                        }
+                    }
+                }
+                if (cnt == 0) {
+                    list.remove(t);
+                    i--;
+                }
+
+            }
 
             Page<Travel> page = new PageImpl(list, pageable, list.size());
             return page.map(PlaceRes::new);
