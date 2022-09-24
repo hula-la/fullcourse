@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class SharedFCDto {
 
-    private FullCourse fullCourse;
+    private Long fcId;
     private Long sharedFcId;
     private String detail;
     private String title;
@@ -27,11 +27,11 @@ public class SharedFCDto {
     private List<SharedFCTagDto> sharedFCTags;
     private List<SharedFCCommentRes> sharedFCComments;
     private String thumbnail;
-    private User user;
+    private Long userEmail;
 
-    public static SharedFCDto of(FullCourse fullCourse, SharedFCReq sharedFCReq){
+    public static SharedFCDto of(SharedFCReq sharedFCReq){
         return SharedFCDto.builder()
-                .fullCourse(fullCourse)
+                .fcId(sharedFCReq.getFcId())
                 .detail(sharedFCReq.getDetail())
                 .title(sharedFCReq.getTitle())
                 .thumbnail(sharedFCReq.getThumbnail())
