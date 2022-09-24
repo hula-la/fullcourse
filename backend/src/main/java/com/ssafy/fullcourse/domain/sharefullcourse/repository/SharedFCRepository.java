@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long>{
@@ -37,10 +36,4 @@ public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long
     Page<SharedFullCourse> findFCListByTitleContains(String keyword, Pageable pageable);
     Page<SharedFullCourse> findAll(Pageable pageable);
 
-    @Query(value = "select sfc from SharedFullCourse sfc where sfc.sharedFcId in (:sharedFcIds)")
-    Page<SharedFullCourse> findAllBySharedFcIdIdIn(List<Long> sharedFcIds, Pageable pageable);
-
-    @Query(value = "select sfc from SharedFullCourse sfc " +
-            "where sfc.day in (:days) and sfc.sharedFcId in (:ids)")
-    Page<SharedFullCourse> findALLByTagAndDay(@Param(value="days") List<Integer> days, @Param(value="ids") List<Long> ids, Pageable pageable);
 }
