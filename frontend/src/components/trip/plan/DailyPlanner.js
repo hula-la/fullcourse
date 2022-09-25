@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux/es/exports';
+import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { deletePlaceItem } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   border: 3px solid;
@@ -12,6 +13,8 @@ const PlaceBucket = styled.div`
   width: 20vw;
   height: 30vh;
 `;
+
+const DeleteBtn = styled.button``;
 
 const PlannerBox = styled.div`
   display: flex;
@@ -34,17 +37,34 @@ const PlannerList = styled.div`
 const SaveBtn = styled.button``;
 
 const DailyPlanner = ({ tripDay }) => {
+  const dispatch = useDispatch()
   const { startDate, endDate, tripDates, placeItem } = useSelector(
     (state) => state.trip,
   );
 
   useEffect(() => {}, []);
 
+  const deletePlaceInBucket = (id, e) => {
+    e.preventDefault()
+    console.log("id가 일치하나",id)
+    dispatch(deletePlaceItem(id))
+    
+
+  }
+ 
   return (
     <PlannerContent className="planner-content">
       <PlaceBucket className="planner-box bucket">
         안녕난 장소장바구니야
-        {placeItem && placeItem.map((item, idx) => <li>{item.placeName}</li>)}
+        {placeItem &&
+          placeItem.map((item, idx) => (
+            <li key={idx}>
+              {item.placeName}
+              <DeleteBtn
+                onClick={(e)=> deletePlaceInBucket(idx,e)}
+              >삭제</DeleteBtn>
+            </li>
+          ))}
       </PlaceBucket>
 
       {tripDates &&

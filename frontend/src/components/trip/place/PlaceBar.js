@@ -28,18 +28,19 @@ const PlusBtn = styled.button``;
 const PlaceBar = () => {
   const dispatch = useDispatch();
 
-  const { travelPlaceList, placeItem } = useSelector((state) => state.trip);
+  const { travelPlaceList } = useSelector((state) => state.trip);
 
   // const PLACE_TYPES = {
   //   travel: "travel"
   // }
-  // const placeItem = []
-  const addPlaceToPlanner = (placeId,placeName, e) => {
+  // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
+  const addPlaceToPlanner = (placeId,placeName,id, e) => {
     e.preventDefault()
     let placeItemObj = new Object()
     placeItemObj.placeId = placeId
     placeItemObj.placeName = placeName
     placeItemObj.draggable = true
+    placeItemObj.id = id
 
     dispatch(setPlaceItem(placeItemObj))
     // placeItem.push(placeItemObj);
@@ -56,6 +57,8 @@ const PlaceBar = () => {
     // document.querySelector('.bucket').appendChild(placeItem);
     // document.querySelector('.planner-list').appendChild(placeItem); 한번에 두개의 클래스에 넣으니깐 왜 에러나지
   }
+
+  
 
   useEffect(() => {
     //아무것도 선택안하고 일정생성할때 기본 장소리스트(여행지)
@@ -96,7 +99,7 @@ const PlaceBar = () => {
                     <PlusBtn
                       className="plus" //heart대신 plus
                       id={item.placeId}
-                      onClick={(e)=> addPlaceToPlanner(item.placeId,item.name, e)}
+                      onClick={(e)=> addPlaceToPlanner(item.placeId,item.name,idx, e)}
                     >
                       장바구니에넣기
                     </PlusBtn>
