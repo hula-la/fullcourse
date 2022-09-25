@@ -65,7 +65,7 @@ public class SharedFullCourse {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static SharedFullCourse of(SharedFCDto sharedFCDto, User user){
+    public static SharedFullCourse of(SharedFCDto sharedFCDto, FullCourse fullCourse, User user){
 
         return SharedFullCourse.builder()
                 .sharedFcId(sharedFCDto.getSharedFcId())
@@ -78,12 +78,12 @@ public class SharedFullCourse {
                 .viewCnt(sharedFCDto.getViewCnt())
                 .sharedFCTags(sharedFCDto.getSharedFCTags().stream().map(tag->SharedFCTag.builder().fcTagId(tag.getFcTagId()).tagContent(tag.getTagContent()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFCDto.getThumbnail())
-                .fullCourse(sharedFCDto.getFullCourse())
+                .fullCourse(fullCourse)
                 .user(user)
                 .build();
     }
 
-    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now, Long sharedFcId){
+    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now, FullCourse fullCourse, Long sharedFcId){
 
         return SharedFullCourse.builder()
                 .sharedFcId(sharedFcId)
@@ -97,7 +97,7 @@ public class SharedFullCourse {
                 .sharedFCTags(new ArrayList<>())
                 .sharedFCComments(now.getSharedFCComments())
                 .thumbnail(now.getThumbnail())
-                .fullCourse(sharedFCDto.getFullCourse())
+                .fullCourse(fullCourse)
                 .user(now.getUser())
                 .build();
     }

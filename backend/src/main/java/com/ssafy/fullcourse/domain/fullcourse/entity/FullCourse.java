@@ -39,7 +39,7 @@ public class FullCourse {
     @Column(nullable = false)
     private Date endDate;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String thumbnail;
 
     @ManyToOne(fetch = LAZY)

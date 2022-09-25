@@ -2,17 +2,20 @@ package com.ssafy.fullcourse.sharedfullcourse;
 
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.fullcourse.domain.fullcourse.entity.QFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
+import io.swagger.models.auth.In;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,28 +54,28 @@ public class SharedFCTest {
     @Test
     void findByTagsAndDays(){
 
-        List<Long> days = null;
+        List<Integer> days = new ArrayList<>();
+        days.add(2);
+        days.add(5);
+//        List<String> tags = null;
         List<String> tags = new ArrayList<>();
         tags.add("초록초록");
         tags.add("핫플");
         List<Long> correct = new ArrayList<>();
         correct.add(6l);
         correct.add(7l);
-        correct.add(12l);
-        correct.add(13l);
-        correct.add(14l);
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(tags != null) builder.or(sharedFCTag.tagContent.in(tags));
-
+        if(tags != null) builder.and(sharedFullCourse.sharedFcId.in(
+                JPAExpressions.select(sharedFCTag.sharedFullCourse.sharedFcId)
+                        .from(sharedFCTag)
+                        .where(sharedFCTag.tagContent.in(tags))));
+        if(days != null) builder.and(sharedFullCourse.day.in(days));
 
         List<SharedFullCourse> result = queryFactory
-                .selectFrom( sharedFullCourse )
-                .leftJoin(sharedFCTag)
-                .on(sharedFCTag.sharedFullCourse.sharedFcId.eq(sharedFullCourse.sharedFcId))
+                .selectFrom(sharedFullCourse)
                 .where(builder)
-                .distinct()
                 .fetch();
 
         System.out.println(result.stream().map(m->m.getSharedFcId()).collect(Collectors.toList()).toString());

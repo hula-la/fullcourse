@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.entity;
 
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCCommentReq;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCCommentRes;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -32,10 +33,10 @@ public class SharedFCComment {
     @JoinColumn(name = "sharedFcId")
     private SharedFullCourse sharedFullCourse;
 
-    static SharedFCComment of(SharedFCCommentRes sharedFCCommentRes, User user){
+    public static SharedFCComment of(SharedFullCourse sharedFullCourse, String comment, User user){
         return SharedFCComment.builder()
-                .fcCommentId(sharedFCCommentRes.getCommentId())
-                .comment(sharedFCCommentRes.getComment())
+                .sharedFullCourse(sharedFullCourse)
+                .comment(comment)
                 .user(user).build();
     }
 

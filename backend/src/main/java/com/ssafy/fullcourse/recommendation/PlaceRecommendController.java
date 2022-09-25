@@ -1,0 +1,31 @@
+package com.ssafy.fullcourse.recommendation;
+
+import com.ssafy.fullcourse.domain.place.application.*;
+import com.ssafy.fullcourse.domain.place.dto.CreateCustomReq;
+import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Api(value = "장소 추천 API", tags = {"place"})
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
+@RestController
+@RequestMapping("/recomplace")
+@RequiredArgsConstructor
+public class PlaceRecommendController {
+
+    private final CosineSimilarityService cosineSimilarityService;
+
+
+    @ApiOperation(value = "커스텀 장소 생성", notes = "성공여부를 반환함.")
+    @GetMapping
+    public ResponseEntity<BaseResponseBody> customCreate(@RequestParam Long placeId) throws Exception {
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
+                cosineSimilarityService.similarPlaceRecommender(placeId,4)));
+    }
+
+
+}
