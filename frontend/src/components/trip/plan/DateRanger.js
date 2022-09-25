@@ -19,6 +19,7 @@ import {
   setStartDate,
   setEndDate,
   calcTripDay,
+  setDates,
 } from '../../../features/trip/tripSlice';
 
 const TripDay = styled.div`
@@ -68,11 +69,8 @@ const TripDate = styled.div`
 `;
 
 const DateRanger = ({ tripDay, setTripDay }) => {
+  
   const dispatch = useDispatch();
-
-  // get the target element to toggle
-  const refOne = useRef(null);
-
   // date state
   const [range, setRange] = useState([
     {
@@ -85,29 +83,38 @@ const DateRanger = ({ tripDay, setTripDay }) => {
   // open close
   const [open, setOpen] = useState(true);
 
+  
+  const refOne = useRef(null);
   useEffect(() => {
     // event listeners
-    document.addEventListener('click', hideOnClickOutside, true);
+    document.addEventListener('click', updateDateAndToggle, true);
   }, []);
 
-  //여기 이부분 적용하기 버튼으로 옮겨야함 지금 아무데나 클릭하면 작동되게 되어있음
-  // Hide on outside click //모달백드롭을 useRef를 사용해서 구현하는법
-  const hideOnClickOutside = (e) => {
-    console.log(refOne.current);
-    console.log(e.target);
+  //이거 클릭 업데이트 말고 바꿔야할거 같은데 잘 모르겠네 ㅜㅜ
+  const updateDateAndToggle = (e) => {
+    //모달백드롭을 useRef를 사용해서 구현하는법
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false);
     }
-    //이게 아마 outside를 클릭하면 current랑 달라지는 원리로 모달 밖 클릭했을 때 닫히나봄
-
-    // string을 Date type으로 바꾸는 법(정해진 형태의 string만 가능)
     const sD = new Date(document.getElementById('startDate').value);
     const eD = new Date(document.getElementById('endDate').value);
-    const res = days_between(sD, eD);
-    setTripDay(res);
+    const days = days_between(sD, eD);
+    const dayRange = getDates(sD, eD);
+    setTripDay(days);
+    dispatch(setDates(dayRange));
     dispatch(setStartDate(sD));
     dispatch(setEndDate(eD));
-    dispatch(calcTripDay(res));
+    dispatch(calcTripDay(days));
+  };
+
+  const getDates = (startDate, endDate) => {
+    const dateRange = [];
+    while (startDate <= endDate) {
+      const date = format(new Date(startDate), 'yyyy-MM-dd');
+      dateRange.push(date);
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateRange;
   };
 
   //일 수 세기
@@ -150,6 +157,7 @@ const DateRanger = ({ tripDay, setTripDay }) => {
         range={range}
         setOpen={setOpen}
         setRange={setRange}
+        getDates={getDates}
       />
     </div>
   );
