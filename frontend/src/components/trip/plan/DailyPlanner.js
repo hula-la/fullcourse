@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
-import { deletePlaceItem } from '../../../features/trip/tripSlice';
-
+import format from 'date-fns/format';
 const PlannerContent = styled.div`
   border: 3px solid;
   overflow-y: scroll;
@@ -36,94 +35,107 @@ const PlannerList = styled.div`
 
 const SaveBtn = styled.button``;
 
-const DailyPlanner = ({ tripDay }) => {
-  const dispatch = useDispatch()
-  
-  const { startDate, endDate, tripDates, placeItem } = useSelector(
-    (state) => state.trip,
-  );
+const DailyPlanner = () => {
+  const { tripDates, placeItem, startDate, endDate } = useSelector((state) => state.trip);
 
   useEffect(() => {
-    const plannerContent = document.querySelector(".planner-content")
-    plannerContent.addEventListener('dragstart', e => {
-      console.log("여기뭐찎힘?",e.target)
-      if(e.target.closest('.list-item')) {
+    //드래그앤 드롭 바닐라 자스
+    const plannerContent = document.querySelector('.planner-content');
+    plannerContent.addEventListener('dragstart', (e) => {
+      if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.add('dragging');
-        console.log("여긴뭐찍힘")
       }
-    })
-    plannerContent.addEventListener('dragend', e => {
-      console.log("여기뭐찎힘?",e.target)
-      if(e.target.closest('.list-item')) {
+    });
+    plannerContent.addEventListener('dragend', (e) => {
+      if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.remove('dragging');
-        console.log("여기는뭐생기는데")
       }
-    })
-    plannerContent.addEventListener('dragover', e => {
-      if(e.target.closest('.planner-list')) {
-        console.log("이제여기는뭐생김",e)
+    });
+    plannerContent.addEventListener('dragover', (e) => {
+      if (e.target.closest('.planner-list')) {
         sortAndDisplayItem(e);
       }
-    })
-    plannerContent.addEventListener("click", (e) => {
-      // on place items
-      if (e.target.classList.contains("delete")) {
+    });
+    plannerContent.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete')) {
         e.target.parentNode.remove();
       }
-    })
+    });
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
       const item = document.querySelector('.dragging');
       const afterElement = getDragAfterElement(container, e.clientY);
-      if(afterElement) {
+      if (afterElement) {
         container.insertBefore(item, afterElement);
       } else {
         container.appendChild(item);
       }
       e.preventDefault();
-    }
+    };
     const getDragAfterElement = (container, y) => {
-      const draggableElms = [...container.querySelectorAll('.list-item:not(.dragging)')];
-      return draggableElms.reduce((closest, child) => {
-        const rect = child.getBoundingClientRect();
-        const offset = y - rect.top - rect.height / 2;
-        if(offset < 0 && offset > closest.offset) {
-          return { offset: offset, element: child };
-        } else {
-          return closest;
-        }
-      }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-
-
+      const draggableElms = [
+        ...container.querySelectorAll('.list-item:not(.dragging)'),
+      ];
+      return draggableElms.reduce(
+        (closest, child) => {
+          const rect = child.getBoundingClientRect();
+          const offset = y - rect.top - rect.height / 2;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+          } else {
+            return closest;
+          }
+        },
+        { offset: Number.NEGATIVE_INFINITY },
+      ).element;
+    };
   }, []);
 
-  const deletePlaceInBucket = (id, e) => {
-    e.preventDefault()
-    console.log("id가 일치하나",id)
-    dispatch(deletePlaceItem(id))
+  const createTripObj = () => {
+    const places = [...document.querySelectorAll(".daily")].map(
+      (plannerBox,idx) => {
+        const dateStr = plannerBox.querySelector(".date").innerText;
+        console.log(dateStr)
+      
+        console.log(idx)
+        const additionalProp = [
+          ...plannerBox.querySelectorAll(".list-item"),
+        ].map((placeItem,idx) => {
+          // console.log(idx)
+          console.log(placeItem)
+          const placeId = placeItem.dataset.placeId
+          const courseOrder = idx
+          return { placeId, courseOrder };
+        });
+  
+        return { additionalProp };
+      }
+    );
+
+
     
 
+    const regDate = '2022-09-26'
+    return {
+      trip: { endDate, places, regDate, startDate }
+    }
+    
   }
 
+  const newTrip= () => {
+    const tripObj = createTripObj()
+    console.log(tripObj)
+  }
 
- 
   return (
     <PlannerContent className="planner-content">
       <PlaceBucket className="planner-box bucket">
         안녕난 장소장바구니야
         {placeItem &&
           placeItem.map((item, idx) => (
-            <li
-              key={idx}
-              draggable={item.draggable}
-              className='list-item'
-            >
+            <li key={idx} draggable={item.draggable} data-place-id={item.placeId} className="list-item">
               {item.placeName}
-              <DeleteBtn
-                // onClick={(e)=> deletePlaceInBucket(idx,e)}
-                className='delete'
-              >삭제</DeleteBtn>
+              <DeleteBtn className="delete">삭제</DeleteBtn>
             </li>
           ))}
       </PlaceBucket>
@@ -139,7 +151,7 @@ const DailyPlanner = ({ tripDay }) => {
           </PlannerBox>
         ))}
 
-      <SaveBtn>일정생성</SaveBtn>
+      <SaveBtn onClick={newTrip}>일정생성</SaveBtn>
     </PlannerContent>
   );
 };

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchTravelPlace } from './tripActions';
+import format from 'date-fns/format';
 
 const initialState = {
   startDate: null,
@@ -15,11 +16,11 @@ const tripSlice = createSlice({
   initialState,
   reducers: {
     setStartDate: (state, action) => {
-      state.startDate = action.payload;
-      console.log(action.payload);
+      state.startDate = format(action.payload, 'yyyy-MM-dd');
+      
     },
     setEndDate: (state, action) => {
-      state.endDate = action.payload;
+      state.endDate = format(action.payload, 'yyyy-MM-dd');
     },
     calcTripDay: (state, action) => {
       state.tripDay = action.payload;
@@ -28,19 +29,7 @@ const tripSlice = createSlice({
       state.tripDates = action.payload;
     },
     setPlaceItem: (state, action) => {
-      console.log('뭐담기지', action.payload);
-      console.log('이게뭐임', state.placeItem);
       state.placeItem.push(action.payload);
-    },
-    deletePlaceItem: (state, action) => {
-      console.log('아이디잘담기나', action.payload);
-      let placeItemList = state.placeItem;
-      for (var i = 0; i < placeItemList.length; i++) {
-        if (i === action.payload) {
-          // 값이 같은 배열 인덱스 확인
-          placeItemList.splice(i, 1);
-        }
-      }
     },
   },
   extraReducers: {
@@ -60,7 +49,6 @@ export const {
   calcTripDay,
   setDates,
   setPlaceItem,
-  deletePlaceItem,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

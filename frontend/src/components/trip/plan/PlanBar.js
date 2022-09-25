@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import DateRanger from './DateRanger';
 import DailyPlanner from './DailyPlanner';
@@ -12,12 +12,11 @@ const Container = styled.div`
 `;
 
 const PlanBar = () => {
-  //여행 일수 계산
-  const [tripDay, setTripDay] = useState(3);
+
   return (
     <Container>
-      <DateRanger tripDay={tripDay} setTripDay={setTripDay} />
-      <DailyPlanner tripDay={tripDay} />
+      <DateRanger />
+      <DailyPlanner/>
     </Container>
   );
 };

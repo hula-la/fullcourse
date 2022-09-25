@@ -68,9 +68,11 @@ const TripDate = styled.div`
   align-items: center;
 `;
 
-const DateRanger = ({ tripDay, setTripDay }) => {
-  
+const DateRanger = () => {
   const dispatch = useDispatch();
+
+  //여행 일수 계산
+  const [tripDay, setTripDay] = useState(3);
   // date state
   const [range, setRange] = useState([
     {
@@ -83,7 +85,6 @@ const DateRanger = ({ tripDay, setTripDay }) => {
   // open close
   const [open, setOpen] = useState(true);
 
-  
   const refOne = useRef(null);
   useEffect(() => {
     // event listeners
@@ -97,14 +98,15 @@ const DateRanger = ({ tripDay, setTripDay }) => {
       setOpen(false);
     }
     const sD = new Date(document.getElementById('startDate').value);
-    const eD = new Date(document.getElementById('endDate').value);
-    const days = days_between(sD, eD);
-    const dayRange = getDates(sD, eD);
-    setTripDay(days);
-    dispatch(setDates(dayRange));
     dispatch(setStartDate(sD));
+    const eD = new Date(document.getElementById('endDate').value);
     dispatch(setEndDate(eD));
-    dispatch(calcTripDay(days));
+
+    const days = days_between(sD, eD);
+    setTripDay(days);
+    dispatch(calcTripDay(days)); //혹시모르니 리듀서에도 저장
+    const dayRange = getDates(sD, eD);
+    dispatch(setDates(dayRange));
   };
 
   const getDates = (startDate, endDate) => {
@@ -119,17 +121,15 @@ const DateRanger = ({ tripDay, setTripDay }) => {
 
   //일 수 세기
   function days_between(date1, date2) {
-    // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
-    // Calculate the difference in milliseconds
     const differenceMs = Math.abs(date1 - date2);
-    // Convert back to days and return
     return Math.round(differenceMs / ONE_DAY) + 1;
   }
 
   return (
     <div>
       <TripDay>Day {tripDay}</TripDay>
+
       <Calendar onClick={() => setOpen((open) => !open)} />
       <TripDate>
         <StyledInput
@@ -143,7 +143,7 @@ const DateRanger = ({ tripDay, setTripDay }) => {
         <Bar>~</Bar>
         <StyledInput
           value={
-            range[0].startDate && `${format(range[0].endDate, 'MM/dd/yyyy')}`
+            range[0].endDate && `${format(range[0].endDate, 'MM/dd/yyyy')}`
           }
           readOnly
           className="endDate"
