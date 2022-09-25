@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
 //모달
 import CalendarModal from './CalendarModal';
 
@@ -13,6 +13,14 @@ import './date-range.css';
 
 //icon
 import { FaCalendarAlt } from 'react-icons/fa';
+
+//slice import
+import {
+  setStartDate,
+  setEndDate,
+  calcTripDay,
+  setDates,
+} from '../../../features/trip/tripSlice';
 
 const TripDay = styled.div`
   font-family: Tmoney;
@@ -60,10 +68,11 @@ const TripDate = styled.div`
   align-items: center;
 `;
 
-const DateRanger = ({tripDay, setTripDay}) => {
-  // get the target element to toggle
-  const refOne = useRef(null);
+const DateRanger = () => {
+  const dispatch = useDispatch();
 
+  //여행 일수 계산
+  const [tripDay, setTripDay] = useState(3);
   // date state
   const [range, setRange] = useState([
     {
@@ -76,40 +85,51 @@ const DateRanger = ({tripDay, setTripDay}) => {
   // open close
   const [open, setOpen] = useState(true);
 
-  
+  const refOne = useRef(null);
   useEffect(() => {
     // event listeners
-    document.addEventListener('click', hideOnClickOutside, true);
+    document.addEventListener('click', updateDateAndToggle, true);
   }, []);
 
-  // Hide on outside click //모달백드롭을 useRef를 사용해서 구현하는법
-  const hideOnClickOutside = (e) => {
-    // console.log(refOne.current)
-    // console.log(e.target)
+  //이거 클릭 업데이트 말고 바꿔야할거 같은데 잘 모르겠네 ㅜㅜ
+  const updateDateAndToggle = (e) => {
+    //모달백드롭을 useRef를 사용해서 구현하는법
     if (refOne.current && !refOne.current.contains(e.target)) {
       setOpen(false);
     }
-
-    // string을 Date type으로 바꾸는 법(정해진 형태의 string만 가능)
     const sD = new Date(document.getElementById('startDate').value);
+    dispatch(setStartDate(sD));
     const eD = new Date(document.getElementById('endDate').value);
-    const res = days_between(sD, eD);
-    setTripDay(res);
+    dispatch(setEndDate(eD));
+
+    const days = days_between(sD, eD);
+    setTripDay(days);
+    dispatch(calcTripDay(days)); //혹시모르니 리듀서에도 저장
+    const dayRange = getDates(sD, eD);
+    dispatch(setDates(dayRange));
+  };
+
+  const getDates = (startDate, endDate) => {
+    const dateRange = [];
+    while (startDate <= endDate) {
+      const date = format(new Date(startDate), 'yyyy-MM-dd');
+      dateRange.push(date);
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateRange;
   };
 
   //일 수 세기
   function days_between(date1, date2) {
-    // The number of milliseconds in one day
     const ONE_DAY = 1000 * 60 * 60 * 24;
-    // Calculate the difference in milliseconds
     const differenceMs = Math.abs(date1 - date2);
-    // Convert back to days and return
     return Math.round(differenceMs / ONE_DAY) + 1;
   }
 
   return (
     <div>
       <TripDay>Day {tripDay}</TripDay>
+
       <Calendar onClick={() => setOpen((open) => !open)} />
       <TripDate>
         <StyledInput
@@ -123,7 +143,7 @@ const DateRanger = ({tripDay, setTripDay}) => {
         <Bar>~</Bar>
         <StyledInput
           value={
-            range[0].startDate && `${format(range[0].endDate, 'MM/dd/yyyy')}`
+            range[0].endDate && `${format(range[0].endDate, 'MM/dd/yyyy')}`
           }
           readOnly
           className="endDate"
@@ -137,6 +157,7 @@ const DateRanger = ({tripDay, setTripDay}) => {
         range={range}
         setOpen={setOpen}
         setRange={setRange}
+        getDates={getDates}
       />
     </div>
   );

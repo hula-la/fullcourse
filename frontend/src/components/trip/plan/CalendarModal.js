@@ -30,23 +30,24 @@ const ModalView = styled.div`
   }
 `;
 
-const CloseBtn = styled.button`
-  background-color: #a4d8ff;
-  border: 0;
-  width: 4vw;
-  height: 4vh;
+//일단 닫기버튼 삭제
+// const CloseBtn = styled.button`
+//   background-color: #a4d8ff;
+//   border: 0;
+//   width: 4vw;
+//   height: 4vh;
 
-  border-radius: 0.5rem;
-  margin-right: 1vh;
-  font-family: Tmoney;
-  font-size: 1.8vmin;
-  color: #333333;
-  cursor: pointer;
-  &:hover {
-    background-color: #8fbcde;
-    color: #4e4e4e;
-  }
-`;
+//   border-radius: 0.5rem;
+//   margin-right: 1vh;
+//   font-family: Tmoney;
+//   font-size: 1.8vmin;
+//   color: #333333;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #8fbcde;
+//     color: #4e4e4e;
+//   }
+// `;
 
 const OkBtn = styled.button`
   background-color: #a4d8ff;
@@ -82,8 +83,14 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
             className="DateRange"
           />
           <div className="Btns">
-            <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn>
-            <OkBtn onClick={() => setOpen((open) => !open)}>적용하기</OkBtn>
+            {/* <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn> */}
+            <OkBtn
+              onClick={() => {
+                setOpen((open) => !open);
+              }}
+            >
+              적용하기
+            </OkBtn>
           </div>
         </ModalView>
       )}
