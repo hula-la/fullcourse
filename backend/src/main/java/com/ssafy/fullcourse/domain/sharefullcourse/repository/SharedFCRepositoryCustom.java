@@ -28,11 +28,11 @@ public class SharedFCRepositoryCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if(tags != null) builder.and(sharedFullCourse.sharedFcId.in(
+        if(tags.size() != 0) builder.and(sharedFullCourse.sharedFcId.in(
                 JPAExpressions.select(sharedFCTag.sharedFullCourse.sharedFcId)
                         .from(sharedFCTag)
                         .where(sharedFCTag.tagContent.in(tags))));
-        if(days != null) builder.and(sharedFullCourse.day.in(days));
+        if(days.size() != 0) builder.and(sharedFullCourse.day.in(days));
 
         List<SharedFullCourse> result = queryFactory
                 .selectFrom(sharedFullCourse)
