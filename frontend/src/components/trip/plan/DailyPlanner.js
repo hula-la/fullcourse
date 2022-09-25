@@ -38,11 +38,65 @@ const SaveBtn = styled.button``;
 
 const DailyPlanner = ({ tripDay }) => {
   const dispatch = useDispatch()
+  
   const { startDate, endDate, tripDates, placeItem } = useSelector(
     (state) => state.trip,
   );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const plannerContent = document.querySelector(".planner-content")
+    plannerContent.addEventListener('dragstart', e => {
+      console.log("여기뭐찎힘?",e.target)
+      if(e.target.closest('.list-item')) {
+        e.target.closest('.list-item').classList.add('dragging');
+        console.log("여긴뭐찍힘")
+      }
+    })
+    plannerContent.addEventListener('dragend', e => {
+      console.log("여기뭐찎힘?",e.target)
+      if(e.target.closest('.list-item')) {
+        e.target.closest('.list-item').classList.remove('dragging');
+        console.log("여기는뭐생기는데")
+      }
+    })
+    plannerContent.addEventListener('dragover', e => {
+      if(e.target.closest('.planner-list')) {
+        console.log("이제여기는뭐생김",e)
+        sortAndDisplayItem(e);
+      }
+    })
+    plannerContent.addEventListener("click", (e) => {
+      // on place items
+      if (e.target.classList.contains("delete")) {
+        e.target.parentNode.remove();
+      }
+    })
+    const sortAndDisplayItem = (e) => {
+      const container = e.target.closest('.planner-list');
+      const item = document.querySelector('.dragging');
+      const afterElement = getDragAfterElement(container, e.clientY);
+      if(afterElement) {
+        container.insertBefore(item, afterElement);
+      } else {
+        container.appendChild(item);
+      }
+      e.preventDefault();
+    }
+    const getDragAfterElement = (container, y) => {
+      const draggableElms = [...container.querySelectorAll('.list-item:not(.dragging)')];
+      return draggableElms.reduce((closest, child) => {
+        const rect = child.getBoundingClientRect();
+        const offset = y - rect.top - rect.height / 2;
+        if(offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+
+  }, []);
 
   const deletePlaceInBucket = (id, e) => {
     e.preventDefault()
@@ -51,6 +105,8 @@ const DailyPlanner = ({ tripDay }) => {
     
 
   }
+
+
  
   return (
     <PlannerContent className="planner-content">
@@ -58,10 +114,15 @@ const DailyPlanner = ({ tripDay }) => {
         안녕난 장소장바구니야
         {placeItem &&
           placeItem.map((item, idx) => (
-            <li key={idx}>
+            <li
+              key={idx}
+              draggable={item.draggable}
+              className='list-item'
+            >
               {item.placeName}
               <DeleteBtn
-                onClick={(e)=> deletePlaceInBucket(idx,e)}
+                // onClick={(e)=> deletePlaceInBucket(idx,e)}
+                className='delete'
               >삭제</DeleteBtn>
             </li>
           ))}
