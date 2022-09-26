@@ -10,12 +10,15 @@ import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.*;
+import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,14 +50,11 @@ public class FullCourseService {
         Optional<User> userOpt = userRepository.findByEmail(userId);
 
 
-        if (!userOpt.isPresent()) throw new UserNotFoundException();
-
         // 풀코스에 저장
         FullCourse fullCourse = fullCourseRepository
                 .save(fullCoursePostReq.toEntity(userOpt.get()));
 
         fullCoursePostReq.getPlaces().forEach((day, places) -> {
-            System.out.println(day + " " + places);
             places.forEach((detail) -> createFullCourseDetail(day, fullCourse, detail));
         });
 
@@ -85,8 +85,19 @@ public class FullCourseService {
         HashMap<Integer, List<FullCourseDetailPostReq>> places = new HashMap<>();
         for (FullCourseDetail fcd : fullCourseList) {
             if (!places.containsKey(fcd.getDay())) places.put(fcd.getDay(), new ArrayList<>());
+
+            String type = fcd.getType();
+            Long placeId = fcd.getPlaceId();
+
+
+            float[] LatLng = getLntLat(type,placeId);
+
+            float lat = LatLng[0];
+            float lng = LatLng[1];
+
+
             places.get(fcd.getDay())
-                    .add(fcd.toDto());
+                    .add(fcd.toDto(lat,lng));
         }
 
         return fullCourse.toDto(places);
@@ -110,28 +121,11 @@ public class FullCourseService {
         FullCourseDetail fcDetail =
                 fullCourseDetailRepository.findById(fcvcReq.getFcDetailId()).get();
         String type = fcDetail.getType();
-        Float lat, lng;
-        PlaceRes placeRes;
-        if (type.equals("travel")) {
-            Travel travel = travelRepository.findByPlaceId(fcDetail.getPlaceId()).get();
-            placeRes = new PlaceRes(travel);
-        } else if (type.equals("culture")) {
-            Culture culture = cultureRepository.findByPlaceId(fcDetail.getPlaceId()).get();
-            placeRes = new PlaceRes(culture);
-        } else if (type.equals("activity")) {
-            Activity activity = activityRepository.findByPlaceId(fcDetail.getPlaceId()).get();
-            placeRes = new PlaceRes(activity);
-        } else if (type.equals("hotel")) {
-            Hotel hotel = hotelRepository.findByPlaceId(fcDetail.getPlaceId()).get();
-            placeRes = new PlaceRes(hotel);
-        } else if (type.equals("restaurant")) {
-            Restaurant restaurant = restaurantRepository.findByPlaceId(fcDetail.getPlaceId()).get();
-            placeRes = new PlaceRes(restaurant);
-        } else {
-            return  "Wrong Type Request. example : Custom type Confirm.";
-        }
-        lat = placeRes.getLat();
-        lng = placeRes.getLng();
+
+        float[] LatLng = getLntLat(type,fcDetail.getPlaceId());
+
+        float lat = LatLng[0];
+        float lng = LatLng[1];
         // Km 단위로 계산됨.
         Double dist = Math.sqrt(Math.pow((fcvcReq.getLat() - lat) * 88.9036, 2) + Math.pow((fcvcReq.getLng() - lng) * 111.3194, 2));
         System.out.println("계산된 거리 : " + dist + "Km");
@@ -144,5 +138,29 @@ public class FullCourseService {
         fullCourseDetailRepository.save(fcDetail);
 
         return message;
+    }
+
+    public float[] getLntLat(String type, Long placeId){
+        Float lat, lng;
+        PlaceRes placeRes;
+        if (type.equals("travel")) {
+            Travel travel = travelRepository.findByPlaceId(placeId).get();
+            placeRes = new PlaceRes(travel);
+        } else if (type.equals("culture")) {
+            Culture culture = cultureRepository.findByPlaceId(placeId).get();
+            placeRes = new PlaceRes(culture);
+        } else if (type.equals("activity")) {
+            Activity activity = activityRepository.findByPlaceId(placeId).get();
+            placeRes = new PlaceRes(activity);
+        } else if (type.equals("hotel")) {
+            Hotel hotel = hotelRepository.findByPlaceId(placeId).get();
+            placeRes = new PlaceRes(hotel);
+        } else if (type.equals("restaurant")) {
+            Restaurant restaurant = restaurantRepository.findByPlaceId(placeId).get();
+            placeRes = new PlaceRes(restaurant);
+        } else {
+            throw new PlaceNotFoundException();
+        }
+        return new float[]{placeRes.getLat(),placeRes.getLng()};
     }
 }

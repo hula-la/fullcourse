@@ -33,7 +33,7 @@ public class Hotel extends BasePlace {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String url;
 
     @Column(length = 20)

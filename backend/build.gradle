@@ -75,6 +75,14 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
+
+//	머하웃
+//	compile group: 'org.apache.mahout', name: 'mahout-core', version: '0.9'
+
+//	csv 생성 라이브러리
+	implementation group: 'com.opencsv', name: 'opencsv', version: '4.4'
+
+
 }
 
 tasks.named('test') {

@@ -43,7 +43,7 @@ public class FullCourseDetail {
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
 
-    public FullCourseDetailPostReq toDto(){
+    public FullCourseDetailPostReq toDto(float lng, float lat){
         return FullCourseDetailPostReq.builder()
                 .courseOrder(this.courseOrder)
                 .type(this.type)
@@ -51,6 +51,8 @@ public class FullCourseDetail {
                 .img(this.img)
                 .comment(comment)
                 .isVisited(isVisited)
+                .lat(lat)
+                .lng(lng)
                 .build();
     }
 

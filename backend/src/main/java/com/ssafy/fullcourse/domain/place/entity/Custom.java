@@ -30,10 +30,10 @@ public class Custom extends BasePlace {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 200)
     private String address;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 1000)
     private String content;
 
     @ManyToOne(fetch = LAZY)

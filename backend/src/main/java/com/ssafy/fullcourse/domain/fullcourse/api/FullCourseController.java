@@ -46,7 +46,7 @@ public class FullCourseController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourseDetailById(fcId)));
     }
 
-    @GetMapping("/my/{userId}")
+    @GetMapping("/my")
     @ApiOperation(value = "나의 풀코스 조회", notes = "type")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
