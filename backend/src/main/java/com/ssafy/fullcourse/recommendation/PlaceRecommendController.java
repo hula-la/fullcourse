@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @Api(value = "장소 추천 API", tags = {"place"})
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class PlaceRecommendController {
 
     private final CosineSimilarityService cosineSimilarityService;
+    private final TravelTagCsvService travelTagCsvService;
 
 
     @ApiOperation(value = "커스텀 장소 생성", notes = "성공여부를 반환함.")
@@ -26,6 +29,17 @@ public class PlaceRecommendController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                 cosineSimilarityService.similarPlaceRecommender(placeId,4)));
     }
+
+
+    @GetMapping("/convert")
+    public void customCreate() throws Exception {
+        HashMap<Long, boolean[]> converter = travelTagCsvService.converter();
+        travelTagCsvService.writeTag("tagByPlaceId.csv",converter);
+
+        cosineSimilarityService.similarityConverter("tagByPlaceId.csv");
+    }
+
+
 
 
 }

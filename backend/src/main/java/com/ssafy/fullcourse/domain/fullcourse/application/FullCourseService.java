@@ -90,14 +90,14 @@ public class FullCourseService {
             Long placeId = fcd.getPlaceId();
 
 
-            float[] LatLng = getLntLat(type,placeId);
+            PlaceRes placeRes = getLntLat(type,placeId);
 
-            float lat = LatLng[0];
-            float lng = LatLng[1];
+//            float lat = placeRes.getLat();
+//            float lng = placeRes.getLng();
 
 
             places.get(fcd.getDay())
-                    .add(fcd.toDto(lat,lng));
+                    .add(fcd.toDto(placeRes));
         }
 
         return fullCourse.toDto(places);
@@ -122,10 +122,10 @@ public class FullCourseService {
                 fullCourseDetailRepository.findById(fcvcReq.getFcDetailId()).get();
         String type = fcDetail.getType();
 
-        float[] LatLng = getLntLat(type,fcDetail.getPlaceId());
+        PlaceRes placeRes = getLntLat(type,fcDetail.getPlaceId());
 
-        float lat = LatLng[0];
-        float lng = LatLng[1];
+        float lat = placeRes.getLat();
+        float lng = placeRes.getLng();
         // Km 단위로 계산됨.
         Double dist = Math.sqrt(Math.pow((fcvcReq.getLat() - lat) * 88.9036, 2) + Math.pow((fcvcReq.getLng() - lng) * 111.3194, 2));
         System.out.println("계산된 거리 : " + dist + "Km");
@@ -140,7 +140,7 @@ public class FullCourseService {
         return message;
     }
 
-    public float[] getLntLat(String type, Long placeId){
+    public PlaceRes getLntLat(String type, Long placeId){
         Float lat, lng;
         PlaceRes placeRes;
         if (type.equals("travel")) {
@@ -161,6 +161,6 @@ public class FullCourseService {
         } else {
             throw new PlaceNotFoundException();
         }
-        return new float[]{placeRes.getLat(),placeRes.getLng()};
+        return placeRes;
     }
 }

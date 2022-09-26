@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
+import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import lombok.*;
 
 import javax.persistence.*;
@@ -43,7 +44,7 @@ public class FullCourseDetail {
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
 
-    public FullCourseDetailPostReq toDto(float lng, float lat){
+    public FullCourseDetailPostReq toDto(PlaceRes place){
         return FullCourseDetailPostReq.builder()
                 .courseOrder(this.courseOrder)
                 .type(this.type)
@@ -51,8 +52,7 @@ public class FullCourseDetail {
                 .img(this.img)
                 .comment(comment)
                 .isVisited(isVisited)
-                .lat(lat)
-                .lng(lng)
+                .place(place)
                 .build();
     }
 
