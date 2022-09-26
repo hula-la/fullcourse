@@ -148,10 +148,10 @@ public class FullCourseService {
                 fullCourseDetailRepository.findById(fcdId).get();
         String type = fcDetail.getType();
 
-        float[] LatLng = getLntLat(type,fcDetail.getPlaceId());
+        PlaceRes placeRes = getLntLat(type,fcDetail.getPlaceId());
 
-        float lat = LatLng[0];
-        float lng = LatLng[1];
+        float lat = placeRes.getLat();
+        float lng = placeRes.getLng();
 
         // Km 단위로 계산됨.
         Double dist = Math.sqrt(Math.pow((inputLatLng[0] - lat) * 88.9036, 2) + Math.pow((inputLatLng[1] - lng) * 111.3194, 2));
@@ -165,7 +165,7 @@ public class FullCourseService {
         fullCourseDetailRepository.save(fcDetail);
         return message;
     }
-    public float[] getLntLat(String type, Long placeId){
+    public PlaceRes getLntLat(String type, Long placeId){
         PlaceRes placeRes;
         if (type.equals("travel")) {
             Travel travel = travelRepository.findByPlaceId(placeId).get();

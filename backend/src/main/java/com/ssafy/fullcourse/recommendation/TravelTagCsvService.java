@@ -28,6 +28,7 @@ public class TravelTagCsvService {
         HashMap<String, Integer> tagMap = new HashMap<>();
         Tag[] tags = Tag.values();
         for (int i = 0; i < tags.length; i++) {
+//            System.out.println(tags[i].toString());
             tagMap.put(tags[i].toString(),i);
         }
 
@@ -39,9 +40,14 @@ public class TravelTagCsvService {
             boolean[] tagById = new boolean[tags.length];
 
             String[] tagsById = travel.getTag().split(",");
+
+            System.out.println("태그 리스트"+tagById.toString());
+
             Long placeId = travel.getPlaceId();
 
             for(String tag:tagsById){
+                System.out.println(tag);
+                System.out.println(tagMap.get(tag));
                 tagById[tagMap.get(tag)]=true;
             }
 

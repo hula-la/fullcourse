@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-@Api(value = "장소 추천 API", tags = {"place"})
+@Api(value = "장소 추천 API", tags = {"recommendation"})
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @RequestMapping("/recomplace")
@@ -32,7 +32,7 @@ public class PlaceRecommendController {
 
 
     @GetMapping("/convert")
-    public void customCreate() throws Exception {
+    public void convertTagDBtoCSV() throws Exception {
         HashMap<Long, boolean[]> converter = travelTagCsvService.converter();
         travelTagCsvService.writeTag("tagByPlaceId.csv",converter);
 
