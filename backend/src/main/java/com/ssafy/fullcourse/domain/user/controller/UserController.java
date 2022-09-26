@@ -5,6 +5,7 @@ import com.ssafy.fullcourse.domain.user.application.NaverUserService;
 import com.ssafy.fullcourse.domain.user.application.UserManageService;
 import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -28,6 +29,8 @@ public class UserController {
     private final NaverUserService naverUserService;
     private final UserManageService userManageService;
 
+    private final RedisUtil redisUtil;
+
     @PostMapping("/kakao")
     public HttpEntity<?> kakaoLogin(@RequestBody HashMap<String, String> param) {
         kakaoUserService.getUserInfoByAccessToken(param.get("access_token"));
@@ -44,6 +47,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<BaseResponseBody> getInfo(@AuthenticationPrincipal String email) {
+
 //        UserDto userInfo = userManageService.getInfo(user.getUsername());
         UserDto userInfo = userManageService.getInfo(email);
 //        if(userInfo == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));

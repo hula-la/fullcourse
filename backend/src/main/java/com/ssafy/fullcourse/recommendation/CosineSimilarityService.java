@@ -6,6 +6,7 @@ import com.ssafy.fullcourse.domain.place.application.TravelService;
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
 import com.ssafy.fullcourse.domain.place.repository.ActivityRepository;
+import com.ssafy.fullcourse.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,8 @@ public class CosineSimilarityService {
     private final TravelService travelService;
 
     private final TravelTagCsvService travelTagCsvService;
+
+    private final RedisUtil redisUtil;
 
     public TravelDetailRes[] similarPlaceRecommender(long selectedIdx, int num) throws Exception {
 
@@ -45,68 +48,38 @@ public class CosineSimilarityService {
         return null;
 
     }
-//    public TravelDetailRes[] similarPlaceRecommender(long selectedIdx, int num) throws Exception {
-//        HashMap<Long, Integer[]> integerListHashMap = readCSV("movie.csv");
-//
-//        Integer[] selectedIdxGenre = integerListHashMap.get(selectedIdx);
-//        System.out.println(Arrays.toString(selectedIdxGenre));
-//        int movieNum = selectedIdxGenre.length;
-//
-//        HashMap<Long,Double> similarity = new HashMap<>();
-//
-//        integerListHashMap.forEach((idx, list) -> {
-//            if (idx==selectedIdx) return;
-//            similarity.put(idx,cosineSimilarity(selectedIdxGenre,list));
-//        } );
-//
-//        List<Entry<Long, Double>> list_entries = new ArrayList<>(similarity.entrySet());
-//
-//        // 비교함수 Comparator 를 사용하여 오름차순으로 정렬
-//        Collections.sort(list_entries, new Comparator<Entry<Long, Double>>() {
-//            // compare로 값을 비교
-//            public int compare(Entry<Long, Double> obj1, Entry<Long, Double> obj2) {
-//                // 오름 차순 정렬
-//                return -obj1.getValue().compareTo(obj2.getValue());
-//            }
-//        });
-//
-//        TravelDetailRes[] travelDetailResArr = new TravelDetailRes[Math.min(num, movieNum)];
-//
-//        for (int i = 0; i < travelDetailResArr.length; i++) {
-//            Entry entry = list_entries.get(i);
-//            Long placeId = (Long) entry.getKey();
-//            System.out.println(entry.getKey() + " : " + entry.getValue());
-//            travelDetailResArr[i] = travelService.getTravelDetail(placeId);
-//        }
-//
-//        return travelDetailResArr;
-//
-//    }
+
     public void similarityConverter(String fileName) throws Exception {
         HashMap<Long, Integer[]> integerListHashMap = travelTagCsvService.readCSV("movie.csv");
         int movieNum = integerListHashMap.size();
 
-        Long[] movieArr = (Long[]) integerListHashMap.keySet().toArray();
+        Long[] movieArr = integerListHashMap.keySet().toArray(new Long[0]);
         float[][] similarity = new float[movieNum][movieNum];
-        HashMap<Long,HashMap<Long,Float>> similarityRedis = new HashMap<>();
+//        HashMap<Long,HashMap<Long,Float>> similarityRedis = new HashMap<>();
 
         for(int i=0;i<movieNum;i++){
             Integer[] targetVector = integerListHashMap.get(movieArr[i]);
-            similarityRedis.put(movieArr[i], new HashMap<>());
+
+//            Redis 저장
+            HashMap<Long,Float> similarityMap = new HashMap<>();
 
             for (int j = 0; j < movieNum; j++) {
                 if (i==j) similarity[i][j]=0;
                 Integer[] comparedVector = integerListHashMap.get(movieArr[j]);
                 similarity[i][j] = cosineSimilarity(targetVector,comparedVector);
 
-                similarityRedis.get(movieArr[i]).put(movieArr[j],similarity[i][j]);
+                similarityMap.put(movieArr[j],similarity[i][j]);
 
             }
+            redisUtil.setHashData(movieArr[i],similarityMap);
         }
 
-        writeCSV(fileName,movieArr,similarity);
+        writeCSV("other.csv",movieArr,similarity);
 
 //        레디스에 저장
+
+
+//        System.out.println(redisUtil.getHashData("test","asdf"));
     }
 
     public void writeCSV(String fileName, Long[] header, float[][] similarity) throws Exception{
@@ -125,8 +98,6 @@ public class CosineSimilarityService {
             bw.newLine(); // 개행
 
             for (int i = 0; i < similarity.length; i++) {
-                bw.write(",");
-
                 String dataStr = Arrays.toString(similarity[i])
                         .replaceAll("\\s+", "");
 
