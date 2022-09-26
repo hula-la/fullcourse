@@ -8,14 +8,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import javaxt.io.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Api(value = "풀코스 API", tags = {"fullcourse"})
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @RequestMapping("/fullcourse")
 @RequiredArgsConstructor
@@ -52,9 +54,9 @@ public class FullCourseController {
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
     public ResponseEntity<BaseResponseBody> findMyFullCourse(@AuthenticationPrincipal String email,
-                                                           Pageable pageable) {
+                                                             Pageable pageable) {
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(email,pageable)));
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(email, pageable)));
     }
 
     @DeleteMapping("/{fcId}")
@@ -77,14 +79,24 @@ public class FullCourseController {
                                                              @AuthenticationPrincipal String email,
                                                              @RequestBody FullCoursePostReq fullCoursePostReq) {
 
-        Long newFcId = fullCourseService.updateFullCourse(email,fcId,fullCoursePostReq);
+        Long newFcId = fullCourseService.updateFullCourse(email, fcId, fullCoursePostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", newFcId));
     }
 
     @PutMapping("/visitconfirm")
     @ApiOperation(value = "풀코스 장소 방문인증")
-    public ResponseEntity<BaseResponseBody> visitConfirm(@RequestBody FullCourseVisitConfirmReq fullCourseVisitConfirmReq){
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success", fullCourseService.confirmVisit(fullCourseVisitConfirmReq)));
+    public ResponseEntity<BaseResponseBody> visitConfirm(@RequestBody FullCourseVisitConfirmReq fullCourseVisitConfirmReq) {
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.confirmVisit(fullCourseVisitConfirmReq)));
     }
 
+    @PostMapping("/visitconfirmbyimage/{fcdId}")
+    @ApiOperation(value = "풀코스 사진인증")
+    public ResponseEntity<BaseResponseBody> visitConfirmByImage(@RequestBody MultipartFile img, @PathVariable Long fcdId) {
+        Image image = (Image) img.getResource();
+        double[] latLng = image.getGPSCoordinate();
+        System.out.println(latLng.toString());
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.confirmVisitByImage(latLng, fcdId)));
+
+
+    }
 }
