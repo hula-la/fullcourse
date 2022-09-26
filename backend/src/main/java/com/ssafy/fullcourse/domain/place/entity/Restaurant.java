@@ -22,7 +22,7 @@ public class Restaurant extends BasePlace {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String address;
 
     @Column(nullable = false)
@@ -46,18 +46,18 @@ public class Restaurant extends BasePlace {
     @Column(length = 20)
     private String openTime;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String url; // 홈페이지
 
     @Column(nullable = false)
     private Float stgScore; // 수용태세지수
 
-    @Column(length = 50)
+    @Column(length = 200)
     private String award; // 어워드
 
     private Float naverScore;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String imgUrl;
 
     @Column(nullable = false)

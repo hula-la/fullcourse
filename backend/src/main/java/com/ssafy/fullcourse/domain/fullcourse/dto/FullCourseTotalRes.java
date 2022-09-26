@@ -26,6 +26,7 @@ public class FullCourseTotalRes {
     @ApiModelProperty(name="썸네일", example="url")
     String thumbnail;
 
+
     @ApiModelProperty(name="장소들", example="{1:[{type}], ]}")
     HashMap<Integer, List<FullCourseDetailPostReq>> places;
 

@@ -22,7 +22,7 @@ public class Activity extends BasePlace {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(length = 100)
+    @Column(length = 300)
     private String subtitle;
 
     @Column(nullable = false)
@@ -40,13 +40,13 @@ public class Activity extends BasePlace {
     @Column(nullable = false, length = 30)
     private String place;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 300)
     private String imgUrl;
 
     @Column(length = 30)
     private String holiday;
 
-    @Column(length = 30)
+    @Column(length = 100)
     private String openTime;
 
     @Column(length = 200)

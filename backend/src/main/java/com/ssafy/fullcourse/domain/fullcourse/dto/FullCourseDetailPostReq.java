@@ -30,6 +30,11 @@ public class FullCourseDetailPostReq {
     @ApiModelProperty(name="방문 여부", example="true")
     boolean isVisited;
 
+    @ApiModelProperty(name="경도", example="23.234")
+    float lng;
+    @ApiModelProperty(name="위도", example="32.232")
+    float lat;
+
     public FullCourseDetail toEntity(FullCourse fullCourse,int day){
         return FullCourseDetail.builder()
                 .day(day)
