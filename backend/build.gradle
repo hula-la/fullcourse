@@ -85,6 +85,9 @@ dependencies {
 	//https://mvnrepository.com/artifact/javaxt/javaxt-core
 	implementation 'de.mhus.ports:ports-javaxt:1.3.6'
 
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 
 }
 

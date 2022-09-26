@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @Slf4j
-@RequestMapping("/api/data")
+@RequestMapping("/data")
 @RequiredArgsConstructor
 public class DataController {
 
