@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import format from 'date-fns/format';
+import { createTrip } from '../../../features/trip/tripActions';
+
 const PlannerContent = styled.div`
   border: 3px solid;
   overflow-y: scroll;
@@ -36,7 +38,11 @@ const PlannerList = styled.div`
 const SaveBtn = styled.button``;
 
 const DailyPlanner = () => {
-  const { tripDates, placeItem, startDate, endDate } = useSelector((state) => state.trip);
+  const dispatch = useDispatch()
+
+  const { tripDates, placeItem, startDate, endDate, regDate } = useSelector(
+    (state) => state.trip,
+  );
 
   useEffect(() => {
     //드래그앤 드롭 바닐라 자스
@@ -91,129 +97,59 @@ const DailyPlanner = () => {
     };
   }, []);
 
-  var newObj = {}
-  var obj = {}
-  var trip = {
-    "endDate" : null,
-    "startDate": null,
-    "places":{},
-    "thumbnail": null,
-  }
-  var newtrip = {
-    "endDate" : null,
-    "startDate": null,
-    "places":{},
-    "thumbnail": null,
-  }
+  //여행 일정 객체 생성 관련
+  var newObj = {};
+  var newTrip = {
+    endDate: endDate,
+    places: {},
+    startDate: startDate,
+    regDate: regDate,
+    thumbnail: null,
+  };
+
   const createTripObj = () => {
     const places = [...document.querySelectorAll('.daily')].forEach(
       (plannerBox, idx) => {
-        // var dateStr = plannerBox.querySelector(".date").innerText
-        newObj[`${idx}`] = []
-        newtrip.places = newObj
-        console.log("이거뭘까", newObj)
-        console.log("끝이보인다",newtrip)
-        
-        const eachDay = [...plannerBox.querySelectorAll('.list-item')].forEach(
-          (placeItem, id) => {
-          console.log("여기 뭐담기냐", placeItem)
-          console.log("index가 왜 같지",id)
-          // console.log("placeId",placeItem.dataset.placeId )
-          // obj['placeId'] = placeItem.dataset.placeId
-          // console.log("제발나그만하고싶어",trip.places[`${id}`])
-          // trip.places[`${id}`].push(obj)
-          // console.log("제발나그만하고싶어",trip)
-
-        },
-        );
+        newObj[`${idx}`] = [];
+        newTrip.places = newObj;
       },
     );
-  }
-  
- 
+  };
 
-  // const createTripObj = () => {
-  //   const place = [...document.querySelectorAll(".daily")]
-  //   console.log("이거뭐지",place)
-  //   console.log(typeof(place))
-  //   const places = [...document.querySelectorAll(".daily")].forEach(
-  //     (plannerBox,idx) => {
-  //       console.log("얘는뭐지",plannerBox)
-
-  //       // newObj['idx'] = newnewObj
-  //       console.log(typeof(newObj))
-  //       console.log()
-  //       const Day = [...plannerBox.querySelectorAll(".list-item")].forEach((placeItem,idx) =>
-  //       {console.log("너는뭐냐구",placeItem)
-  //         var newnewObj = {}
-  //         newnewObj[`placeId${idx}`] = placeItem.dataset.placeId
-  //         console.log("얘 만들어짐?",newnewObj)
-  //         var newObj = {}
-  //         newObj[`places${idx}`] = newnewObj
-  //         console.log("얘뭐지",newObj)
-  //         return newnewObj
-  //       }
-       
-  //       )
-        
-  //     })
-     
-
-
-
-  //   //     console.log("야 너 뭐야",Day)
-  //   //     const eachDay = [
-  //   //       ...plannerBox.querySelectorAll(".list-item"),
-  //   //     ].map((placeItem,idx) => {
-  //   //       // console.log(idx)
-  //   //       console.log(placeItem)
-  //   //       const placeId = placeItem.dataset.placeId
-  //   //       const courseOrder = idx
-  //   //       const DayInfo = idx+1
-  //   //       return { placeId, courseOrder, DayInfo};
-  //   //     });
-  
-  //   //     return { eachDay };
-  //   //   }
-  //   // )
-  //   const regDate = '2022-09-26'
-  //   return {
-  //     trip: { endDate, places, regDate, startDate }
-  //   }
-  // }
-  const createObj = () => {
-    const dailyItem = [...document.querySelectorAll(".daily")].map(
+  //좋은 방식은 아닌거 같으니 리팩필요
+  const subCreateTripObj = () => {
+    const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
-        console.log("살려줘",plannerBox)
-        const places_attributes = [
-          ...plannerBox.querySelectorAll(".list-item"),
-        ].map((placeItem) => {
-          const placeId = placeItem.dataset.placeId;
-          return { placeId };
+        const placeInfo = [
+          ...plannerBox.querySelectorAll('.list-item'),
+        ].map((placeItem, idx) => {
+          const comment = '임시메모'
+          const courseOrder = idx 
+          const placeData = placeItem.dataset
+          const img = placeData.placeImg
+          newTrip['thumbnail'] = img
+          const placeId = placeData.placeId;
+          const type = 'ACTIVITY' //임시타입
+          const visited = false
+          return { comment,courseOrder,img, placeId,type,visited };
         });
-  
-        return {  places_attributes };
-      }
+        return { placeInfo };
+      },
+    );
+    return { trip: { dailyItem } };
+  };
 
-    )
-    return { trip : {dailyItem} }
-  }
-
-  const newTrip= () => {
-    createTripObj()
-    const tripObj = createObj()
-    console.log("여기에 뭐들어가있음",tripObj)
-    console.log("자해보자",tripObj.trip.dailyItem[0]) //여기에 순서별 daylist가 배열이 들어있음
-    console.log("여기다넣어보자",newtrip)
-    var awslist = tripObj.trip.dailyItem
-    awslist.forEach((awslist,idx)=>{
-      console.log("이건뭘까",awslist)
-      newtrip.places[`${idx}`] = awslist['places_attributes']
-    })
-    console.log("제발나좀살려줘",newtrip)
-  }
-
-
+  const createNewTrip = () => {
+    createTripObj();
+    const tripObj = subCreateTripObj();
+    var tmp = tripObj.trip.dailyItem;
+    tmp.forEach((tmp, idx) => {
+      newTrip.places[`${idx}`] = tmp['placeInfo'];
+    });
+    console.log('완성형', newTrip);
+    console.log('얘가들어감',JSON.stringify(newTrip))
+    dispatch(createTrip(JSON.stringify(newTrip)))
+  };
 
   return (
     <PlannerContent className="planner-content">
@@ -221,8 +157,15 @@ const DailyPlanner = () => {
         안녕난 장소장바구니야
         {placeItem &&
           placeItem.map((item, idx) => (
-            <li key={idx} draggable={item.draggable} data-place-id={item.placeId} className="list-item">
-              {item.placeName}
+            <li
+              key={idx}
+              draggable={item.draggable}
+              data-place-id={item.placeId}
+              data-place-img={item.imgUrl}
+              className="list-item"
+            >
+
+              {item.name}
               <DeleteBtn className="delete">삭제</DeleteBtn>
             </li>
           ))}
@@ -239,7 +182,7 @@ const DailyPlanner = () => {
           </PlannerBox>
         ))}
 
-      <SaveBtn onClick={newTrip}>일정생성</SaveBtn>
+      <SaveBtn onClick={createNewTrip}>일정생성</SaveBtn>
     </PlannerContent>
   );
 };

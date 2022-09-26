@@ -11,14 +11,13 @@ import { setPlaceItem } from '../../../features/trip/tripSlice';
 const PlaceContainer = styled.div`
   border: 1px solid;
   height: 87vh;
-  
 `;
 const PlaceOverview = styled.div``;
 
 const PlaceList = styled.div`
   border: 1px solid;
   height: 80vh;
-  overflow-y: scroll ;
+  overflow-y: scroll;
 `;
 
 const PlaceName = styled.div``;
@@ -34,31 +33,17 @@ const PlaceBar = () => {
   //   travel: "travel"
   // }
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  const addPlaceToPlanner = (placeId,placeName,id, e) => {
-    e.preventDefault()
-    let placeItemObj = new Object()
-    placeItemObj.placeId = placeId
-    placeItemObj.placeName = placeName
-    placeItemObj.draggable = true
-    placeItemObj.id = id
+  const addPlaceToPlanner = (placeId, placeName, placeImg, id, e) => {
+    e.preventDefault();
+    let placeItemObj = new Object();
+    placeItemObj.placeId = placeId;
+    placeItemObj.name = placeName;
+    placeItemObj.imgUrl = placeImg;
+    placeItemObj.draggable = true;
+    placeItemObj.id = id;
 
-    dispatch(setPlaceItem(placeItemObj))
-    // placeItem.push(placeItemObj);
-    // console.log("어떻게 될까",placeItem)
-
-    // const placeItem = document.createElement('div')
-    // placeItem.className = 'list-item'
-    // placeItem.setAttribute('placeId', placeId) //이거 들어가니까 placeid로 바뀌네
-    // placeItem.setAttribute('draggable', true)
-    // placeItem.innerHTML = `<div class="item-content">${placeName}</div></div><div class="item-actions"><i class="material-icons delete">delete</i>`;
-    // console.log(placeId)
-    // console.log(placeName)
-    // console.log(placeItem)
-    // document.querySelector('.bucket').appendChild(placeItem);
-    // document.querySelector('.planner-list').appendChild(placeItem); 한번에 두개의 클래스에 넣으니깐 왜 에러나지
-  }
-
-  
+    dispatch(setPlaceItem(placeItemObj));
+  };
 
   useEffect(() => {
     //아무것도 선택안하고 일정생성할때 기본 장소리스트(여행지)
@@ -99,7 +84,15 @@ const PlaceBar = () => {
                     <PlusBtn
                       className="plus" //heart대신 plus
                       id={item.placeId}
-                      onClick={(e)=> addPlaceToPlanner(item.placeId,item.name,idx, e)}
+                      onClick={(e) =>
+                        addPlaceToPlanner(
+                          item.placeId,
+                          item.name,
+                          item.imgUrl,
+                          idx,
+                          e,
+                        )
+                      } //여기에
                     >
                       장바구니에넣기
                     </PlusBtn>
