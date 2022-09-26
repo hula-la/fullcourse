@@ -23,9 +23,9 @@ public class PlaceRecommendController {
     private final TravelTagCsvService travelTagCsvService;
 
 
-    @ApiOperation(value = "커스텀 장소 생성", notes = "성공여부를 반환함.")
+    @ApiOperation(value = "유사 장소 반환", notes = "성공여부를 반환함.")
     @GetMapping
-    public ResponseEntity<BaseResponseBody> customCreate(@RequestParam Long placeId) throws Exception {
+    public ResponseEntity<BaseResponseBody> similarPlace(@RequestParam Long placeId) throws Exception {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                 cosineSimilarityService.similarPlaceRecommender(placeId,4)));
     }

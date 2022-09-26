@@ -141,7 +141,6 @@ public class FullCourseService {
     }
 
     public PlaceRes getLntLat(String type, Long placeId){
-        Float lat, lng;
         PlaceRes placeRes;
         if (type.equals("travel")) {
             Travel travel = travelRepository.findByPlaceId(placeId).get();
