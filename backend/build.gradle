@@ -43,6 +43,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -88,6 +89,14 @@ dependencies {
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// spark
+	implementation ('org.apache.spark:spark-core_2.13:3.3.0'){
+		exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+	}
+	implementation 'com.thoughtworks.paranamer:paranamer:2.8'
+
+	// komoran
+	implementation 'com.github.shin285:KOMORAN:3.3.4'
 
 }
 
