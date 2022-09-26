@@ -19,7 +19,9 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -91,7 +93,8 @@ public class SharedFCRepositoryCustom {
                     .on(fullCourseDetail.placeId.eq(activity.placeId))
                     .where(eqActivity(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -99,7 +102,8 @@ public class SharedFCRepositoryCustom {
                     .on(fullCourseDetail.placeId.eq(travel.placeId))
                     .where(eqTravel(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -107,7 +111,8 @@ public class SharedFCRepositoryCustom {
                     .on(fullCourseDetail.placeId.eq(restaurant.placeId))
                     .where(eqRestaurant(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -115,7 +120,8 @@ public class SharedFCRepositoryCustom {
                     .on(fullCourseDetail.placeId.eq(hotel.placeId))
                     .where(eqHotel(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -123,8 +129,10 @@ public class SharedFCRepositoryCustom {
                     .on(fullCourseDetail.placeId.eq(culture.placeId))
                     .where(eqCulture(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
         }
+
         System.out.println(fcIds.toString());
         if(fcIds.size() != 0) builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
 
