@@ -140,8 +140,32 @@ public class FullCourseService {
         return message;
     }
 
-    public PlaceRes getLntLat(String type, Long placeId){
-        Float lat, lng;
+
+    @Transactional
+    public String confirmVisitByImage(double[] inputLatLng, Long fcdId){
+        String message = null;
+        FullCourseDetail fcDetail =
+                fullCourseDetailRepository.findById(fcdId).get();
+        String type = fcDetail.getType();
+
+        float[] LatLng = getLntLat(type,fcDetail.getPlaceId());
+
+        float lat = LatLng[0];
+        float lng = LatLng[1];
+
+        // Km 단위로 계산됨.
+        Double dist = Math.sqrt(Math.pow((inputLatLng[0] - lat) * 88.9036, 2) + Math.pow((inputLatLng[1] - lng) * 111.3194, 2));
+        System.out.println("계산된 거리 : " + dist + "Km");
+        if(dist < 1){
+            fcDetail.setVisited(true);
+            message = "인증 완료";
+        }else{
+            message = "인증 실패 : 거리가 멀어 인증할 수 없습니다.";
+        }
+        fullCourseDetailRepository.save(fcDetail);
+        return message;
+    }
+    public float[] getLntLat(String type, Long placeId){
         PlaceRes placeRes;
         if (type.equals("travel")) {
             Travel travel = travelRepository.findByPlaceId(placeId).get();
