@@ -19,64 +19,97 @@ import java.util.stream.Stream;
 public class CosineSimilarityService {
     private final TravelService travelService;
 
+    private final TravelTagCsvService travelTagCsvService;
+
     public TravelDetailRes[] similarPlaceRecommender(long selectedIdx, int num) throws Exception {
-        HashMap<Long, Integer[]> integerListHashMap = readCSV("movie.csv");
-
-        Integer[] selectedIdxGenre = integerListHashMap.get(selectedIdx);
-        System.out.println(Arrays.toString(selectedIdxGenre));
-        int movieNum = selectedIdxGenre.length;
-
-        HashMap<Long,Double> similarity = new HashMap<>();
-
-        integerListHashMap.forEach((idx, list) -> {
-            if (idx==selectedIdx) return;
-            similarity.put(idx,cosineSimilarity(selectedIdxGenre,list));
-        } );
-
-        List<Entry<Long, Double>> list_entries = new ArrayList<>(similarity.entrySet());
 
         // 비교함수 Comparator 를 사용하여 오름차순으로 정렬
-        Collections.sort(list_entries, new Comparator<Entry<Long, Double>>() {
-            // compare로 값을 비교
-            public int compare(Entry<Long, Double> obj1, Entry<Long, Double> obj2) {
-                // 오름 차순 정렬
-                return -obj1.getValue().compareTo(obj2.getValue());
-            }
-        });
-
-        TravelDetailRes[] travelDetailResArr = new TravelDetailRes[Math.min(num, movieNum)];
-
-        for (int i = 0; i < travelDetailResArr.length; i++) {
-            Entry entry = list_entries.get(i);
-            Long placeId = (Long) entry.getKey();
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-            travelDetailResArr[i] = travelService.getTravelDetail(placeId);
-        }
-
-        return travelDetailResArr;
+//        Collections.sort(list_entries, new Comparator<Entry<Long, Double>>() {
+//            // compare로 값을 비교
+//            public int compare(Entry<Long, Double> obj1, Entry<Long, Double> obj2) {
+//                // 오름 차순 정렬
+//                return -obj1.getValue().compareTo(obj2.getValue());
+//            }
+//        });
+//
+//        TravelDetailRes[] travelDetailResArr = new TravelDetailRes[Math.min(num, movieNum)];
+//
+//        for (int i = 0; i < travelDetailResArr.length; i++) {
+//            Entry entry = list_entries.get(i);
+//            Long placeId = (Long) entry.getKey();
+//            System.out.println(entry.getKey() + " : " + entry.getValue());
+//            travelDetailResArr[i] = travelService.getTravelDetail(placeId);
+//        }
+//
+//        return travelDetailResArr;
+        return null;
 
     }
-    public double[][] similarityConverter() throws Exception {
-        HashMap<Long, Integer[]> integerListHashMap = readCSV("movie.csv");
+//    public TravelDetailRes[] similarPlaceRecommender(long selectedIdx, int num) throws Exception {
+//        HashMap<Long, Integer[]> integerListHashMap = readCSV("movie.csv");
+//
+//        Integer[] selectedIdxGenre = integerListHashMap.get(selectedIdx);
+//        System.out.println(Arrays.toString(selectedIdxGenre));
+//        int movieNum = selectedIdxGenre.length;
+//
+//        HashMap<Long,Double> similarity = new HashMap<>();
+//
+//        integerListHashMap.forEach((idx, list) -> {
+//            if (idx==selectedIdx) return;
+//            similarity.put(idx,cosineSimilarity(selectedIdxGenre,list));
+//        } );
+//
+//        List<Entry<Long, Double>> list_entries = new ArrayList<>(similarity.entrySet());
+//
+//        // 비교함수 Comparator 를 사용하여 오름차순으로 정렬
+//        Collections.sort(list_entries, new Comparator<Entry<Long, Double>>() {
+//            // compare로 값을 비교
+//            public int compare(Entry<Long, Double> obj1, Entry<Long, Double> obj2) {
+//                // 오름 차순 정렬
+//                return -obj1.getValue().compareTo(obj2.getValue());
+//            }
+//        });
+//
+//        TravelDetailRes[] travelDetailResArr = new TravelDetailRes[Math.min(num, movieNum)];
+//
+//        for (int i = 0; i < travelDetailResArr.length; i++) {
+//            Entry entry = list_entries.get(i);
+//            Long placeId = (Long) entry.getKey();
+//            System.out.println(entry.getKey() + " : " + entry.getValue());
+//            travelDetailResArr[i] = travelService.getTravelDetail(placeId);
+//        }
+//
+//        return travelDetailResArr;
+//
+//    }
+    public void similarityConverter(String fileName) throws Exception {
+        HashMap<Long, Integer[]> integerListHashMap = travelTagCsvService.readCSV("movie.csv");
         int movieNum = integerListHashMap.size();
 
         Long[] movieArr = (Long[]) integerListHashMap.keySet().toArray();
-        double[][] similarity = new double[movieNum][movieNum];
+        float[][] similarity = new float[movieNum][movieNum];
+        HashMap<Long,HashMap<Long,Float>> similarityRedis = new HashMap<>();
 
         for(int i=0;i<movieNum;i++){
             Integer[] targetVector = integerListHashMap.get(movieArr[i]);
+            similarityRedis.put(movieArr[i], new HashMap<>());
 
             for (int j = 0; j < movieNum; j++) {
                 if (i==j) similarity[i][j]=0;
                 Integer[] comparedVector = integerListHashMap.get(movieArr[j]);
                 similarity[i][j] = cosineSimilarity(targetVector,comparedVector);
+
+                similarityRedis.get(movieArr[i]).put(movieArr[j],similarity[i][j]);
+
             }
         }
 
-        return similarity;
+        writeCSV(fileName,movieArr,similarity);
+
+//        레디스에 저장
     }
 
-    public void writeCSV(String fileName, Long[] header, Long[][] similarity) throws Exception{
+    public void writeCSV(String fileName, Long[] header, float[][] similarity) throws Exception{
         File csv = new File(fileName);
         BufferedWriter bw = null;
 
@@ -99,6 +132,7 @@ public class CosineSimilarityService {
 
                 bw.write(header[i]+",");
                 bw.write(dataStr.substring(1, dataStr.length() - 1));
+                bw.newLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -116,63 +150,19 @@ public class CosineSimilarityService {
         }
     }
 
-//    public void csvWriter(String fileName, Long[] header, Long[][] similarity) throws Exception{
-//
-//        CSVWriter csvWriter = new CSVWriter(new FileWriter(fileName));
-//        StringBuilder sb = new StringBuilder();
-//
-////        Long 배열 -> String 배열 변환
-//        sb.append(Arrays.toString(header)
-//                .replaceAll("\\s+", ""));
-////        첫번째는 빈배열
-//        sb.insert(1,",");
-//        String str = sb.toString();
-//
-//
-//        String[] strArray = str.substring(1, str.length() - 1)
-//                .split(",");
-////        헤더 작성
-//        csvWriter.writeNext(strArray);
-//
-//
-//    }
 
 
-    public HashMap<Long,Integer[]> readCSV(String fileName){
-        HashMap<Long,Integer[]> csvList = new HashMap<>();
-        File csv = new File(fileName);
-        BufferedReader br;
-        String line="";
 
-        try {
-            br = new BufferedReader(new FileReader(csv));
-            br.readLine();
-            while((line=br.readLine())!=null){
-                String[] aline = line.split(",");
-                long idx = Long.parseLong(aline[0]);
-                Integer[] arr = Stream.of(Arrays.copyOfRange(aline,1,aline.length)).mapToInt(Integer::parseInt).boxed().toArray(Integer[]::new);
-
-                csvList.put(idx,arr);
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return csvList;
-    }
-
-
-    public double cosineSimilarity(Integer[] vectorA, Integer[] vectorB) {
-        double dotProduct = 0.0;
-        double normA = 0.0;
-        double normB = 0.0;
+    public float cosineSimilarity(Integer[] vectorA, Integer[] vectorB) {
+        float dotProduct = 0.0F;
+        float normA = 0.0F;
+        float normB = 0.0F;
         for (int i = 0; i < vectorA.length; i++) {
             dotProduct += vectorA[i] * vectorB[i];
             normA += Math.pow(vectorA[i], 2);
             normB += Math.pow(vectorB[i], 2);
         }
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        return (float) (dotProduct / (Math.sqrt(normA) * Math.sqrt(normB)));
     }
 
 }
