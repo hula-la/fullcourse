@@ -91,41 +91,129 @@ const DailyPlanner = () => {
     };
   }, []);
 
+  var newObj = {}
+  var obj = {}
+  var trip = {
+    "endDate" : null,
+    "startDate": null,
+    "places":{},
+    "thumbnail": null,
+  }
+  var newtrip = {
+    "endDate" : null,
+    "startDate": null,
+    "places":{},
+    "thumbnail": null,
+  }
   const createTripObj = () => {
-    const places = [...document.querySelectorAll(".daily")].map(
-      (plannerBox,idx) => {
-        const dateStr = plannerBox.querySelector(".date").innerText;
-        console.log(dateStr)
-      
-        console.log(idx)
-        const additionalProp = [
+    const places = [...document.querySelectorAll('.daily')].forEach(
+      (plannerBox, idx) => {
+        // var dateStr = plannerBox.querySelector(".date").innerText
+        newObj[`${idx}`] = []
+        newtrip.places = newObj
+        console.log("이거뭘까", newObj)
+        console.log("끝이보인다",newtrip)
+        
+        const eachDay = [...plannerBox.querySelectorAll('.list-item')].forEach(
+          (placeItem, id) => {
+          console.log("여기 뭐담기냐", placeItem)
+          console.log("index가 왜 같지",id)
+          // console.log("placeId",placeItem.dataset.placeId )
+          // obj['placeId'] = placeItem.dataset.placeId
+          // console.log("제발나그만하고싶어",trip.places[`${id}`])
+          // trip.places[`${id}`].push(obj)
+          // console.log("제발나그만하고싶어",trip)
+
+        },
+        );
+      },
+    );
+  }
+  
+ 
+
+  // const createTripObj = () => {
+  //   const place = [...document.querySelectorAll(".daily")]
+  //   console.log("이거뭐지",place)
+  //   console.log(typeof(place))
+  //   const places = [...document.querySelectorAll(".daily")].forEach(
+  //     (plannerBox,idx) => {
+  //       console.log("얘는뭐지",plannerBox)
+
+  //       // newObj['idx'] = newnewObj
+  //       console.log(typeof(newObj))
+  //       console.log()
+  //       const Day = [...plannerBox.querySelectorAll(".list-item")].forEach((placeItem,idx) =>
+  //       {console.log("너는뭐냐구",placeItem)
+  //         var newnewObj = {}
+  //         newnewObj[`placeId${idx}`] = placeItem.dataset.placeId
+  //         console.log("얘 만들어짐?",newnewObj)
+  //         var newObj = {}
+  //         newObj[`places${idx}`] = newnewObj
+  //         console.log("얘뭐지",newObj)
+  //         return newnewObj
+  //       }
+       
+  //       )
+        
+  //     })
+     
+
+
+
+  //   //     console.log("야 너 뭐야",Day)
+  //   //     const eachDay = [
+  //   //       ...plannerBox.querySelectorAll(".list-item"),
+  //   //     ].map((placeItem,idx) => {
+  //   //       // console.log(idx)
+  //   //       console.log(placeItem)
+  //   //       const placeId = placeItem.dataset.placeId
+  //   //       const courseOrder = idx
+  //   //       const DayInfo = idx+1
+  //   //       return { placeId, courseOrder, DayInfo};
+  //   //     });
+  
+  //   //     return { eachDay };
+  //   //   }
+  //   // )
+  //   const regDate = '2022-09-26'
+  //   return {
+  //     trip: { endDate, places, regDate, startDate }
+  //   }
+  // }
+  const createObj = () => {
+    const dailyItem = [...document.querySelectorAll(".daily")].map(
+      (plannerBox) => {
+        console.log("살려줘",plannerBox)
+        const places_attributes = [
           ...plannerBox.querySelectorAll(".list-item"),
-        ].map((placeItem,idx) => {
-          // console.log(idx)
-          console.log(placeItem)
-          const placeId = placeItem.dataset.placeId
-          const courseOrder = idx
-          return { placeId, courseOrder };
+        ].map((placeItem) => {
+          const placeId = placeItem.dataset.placeId;
+          return { placeId };
         });
   
-        return { additionalProp };
+        return {  places_attributes };
       }
-    );
 
-
-    
-
-    const regDate = '2022-09-26'
-    return {
-      trip: { endDate, places, regDate, startDate }
-    }
-    
+    )
+    return { trip : {dailyItem} }
   }
 
   const newTrip= () => {
-    const tripObj = createTripObj()
-    console.log(tripObj)
+    createTripObj()
+    const tripObj = createObj()
+    console.log("여기에 뭐들어가있음",tripObj)
+    console.log("자해보자",tripObj.trip.dailyItem[0]) //여기에 순서별 daylist가 배열이 들어있음
+    console.log("여기다넣어보자",newtrip)
+    var awslist = tripObj.trip.dailyItem
+    awslist.forEach((awslist,idx)=>{
+      console.log("이건뭘까",awslist)
+      newtrip.places[`${idx}`] = awslist['places_attributes']
+    })
+    console.log("제발나좀살려줘",newtrip)
   }
+
+
 
   return (
     <PlannerContent className="planner-content">
