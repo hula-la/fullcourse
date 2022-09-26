@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
-import format from 'date-fns/format';
 import { createTrip } from '../../../features/trip/tripActions';
 
 const PlannerContent = styled.div`

@@ -27,7 +27,7 @@ const PlusBtn = styled.button``;
 const PlaceBar = () => {
   const dispatch = useDispatch();
 
-  const { travelPlaceList } = useSelector((state) => state.trip);
+  const { travelPlaceList, map } = useSelector((state) => state.trip);
 
   // const PLACE_TYPES = {
   //   travel: "travel"
@@ -45,6 +45,17 @@ const PlaceBar = () => {
     dispatch(setPlaceItem(placeItemObj));
   };
 
+  const addMarker = (lat,lng) => {
+
+    const position = { lat: lat, lng: lng }
+    const marker = new window.google.maps.Marker({
+      // map:map,
+      map, //둘다 되는건 뭐지..?
+      position: position
+    })
+  }
+
+
   useEffect(() => {
     //아무것도 선택안하고 일정생성할때 기본 장소리스트(여행지)
     //  console.log(PLACE_TYPES['travel'])
@@ -52,6 +63,7 @@ const PlaceBar = () => {
       travel: 'travel',
     };
     dispatch(fetchTravelPlace(PLACE_TYPES['travel']));
+   
   }, []);
 
   return (
@@ -84,15 +96,16 @@ const PlaceBar = () => {
                     <PlusBtn
                       className="plus" //heart대신 plus
                       id={item.placeId}
-                      onClick={(e) =>
-                        addPlaceToPlanner(
+                      onClick={(e) => 
+                        {addPlaceToPlanner(
                           item.placeId,
                           item.name,
                           item.imgUrl,
                           idx,
                           e,
-                        )
-                      } //여기에
+                        );
+                        addMarker(item.lat, item.lng,e)
+                      }} //여기에
                     >
                       장바구니에넣기
                     </PlusBtn>

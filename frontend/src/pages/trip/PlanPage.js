@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PlanBar from '../../components/trip/plan/PlanBar';
-import PlanMap from '../../components/trip/PlanMap';
+import Map from '../../components/trip/Map';
 import PlaceBar from '../../components/trip/place/PlaceBar';
 
 const Container = styled.div`
@@ -15,7 +15,7 @@ const PlanPage = () => {
     <div>
       <Container>
         <PlanBar></PlanBar>
-        <PlanMap></PlanMap>
+        <Map></Map>
         <PlaceBar></PlaceBar>
       </Container>
     </div>

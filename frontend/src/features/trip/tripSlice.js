@@ -10,7 +10,8 @@ const initialState = {
   tripDates: [], //여행 하루하루 날짜
   travelPlaceList: null, //여행명소리스트 //null이랑 빈배열로 받는거랑 무슨차일까
   placeItem: [],
-  trip: null //전체 여행일정
+  trip: null, //전체 여행일정
+  map: null
 };
 
 const tripSlice = createSlice({
@@ -33,6 +34,9 @@ const tripSlice = createSlice({
     setPlaceItem: (state, action) => {
       state.placeItem.push(action.payload);
     },
+    setInitMap: (state, action) => {
+      state.map = action.payload
+    }
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -58,6 +62,7 @@ export const {
   calcTripDay,
   setDates,
   setPlaceItem,
+  setInitMap
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

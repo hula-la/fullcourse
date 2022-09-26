@@ -28,6 +28,7 @@ export const createTrip = createAsyncThunk(
     try {
       const { data } = await postTrip(createTripPostReq);
       console.log("여행일정생성성공",data)
+      alert("일정생성에 성공했다네!!")
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
