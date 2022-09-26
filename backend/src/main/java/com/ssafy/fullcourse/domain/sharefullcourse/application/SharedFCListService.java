@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.application;
 
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCListDto;
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCSearchReq;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
@@ -17,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,8 +68,18 @@ public class SharedFCListService {
     }
 
     // 공유 풀코스 태그&날짜 조회
-    public Page<SharedFCListDto> searchByTagAndDay(List<String> tags, List<Integer> days, Pageable pageable){
-        Page<SharedFullCourse>  sharedFullCourses = sharedFCRepositoryCustom.searchByTagsAndDays(tags,days,pageable);
+    public Page<SharedFCListDto> searchByTagAndDay(SharedFCSearchReq sharedFCSearchReq, Pageable pageable){
+
+        List<String> places = new ArrayList<>();
+        if(sharedFCSearchReq.getPlace().length()!=0){
+            StringTokenizer st = new StringTokenizer(sharedFCSearchReq.getPlace()," ");
+            while(st.hasMoreTokens()) places.add(st.nextToken());
+        }
+
+        Page<SharedFullCourse>  sharedFullCourses = sharedFCRepositoryCustom.searchByTagsAndDays(
+                sharedFCSearchReq.getTags(),
+                sharedFCSearchReq.getDays(),
+                places, pageable);
         return sharedFullCourses.map(
                 share -> new SharedFCListDto(share,share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }

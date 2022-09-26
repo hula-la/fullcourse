@@ -9,5 +9,6 @@ public class SharedFCSearchReq {
 
     List<String> tags;
     List<Integer> days;
+    String place;
 
 }
