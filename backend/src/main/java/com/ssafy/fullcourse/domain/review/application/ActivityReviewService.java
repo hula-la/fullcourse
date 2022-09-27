@@ -2,7 +2,7 @@ package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
-import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
+import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
 import com.ssafy.fullcourse.domain.review.entity.ActivityReviewLike;
@@ -14,30 +14,25 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview, Activity, ActivityReviewLike> {
+//@SuperBuilder
+public class ActivityReviewService extends BaseReviewService<ActivityReview, Activity, ActivityReviewLike> {
 
-    public ActivityReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
-                                UserRepository userRepository) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
-    }
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
         Optional<Activity> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
-
 
         // NotFoundException 턴지기
         if(!place.isPresent()) throw new PlaceNotFoundException();
@@ -48,8 +43,14 @@ public class ActivityReviewService extends BaseReviewServiceImpl<ActivityReview,
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
-                .user(userRepository.findByEmail(userId).get())
+                .user(userRepository.findByEmail(email).get())
                 .build();
+
+        if(file != null) {
+            baseReview.setReviewImg(awsS3Service.uploadImage(file));
+        } else {
+            baseReview.setReviewImg(defaultImg);
+        }
 
 
         baseReviewRepository.save(baseReview);
