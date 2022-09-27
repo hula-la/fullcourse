@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import PlaceList from './PlaceList';
 
 const Side = styled.div`
   display: flex;
@@ -43,6 +44,7 @@ const Side = styled.div`
     border-radius: 20px;
     padding: 3px 10px;
     margin: 10px 4px;
+    font-size: small;
     font-weight: bold;
     cursor: pointer;
     color: #0aa1dd;
@@ -64,23 +66,22 @@ const Side = styled.div`
   }
 `;
 
-const FullcourseSide = () => {
-  const { userInfo } = useSelector((state) => state.user);
-  const tagList2 = ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'];
+const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
+  const { dayTagList } = useSelector((state) => state.share);
   return (
     <Side>
-      {userInfo ? (
+      {sharedFcInfo ? (
         <>
           <div id="userInfo">
             <div id="imgBlock">
               <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
             </div>
-            <p>{userInfo.nickname}</p>
+            <p>{sharedFcInfo.user.nickname}</p>
           </div>
         </>
       ) : null}
       <ul className="daynonelist">
-        {tagList2.map((tag, index) => {
+        {dayTagList.map((tag, index) => {
           return (
             <li
               className={'daylistitem' + (tag.selected ? ' tag-selected' : '')}
@@ -92,6 +93,9 @@ const FullcourseSide = () => {
           );
         })}
       </ul>
+      {fullcourseDetail ? (
+        <PlaceList placeList={fullcourseDetail.places} />
+      ) : null}
     </Side>
   );
 };

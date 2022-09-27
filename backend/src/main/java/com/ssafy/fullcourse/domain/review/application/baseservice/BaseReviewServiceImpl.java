@@ -131,7 +131,9 @@ public class BaseReviewServiceImpl<R extends BaseReview, P extends BasePlace, RL
             baseReviewRLikeRepository.deleteById(reviewLike.get().getReviewLikeId());
         } else {
             reviewOpt.get().addLikeCnt(1);
-            baseReviewRLikeRepository.save(new BaseReviewLike(userOpt.get(),reviewOpt.get()));
+            baseReviewRLikeRepository.save(BaseReviewLike.builder()
+                    .user(userOpt.get())
+                    .review(reviewOpt.get()));
         }
 
 

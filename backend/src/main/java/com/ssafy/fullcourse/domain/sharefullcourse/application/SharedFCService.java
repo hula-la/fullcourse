@@ -1,5 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.application;
 
+import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
+import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCGetRes;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
@@ -30,16 +32,18 @@ public class SharedFCService {
     private final SharedFCTagRepository sharedFCTagRepository;
     private final SharedFCLikeRepository sharedFCLikeRepository;
     private final UserRepository userRepository;
+    private final FullCourseRepository fullCourseRepository;
 
     // 공유 풀코스 생성
     @Transactional
-    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, User user) {
-        Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFullCourse().getFcId()));
-
+    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, String email) {
+        Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFcId()));
         if(opt.isPresent()) throw new AlreadyExistException("이미 공유한 풀코스 입니다.");
 
-        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto, user);
+        FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCDto.getFcId());
+        User user = userRepository.findByEmail(email).get();
 
+        SharedFullCourse sharedFullCourse = SharedFullCourse.of(sharedFCDto, fullCourse, user);
         tagDtoE(tags,sharedFullCourse);
 
         SharedFullCourse saved = sharedFCRepository.save(sharedFullCourse);
@@ -68,12 +72,13 @@ public class SharedFCService {
     @Transactional
     public SharedFCGetRes updateSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, Long sharedFcId, String email) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFcId));
-
         SharedFullCourse now = opt.orElseThrow(()->new SharedFCNotFoundException());
+        FullCourse fullCourse = fullCourseRepository.findByFcId(sharedFCDto.getFcId());
         for(int i = 0 ; i < now.getSharedFCTags().size();i++) {
             now.getSharedFCTags().remove(i);
         }
-        SharedFullCourse sharedFullCourse = SharedFullCourse.sharedFCUpdate(sharedFCDto,now, sharedFcId);
+
+        SharedFullCourse sharedFullCourse = SharedFullCourse.sharedFCUpdate(sharedFCDto,now, fullCourse, sharedFcId);
 
         Boolean isLike = false;
         if(sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,sharedFullCourse).isPresent()){
@@ -96,7 +101,6 @@ public class SharedFCService {
         if(saved == null) throw new SharedFCNotFoundException();
         sharedFCRepository.delete(saved);
     }
-
 
     // 공유 풀코스 좋아요
     @Transactional

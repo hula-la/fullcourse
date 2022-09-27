@@ -1,6 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.dto;
 
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
+import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import lombok.*;
 
 import java.util.Date;
@@ -16,10 +17,11 @@ public class SharedFCGetRes {
 
     private Long fcId;
     private Long sharedFcId;
-    private String userEmail;
+    private UserDto user;
     private String detail;
     private String title;
     private Date regDate;
+    private int day;
     private Long likeCnt = 0L;
     private Long commentCnt = 0L;
     private Long viewCnt = 0L;
@@ -32,10 +34,11 @@ public class SharedFCGetRes {
         return SharedFCGetRes.builder()
                 .fcId(sharedFullCourse.getFullCourse().getFcId())
                 .sharedFcId(sharedFullCourse.getSharedFcId())
-                .userEmail(sharedFullCourse.getUser().getEmail())
+                .user(sharedFullCourse.getUser().toDto())
                 .detail(sharedFullCourse.getDetail())
                 .title(sharedFullCourse.getTitle())
                 .regDate(sharedFullCourse.getRegDate())
+                .day(sharedFullCourse.getDay())
                 .likeCnt(sharedFullCourse.getLikeCnt())
                 .commentCnt(sharedFullCourse.getCommentCnt())
                 .viewCnt(sharedFullCourse.getViewCnt())

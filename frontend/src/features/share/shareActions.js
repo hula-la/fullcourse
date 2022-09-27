@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteSharedFcComment,
+  getMySharedFc,
   getSharedFc,
   getSharedFcDetail,
   getSharedFcLikeList,
@@ -11,12 +12,19 @@ import {
 
 export const fetchSharedFc = createAsyncThunk(
   'share/fetchSharedFc',
-  async ({ checkedTagList, checkedDayTagList }, { rejectWithValue }) => {
+  async (
+    { checkedTagList, checkedDayTagList, place, pageNum },
+    { rejectWithValue },
+  ) => {
     try {
-      const { data } = await getSharedFc({
-        tags: checkedTagList,
-        days: checkedDayTagList,
-      });
+      const { data } = await getSharedFc(
+        {
+          tags: checkedTagList,
+          days: checkedDayTagList,
+          place,
+        },
+        pageNum,
+      );
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -31,7 +39,6 @@ export const fetchSharedFc = createAsyncThunk(
 export const fetchSharedFcDetail = createAsyncThunk(
   'share/fetchSharedFcDetail',
   async ({ sharedFcId, email }, { rejectWithValue }) => {
-    console.log(email);
     try {
       const { data } = await getSharedFcDetail(sharedFcId, email);
       return data;
@@ -118,6 +125,22 @@ export const createSharedFcLike = createAsyncThunk(
   async (sharedFcId, { rejectWithValue }) => {
     try {
       const { data } = await postSharedFcLike(sharedFcId);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const fetchMySharedFc = createAsyncThunk(
+  'share/fetchMySharedFc',
+  async (tmp, { rejectWithValue }) => {
+    try {
+      const { data } = await getMySharedFc();
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

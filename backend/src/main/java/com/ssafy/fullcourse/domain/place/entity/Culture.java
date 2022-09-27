@@ -31,7 +31,7 @@ public class Culture extends BasePlace {
     @Column(length = 20)
     private String gugun;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String address;
 
     @Column(nullable = false, length = 30)
@@ -40,7 +40,7 @@ public class Culture extends BasePlace {
     @Column(length = 5000)
     private String content;
 
-    @Column(length = 100)
+    @Column(length = 300)
     private String imgUrl;
 
     @Column(nullable = false)

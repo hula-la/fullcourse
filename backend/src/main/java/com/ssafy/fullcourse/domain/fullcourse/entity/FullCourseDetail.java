@@ -1,10 +1,8 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,14 +37,17 @@ public class FullCourseDetail {
     private String comment;
 
     @Column(nullable = false)
-    private boolean isVisited;
+    private boolean isVisited = false;
 
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
 
-    public FullCourseDetailPostReq toDto(){
+    @OneToOne(mappedBy = "fullCourseDetail", cascade = CascadeType.REMOVE)
+    private FullCourseDiary fullCourseDiary;
+
+    public FullCourseDetailPostReq toDto(PlaceRes place){
         return FullCourseDetailPostReq.builder()
                 .courseOrder(this.courseOrder)
                 .type(this.type)
@@ -53,6 +55,7 @@ public class FullCourseDetail {
                 .img(this.img)
                 .comment(comment)
                 .isVisited(isVisited)
+                .place(place)
                 .build();
     }
 

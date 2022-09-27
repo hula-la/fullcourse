@@ -15,26 +15,28 @@ import java.util.List;
 @ToString
 public class SharedFCDto {
 
-    private FullCourse fullCourse;
+    private Long fcId;
     private Long sharedFcId;
     private String detail;
     private String title;
     private Date regDate;
+    private int day;
     @Builder.Default private Long likeCnt = 0L;
     @Builder.Default private Long commentCnt = 0L;
     @Builder.Default private Long viewCnt = 0L;
     private List<SharedFCTagDto> sharedFCTags;
     private List<SharedFCCommentRes> sharedFCComments;
     private String thumbnail;
-    private User user;
+    private Long userEmail;
 
-    public static SharedFCDto of(FullCourse fullCourse, SharedFCReq sharedFCReq){
+    public static SharedFCDto of(SharedFCReq sharedFCReq){
         return SharedFCDto.builder()
-                .fullCourse(fullCourse)
+                .fcId(sharedFCReq.getFcId())
                 .detail(sharedFCReq.getDetail())
                 .title(sharedFCReq.getTitle())
                 .thumbnail(sharedFCReq.getThumbnail())
                 .regDate(new Date())
+                .day(sharedFCReq.getDay())
                 .sharedFCTags(new ArrayList<>())
                 .build();
     }
