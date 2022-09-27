@@ -1,10 +1,7 @@
 import client from './client';
 
-export const getSharedFc = async (data, page) => {
-  console.log(data);
-  const res = await client.post('api/share/fullcourse/search', data, {
-    params: { page, size: 9 },
-  });
+export const getFullcourseDetail = async (fcId) => {
+  const res = await client.get(`api/fullcourse/${fcId}`);
   return res;
 };
 

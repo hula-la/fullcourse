@@ -14,8 +14,7 @@ const MyFullcourse = ({ userInfo }) => {
   const { myFullcourseList } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // dispatch(fetchMyFullcourse(userInfo.email));
-    dispatch(fetchMyFullcourse('3'));
+    dispatch(fetchMyFullcourse());
   }, [dispatch]);
 
   return (

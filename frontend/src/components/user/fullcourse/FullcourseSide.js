@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import PlaceList from './PlaceList';
 
 const Side = styled.div`
   display: flex;
@@ -44,7 +43,6 @@ const Side = styled.div`
     border-radius: 20px;
     padding: 3px 10px;
     margin: 10px 4px;
-    font-size: small;
     font-weight: bold;
     cursor: pointer;
     color: #0aa1dd;
@@ -66,17 +64,17 @@ const Side = styled.div`
   }
 `;
 
-const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
+const FullcourseSide = ({ userInfo, fullcourseDetail }) => {
   const { dayTagList } = useSelector((state) => state.share);
   return (
     <Side>
-      {sharedFcInfo ? (
+      {userInfo ? (
         <>
           <div id="userInfo">
             <div id="imgBlock">
               <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
             </div>
-            <p>{sharedFcInfo.user.nickname}</p>
+            <p>{userInfo.nickname}</p>
           </div>
         </>
       ) : null}
@@ -93,9 +91,6 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
           );
         })}
       </ul>
-      {fullcourseDetail ? (
-        <PlaceList placeList={fullcourseDetail.places} />
-      ) : null}
     </Side>
   );
 };

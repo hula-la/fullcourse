@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { checkDayTag } from '../../features/share/shareSlice';
 import styled from 'styled-components';
 
@@ -27,13 +27,21 @@ const TagBlock = styled.div`
   }
 `;
 const SharedFcDayTagItem = ({ tag }) => {
-  const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState(false);
+  const { checkedDayTagList } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    if (checkedDayTagList.includes(tag[0])) {
+      setIsChecked(true);
+    }
+  });
 
   const onClick = () => {
     setIsChecked(!isChecked);
     dispatch(checkDayTag(tag));
   };
+
   return (
     <TagBlock>
       <div

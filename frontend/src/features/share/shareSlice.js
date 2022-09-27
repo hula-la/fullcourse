@@ -26,8 +26,6 @@ const initialState = {
     '산책',
     '데이트',
     '맛집',
-    '힐링',
-    '계곡',
   ],
   dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
   checkedTagList: [],

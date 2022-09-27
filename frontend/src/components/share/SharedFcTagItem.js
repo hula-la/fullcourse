@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { checkTag } from '../../features/share/shareSlice';
 import styled from 'styled-components';
 
@@ -26,8 +26,15 @@ const TagBlock = styled.div`
   }
 `;
 const FullcourseTagItem = ({ tag }) => {
-  const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState(false);
+  const { checkedTagList } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    if (checkedTagList.includes(tag)) {
+      setIsChecked(true);
+    }
+  });
 
   const onClick = () => {
     setIsChecked(!isChecked);
