@@ -1,45 +1,35 @@
-package com.ssafy.fullcourse.sharedfullcourse;
-
+package com.ssafy.fullcourse.domain.sharefullcourse.repository;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
 import com.ssafy.fullcourse.domain.fullcourse.entity.QFullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.QFullCourseDetail;
 import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
-import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
-import io.swagger.models.auth.In;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.BDDAssertions.then;
+@Repository
+@RequiredArgsConstructor
+public class SharedFCRepositoryCustom {
 
-@SpringBootTest
-public class SharedFCTest {
-
-    @Autowired
-    private JPAQueryFactory queryFactory;
-    @Autowired
-    private SharedFCRepository sharedFCRepository;
-
+    private final JPAQueryFactory queryFactory;
     QSharedFullCourse sharedFullCourse = QSharedFullCourse.sharedFullCourse;
     QSharedFCTag sharedFCTag = QSharedFCTag.sharedFCTag;
-    QFullCourse fullCourse = QFullCourse.fullCourse;
     QFullCourseDetail fullCourseDetail = QFullCourseDetail.fullCourseDetail;
     QActivity activity = QActivity.activity;
     QTravel travel = QTravel.travel;
@@ -80,35 +70,21 @@ public class SharedFCTest {
         return culture.name.contains(place);
     }
 
-    @Test
-    void findByTagsAndDays(){
+    public Page<SharedFullCourse> searchByTagsAndDays(List<String> tags, List<Integer> days, List<String> places,
+                                                      Pageable pageable){
 
-        List<Integer> days = new ArrayList<>();
-        days.add(2);
-        days.add(5);
-//        List<String> tags = null;
-        List<String> tags = new ArrayList<>();
-        tags.add("초록초록");
-        tags.add("핫플");
-        List<Long> correct = new ArrayList<>();
-        correct.add(6l);
-        correct.add(7l);
-
-        // 풀코스 테이블에서 shared_fc_id 가져오기
-        List<String> places = new ArrayList<>();
-        places.add("부산");
-        places.add("서프");
 
 
         BooleanBuilder builder = new BooleanBuilder();
-        List<Long> fcIds = new ArrayList<>();
+
         if(tags.size() != 0) builder.and(sharedFullCourse.sharedFcId.in(
                 JPAExpressions.select(sharedFCTag.sharedFullCourse.sharedFcId)
                         .from(sharedFCTag)
                         .where(sharedFCTag.tagContent.in(tags))));
-
         if(days.size() != 0) builder.and(sharedFullCourse.day.in(days));
 
+
+        List<Long> fcIds = new ArrayList<>();
         if(places.size() != 0){
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
@@ -117,7 +93,8 @@ public class SharedFCTest {
                     .on(fullCourseDetail.placeId.eq(activity.placeId))
                     .where(eqActivity(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -125,7 +102,8 @@ public class SharedFCTest {
                     .on(fullCourseDetail.placeId.eq(travel.placeId))
                     .where(eqTravel(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -133,7 +111,8 @@ public class SharedFCTest {
                     .on(fullCourseDetail.placeId.eq(restaurant.placeId))
                     .where(eqRestaurant(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -141,7 +120,8 @@ public class SharedFCTest {
                     .on(fullCourseDetail.placeId.eq(hotel.placeId))
                     .where(eqHotel(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
             fcIds.addAll(queryFactory
                     .select(fullCourseDetail.fullCourse.fcId).distinct()
                     .from(fullCourseDetail)
@@ -149,20 +129,29 @@ public class SharedFCTest {
                     .on(fullCourseDetail.placeId.eq(culture.placeId))
                     .where(eqCulture(places))
                     .distinct()
-                    .fetch());
+                    .fetch()
+                    .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
         }
 
+        System.out.println(fcIds.toString());
         if(fcIds.size() != 0) builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
+
 
         List<SharedFullCourse> result = queryFactory
                 .selectFrom(sharedFullCourse)
                 .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
-        System.out.println(result.stream().map(m->m.getSharedFcId()).collect(Collectors.toList()).toString());
-
-        then(result.stream().map(res->res.getSharedFcId()).collect(Collectors.toList()))
-                .isEqualTo(correct);
+        // count 쿼리를 따로 날려줌
+        JPAQuery<SharedFullCourse> countQuery = queryFactory
+                .selectFrom(sharedFullCourse)
+                .where(builder);
+        //5.0.0 버전에서 fetchCount 가 deprecated 됨.
+        //fetchCount() 대신 fetch().size() 로 동일한 결과를 얻을 수 있음
+        return PageableExecutionUtils.getPage(result, pageable, () -> countQuery.fetch().size());
     }
+
 
 }

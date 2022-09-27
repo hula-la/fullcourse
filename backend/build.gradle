@@ -43,6 +43,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -74,6 +75,28 @@ dependencies {
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+
+//	머하웃
+//	compile group: 'org.apache.mahout', name: 'mahout-core', version: '0.9'
+
+//	csv 생성 라이브러리
+	implementation group: 'com.opencsv', name: 'opencsv', version: '4.4'
+
+	//metadata-extractor
+	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// spark
+	implementation ('org.apache.spark:spark-core_2.13:3.3.0'){
+		exclude group: 'org.apache.logging.log4j', module: 'log4j-slf4j-impl'
+	}
+	implementation 'com.thoughtworks.paranamer:paranamer:2.8'
+
+	// komoran
+	implementation 'com.github.shin285:KOMORAN:3.3.4'
 
 }
 

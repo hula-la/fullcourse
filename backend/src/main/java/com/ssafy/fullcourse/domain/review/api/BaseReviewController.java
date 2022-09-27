@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +21,11 @@ import java.util.Map;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/review")
+@RequiredArgsConstructor
 public class BaseReviewController {
-
-//    @Autowired
-//    BaseReviewService baseReviewService;
-
-//    private Map<String, BaseReviewService> baseReviewServiceMap = new HashMap<>();
 
     private final Map<String, BaseReviewService> baseReviewServiceMap;
 
-    @Autowired
-    public BaseReviewController(Map<String, BaseReviewService> baseReviewServiceMap) {
-        this.baseReviewServiceMap = baseReviewServiceMap;
-
-        System.out.println("baseReviewRepositoryMap = " + baseReviewServiceMap);
-    }
-
-
-//    @Autowired
-////    BaseReviewRepository<R> baseReviewRepository;
-//    public void setBasePlaceRepository(List<BaseReviewService> basePlaceRepositoryList) {
-//        basePlaceRepositoryList.forEach(n -> baseReviewServiceMap.put(n.getClass().getName(),n));
-//    }
 
     @PostMapping("/{type}/list/{placeId}")
     @ApiOperation(value = "리뷰 등록", notes = "type")

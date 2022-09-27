@@ -27,10 +27,10 @@ public class TravelTag {
     @Column(nullable = false)
     private Tag tagContent;
 
-    @OneToMany(mappedBy = "travelTag", cascade = CascadeType.REMOVE)
-    private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
+//    @OneToMany(mappedBy = "travelTag", cascade = CascadeType.REMOVE)
+//    private List<TravelTagCnt> travelTagCnts = new ArrayList<>();
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "placeId")
-    private Travel travel;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "placeId")
+//    private Travel travel;
 }

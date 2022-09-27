@@ -1,11 +1,11 @@
 package com.ssafy.fullcourse.global.model;
 
 public enum PlaceEnum {
-    ACTIVITY("activityReviewService","activityReviewRepository", "activityReview","activityReviewLikeRepository","activityRepository"),
-    CULTURE("cultureReviewService","cultureReviewRepository", "cultureReview","cultureReviewLikeRepository","cultureRepository"),
-    HOTEL("hotelReviewService","hotelReviewRepository", "hotelReview","hotelReviewLikeRepository","hotelRepository"),
-    RESTAURANT("restaurantReviewService","restaurantReviewRepository", "restaurantReview","restaurantReviewLikeRepository","restaurantRepository"),
-    TRAVEL("travelReviewService","travelReviewRepository", "travelReview","travelReviewLikeRepository","travelRepository");
+    activity("activityReviewService","activityReviewRepository", "activityReview","activityReviewLikeRepository","activityRepository"),
+    culture("cultureReviewService","cultureReviewRepository", "cultureReview","cultureReviewLikeRepository","cultureRepository"),
+    hotel("hotelReviewService","hotelReviewRepository", "hotelReview","hotelReviewLikeRepository","hotelRepository"),
+    restaurant("restaurantReviewService","restaurantReviewRepository", "restaurantReview","restaurantReviewLikeRepository","restaurantRepository"),
+    travel("travelReviewService","travelReviewRepository", "travelReview","travelReviewLikeRepository","travelRepository");
 
     private final String service;
     private final String repository;

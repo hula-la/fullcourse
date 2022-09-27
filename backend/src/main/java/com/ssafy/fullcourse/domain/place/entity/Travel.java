@@ -31,19 +31,19 @@ public class Travel extends BasePlace {
     @Column(nullable = false)
     private Float lng;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @Column(length = 100)
     private String subtitle;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String address;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String tel;
 
-    @Column(length = 100)
+    @Column(length = 200)
     private String url;
 
     @Column(length = 200)
@@ -81,8 +81,8 @@ public class Travel extends BasePlace {
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
-    List<TravelTag> travelTags = new ArrayList<>();
+//    @OneToMany(mappedBy = "travel", cascade = CascadeType.REMOVE)
+//    List<TravelTag> travelTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelLike> likes = new ArrayList<>();

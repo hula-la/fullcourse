@@ -39,8 +39,11 @@ public class FullCourse {
     @Column(nullable = false)
     private Date endDate;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String thumbnail;
+
+    @Column(nullable = false)
+    private boolean isShared = false;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
@@ -55,6 +58,7 @@ public class FullCourse {
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .thumbnail(this.thumbnail)
+                .isShared(this.isShared)
                 .places(places)
                 .build();
     }

@@ -45,6 +45,9 @@ public class SharedFullCourse {
     @Column(nullable = false, length = 100)
     private String thumbnail;
 
+    @Column(nullable = false)
+    private int day;
+
     @OneToMany(mappedBy = "sharedFullCourse", cascade = CascadeType.REMOVE)
     private List<SharedFCComment> sharedFCComments = new ArrayList<>();
 
@@ -62,37 +65,39 @@ public class SharedFullCourse {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static SharedFullCourse of(SharedFCDto sharedFCDto, User user){
+    public static SharedFullCourse of(SharedFCDto sharedFCDto, FullCourse fullCourse, User user){
 
         return SharedFullCourse.builder()
                 .sharedFcId(sharedFCDto.getSharedFcId())
                 .detail(sharedFCDto.getDetail())
                 .title(sharedFCDto.getTitle())
                 .regDate(sharedFCDto.getRegDate())
+                .day(sharedFCDto.getDay())
                 .likeCnt(sharedFCDto.getLikeCnt())
                 .commentCnt(sharedFCDto.getCommentCnt())
                 .viewCnt(sharedFCDto.getViewCnt())
                 .sharedFCTags(sharedFCDto.getSharedFCTags().stream().map(tag->SharedFCTag.builder().fcTagId(tag.getFcTagId()).tagContent(tag.getTagContent()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFCDto.getThumbnail())
-                .fullCourse(sharedFCDto.getFullCourse())
+                .fullCourse(fullCourse)
                 .user(user)
                 .build();
     }
 
-    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now, Long sharedFcId){
+    public static SharedFullCourse sharedFCUpdate(SharedFCDto sharedFCDto, SharedFullCourse now, FullCourse fullCourse, Long sharedFcId){
 
         return SharedFullCourse.builder()
                 .sharedFcId(sharedFcId)
                 .detail(sharedFCDto.getDetail())
                 .title(sharedFCDto.getTitle())
                 .regDate(now.getRegDate())
+                .day(sharedFCDto.getDay())
                 .likeCnt(now.getLikeCnt())
                 .commentCnt(now.getCommentCnt())
                 .viewCnt(now.getViewCnt())
                 .sharedFCTags(new ArrayList<>())
                 .sharedFCComments(now.getSharedFCComments())
                 .thumbnail(now.getThumbnail())
-                .fullCourse(sharedFCDto.getFullCourse())
+                .fullCourse(fullCourse)
                 .user(now.getUser())
                 .build();
     }
