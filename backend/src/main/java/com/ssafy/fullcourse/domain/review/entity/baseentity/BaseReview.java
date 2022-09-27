@@ -43,9 +43,10 @@ public class BaseReview<P extends BasePlace> {
     private P place;
 
 
-    public void update(String content, Float score){
+    public void update(String content, Float score, String imgUrl){
         this.content = content;
         this.score = score;
+        this.reviewImg = imgUrl;
     }
     
     public void addLikeCnt(int plus){

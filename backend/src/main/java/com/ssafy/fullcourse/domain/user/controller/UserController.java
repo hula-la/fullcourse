@@ -56,8 +56,8 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> modify(
             @RequestPart(value = "file", required = false) MultipartFile file,
             @RequestPart(value = "userDto", required = false) UserDto userDto,
-            Authentication authentication) {
-        String email = ((User)authentication.getPrincipal()).getUsername();
+            @AuthenticationPrincipal String email) {
+//        String email = ((User)authentication.getPrincipal()).getUsername();
         UserDto modifyUser = userManageService.modify(userDto, file, email);
         if(modifyUser == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", modifyUser));
