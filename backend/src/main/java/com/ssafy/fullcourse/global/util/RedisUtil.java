@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -28,7 +29,11 @@ public class RedisUtil {
     }
     public Float getHashData(Long key1, Long key2){
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        return (Float) hashOperations.get(String.valueOf(key1),key2);
+        return (Float) hashOperations.get(String.valueOf(key1),String.valueOf(key2));
+    }
+    public Map<Object, Object> getHashEntry(Long key1){
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        return hashOperations.entries(String.valueOf(key1));
     }
 
     // 데이터 저장
