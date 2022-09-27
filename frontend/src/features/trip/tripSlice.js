@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTravelPlace, createTrip } from './tripActions';
+import { fetchFullcourseDetail, fetchTravelPlace, createTrip } from './tripActions';
 import format from 'date-fns/format';
 
 const initialState = {
@@ -10,6 +10,7 @@ const initialState = {
   tripDates: [], //여행 하루하루 날짜
   travelPlaceList: null, //여행명소리스트 //null이랑 빈배열로 받는거랑 무슨차일까
   placeItem: [],
+  fullcourseDetail: null,
   trip: null //전체 여행일정
 };
 
@@ -19,7 +20,6 @@ const tripSlice = createSlice({
   reducers: {
     setStartDate: (state, action) => {
       state.startDate = format(action.payload, 'yyyy-MM-dd');
-      
     },
     setEndDate: (state, action) => {
       state.endDate = format(action.payload, 'yyyy-MM-dd');
@@ -42,6 +42,13 @@ const tripSlice = createSlice({
     [fetchTravelPlace.rejected]: (state, { payload }) => {
       state.error = payload.error;
     },
+    // 상세 풀코스 정보 조회
+    [fetchFullcourseDetail.fulfilled]: (state, { payload }) => {
+      state.fullcourseDetail = payload.data;
+    },
+    [fetchFullcourseDetail.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
     [createTrip.fulfilled]: (state, { payload }) => {
       console.log("trip에 할당되는것",payload)
       state.trip = payload.data;
@@ -52,12 +59,7 @@ const tripSlice = createSlice({
   },
 });
 
-export const {
-  setStartDate,
-  setEndDate,
-  calcTripDay,
-  setDates,
-  setPlaceItem,
-} = tripSlice.actions;
+export const { setStartDate, setEndDate, calcTripDay, setDates, setPlaceItem } =
+  tripSlice.actions;
 
 export default tripSlice.reducer;

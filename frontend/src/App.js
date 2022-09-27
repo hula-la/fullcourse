@@ -16,6 +16,7 @@ import ShareFcPage from './pages/share/SharedFcPage';
 import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 // Plan
 import PlanPage from './pages/trip/PlanPage';
+import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
         <Route path="user" element={<Layout />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="profile/:pageNum" element={<ProfilePage />} />
+          <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
         </Route>
         <Route path="fullcourse" element={<Layout />}>
           <Route path="" element={<ShareFcPage />} />

@@ -13,6 +13,7 @@ const FullcourseShare = () => {
   const { checkedDayTagList } = useSelector((state) => state.share);
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
+  const [place, setPlace] = useState('');
 
   useEffect(() => {
     if (sharedFcList !== null) {
@@ -29,7 +30,9 @@ const FullcourseShare = () => {
   }, [sharedFcList]);
 
   useEffect(() => {
-    dispatch(fetchSharedFc({ checkedTagList, checkedDayTagList, pageNum }));
+    dispatch(
+      fetchSharedFc({ checkedTagList, checkedDayTagList, place, pageNum }),
+    );
   }, [dispatch, checkedTagList, checkedDayTagList, pageNum]);
 
   const onClickPage = (e) => {
