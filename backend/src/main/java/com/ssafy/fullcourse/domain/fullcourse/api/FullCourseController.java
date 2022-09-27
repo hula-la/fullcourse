@@ -1,17 +1,19 @@
 package com.ssafy.fullcourse.domain.fullcourse.api;
 
+import com.drew.imaging.ImageProcessingException;
 import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseVisitConfirmReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.*;
-import javaxt.io.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Api(value = "풀코스 API", tags = {"fullcourse"})
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
@@ -86,22 +88,12 @@ public class FullCourseController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.confirmVisit(fullCourseVisitConfirmReq)));
     }
 
-    @PostMapping("/visitconfirmbyimage/{fcdId}")
-    @ApiOperation(value = "풀코스 사진인증")
-    public ResponseEntity<BaseResponseBody> visitConfirmByImage(@RequestBody MultipartFile img, @PathVariable Long fcdId) {
-        Image image = (Image) img.getResource();
-        double[] latLng = image.getGPSCoordinate();
-        System.out.println(latLng.toString());
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.confirmVisitByImage(latLng, fcdId)));
-
-
-    }
 
     @PostMapping("/diary/{fcDetailId}")
     @ApiOperation(value="풀코스 장소 기록 등록")
     public ResponseEntity<BaseResponseBody> registerDiary(@ApiParam(value="풀코스 *디테일* id", required = true)@PathVariable Long fcDetailId,
                                                           @RequestPart MultipartFile img,
-                                                          @RequestPart String content){
+                                                          @RequestPart String content) throws ImageProcessingException, IOException {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.createFCdiary(img,content,fcDetailId)));
     }
 
