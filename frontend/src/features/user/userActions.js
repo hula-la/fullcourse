@@ -58,9 +58,9 @@ export const fetchUserInfo = createAsyncThunk(
 
 export const fetchMyFullcourse = createAsyncThunk(
   'user/fetchMyfullcourse',
-  async (userId, { rejectWithValue }) => {
+  async (tmp, { rejectWithValue }) => {
     try {
-      const { data } = await getMyFullcourse(userId);
+      const { data } = await getMyFullcourse();
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

@@ -6,10 +6,12 @@ import {
   dropSharedFcComment,
   fetchSharedFcLikeList,
   createSharedFcLike,
+  fetchMySharedFc,
 } from './shareActions';
 
 const initialState = {
   sharedFcList: null,
+  mySharedFcList: null,
   sharedFcInfo: null,
   error: null,
   sharedFcLikeList: null,
@@ -24,8 +26,6 @@ const initialState = {
     '산책',
     '데이트',
     '맛집',
-    '힐링',
-    '계곡',
   ],
   dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
   checkedTagList: [],
@@ -60,6 +60,7 @@ const shareSlice = createSlice({
     // 공유풀코스 목록 조회
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
       state.sharedFcList = payload.data;
+      console.log(payload);
     },
     [fetchSharedFc.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -108,6 +109,10 @@ const shareSlice = createSlice({
         ...state.sharedFcInfo,
         like: payload.data,
       };
+    },
+    // 나의 공유풀코스 목록 조회
+    [fetchMySharedFc.fulfilled]: (state, { payload }) => {
+      state.mySharedFcList = payload.data;
     },
   },
 });

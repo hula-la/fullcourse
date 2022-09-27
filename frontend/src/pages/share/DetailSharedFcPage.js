@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import { fetchSharedFcDetail } from '../../features/share/shareActions';
 import FullcourseComment from '../../components/share/FullcourseComment';
+import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 
 const DetailBlock = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const FullcourseDetail = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { sharedFcInfo } = useSelector((state) => state.share);
+  const { fullcourseDetail } = useSelector((state) => state.trip);
   const { userInfo } = useSelector((state) => state.user);
 
   const sharedFcId = params.sharedFcId;
@@ -25,11 +27,20 @@ const FullcourseDetail = () => {
 
   useEffect(() => {
     dispatch(fetchSharedFcDetail({ sharedFcId, email }));
-  }, [dispatch, sharedFcId, email]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (sharedFcInfo !== null) {
+      dispatch(fetchFullcourseDetail(sharedFcInfo.fcId));
+    }
+  }, [dispatch, sharedFcInfo]);
 
   return (
     <DetailBlock>
-      <FullcourseSide sharedFcInfo={sharedFcInfo} />
+      <FullcourseSide
+        fullcourseDetail={fullcourseDetail}
+        sharedFcInfo={sharedFcInfo}
+      />
       <FullcourseMap />
       <FullcourseComment sharedFcInfo={sharedFcInfo} />
     </DetailBlock>

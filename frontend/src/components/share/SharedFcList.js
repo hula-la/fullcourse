@@ -20,7 +20,7 @@ const SharedFcList = () => {
     <div>
       <Container>
         {sharedFcList
-          ? sharedFcList.map((fullcourse, index) => {
+          ? sharedFcList.content.map((fullcourse, index) => {
               return <SharedFcListItem key={index} fullcourse={fullcourse} />;
             })
           : null}
