@@ -1,27 +1,36 @@
 package com.ssafy.fullcourse.domain.fullcourse.application;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.GpsDirectory;
 import com.ssafy.fullcourse.domain.fullcourse.dto.*;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
+import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDiary;
+import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseDiaryNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDetailRepository;
+import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDiaryRepository;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.*;
-import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.*;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.user.entity.User;
-import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
-import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.util.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -31,6 +40,7 @@ public class FullCourseService {
     private final FullCourseRepository fullCourseRepository;
 
     private final FullCourseDetailRepository fullCourseDetailRepository;
+    private final FullCourseDiaryRepository fullCourseDiaryRepository;
 
     private final UserRepository userRepository;
 
@@ -39,6 +49,8 @@ public class FullCourseService {
     private final ActivityRepository activityRepository;
     private final RestaurantRepository restaurantRepository;
     private final HotelRepository hotelRepository;
+
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     public Long createFullCourse(String userId, FullCoursePostReq fullCoursePostReq) {
@@ -90,7 +102,7 @@ public class FullCourseService {
             Long placeId = fcd.getPlaceId();
 
 
-            PlaceRes placeRes = getLntLat(type,placeId);
+            PlaceRes placeRes = getLntLat(type, placeId);
 
 //            float lat = placeRes.getLat();
 //            float lng = placeRes.getLng();
@@ -122,17 +134,18 @@ public class FullCourseService {
                 fullCourseDetailRepository.findById(fcvcReq.getFcDetailId()).get();
         String type = fcDetail.getType();
 
-        PlaceRes placeRes = getLntLat(type,fcDetail.getPlaceId());
+        PlaceRes placeRes = getLntLat(type, fcDetail.getPlaceId());
 
         float lat = placeRes.getLat();
         float lng = placeRes.getLng();
         // Km 단위로 계산됨.
-        Double dist = Math.sqrt(Math.pow((fcvcReq.getLat() - lat) * 88.9036, 2) + Math.pow((fcvcReq.getLng() - lng) * 111.3194, 2));
+        Double dist =
+                Math.sqrt(Math.pow((fcvcReq.getLat() - lat) * 88.9036, 2) + Math.pow((fcvcReq.getLng() - lng) * 111.3194, 2));
         System.out.println("계산된 거리 : " + dist + "Km");
-        if(dist < 1){
+        if (dist < 1) {
             fcDetail.setVisited(true);
             message = "인증 완료";
-        }else{
+        } else {
             message = "인증 실패 : 거리가 멀어 인증할 수 없습니다.";
         }
         fullCourseDetailRepository.save(fcDetail);
@@ -142,30 +155,92 @@ public class FullCourseService {
 
 
     @Transactional
-    public String confirmVisitByImage(double[] inputLatLng, Long fcdId){
+    public String confirmVisitByImage(double[] inputLatLng, Long fcdId) {
         String message = null;
         FullCourseDetail fcDetail =
                 fullCourseDetailRepository.findById(fcdId).get();
         String type = fcDetail.getType();
 
-        PlaceRes placeRes = getLntLat(type,fcDetail.getPlaceId());
+        PlaceRes placeRes = getLntLat(type, fcDetail.getPlaceId());
 
         float lat = placeRes.getLat();
         float lng = placeRes.getLng();
 
         // Km 단위로 계산됨.
-        Double dist = Math.sqrt(Math.pow((inputLatLng[0] - lat) * 88.9036, 2) + Math.pow((inputLatLng[1] - lng) * 111.3194, 2));
+        Double dist =
+                Math.sqrt(Math.pow((inputLatLng[0] - lat) * 88.9036, 2) + Math.pow((inputLatLng[1] - lng) * 111.3194,
+                        2));
         System.out.println("계산된 거리 : " + dist + "Km");
-        if(dist < 1){
+        if (dist < 1) {
             fcDetail.setVisited(true);
             message = "인증 완료";
-        }else{
+        } else {
             message = "인증 실패 : 거리가 멀어 인증할 수 없습니다.";
         }
         fullCourseDetailRepository.save(fcDetail);
         return message;
     }
-    public PlaceRes getLntLat(String type, Long placeId){
+
+    @Transactional
+    public FullCourseDiaryRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
+
+        File file = convert(img);
+        Metadata metadata = ImageMetadataReader.readMetadata(file);
+        GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+        GeoLocation geoLocation = gpsDirectory.getGeoLocation();
+        if (geoLocation != null && !geoLocation.isZero()) {
+            double[] latLng = new double[2];
+            latLng[0] = geoLocation.getLatitude();
+            latLng[1] = geoLocation.getLongitude();
+            file.delete();
+            System.out.println(latLng[0] + " " + latLng[1]);
+            confirmVisitByImage(latLng, fcDetailId);
+        }
+
+        FullCourseDetail fullCourseDetail =
+                fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
+
+        String url = awsS3Service.uploadImage(img);
+        FullCourseDiary diary =
+                FullCourseDiary.builder().img(url).content(content).fullCourseDetail(fullCourseDetail).build();
+        return fullCourseDiaryRepository.save(diary).toDto();
+    }
+
+    @Transactional
+    public FullCourseDiaryRes updateFCdiary(MultipartFile img, String content, Long fcDiaryId) {
+        FullCourseDiary fullCourseDiary =
+                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
+        awsS3Service.delete(fullCourseDiary.getImg());
+        String url = awsS3Service.uploadImage(img);
+        FullCourseDiary diary =
+                FullCourseDiary.builder().fcDiaryId(fullCourseDiary.getFcDiaryId()).img(url).content(content).fullCourseDetail(fullCourseDiary.getFullCourseDetail()).build();
+        return fullCourseDiaryRepository.save(diary).toDto();
+    }
+
+    public FullCourseDiaryRes getFCDiary(Long fcDetailId) {
+        FullCourseDiary fullCourseDiary =
+                fullCourseDiaryRepository.findByFullCourseDetail_FcDetailId(fcDetailId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
+        return fullCourseDiary.toDto();
+    }
+
+    @Transactional
+    public void deleteFCDiary(Long fcDiaryId) {
+        FullCourseDiary fullCourseDiary =
+                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
+        awsS3Service.delete(fullCourseDiary.getImg());
+        fullCourseDiaryRepository.delete(fullCourseDiary);
+    }
+
+    public File convert(MultipartFile multipartFile) throws IOException {
+        File file = new File(multipartFile.getOriginalFilename());
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(multipartFile.getBytes());
+        fos.close();
+        return file;
+    }
+
+    public PlaceRes getLntLat(String type, Long placeId) {
         PlaceRes placeRes;
         if (type.equals("travel")) {
             Travel travel = travelRepository.findByPlaceId(placeId).get();

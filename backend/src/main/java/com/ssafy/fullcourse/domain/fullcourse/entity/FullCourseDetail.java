@@ -44,6 +44,9 @@ public class FullCourseDetail {
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
 
+    @OneToOne(mappedBy = "fullCourseDetail", cascade = CascadeType.REMOVE)
+    private FullCourseDiary fullCourseDiary;
+
     public FullCourseDetailPostReq toDto(PlaceRes place){
         return FullCourseDetailPostReq.builder()
                 .courseOrder(this.courseOrder)
