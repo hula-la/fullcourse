@@ -50,8 +50,7 @@ const PlaceBar = () => {
   const addMarker = (lat, lng) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
-      // map:map,
-      map, //둘다 되는건 뭐지..?
+      map, //이거 슬라이스 효과가 있나본데..?
       position: position,
     });
     console.log(typeof(marker))

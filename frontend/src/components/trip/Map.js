@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setInitMap } from '../../features/trip/tripSlice';
 const MapContainer = styled.div``;
 
-const Map = () => {
+const Map = ({ map, setMap, mapRef }) => {
+  const { markers } = useSelector((state) => state.trip);
+  useSelector((state) => state.trip);
   const googleMapStyle = {
     mapStyles: [
       {
@@ -72,7 +74,6 @@ const Map = () => {
   };
 
   const dispatch = useDispatch();
-  const mapRef = useRef(null);
 
   //으음 useCallback의 사용이유가 뭘까
   const initMap = useCallback(() => {
@@ -81,8 +82,20 @@ const Map = () => {
       zoom: 11,
       styles: googleMapStyle.mapStyles,
     });
-    dispatch(setInitMap(map));//이렇게 쓰일수 있는지 모르겠네
-  }, [mapRef]);
+    setMap(map);
+    dispatch(setInitMap(map)); //이렇게 쓰일수 있는지 모르겠네
+    markers &&
+      markers.forEach((item, idx) => {
+        const position = {
+          lat: parseFloat(item.position.lat),
+          lng: parseFloat(item.position.lng),
+        };
+        new window.google.maps.Marker({
+          map,
+          position: position,
+        });
+      });
+  }, [mapRef, markers]);
 
   useEffect(() => {
     initMap();

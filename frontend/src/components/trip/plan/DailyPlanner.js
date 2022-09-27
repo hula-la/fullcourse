@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { createTrip } from '../../../features/trip/tripActions';
+import { setMarkers, clearMarkers } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   border: 3px solid;
@@ -36,10 +37,11 @@ const PlannerList = styled.div`
 
 const SaveBtn = styled.button``;
 
-const DailyPlanner = () => {
+const DailyPlanner = ({ map, setMap, mapRef }) => {
   const dispatch = useDispatch();
+  const [placeLocations, setPlaceLocations] = useState(null);
 
-  const { tripDates, placeItem, startDate, endDate, regDate, markers, map } =
+  const { tripDates, placeItem, startDate, endDate, regDate, markers } =
     useSelector((state) => state.trip);
 
   useEffect(() => {
@@ -68,25 +70,35 @@ const DailyPlanner = () => {
       //경로관련기능 바닐라 자스로 추가
       else if (e.target.closest('.planner-box')) {
         const placeLocations = getPlaceLocations(e);
-        const mapElement = document.querySelector('#map')
-        const map = new window.google.maps.Map(mapElement, {
-          center: { lat: 35.1165, lng: 129.0401 },
-          zoom: 11,
-        })
-        console.log("이거뭘반환해주는거지", placeLocations)
-        if (placeLocations) {map.renderRoute(placeLocations)};
+        // const map = new window.google.maps.Map(mapRef.current, {
+        //   center: { lat: 35.1165, lng: 129.0401 },
+        //   zoom: 11,
+
+        // });
+        console.log('이거뭘반환해주는거지', placeLocations);
+        setPlaceLocations(placeLocations);
+        // if (placeLocations) {
+        //   console.log(map)
+        //   console.log("넘오옴?")
+        //   map.renderRoute(placeLocations)};
       }
     });
     const getPlaceLocations = (e) => {
-      const titleElm = e.target.closest(".date"); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
-      console.log("이건뭐지",titleElm.nextElementSibling)
+      const titleElm = e.target.closest('.date'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
+      console.log('이건뭐지', titleElm.nextElementSibling);
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
         : null;
-      console.log("자식요소",itemElms)
+      console.log('자식요소', itemElms);
       if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
-      return itemElms.map((item) => item[item.dataset.placeId]={lat:item.dataset.placeLat, lng:item.dataset.placeLng});
-    }
+      return itemElms.map(
+        (item) =>
+          (item[item.dataset.placeId] = {
+            lat: item.dataset.placeLat,
+            lng: item.dataset.placeLng,
+          }),
+      );
+    };
 
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
@@ -182,29 +194,94 @@ const DailyPlanner = () => {
       });
   };
 
-  //루트렌더
-  const renderRoute = (placeLocations) => {
-    removeRoute();
-    const directionsService = new window.google.maps.DirectionsService();
-    const directionsRenderer = new window.google.maps.DirectionsRenderer();
-
-    //경유지추가
-    const stopovers = placeLocations
-      .slice(1, placeLocations.length - 1)
-      .map((item, idx) => {
-        return { stopver: true, location: { lat: item.lat, lng: item.lng } };
-      });
-
-    console.log('경유지잘담기나', stopovers);
+  const clearMarker = () => {
+    dispatch(clearMarkers());
   };
 
-  //기존루트 삭제
-  const removeRoute = () => {};
+  // //루트렌더 //출발 도착 넣으면 대중교통 길찾기 해주는 기능 있으면 좋긴할듯?
+  // const renderRoute = () => {
+  //   const map = new window.google.maps.Map(mapRef.current, {
+  //     center: { lat: 35.1165, lng: 129.0401 },
+  //     zoom: 11,
+  //   });
+  //   console.log('useState잘되나', placeLocations);
+  //   const directionsService = new window.google.maps.DirectionsService();
+  //   const directionsRenderer = new window.google.maps.DirectionsRenderer();
+
+  //   //경유지추가
+  //   const stopovers =
+  //     placeLocations &&
+  //     placeLocations.slice(1, placeLocations.length - 1).map((item, idx) => {
+  //       return { stopover: true, location: { lat: parseFloat(item.lat), lng: parseFloat(item.lng) } };
+  //     });
+
+  //     // placeLocations.map((item, idx) => {
+  //     //   return { stopver: true, location: { lat: item.lat, lng: item.lng } };
+  //     // });
+
+  //   console.log('경유지잘담기나', stopovers);
+
+  //   if (placeLocations) {
+  //     const request = {
+  //       origin: {
+  //         lat: parseFloat(placeLocations[0].lat),
+  //         lng: parseFloat(placeLocations[1].lng),
+  //       },
+  //       destination: {
+  //         lat: parseFloat(placeLocations[placeLocations.length - 1].lat),
+  //         lng: parseFloat(placeLocations[placeLocations.length - 1].lng),
+  //       },
+  //       waypoints: stopovers,
+  //       travelMode: window.google.maps.TravelMode.WALKING, //하... 구글맵 한국에서는 대중교통 기능에서만 곡선경로 해주는 거였구, 그리고 대중교통에서는 경유지 추가가 안된대 ㅜㅜ 두개사이만 가능함.. 왜 walking driving 한국에 지원안해주냐 구글 좀 해줘라 좀
+  //       unitSystem: window.google.maps.UnitSystem.IMPERIAL,
+  //     };
+  //     console.log('요청뭐지', request);
+  //     directionsService.route(request, function (result, status) {
+  //       if (status === 'OK') {
+  //         directionsRenderer.setMap(map);
+  //         directionsRenderer.setDirections(result);
+  //       } else {
+  //         alert(status);
+  //       }
+  //     });
+  //   }
+  // };
+
+  const drawPolyline = () => {
+    const map = new window.google.maps.Map(mapRef.current, {
+      center: { lat: 35.1165, lng: 129.0401 },
+      zoom: 11,
+    });
+
+    const waypoints = [];
+    console.log('이거왜이래', placeLocations);
+    placeLocations &&
+      placeLocations.map((item, idx) => {
+        waypoints.push({
+          lat: parseFloat(item.lat),
+          lng: parseFloat(item.lng),
+        });
+      });
+
+    const markers = [];
+
+    console.log(waypoints);
+    const flightPath = new window.google.maps.Polyline({
+      path: waypoints,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2,
+    });
+
+    flightPath.setMap(map);
+  };
 
   return (
     <PlannerContent className="planner-content">
       <PlaceBucket className="planner-box bucket">
         안녕난 장소장바구니야
+        <button onClick={clearMarker}>클리어마커</button>
         {placeItem &&
           placeItem.map((item, idx) => (
             <li
@@ -232,8 +309,10 @@ const DailyPlanner = () => {
       {tripDates &&
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>
-            <Title className="title" onClick={renderRoute}>Day{idx + 1}</Title>
-            <Date className="date">{item}</Date>
+            <Title className="title">Day{idx + 1}</Title>
+            <Date className="date" onClick={drawPolyline}>
+              {item}
+            </Date>
             <PlannerList className="planner-list">
               안녕난 데일리 일정박스야
             </PlannerList>

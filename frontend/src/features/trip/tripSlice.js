@@ -40,6 +40,10 @@ const tripSlice = createSlice({
     setMarkers: (state, action) => {
       state.markers.push(action.payload);
     },
+    clearMarkers: (state, action) => {
+      state.markers = [];
+      console.log('성공?', state.markers);
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -66,6 +70,7 @@ export const {
   setPlaceItem,
   setInitMap,
   setMarkers,
+  clearMarkers,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;
