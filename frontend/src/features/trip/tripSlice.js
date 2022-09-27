@@ -11,7 +11,8 @@ const initialState = {
   travelPlaceList: null, //여행명소리스트 //null이랑 빈배열로 받는거랑 무슨차일까
   placeItem: [],
   trip: null, //전체 여행일정
-  map: null
+  map: null, //초기맵을 저장하고 싶은데 이게 작동이 되는지 잘 모르겟음 이상하게 저장되는 듯
+  markers: [], //마커
 };
 
 const tripSlice = createSlice({
@@ -20,7 +21,6 @@ const tripSlice = createSlice({
   reducers: {
     setStartDate: (state, action) => {
       state.startDate = format(action.payload, 'yyyy-MM-dd');
-      
     },
     setEndDate: (state, action) => {
       state.endDate = format(action.payload, 'yyyy-MM-dd');
@@ -35,8 +35,11 @@ const tripSlice = createSlice({
       state.placeItem.push(action.payload);
     },
     setInitMap: (state, action) => {
-      state.map = action.payload
-    }
+      state.map = action.payload;
+    },
+    setMarkers: (state, action) => {
+      state.markers.push(action.payload);
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -47,7 +50,6 @@ const tripSlice = createSlice({
       state.error = payload.error;
     },
     [createTrip.fulfilled]: (state, { payload }) => {
-      console.log("trip에 할당되는것",payload)
       state.trip = payload.data;
     },
     [createTrip.rejected]: (state, { payload }) => {
@@ -62,7 +64,8 @@ export const {
   calcTripDay,
   setDates,
   setPlaceItem,
-  setInitMap
+  setInitMap,
+  setMarkers,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

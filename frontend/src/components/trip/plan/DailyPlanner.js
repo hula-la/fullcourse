@@ -37,11 +37,10 @@ const PlannerList = styled.div`
 const SaveBtn = styled.button``;
 
 const DailyPlanner = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { tripDates, placeItem, startDate, endDate, regDate } = useSelector(
-    (state) => state.trip,
-  );
+  const { tripDates, placeItem, startDate, endDate, regDate, markers, map } =
+    useSelector((state) => state.trip);
 
   useEffect(() => {
     //드래그앤 드롭 바닐라 자스
@@ -61,11 +60,34 @@ const DailyPlanner = () => {
         sortAndDisplayItem(e);
       }
     });
+    //삭제기능 바닐라 자스로 추가
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
         e.target.parentNode.remove();
       }
+      //경로관련기능 바닐라 자스로 추가
+      else if (e.target.closest('.planner-box')) {
+        const placeLocations = getPlaceLocations(e);
+        const mapElement = document.querySelector('#map')
+        const map = new window.google.maps.Map(mapElement, {
+          center: { lat: 35.1165, lng: 129.0401 },
+          zoom: 11,
+        })
+        console.log("이거뭘반환해주는거지", placeLocations)
+        if (placeLocations) {map.renderRoute(placeLocations)};
+      }
     });
+    const getPlaceLocations = (e) => {
+      const titleElm = e.target.closest(".date"); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
+      console.log("이건뭐지",titleElm.nextElementSibling)
+      const itemElms = titleElm.nextElementSibling.children
+        ? [...titleElm.nextElementSibling.children]
+        : null;
+      console.log("자식요소",itemElms)
+      if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
+      return itemElms.map((item) => item[item.dataset.placeId]={lat:item.dataset.placeLat, lng:item.dataset.placeLng});
+    }
+
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
       const item = document.querySelector('.dragging');
@@ -119,19 +141,19 @@ const DailyPlanner = () => {
   const subCreateTripObj = () => {
     const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
-        const placeInfo = [
-          ...plannerBox.querySelectorAll('.list-item'),
-        ].map((placeItem, idx) => {
-          const comment = '임시메모'
-          const courseOrder = idx 
-          const placeData = placeItem.dataset
-          const img = placeData.placeImg
-          newTrip['thumbnail'] = img
-          const placeId = placeData.placeId;
-          const type = 'ACTIVITY' //임시타입
-          const visited = false
-          return { comment,courseOrder,img, placeId,type,visited };
-        });
+        const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
+          (placeItem, idx) => {
+            const comment = '임시메모';
+            const courseOrder = idx;
+            const placeData = placeItem.dataset;
+            const img = placeData.placeImg;
+            newTrip['thumbnail'] = img;
+            const placeId = placeData.placeId;
+            const type = 'ACTIVITY'; //임시타입
+            const visited = false;
+            return { comment, courseOrder, img, placeId, type, visited };
+          },
+        );
         return { placeInfo };
       },
     );
@@ -146,9 +168,38 @@ const DailyPlanner = () => {
       newTrip.places[`${idx}`] = tmp['placeInfo'];
     });
     console.log('완성형', newTrip);
-    console.log('얘가들어감',JSON.stringify(newTrip))
-    dispatch(createTrip(JSON.stringify(newTrip)))
+    console.log('얘가들어감', JSON.stringify(newTrip));
+    dispatch(createTrip(JSON.stringify(newTrip)));
   };
+
+  const removeMarker = (lat, lng, e) => {
+    markers &&
+      markers.forEach((item, idx) => {
+        if (item.position.lat === lat && item.position.lng === lng) {
+          console.log('item', item);
+          item.setMap(null);
+        }
+      });
+  };
+
+  //루트렌더
+  const renderRoute = (placeLocations) => {
+    removeRoute();
+    const directionsService = new window.google.maps.DirectionsService();
+    const directionsRenderer = new window.google.maps.DirectionsRenderer();
+
+    //경유지추가
+    const stopovers = placeLocations
+      .slice(1, placeLocations.length - 1)
+      .map((item, idx) => {
+        return { stopver: true, location: { lat: item.lat, lng: item.lng } };
+      });
+
+    console.log('경유지잘담기나', stopovers);
+  };
+
+  //기존루트 삭제
+  const removeRoute = () => {};
 
   return (
     <PlannerContent className="planner-content">
@@ -161,11 +212,19 @@ const DailyPlanner = () => {
               draggable={item.draggable}
               data-place-id={item.placeId}
               data-place-img={item.imgUrl}
+              data-place-lat={item.lat}
+              data-place-lng={item.lng}
               className="list-item"
             >
-
               {item.name}
-              <DeleteBtn className="delete">삭제</DeleteBtn>
+              <DeleteBtn
+                className="delete"
+                onClick={(e) => {
+                  removeMarker(item.lat, item.lng, e);
+                }}
+              >
+                삭제
+              </DeleteBtn>
             </li>
           ))}
       </PlaceBucket>
@@ -173,7 +232,7 @@ const DailyPlanner = () => {
       {tripDates &&
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>
-            <Title className="title">Day{idx + 1}</Title>
+            <Title className="title" onClick={renderRoute}>Day{idx + 1}</Title>
             <Date className="date">{item}</Date>
             <PlannerList className="planner-list">
               안녕난 데일리 일정박스야
