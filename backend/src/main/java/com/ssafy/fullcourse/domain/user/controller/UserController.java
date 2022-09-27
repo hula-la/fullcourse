@@ -5,6 +5,7 @@ import com.ssafy.fullcourse.domain.user.application.NaverUserService;
 import com.ssafy.fullcourse.domain.user.application.UserManageService;
 import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -28,6 +29,8 @@ public class UserController {
     private final NaverUserService naverUserService;
     private final UserManageService userManageService;
 
+    private final RedisUtil redisUtil;
+
     @PostMapping("/kakao")
     public HttpEntity<?> kakaoLogin(@RequestBody HashMap<String, String> param) {
         kakaoUserService.getUserInfoByAccessToken(param.get("access_token"));
@@ -44,9 +47,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<BaseResponseBody> getInfo(@AuthenticationPrincipal String email) {
-//        UserDto userInfo = userManageService.getInfo(user.getUsername());
         UserDto userInfo = userManageService.getInfo(email);
-//        if(userInfo == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", userInfo));
     }
 
@@ -54,16 +55,14 @@ public class UserController {
     public ResponseEntity<BaseResponseBody> modify(
             @RequestPart(value = "file", required = false) MultipartFile file,
             @RequestPart(value = "userDto", required = false) UserDto userDto,
-            Authentication authentication) {
-        String email = ((User)authentication.getPrincipal()).getUsername();
+            @AuthenticationPrincipal String email) {
         UserDto modifyUser = userManageService.modify(userDto, file, email);
         if(modifyUser == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", modifyUser));
     }
 
     @DeleteMapping
-    public ResponseEntity<BaseResponseBody> delete(Authentication authentication) {
-        String email = ((User)authentication.getPrincipal()).getUsername();
+    public ResponseEntity<BaseResponseBody> delete(@AuthenticationPrincipal String email) {
         boolean delete = userManageService.delete(email);
 
         if(!delete) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));

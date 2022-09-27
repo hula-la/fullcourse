@@ -1,4 +1,4 @@
-package com.ssafy.fullcourse.recommendation;
+package com.ssafy.fullcourse.recommendation.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Travel;
 import com.ssafy.fullcourse.domain.place.entity.TravelTag;
@@ -28,6 +28,7 @@ public class TravelTagCsvService {
         HashMap<String, Integer> tagMap = new HashMap<>();
         Tag[] tags = Tag.values();
         for (int i = 0; i < tags.length; i++) {
+//            System.out.println(tags[i].toString());
             tagMap.put(tags[i].toString(),i);
         }
 
@@ -39,6 +40,9 @@ public class TravelTagCsvService {
             boolean[] tagById = new boolean[tags.length];
 
             String[] tagsById = travel.getTag().split(",");
+
+//            System.out.println("태그 리스트"+tagById.toString());
+
             Long placeId = travel.getPlaceId();
 
             for(String tag:tagsById){
@@ -97,7 +101,6 @@ public class TravelTagCsvService {
 
         try {
             br = new BufferedReader(new FileReader(csv));
-            br.readLine();
             while((line=br.readLine())!=null){
                 String[] aline = line.split(",");
                 long idx = Long.parseLong(aline[0]);
