@@ -3,8 +3,11 @@ package com.ssafy.fullcourse.domain.fullcourse.application;
 import com.ssafy.fullcourse.domain.fullcourse.dto.*;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
+import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDiary;
+import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseDiaryNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDetailRepository;
+import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDiaryRepository;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.*;
@@ -12,14 +15,13 @@ import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.*;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
 import com.ssafy.fullcourse.domain.user.entity.User;
-import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
-import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.global.util.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -31,6 +33,7 @@ public class FullCourseService {
     private final FullCourseRepository fullCourseRepository;
 
     private final FullCourseDetailRepository fullCourseDetailRepository;
+    private final FullCourseDiaryRepository fullCourseDiaryRepository;
 
     private final UserRepository userRepository;
 
@@ -39,6 +42,8 @@ public class FullCourseService {
     private final ActivityRepository activityRepository;
     private final RestaurantRepository restaurantRepository;
     private final HotelRepository hotelRepository;
+
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     public Long createFullCourse(String userId, FullCoursePostReq fullCoursePostReq) {
@@ -187,4 +192,36 @@ public class FullCourseService {
         }
         return placeRes;
     }
+
+    @Transactional
+    public FullCourseDiaryRes createFCdiary(MultipartFile img, String content, Long fcDetailId){
+
+        FullCourseDetail fullCourseDetail = fullCourseDetailRepository.findById(fcDetailId).orElseThrow(()->new FullCourseNotFoundException());
+
+
+
+        String url = awsS3Service.uploadImage(img);
+        FullCourseDiary diary = FullCourseDiary.builder().img(url).content(content).fullCourseDetail(fullCourseDetail).build();
+        return fullCourseDiaryRepository.save(diary).toDto();
+    }
+    @Transactional
+    public FullCourseDiaryRes updateFCdiary(MultipartFile img, String content, Long fcDiaryId){
+        FullCourseDiary fullCourseDiary = fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(()->new FullCourseDiaryNotFoundException());
+        awsS3Service.delete(fullCourseDiary.getImg());
+        String url = awsS3Service.uploadImage(img);
+        FullCourseDiary diary = FullCourseDiary.builder().fcDiaryId(fullCourseDiary.getFcDiaryId()).img(url).content(content).fullCourseDetail(fullCourseDiary.getFullCourseDetail()).build();
+        return fullCourseDiaryRepository.save(diary).toDto();
+    }
+
+    public FullCourseDiaryRes getFCDiary(Long fcDetailId){
+        FullCourseDiary fullCourseDiary = fullCourseDiaryRepository.findByFullCourseDetail_FcDetailId(fcDetailId).orElseThrow(()-> new FullCourseDiaryNotFoundException());
+        return fullCourseDiary.toDto();
+    }
+    @Transactional
+    public void deleteFCDiary(Long fcDiaryId){
+        FullCourseDiary fullCourseDiary = fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(()->new FullCourseDiaryNotFoundException());
+        awsS3Service.delete(fullCourseDiary.getImg());
+        fullCourseDiaryRepository.delete(fullCourseDiary);
+    }
+
 }

@@ -4,10 +4,7 @@ import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCoursePostReq;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseVisitConfirmReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import javaxt.io.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -99,4 +96,34 @@ public class FullCourseController {
 
 
     }
+
+    @PostMapping("/diary/{fcDetailId}")
+    @ApiOperation(value="풀코스 장소 기록 등록")
+    public ResponseEntity<BaseResponseBody> registerDiary(@ApiParam(value="풀코스 *디테일* id", required = true)@PathVariable Long fcDetailId,
+                                                          @RequestPart MultipartFile img,
+                                                          @RequestPart String content){
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.createFCdiary(img,content,fcDetailId)));
+    }
+
+    @PutMapping("/diary/{fcDairyId}")
+    @ApiOperation(value="풀코스 장소 기록 수정")
+    public ResponseEntity<BaseResponseBody> updateDiary(@ApiParam(value="풀코스 *다이어리* id", required = true) @PathVariable Long fcDairyId,
+                                                          @RequestPart MultipartFile img,
+                                                          @RequestPart String content){
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.updateFCdiary(img,content,fcDairyId)));
+    }
+
+    @GetMapping("/diary/{fcDetailId}")
+    @ApiOperation(value="풀코스 장소 기록 조회")
+    public ResponseEntity<BaseResponseBody> getDiary(@ApiParam(value="풀코스 *디테일* id", required = true) @PathVariable Long fcDetailId){
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFCDiary(fcDetailId)));
+    }
+
+    @DeleteMapping("/diary/{fcDairyId}")
+    @ApiOperation(value="풀코스 장소 기록 삭제")
+    public ResponseEntity<BaseResponseBody> deleteDiary(@ApiParam(value="풀코스 *다이어리* id", required = true) @PathVariable Long fcDairyId){
+        fullCourseService.deleteFCDiary(fcDairyId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success","풀코스 장소 기록 삭제 완료"));
+    }
 }
+
