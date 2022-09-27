@@ -1,19 +1,31 @@
 package com.ssafy.fullcourse.recommendation.application;
 
 import com.ssafy.fullcourse.domain.place.application.TravelService;
+import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.dto.TravelDetailRes;
+import com.ssafy.fullcourse.domain.place.entity.Travel;
+import com.ssafy.fullcourse.domain.place.repository.TravelRepository;
+import com.ssafy.fullcourse.domain.review.dto.ReviewRes;
 import com.ssafy.fullcourse.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class TravelRecommendService {
     private final RedisUtil redisUtil;
+    private final TravelRepository travelRepository;
     private final TravelService travelService;
+
+    public List<PlaceRes> randomPlace(){
+        List<Travel> randomAll = travelRepository.findRandomAll();
+        return randomAll.stream().map(PlaceRes::new).collect(Collectors.toList());
+    }
 
     public TravelDetailRes[] similarPlaceRecommender(long selectedIdx, int num) throws Exception {
 

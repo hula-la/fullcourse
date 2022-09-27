@@ -29,8 +29,8 @@ public class BaseReviewLike<R extends BaseReview> {
     @JoinColumn(name = "reviewId")
     private R review;
 
-    public BaseReviewLike(User user, R review) {
-        this.user = user;
-        this.review = review;
-    }
+//    public BaseReviewLike(User user, R review) {
+//        this.user = user;
+//        this.review = review;
+//    }
 }

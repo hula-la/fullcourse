@@ -42,8 +42,6 @@ public class BaseReview<P extends BasePlace> {
     @JoinColumn(name = "placeId")
     private P place;
 
-//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
-//    private List<BaseReviewLike> reviewLikes;
 
     public void update(String content, Float score){
         this.content = content;
