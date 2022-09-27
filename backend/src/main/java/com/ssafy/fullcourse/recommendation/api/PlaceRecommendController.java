@@ -1,12 +1,12 @@
-package com.ssafy.fullcourse.recommendation;
+package com.ssafy.fullcourse.recommendation.api;
 
-import com.ssafy.fullcourse.domain.place.application.*;
-import com.ssafy.fullcourse.domain.place.dto.CreateCustomReq;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
+import com.ssafy.fullcourse.recommendation.application.CosineSimilarityService;
+import com.ssafy.fullcourse.recommendation.application.TravelRecommendService;
+import com.ssafy.fullcourse.recommendation.application.TravelTagCsvService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +22,14 @@ public class PlaceRecommendController {
     private final CosineSimilarityService cosineSimilarityService;
     private final TravelTagCsvService travelTagCsvService;
 
+    private final TravelRecommendService travelRecommendService;
+
 
     @ApiOperation(value = "유사 장소 반환", notes = "성공여부를 반환함.")
     @GetMapping
-    public ResponseEntity<BaseResponseBody> similarPlace(@RequestParam Long placeId) throws Exception {
+    public ResponseEntity<BaseResponseBody> similarPlace(@RequestParam Long placeId,@RequestParam int num) throws Exception {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                cosineSimilarityService.similarPlaceRecommender(placeId,4)));
+                travelRecommendService.similarPlaceRecommender(placeId,num)));
     }
 
 

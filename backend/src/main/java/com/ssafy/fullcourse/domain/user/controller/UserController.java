@@ -48,9 +48,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<BaseResponseBody> getInfo(@AuthenticationPrincipal String email) {
 
-//        UserDto userInfo = userManageService.getInfo(user.getUsername());
         UserDto userInfo = userManageService.getInfo(email);
-//        if(userInfo == null) return ResponseEntity.status(200).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", userInfo));
     }
 
