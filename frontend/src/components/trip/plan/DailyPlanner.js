@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import format from 'date-fns/format';
+import { createTrip } from '../../../features/trip/tripActions';
+
 const PlannerContent = styled.div`
   border: 3px solid;
   overflow-y: scroll;
@@ -36,7 +38,11 @@ const PlannerList = styled.div`
 const SaveBtn = styled.button``;
 
 const DailyPlanner = () => {
-  const { tripDates, placeItem, startDate, endDate } = useSelector((state) => state.trip);
+  const dispatch = useDispatch()
+
+  const { tripDates, placeItem, startDate, endDate, regDate } = useSelector(
+    (state) => state.trip,
+  );
 
   useEffect(() => {
     //드래그앤 드롭 바닐라 자스
@@ -91,41 +97,59 @@ const DailyPlanner = () => {
     };
   }, []);
 
+  //여행 일정 객체 생성 관련
+  var newObj = {};
+  var newTrip = {
+    endDate: endDate,
+    places: {},
+    startDate: startDate,
+    regDate: regDate,
+    thumbnail: null,
+  };
+
   const createTripObj = () => {
-    const places = [...document.querySelectorAll(".daily")].map(
-      (plannerBox,idx) => {
-        const dateStr = plannerBox.querySelector(".date").innerText;
-        console.log(dateStr)
-      
-        console.log(idx)
-        const additionalProp = [
-          ...plannerBox.querySelectorAll(".list-item"),
-        ].map((placeItem,idx) => {
-          // console.log(idx)
-          console.log(placeItem)
-          const placeId = placeItem.dataset.placeId
-          const courseOrder = idx
-          return { placeId, courseOrder };
-        });
-  
-        return { additionalProp };
-      }
+    const places = [...document.querySelectorAll('.daily')].forEach(
+      (plannerBox, idx) => {
+        newObj[`${idx}`] = [];
+        newTrip.places = newObj;
+      },
     );
+  };
 
+  //좋은 방식은 아닌거 같으니 리팩필요
+  const subCreateTripObj = () => {
+    const dailyItem = [...document.querySelectorAll('.daily')].map(
+      (plannerBox) => {
+        const placeInfo = [
+          ...plannerBox.querySelectorAll('.list-item'),
+        ].map((placeItem, idx) => {
+          const comment = '임시메모'
+          const courseOrder = idx 
+          const placeData = placeItem.dataset
+          const img = placeData.placeImg
+          newTrip['thumbnail'] = img
+          const placeId = placeData.placeId;
+          const type = 'ACTIVITY' //임시타입
+          const visited = false
+          return { comment,courseOrder,img, placeId,type,visited };
+        });
+        return { placeInfo };
+      },
+    );
+    return { trip: { dailyItem } };
+  };
 
-    
-
-    const regDate = '2022-09-26'
-    return {
-      trip: { endDate, places, regDate, startDate }
-    }
-    
-  }
-
-  const newTrip= () => {
-    const tripObj = createTripObj()
-    console.log(tripObj)
-  }
+  const createNewTrip = () => {
+    createTripObj();
+    const tripObj = subCreateTripObj();
+    var tmp = tripObj.trip.dailyItem;
+    tmp.forEach((tmp, idx) => {
+      newTrip.places[`${idx}`] = tmp['placeInfo'];
+    });
+    console.log('완성형', newTrip);
+    console.log('얘가들어감',JSON.stringify(newTrip))
+    dispatch(createTrip(JSON.stringify(newTrip)))
+  };
 
   return (
     <PlannerContent className="planner-content">
@@ -133,8 +157,15 @@ const DailyPlanner = () => {
         안녕난 장소장바구니야
         {placeItem &&
           placeItem.map((item, idx) => (
-            <li key={idx} draggable={item.draggable} data-place-id={item.placeId} className="list-item">
-              {item.placeName}
+            <li
+              key={idx}
+              draggable={item.draggable}
+              data-place-id={item.placeId}
+              data-place-img={item.imgUrl}
+              className="list-item"
+            >
+
+              {item.name}
               <DeleteBtn className="delete">삭제</DeleteBtn>
             </li>
           ))}
@@ -151,7 +182,7 @@ const DailyPlanner = () => {
           </PlannerBox>
         ))}
 
-      <SaveBtn onClick={newTrip}>일정생성</SaveBtn>
+      <SaveBtn onClick={createNewTrip}>일정생성</SaveBtn>
     </PlannerContent>
   );
 };

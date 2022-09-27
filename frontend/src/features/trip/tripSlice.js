@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchFullcourseDetail, fetchTravelPlace } from './tripActions';
+import { fetchFullcourseDetail, fetchTravelPlace, createTrip } from './tripActions';
 import format from 'date-fns/format';
 
 const initialState = {
+  regDate: format(new Date(), 'yyyy-MM-dd'),
   startDate: null,
   endDate: null,
   tripDay: null, //여행일수
@@ -10,6 +11,7 @@ const initialState = {
   travelPlaceList: null, //여행명소리스트 //null이랑 빈배열로 받는거랑 무슨차일까
   placeItem: [],
   fullcourseDetail: null,
+  trip: null //전체 여행일정
 };
 
 const tripSlice = createSlice({
@@ -45,6 +47,13 @@ const tripSlice = createSlice({
       state.fullcourseDetail = payload.data;
     },
     [fetchFullcourseDetail.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+    [createTrip.fulfilled]: (state, { payload }) => {
+      console.log("trip에 할당되는것",payload)
+      state.trip = payload.data;
+    },
+    [createTrip.rejected]: (state, { payload }) => {
       state.error = payload.error;
     },
   },
