@@ -15,7 +15,7 @@ import java.util.HashMap;
 @Api(value = "장소 추천 API", tags = {"recommendation"})
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
-@RequestMapping("/recomplace")
+@RequestMapping("/recommend")
 @RequiredArgsConstructor
 public class PlaceRecommendController {
 
@@ -25,20 +25,29 @@ public class PlaceRecommendController {
     private final TravelRecommendService travelRecommendService;
 
 
+    @ApiOperation(value = "랜덤 장소 반환", notes = "성공여부를 반환함.")
+    @GetMapping("/randomlist")
+    public ResponseEntity<BaseResponseBody> randomPlace() throws Exception {
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
+                travelRecommendService.randomPlace()));
+    }
+
     @ApiOperation(value = "유사 장소 반환", notes = "성공여부를 반환함.")
-    @GetMapping
+    @GetMapping("/similar")
     public ResponseEntity<BaseResponseBody> similarPlace(@RequestParam Long placeId,@RequestParam int num) throws Exception {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                 travelRecommendService.similarPlaceRecommender(placeId,num)));
     }
 
 
-    @GetMapping("/convert")
-    public void convertTagDBtoCSV() throws Exception {
+    @GetMapping("/convert/data")
+    public ResponseEntity<BaseResponseBody> convertTagDBtoCSV() throws Exception {
         HashMap<Long, boolean[]> converter = travelTagCsvService.converter();
         travelTagCsvService.writeTag("tagByPlaceId.csv",converter);
 
         cosineSimilarityService.similarityConverter("tagByPlaceId.csv");
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success","변환 성공"));
     }
 
 
