@@ -11,12 +11,12 @@ const Container = styled.div`
   height: 83vh;
 `;
 
-const PlanBar = () => {
+const PlanBar = ({map, setMap, mapRef}) => {
 
   return (
     <Container>
       <DateRanger />
-      <DailyPlanner/>
+      <DailyPlanner map={map} setMap={setMap} mapRef={mapRef}/>
     </Container>
   );
 };

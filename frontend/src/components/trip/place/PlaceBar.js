@@ -1,12 +1,12 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { fetchTravelPlace } from '../../../features/trip/tripActions';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
-import { setPlaceItem } from '../../../features/trip/tripSlice';
+import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
 
 const PlaceContainer = styled.div`
   border: 1px solid;
@@ -24,25 +24,39 @@ const PlaceName = styled.div``;
 
 const PlusBtn = styled.button``;
 
-const PlaceBar = () => {
+const PlaceBar = ({map}) => {
   const dispatch = useDispatch();
 
-  const { travelPlaceList } = useSelector((state) => state.trip);
+  const { travelPlaceList, } = useSelector((state) => state.trip);
 
   // const PLACE_TYPES = {
   //   travel: "travel"
   // }
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  const addPlaceToPlanner = (placeId, placeName, placeImg, id, e) => {
+  const addPlaceToPlanner = (placeId, placeName, placeImg, placeLat, placeLng, id, e) => {
     e.preventDefault();
     let placeItemObj = new Object();
     placeItemObj.placeId = placeId;
     placeItemObj.name = placeName;
     placeItemObj.imgUrl = placeImg;
     placeItemObj.draggable = true;
+    placeItemObj.lat = placeLat;
+    placeItemObj.lng = placeLng;
     placeItemObj.id = id;
 
     dispatch(setPlaceItem(placeItemObj));
+  };
+
+  const addMarker = (lat, lng) => {
+    
+    const position = { lat: lat, lng: lng };
+    const marker = new window.google.maps.Marker({
+      map,
+      position: position,
+    });
+    console.log(typeof(marker))
+    marker['position'] = position
+    dispatch(setMarkers(marker))
   };
 
   useEffect(() => {
@@ -84,15 +98,18 @@ const PlaceBar = () => {
                     <PlusBtn
                       className="plus" //heart대신 plus
                       id={item.placeId}
-                      onClick={(e) =>
+                      onClick={(e) => {
                         addPlaceToPlanner(
                           item.placeId,
                           item.name,
                           item.imgUrl,
+                          item.lat,
+                          item.lng,
                           idx,
                           e,
-                        )
-                      } //여기에
+                        );
+                        addMarker(item.lat, item.lng, e);
+                      }} //여기에
                     >
                       장바구니에넣기
                     </PlusBtn>

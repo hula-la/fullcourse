@@ -10,8 +10,14 @@ const initialState = {
   tripDates: [], //여행 하루하루 날짜
   travelPlaceList: null, //여행명소리스트 //null이랑 빈배열로 받는거랑 무슨차일까
   placeItem: [],
+
+  trip: null, //전체 여행일정
+  map: null, //초기맵을 저장하고 싶은데 이게 작동이 되는지 잘 모르겟음 이상하게 저장되는 듯
+  markers: [], //마커
+
   fullcourseDetail: null,
-  trip: null //전체 여행일정
+ 
+
 };
 
 const tripSlice = createSlice({
@@ -33,6 +39,17 @@ const tripSlice = createSlice({
     setPlaceItem: (state, action) => {
       state.placeItem.push(action.payload);
     },
+    setInitMap: (state, action) => {
+      //일단 만들어는 놨는데 현재는 쓰는 곳이 없음//props로 해결중
+      state.map = action.payload;
+    },
+    setMarkers: (state, action) => {
+      state.markers.push(action.payload);
+    },
+    clearMarkers: (state, action) => {
+      state.markers = [];
+      console.log('성공?', state.markers);
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -50,7 +67,6 @@ const tripSlice = createSlice({
       state.error = payload.error;
     },
     [createTrip.fulfilled]: (state, { payload }) => {
-      console.log("trip에 할당되는것",payload)
       state.trip = payload.data;
     },
     [createTrip.rejected]: (state, { payload }) => {
@@ -59,7 +75,19 @@ const tripSlice = createSlice({
   },
 });
 
-export const { setStartDate, setEndDate, calcTripDay, setDates, setPlaceItem } =
-  tripSlice.actions;
+
+export const {
+  setStartDate,
+  setEndDate,
+  calcTripDay,
+  setDates,
+  setPlaceItem,
+  setInitMap,
+  setMarkers,
+  clearMarkers,
+} = tripSlice.actions;
+
+
+
 
 export default tripSlice.reducer;
