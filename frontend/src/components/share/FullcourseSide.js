@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PlaceList from './PlaceList';
+import {
+  checkAllDay,
+  checkDay,
+  makeDayTagList,
+} from '../../features/share/shareSlice';
 
 const Side = styled.div`
   display: flex;
@@ -61,13 +66,30 @@ const Side = styled.div`
     opacity: 1;
     background-color: #0aa1dd;
     color: #ffffff;
+    font-size: small;
     font-weight: bold;
-    margin-right: 0px;
   }
 `;
 
 const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
-  const { dayTagList } = useSelector((state) => state.share);
+  const dispatch = useDispatch();
+  const { dayTagList2 } = useSelector((state) => state.share);
+  const { checkedDay } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    if (sharedFcInfo) {
+      dispatch(makeDayTagList(sharedFcInfo.day));
+    }
+  }, [sharedFcInfo]);
+
+  const onClickTags = (index, e) => {
+    dispatch(checkDay(index));
+  };
+
+  const onClickTagsAll = (e) => {
+    dispatch(checkAllDay());
+  };
+
   return (
     <Side>
       {sharedFcInfo ? (
@@ -81,12 +103,22 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
         </>
       ) : null}
       <ul className="daynonelist">
-        {dayTagList.map((tag, index) => {
+        <li
+          className={
+            'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
+          }
+          onClick={onClickTagsAll}
+        >
+          <div>All</div>
+        </li>
+        {dayTagList2.map((tag, index) => {
           return (
             <li
-              className={'daylistitem' + (tag.selected ? ' tag-selected' : '')}
+              className={
+                'daylistitem' + (checkedDay === index ? ' daytag-selected' : '')
+              }
               key={index}
-              // onClick={onClickTags}
+              onClick={(e) => onClickTags(index, e)}
             >
               <div id={tag.tag}>{tag}</div>
             </li>

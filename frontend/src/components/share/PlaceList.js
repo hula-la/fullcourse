@@ -20,4 +20,4 @@ const PlaceList = ({ placeList }) => {
   );
 };
 
-export default PlaceList;
+export default React.memo(PlaceList);
