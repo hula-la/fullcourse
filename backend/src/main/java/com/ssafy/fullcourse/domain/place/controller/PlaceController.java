@@ -39,16 +39,16 @@ public class PlaceController {
                     travelService.getTravelList(pageable, keyword, tag, maxDist, recentLat, recentLng)));
         } else if (type.equals("restaurant")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    restaurantService.getRestaurantList(pageable, keyword)));
+                    restaurantService.getRestaurantList(pageable, keyword, tag, maxDist, recentLat, recentLng)));
         } else if (type.equals("hotel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    hotelService.getHotelList(pageable, keyword)));
+                    hotelService.getHotelList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("culture")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    cultureService.getCultureList(pageable, keyword)));
+                    cultureService.getCultureList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("activity")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    activityService.getActivityList(pageable, keyword)));
+                    activityService.getActivityList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("custom")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     customService.getCustomList(pageable, keyword)));
