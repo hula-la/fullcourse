@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInitMap } from '../../features/trip/tripSlice';
+
 const MapContainer = styled.div``;
 
 const Map = ({ map, setMap, mapRef }) => {
   const { markers } = useSelector((state) => state.trip);
   useSelector((state) => state.trip);
+
   const googleMapStyle = {
     mapStyles: [
       {
@@ -76,14 +77,15 @@ const Map = ({ map, setMap, mapRef }) => {
   const dispatch = useDispatch();
 
   //으음 useCallback의 사용이유가 뭘까
+  //일정짜기 페이지 그리면 초기지도 그려주기
   const initMap = useCallback(() => {
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 35.1165, lng: 129.0401 },
-      zoom: 11,
+      zoom: 10,
       styles: googleMapStyle.mapStyles,
     });
-    setMap(map);
-    dispatch(setInitMap(map)); //이렇게 쓰일수 있는지 모르겠네
+    setMap(map); //props해서 placebar나 planner에서 쓸수있게
+
     markers &&
       markers.forEach((item, idx) => {
         const position = {

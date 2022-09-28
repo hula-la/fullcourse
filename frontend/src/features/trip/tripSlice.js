@@ -40,6 +40,7 @@ const tripSlice = createSlice({
       state.placeItem.push(action.payload);
     },
     setInitMap: (state, action) => {
+      //일단 만들어는 놨는데 현재는 쓰는 곳이 없음//props로 해결중
       state.map = action.payload;
     },
     setMarkers: (state, action) => {

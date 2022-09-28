@@ -69,18 +69,9 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       }
       //경로관련기능 바닐라 자스로 추가
       else if (e.target.closest('.planner-box')) {
+        //데일리 일정에 담긴 장소정보 추가
         const placeLocations = getPlaceLocations(e);
-        // const map = new window.google.maps.Map(mapRef.current, {
-        //   center: { lat: 35.1165, lng: 129.0401 },
-        //   zoom: 11,
-
-        // });
-        console.log('이거뭘반환해주는거지', placeLocations);
         setPlaceLocations(placeLocations);
-        // if (placeLocations) {
-        //   console.log(map)
-        //   console.log("넘오옴?")
-        //   map.renderRoute(placeLocations)};
       }
     });
     const getPlaceLocations = (e) => {
@@ -130,7 +121,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     };
   }, []);
 
-  //여행 일정 객체 생성 관련
+  //여행 일정 객체 생성 관련1
   var newObj = {};
   var newTrip = {
     endDate: endDate,
@@ -149,7 +140,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     );
   };
 
-  //좋은 방식은 아닌거 같으니 리팩필요
+  //여행 일정 객체 생성 관련2 좋은 방식은 아닌거 같으니 리팩필요
   const subCreateTripObj = () => {
     const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
@@ -172,6 +163,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     return { trip: { dailyItem } };
   };
 
+  //여행일정생성
   const createNewTrip = () => {
     createTripObj();
     const tripObj = subCreateTripObj();
@@ -179,20 +171,19 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     tmp.forEach((tmp, idx) => {
       newTrip.places[`${idx}`] = tmp['placeInfo'];
     });
-    console.log('완성형', newTrip);
-    console.log('얘가들어감', JSON.stringify(newTrip));
     dispatch(createTrip(JSON.stringify(newTrip)));
   };
 
-  const removeMarker = (lat, lng, e) => {
-    markers &&
-      markers.forEach((item, idx) => {
-        if (item.position.lat === lat && item.position.lng === lng) {
-          console.log('item', item);
-          item.setMap(null);
-        }
-      });
-  };
+  // 기존 맵에서 marker 지울 때 쓰는 공식인데, 지금은 클리어마커로 해놓음
+  // const removeMarker = (lat, lng, e) => {
+  //   markers &&
+  //     markers.forEach((item, idx) => {
+  //       if (item.position.lat === lat && item.position.lng === lng) {
+  //         console.log('item', item);
+  //         item.setMap(null);
+  //       }
+  //     });
+  // };
 
   const clearMarker = () => {
     dispatch(clearMarkers());
@@ -297,7 +288,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               <DeleteBtn
                 className="delete"
                 onClick={(e) => {
-                  removeMarker(item.lat, item.lng, e);
+                  // removeMarker(item.lat, item.lng, e);
                 }}
               >
                 삭제

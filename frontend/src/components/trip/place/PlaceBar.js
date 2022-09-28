@@ -24,10 +24,10 @@ const PlaceName = styled.div``;
 
 const PlusBtn = styled.button``;
 
-const PlaceBar = () => {
+const PlaceBar = ({map}) => {
   const dispatch = useDispatch();
 
-  const { travelPlaceList, map } = useSelector((state) => state.trip);
+  const { travelPlaceList, } = useSelector((state) => state.trip);
 
   // const PLACE_TYPES = {
   //   travel: "travel"
@@ -48,9 +48,10 @@ const PlaceBar = () => {
   };
 
   const addMarker = (lat, lng) => {
+    
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
-      map, //이거 슬라이스 효과가 있나본데..?
+      map,
       position: position,
     });
     console.log(typeof(marker))

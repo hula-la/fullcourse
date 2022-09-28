@@ -18,7 +18,7 @@ const PlanPage = () => {
       <Container>
         <PlanBar map={map} setMap={setMap} mapRef={mapRef}></PlanBar>
         <Map map={map} setMap={setMap} mapRef={mapRef}/>
-        <PlaceBar></PlaceBar>
+        <PlaceBar map={map}></PlaceBar>
       </Container>
     </div>
   );
