@@ -41,3 +41,13 @@
   font-family: Tmoney;
   src: url('./fonts/TmoneyRoundWind-Regular.woff');
 }
+a{
+  text-decoration: none;
+  font-family: Tmoney;
+}
+body{
+  font-family: Tmoney;
+}
+button{
+  font-family: Tmoney;
+}

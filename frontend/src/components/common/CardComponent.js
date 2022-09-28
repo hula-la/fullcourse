@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import './main.css';
-// import CardComponent from '../../components/common/CardComponent'
+import '../../pages/main/main.css';
 
-// mui에서 미디어쿼리 사용하는 방법
-import { makeStyles, useMediaQuery } from '@material-ui/core';
-
-//Card 관련
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import Avatar from '@mui/joy/Avatar';
 import CardOverflow from '@mui/joy/CardOverflow';
 import { FaCommentDots } from 'react-icons/fa';
 import { GoHeart } from 'react-icons/go';
+
+// mui에서 미디어쿼리 사용하는 방법
+import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { getUserInfo } from '../../api/user';
 
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
@@ -21,27 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Container = styled.div`
-  animation: fadeInUp 2s;
-  margin: 10vh;
-  /* display: flex; */
-`;
-
-const Text = styled.div`
-  animation: fadeInUp 2s;
-  height: 4vh;
-  width: 25vw;
-  background: url('/img/baseline.png') center no-repeat;
-  background-position-y: 0;
-  background-position-x: 0;
-
-  background-size: 10vw 5vh;
-  font-size: 4vmin;
-  font-family: Tmoney;
-  color: #333333;
-  text-align: start;
-  padding: 0;
-`;
+const Wapper = styled.div`
+  margin : 1vw 1vw 1vw 0vw ;
+`
 
 const Nickname = styled.div`
   font-family: Tmoney;
@@ -84,12 +65,11 @@ const Comment = styled(FaCommentDots)`
   color: #e36387;
   font-size: 2.2vmin;
 `;
-
-const CardComponent =()=>{
+const CardComponent =(props)=>{
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
   return (
-    <div>
+    <Wapper>
       <Card
           className={isMobile ? classes.cardMobile : null}
           variant="soft"
@@ -98,7 +78,7 @@ const CardComponent =()=>{
             width: '16.5vw',
             // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
             boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
-            marginTop: '10vh',
+            marginTop: '1vh',
             ":hover": {transform: 'scale(1.05)', cursor:'pointer'},
             ":active": {transform: 'scale(0.95)'},
             
@@ -141,34 +121,22 @@ const CardComponent =()=>{
               paddingTop: '4vh',
             }}
           >
-            <Nickname>닉네임1</Nickname>
-            <CardTitle>제목1</CardTitle>
-            <CardContent>내용1</CardContent>
+            <Nickname>{props.fullcourse.user.userNickName}</Nickname>
+            <CardTitle>{props.fullcourse.title}</CardTitle>
+            {props.fullcourse.day}
+            <CardContent>{props.fullcourse.detail}</CardContent>
             {/* 이 자리에 호준이가 만든 태그 */}
 
             <CardFooter>
               <Like />
-              <span>좋아요횟수</span>
+              <span>{props.fullcourse.likeCnt}</span>
               <Comment />
-              <span>댓글갯수</span>
+              <span>{props.fullcourse.commentCnt}</span>
             </CardFooter>
           </CardOverflow>
         </Card>
-    </div>
+    </Wapper>
   )
 }
 
-const FullCourseList = () => {
-
-  return (
-    <div>
-      {/* card fadeinup 시도해보자 */}
-      <Container>
-        <Text>추천 풀코스</Text>
-        <CardComponent/>
-      </Container>
-    </div>
-  );
-};
-
-export default FullCourseList;
+export default CardComponent;

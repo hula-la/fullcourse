@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { createSharedFc } from '../../../features/share/shareActions';
 
+
 const AlertDiv = styled.div`
   .modal {
     text-align: center;
@@ -118,7 +119,7 @@ const MyFullcourseShare = (props) => {
 
     const start = new Date(arr1[0], arr1[1], arr1[2]);
     const end = new Date(arr2[0], arr2[1], arr2[2]);
-
+    
     const tmp = days_between(start, end);
     setDays(tmp);
   }, [fullcourse]);
