@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import PlaceList from '../../../components/share/PlaceList';
+import {
+  checkAllDay,
+  checkDay,
+  makeDayTagList,
+} from '../../../features/share/shareSlice';
 
 const Side = styled.div`
   display: flex;
@@ -43,6 +49,7 @@ const Side = styled.div`
     border-radius: 20px;
     padding: 3px 10px;
     margin: 10px 4px;
+    font-size: small;
     font-weight: bold;
     cursor: pointer;
     color: #0aa1dd;
@@ -59,13 +66,28 @@ const Side = styled.div`
     opacity: 1;
     background-color: #0aa1dd;
     color: #ffffff;
+    font-size: small;
     font-weight: bold;
-    margin-right: 0px;
   }
 `;
 
-const FullcourseSide = ({ userInfo, fullcourseDetail }) => {
-  const { dayTagList } = useSelector((state) => state.share);
+const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
+  const dispatch = useDispatch();
+  const { dayTagList2 } = useSelector((state) => state.share);
+  const { checkedDay } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    dispatch(makeDayTagList(days));
+  }, [days]);
+
+  const onClickTags = (index, e) => {
+    dispatch(checkDay(index));
+  };
+
+  const onClickTagsAll = (e) => {
+    dispatch(checkAllDay());
+  };
+
   return (
     <Side>
       {userInfo ? (
@@ -79,18 +101,31 @@ const FullcourseSide = ({ userInfo, fullcourseDetail }) => {
         </>
       ) : null}
       <ul className="daynonelist">
-        {dayTagList.map((tag, index) => {
+        <li
+          className={
+            'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
+          }
+          onClick={onClickTagsAll}
+        >
+          <div>All</div>
+        </li>
+        {dayTagList2.map((tag, index) => {
           return (
             <li
-              className={'daylistitem' + (tag.selected ? ' tag-selected' : '')}
+              className={
+                'daylistitem' + (checkedDay === index ? ' daytag-selected' : '')
+              }
               key={index}
-              // onClick={onClickTags}
+              onClick={(e) => onClickTags(index, e)}
             >
               <div id={tag.tag}>{tag}</div>
             </li>
           );
         })}
       </ul>
+      {fullcourseDetail ? (
+        <PlaceList placeList={fullcourseDetail.places} />
+      ) : null}
     </Side>
   );
 };
