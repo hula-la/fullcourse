@@ -15,4 +15,5 @@ public interface BasePlaceRepository<P extends BasePlace> extends JpaRepository<
     Optional<P> findByPlaceId(Long placeId);
     Page<P> findByNameContaining(String name, Pageable pageable);
     List<P> findByNameContaining(String name);
+
 }
