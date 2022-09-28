@@ -41,7 +41,10 @@ function App() {
         {/* trip */}
         <Route path="trip" element={<OnlyHeaderLayout />}>
           <Route path="plan" element={<PlanPage />} />
+          {/* survey 일정짜기 전 설문조사 */}
+          <Route path="survey" element={<SurveyPage />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
