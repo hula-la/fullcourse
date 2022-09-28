@@ -78,6 +78,9 @@ public class Travel extends BasePlace {
 
     private String tag;
 
+    @Column(nullable = false)
+    private Long mention;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
@@ -108,6 +111,7 @@ public class Travel extends BasePlace {
         res.setLikeCnt(this.getLikeCnt());
         res.setTransport(this.getTransport());
         res.setImgUrl(this.getImgUrl());
+        res.setMention(this.getMention());
         return res;
     }
 
