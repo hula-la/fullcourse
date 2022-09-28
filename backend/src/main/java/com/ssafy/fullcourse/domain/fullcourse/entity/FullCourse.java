@@ -62,4 +62,8 @@ public class FullCourse {
                 .places(places)
                 .build();
     }
+
+    public void updateShared(boolean state){
+        this.isShared = state;
+    }
 }

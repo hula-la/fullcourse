@@ -14,6 +14,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeReposi
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,10 @@ public class SharedFCService {
         tagDtoE(tags,sharedFullCourse);
 
         SharedFullCourse saved = sharedFCRepository.save(sharedFullCourse);
-        if(saved != null) return saved.getSharedFcId(); // 생성 성공
+        if(saved != null) {
+            fullCourse.updateShared(true);
+            return saved.getSharedFcId(); // 생성 성공
+        }
         else throw new ServerError("공유 풀코스 생성 중 알 수 없는 에러가 발생했습니다.");
 
     }
@@ -98,6 +102,9 @@ public class SharedFCService {
     @Transactional
     public void deleteSharedFC(Long sharedFdId) {
         SharedFullCourse saved =sharedFCRepository.findBySharedFcId(sharedFdId);
+        FullCourse fullCourse = saved.getFullCourse();
+        fullCourse.updateShared(false);
+        fullCourseRepository.save(fullCourse);
         if(saved == null) throw new SharedFCNotFoundException();
         sharedFCRepository.delete(saved);
     }
@@ -105,6 +112,7 @@ public class SharedFCService {
     // 공유 풀코스 좋아요
     @Transactional
     public boolean likeSharedFC(Long sharedId, String email) {
+        System.out.println(email);
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedId);
         if(sharedFullCourse == null) throw new SharedFCNotFoundException();
@@ -117,7 +125,7 @@ public class SharedFCService {
             return false;
         }else{ // 좋아요
             sharedFCLikeRepository.save(SharedFCLike.builder()
-                    .user(userRepository.findByEmail(email).get())
+                    .user(userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException()))
                     .sharedFullCourse(sharedFullCourse).build());
             sharedFCRepository.updateLikeCnt(sharedId, 1);
             return true;
