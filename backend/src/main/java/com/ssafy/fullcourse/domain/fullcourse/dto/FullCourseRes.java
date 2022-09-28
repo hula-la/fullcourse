@@ -27,12 +27,16 @@ public class FullCourseRes {
     @ApiModelProperty(name="썸네일", example="url")
     String thumbnail;
 
+    @ApiModelProperty(name="사용자 id", example="url")
+    Long userId;
+
     public FullCourseRes(FullCourse fullCourse) {
         this.fcId = fullCourse.getFcId();
         this.regDate = fullCourse.getRegDate();
         this.startDate = fullCourse.getStartDate();
         this.endDate = fullCourse.getEndDate();
         this.thumbnail = fullCourse.getThumbnail();
+        this.userId = fullCourse.getUser().getUserId();
     }
 
 
