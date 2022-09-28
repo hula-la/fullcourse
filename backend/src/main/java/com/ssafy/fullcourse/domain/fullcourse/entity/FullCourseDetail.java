@@ -1,6 +1,6 @@
 package com.ssafy.fullcourse.domain.fullcourse.entity;
 
-import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailPostReq;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import lombok.*;
 
@@ -47,9 +47,10 @@ public class FullCourseDetail {
     @OneToOne(mappedBy = "fullCourseDetail", cascade = CascadeType.REMOVE)
     private FullCourseDiary fullCourseDiary;
 
-    public FullCourseDetailPostReq toDto(PlaceRes place){
-        return FullCourseDetailPostReq.builder()
+    public FullCourseDetailRes toDto(PlaceRes place){
+        return FullCourseDetailRes.builder()
                 .courseOrder(this.courseOrder)
+                .fcdId(this.fcDetailId)
                 .type(this.type)
                 .placeId(this.placeId)
                 .img(this.img)

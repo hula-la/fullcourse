@@ -1,9 +1,7 @@
 package com.ssafy.fullcourse.recommendation.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Travel;
-import com.ssafy.fullcourse.domain.place.entity.TravelTag;
 import com.ssafy.fullcourse.domain.place.repository.TravelRepository;
-import com.ssafy.fullcourse.domain.place.repository.TravelTagRepository;
 import com.ssafy.fullcourse.global.model.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

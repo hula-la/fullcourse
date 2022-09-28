@@ -7,6 +7,8 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @Builder
@@ -29,6 +31,8 @@ public class UserDto {
 //        Authority authority = Authority.builder()
 //                .authorityName("ROLE_USER")
 //                .build();
+
+
 
         return User.builder()
                 .email(this.getEmail())

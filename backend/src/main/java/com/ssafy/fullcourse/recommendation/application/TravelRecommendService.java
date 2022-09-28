@@ -45,7 +45,9 @@ public class TravelRecommendService {
 
         TravelDetailRes[] topKSimilarPlace = new TravelDetailRes[num];
 
-        int cnt=0;
+
+        topKSimilarPlace[0] = travelService.getTravelDetail(selectedIdx);
+        int cnt=1;
 
         for (int i = 0; cnt < num && i<list_entries.size(); i++) {
             long idx = (Long) list_entries.get(i).getKey();
