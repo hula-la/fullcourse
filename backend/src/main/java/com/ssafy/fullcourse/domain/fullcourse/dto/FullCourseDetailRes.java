@@ -11,10 +11,13 @@ import lombok.Getter;
 @Getter
 @ApiModel("FullCourseDetailPostReq")
 @Builder
-public class FullCourseDetailPostReq {
+public class FullCourseDetailRes {
 
     @ApiModelProperty(name="순서", example="0")
     int courseOrder;
+
+    @ApiModelProperty(name = "FCDetailId", example = "3")
+    Long fcdId;
 
     @ApiModelProperty(name="장소 종류", example="activity")
     String type;

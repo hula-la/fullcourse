@@ -29,11 +29,14 @@ public class PlaceController {
 
     public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable,
                                                        @RequestParam(required = false, defaultValue = "") String keyword,
-                                                       @RequestParam(required = false, defaultValue = "") String tag
+                                                       @RequestParam(required = false, defaultValue = "") String tag,
+                                                       @RequestParam(required = false, defaultValue = "0") Integer maxDist,
+                                                       @RequestParam(required = false, defaultValue = "0") Float recentLat,
+                                                       @RequestParam(required = false, defaultValue = "0") Float recentLng
     ) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    travelService.getTravelList(pageable, keyword, tag)));
+                    travelService.getTravelList(pageable, keyword, tag, maxDist, recentLat, recentLng)));
         } else if (type.equals("restaurant")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     restaurantService.getRestaurantList(pageable, keyword)));
