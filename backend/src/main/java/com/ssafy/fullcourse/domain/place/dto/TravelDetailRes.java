@@ -29,4 +29,5 @@ public class TravelDetailRes {
     private Long addedCnt;
     private Long reviewCnt;
     private Long likeCnt;
+    private Long mention;
 }
