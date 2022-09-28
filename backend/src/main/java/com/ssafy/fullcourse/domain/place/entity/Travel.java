@@ -89,6 +89,7 @@ public class Travel extends BasePlace {
 
     public TravelDetailRes toDetailDto(){
         TravelDetailRes res = new TravelDetailRes();
+        res.setPlaceId(this.getPlaceId());
         res.setName(this.getName());
         res.setFee(this.getFee());
         res.setAddress(this.getAddress());
