@@ -37,6 +37,7 @@ const tripSlice = createSlice({
       state.tripDates = action.payload;
     },
     setPlaceItem: (state, action) => {
+      console.log("setPlaceItem")
       state.placeItem.push(action.payload);
     },
     setInitMap: (state, action) => {
@@ -54,7 +55,9 @@ const tripSlice = createSlice({
   extraReducers: {
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
-      state.travelPlaceList = payload.data.content;
+      state.travelPlaceList = payload.data;
+      console.log("이게되나", payload.data)
+      
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
       state.error = payload.error;

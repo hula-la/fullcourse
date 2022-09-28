@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { fetchTravelPlace } from '../../../features/trip/tripActions';
@@ -7,6 +7,8 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
+import { Pagination } from '@mui/material';
+import PlaceList from './PlaceList';
 
 const PlaceContainer = styled.div`
   border: 1px solid;
@@ -14,26 +16,37 @@ const PlaceContainer = styled.div`
 `;
 const PlaceOverview = styled.div``;
 
-const PlaceList = styled.div`
-  border: 1px solid;
-  height: 80vh;
-  overflow-y: scroll;
-`;
+const PlaceTypes = styled.button``;
 
 const PlaceName = styled.div``;
 
 const PlusBtn = styled.button``;
 
-const PlaceBar = ({map}) => {
+const PlaceBar = ({ map }) => {
   const dispatch = useDispatch();
+  const [placeTypes, setPlaceTypes] = useState([
+    'travel',
+    'culture',
+    'hotel',
+    'restaurant',
+    'activity',
+    'custom',
+  ]);
+  const [maxPageNum, setMaxPageNum] = useState(null);
+  const [pageNum, setPageNum] = useState(0);
+  const { travelPlaceList } = useSelector((state) => state.trip);
+  const [placeType, setPlaceType] = useState('travel');
 
-  const { travelPlaceList, } = useSelector((state) => state.trip);
-
-  // const PLACE_TYPES = {
-  //   travel: "travel"
-  // }
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  const addPlaceToPlanner = (placeId, placeName, placeImg, placeLat, placeLng, id, e) => {
+  const addPlaceToPlanner = (
+    placeId,
+    placeName,
+    placeImg,
+    placeLat,
+    placeLng,
+    id,
+    e,
+  ) => {
     e.preventDefault();
     let placeItemObj = new Object();
     placeItemObj.placeId = placeId;
@@ -48,77 +61,80 @@ const PlaceBar = ({map}) => {
   };
 
   const addMarker = (lat, lng) => {
-    
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
       position: position,
     });
-    console.log(typeof(marker))
-    marker['position'] = position
-    dispatch(setMarkers(marker))
+    console.log(typeof marker);
+    marker['position'] = position;
+    dispatch(setMarkers(marker));
   };
 
   useEffect(() => {
-    //아무것도 선택안하고 일정생성할때 기본 장소리스트(여행지)
-    //  console.log(PLACE_TYPES['travel'])
-    const PLACE_TYPES = {
-      travel: 'travel',
-    };
-    dispatch(fetchTravelPlace(PLACE_TYPES['travel']));
-  }, []);
+    if (travelPlaceList !== null) {
+      console.log('어디서막히는거고');
+      let tmp = travelPlaceList.totalElements;
+      let result = parseInt(tmp / 9);
+      let remainder = tmp % 9;
+      console.log('얘안뜨지', result, remainder);
+      if (remainder === 0) {
+        setMaxPageNum(result);
+      } else {
+        setMaxPageNum(result + 1);
+      }
+    }
+  }, [travelPlaceList]);
+
+  useEffect(() => {
+    dispatch(fetchTravelPlace({ placeType, pageNum }));
+  }, [dispatch, placeType, pageNum]);
+
+  const onClickPage = (e) => {
+    const nowPage = parseInt(e.target.outerText);
+    console.log(nowPage);
+    setPageNum(nowPage - 1);
+  };
+
+  const changePlaceList = (id, e) => {
+    e.preventDefault();
+    for (var i = 0; i < placeTypes.length; i++) {
+      if (i === id) {
+        console.log('동일한걸로 찎히나', placeTypes[id]);
+        setPlaceType(placeTypes[id]);
+
+        // dispatch(fetchTravelPlace(placeTypes[id]));
+      }
+    }
+  };
 
   return (
     <PlaceContainer className="place-container">
+      {placeTypes &&
+        placeTypes.map((item, id) => (
+          <PlaceTypes
+            onClick={(e) => {
+              changePlaceList(id, e);
+            }}
+          >
+            {item}
+          </PlaceTypes>
+        ))}
       <PlaceOverview className="place-overview">
-        <PlaceList className="place-list">
-          {travelPlaceList &&
-            travelPlaceList.map((item, idx) => (
-              <Card
-                variant="outlined"
-                className="place-card"
-                id={item.placeId}
-                row
-                sx={{
-                  minWidth: '320px',
-                  gap: 2,
-                  '&:hover': {
-                    boxShadow: 'md',
-                    borderColor: 'neutral.outlinedHoverBorder',
-                  },
-                }}
-              >
-                <AspectRatio ratio="1" sx={{ width: 90 }}>
-                  <img src={item.imgUrl} alt="" />
-                </AspectRatio>
-                <Box>
-                  <Box sx={{ ml: 0.5 }}>
-                    <PlaceName>{item.name}</PlaceName>
-
-                    <PlusBtn
-                      className="plus" //heart대신 plus
-                      id={item.placeId}
-                      onClick={(e) => {
-                        addPlaceToPlanner(
-                          item.placeId,
-                          item.name,
-                          item.imgUrl,
-                          item.lat,
-                          item.lng,
-                          idx,
-                          e,
-                        );
-                        addMarker(item.lat, item.lng, e);
-                      }} //여기에
-                    >
-                      장바구니에넣기
-                    </PlusBtn>
-                  </Box>
-                </Box>
-              </Card>
-            ))}
-        </PlaceList>
+        <PlaceList className="place-list" map={map}/>
       </PlaceOverview>
+      {travelPlaceList ? (
+        <Pagination
+          count={maxPageNum}
+          variant="outlined"
+          shape="rounded"
+          showFirstButton
+          showLastButton
+          defaultPage={1}
+          boundaryCount={2}
+          onChange={onClickPage}
+        />
+      ) : null}
     </PlaceContainer>
   );
 };
