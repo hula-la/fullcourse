@@ -2,9 +2,9 @@ package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Hotel;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
-import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
+import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
-import com.ssafy.fullcourse.domain.review.entity.ActivityReview;
+import com.ssafy.fullcourse.domain.review.entity.CultureReview;
 import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import com.ssafy.fullcourse.domain.review.entity.HotelReviewLike;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -15,24 +15,20 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class HotelReviewService extends BaseReviewServiceImpl<HotelReview, Hotel, HotelReviewLike> {
+public class HotelReviewService extends BaseReviewService<HotelReview, Hotel, HotelReviewLike> {
 
-    public HotelReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                 Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                 Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
-                                 UserRepository userRepository) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
-    }
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
         Optional<Hotel> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -46,8 +42,14 @@ public class HotelReviewService extends BaseReviewServiceImpl<HotelReview, Hotel
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
-                .user(userRepository.findByEmail(userId).get())
+                .user(userRepository.findByEmail(email).get())
                 .build();
+
+        if(file != null) {
+            baseReview.setReviewImg(awsS3Service.uploadImage(file));
+        } else {
+            baseReview.setReviewImg(defaultImg);
+        }
 
 
         baseReviewRepository.save(baseReview);

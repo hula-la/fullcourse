@@ -28,7 +28,7 @@ public class FullCoursePostReq {
     @ApiModelProperty(name="썸네일", example="url")
     String thumbnail;
 
-    HashMap<Integer, List<FullCourseDetailPostReq>> places;
+    HashMap<Integer, List<FullCourseDetailRes>> places;
 
     public FullCourse toEntity(User user){
         return FullCourse.builder()

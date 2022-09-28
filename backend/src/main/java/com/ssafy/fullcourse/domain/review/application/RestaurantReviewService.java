@@ -2,7 +2,7 @@ package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Restaurant;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
-import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewServiceImpl;
+import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.entity.HotelReview;
 import com.ssafy.fullcourse.domain.review.entity.RestaurantReview;
@@ -15,23 +15,19 @@ import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class RestaurantReviewService extends BaseReviewServiceImpl<RestaurantReview, Restaurant, RestaurantReviewLike> {
-    public RestaurantReviewService(Map<String, BaseReviewRepository> baseReviewRepositoryMap,
-                                Map<String, BasePlaceRepository> basePlaceRepositoryMap,
-                                Map<String, BaseReviewLikeRepository> baseReviewLikeMap,
-                                UserRepository userRepository) {
-        super(baseReviewRepositoryMap, basePlaceRepositoryMap, baseReviewLikeMap,userRepository);
-    }
+public class RestaurantReviewService extends BaseReviewService<RestaurantReview, Restaurant, RestaurantReviewLike> {
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, String userId, ReviewPostReq reviewPostReq) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
         Optional<Restaurant> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -45,8 +41,15 @@ public class RestaurantReviewService extends BaseReviewServiceImpl<RestaurantRev
                 .content(reviewPostReq.getContent())
                 .likeCnt(0L)
                 .place(place.get())
-                .user(userRepository.findByEmail(userId).get())
+                .user(userRepository.findByEmail(email).get())
                 .build();
+
+        if(file != null) {
+            baseReview.setReviewImg(awsS3Service.uploadImage(file));
+        } else {
+            baseReview.setReviewImg(defaultImg);
+        }
+
 
         baseReviewRepository.save(baseReview);
         return baseReview.getReviewId();
