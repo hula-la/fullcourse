@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
@@ -102,20 +102,47 @@ const AlertDiv = styled.div`
 const MyFullcourseShare = (props) => {
   const { open, close, header, fullcourse } = props;
   const dispatch = useDispatch();
+  const [fullcourseTags, setFullcourseTags] = useState(['부산']);
   const [inputs, setInPuts] = useState({
     title: '',
     content: '',
   });
-  const [fullcourseTags, setFullcourseTags] = useState(['부산']);
+  const [days, setDays] = useState(null);
+
+  useEffect(() => {
+    const startDate = fullcourse.startDate.slice(0, 10);
+    const endDate = fullcourse.endDate.slice(0, 10);
+
+    const arr1 = startDate.split('-');
+    const arr2 = endDate.split('-');
+
+    const start = new Date(arr1[0], arr1[1], arr1[2]);
+    const end = new Date(arr2[0], arr2[1], arr2[2]);
+
+    const tmp = days_between(start, end);
+    setDays(tmp);
+  }, [fullcourse]);
+
+  //일 수 세기
+  const days_between = (date1, date2) => {
+    // The number of milliseconds in one day
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    // Calculate the difference in milliseconds
+    const differenceMs = Math.abs(date1 - date2);
+    // Convert back to days and return
+    return Math.round(differenceMs / ONE_DAY) + 1;
+  };
 
   const onChangeInputs = (e) => {
     const { name, value } = e.target;
     setInPuts({ ...inputs, [name]: value });
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(
       createSharedFc({
+        day: days,
         fcId: fullcourse.fcId,
         title: inputs.title,
         detail: inputs.content,
@@ -124,6 +151,7 @@ const MyFullcourseShare = (props) => {
       }),
     );
   };
+
   return (
     <AlertDiv>
       <div className={open ? 'openModal modal' : 'modal'}>

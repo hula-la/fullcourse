@@ -25,7 +25,7 @@ const MyfullcourseItem = ({ fullcourse }) => {
         header={modalHeader}
         fullcourse={fullcourse}
       ></MyFullcourseShare>
-      <NavLink to="/fullcourse/detail/:sharedFcId">
+      <NavLink to={`/user/fullcourse/${fullcourse.fcId}`}>
         <p>{fullcourse.thumbnail}</p>
       </NavLink>
       <button onClick={onClick}>공유</button>

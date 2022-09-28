@@ -6,10 +6,12 @@ import {
   dropSharedFcComment,
   fetchSharedFcLikeList,
   createSharedFcLike,
+  fetchMySharedFc,
 } from './shareActions';
 
 const initialState = {
   sharedFcList: null,
+  mySharedFcList: null,
   sharedFcInfo: null,
   error: null,
   sharedFcLikeList: null,
@@ -24,12 +26,12 @@ const initialState = {
     '산책',
     '데이트',
     '맛집',
-    '힐링',
-    '계곡',
   ],
   dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
+  dayTagList2: [],
   checkedTagList: [],
   checkedDayTagList: [],
+  checkedDay: 6,
 };
 
 const shareSlice = createSlice({
@@ -41,8 +43,7 @@ const shareSlice = createSlice({
         const tmp = state.checkedTagList.filter((el) => el !== payload);
         state.checkedTagList = tmp;
       } else {
-        const tmp = [...state.checkedTagList, payload];
-        state.checkedTagList = tmp;
+        state.checkedTagList = [...state.checkedTagList, payload];
       }
     },
     checkDayTag: (state, { payload }) => {
@@ -51,15 +52,28 @@ const shareSlice = createSlice({
         const tmp = state.checkedDayTagList.filter((el) => el !== day);
         state.checkedDayTagList = tmp;
       } else {
-        const tmp = [...state.checkedDayTagList, day];
-        state.checkedDayTagList = tmp;
+        state.checkedDayTagList = [...state.checkedDayTagList, day];
       }
+    },
+    makeDayTagList: (state, { payload }) => {
+      const tmp = [];
+      for (let i = 1; i <= parseInt(payload); i++) {
+        tmp.push(i + 'Day');
+      }
+      state.dayTagList2 = tmp;
+    },
+    checkDay: (state, { payload }) => {
+      state.checkedDay = payload;
+    },
+    checkAllDay: (state) => {
+      state.checkedDay = 6;
     },
   },
   extraReducers: {
     // 공유풀코스 목록 조회
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
       state.sharedFcList = payload.data;
+      console.log(payload);
     },
     [fetchSharedFc.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -109,9 +123,14 @@ const shareSlice = createSlice({
         like: payload.data,
       };
     },
+    // 나의 공유풀코스 목록 조회
+    [fetchMySharedFc.fulfilled]: (state, { payload }) => {
+      state.mySharedFcList = payload.data;
+    },
   },
 });
 
-export const { checkTag, checkDayTag } = shareSlice.actions;
+export const { checkTag, checkDayTag, makeDayTagList, checkDay, checkAllDay } =
+  shareSlice.actions;
 
 export default shareSlice.reducer;

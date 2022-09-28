@@ -1,7 +1,10 @@
 import client from './client';
 
-export const getSharedFc = async (data) => {
-  const res = await client.post('api/share/fullcourse/search', data);
+export const getSharedFc = async (data, page) => {
+  console.log(data);
+  const res = await client.post('api/share/fullcourse/search', data, {
+    params: { page, size: 9 },
+  });
   return res;
 };
 
@@ -36,6 +39,10 @@ export const getSharedFcLikeList = async () => {
 
 export const postSharedFcLike = async (sharedFcId) => {
   const res = await client.post(`api/share/like/${sharedFcId}`);
-  console.log(res);
+  return res;
+};
+
+export const getMySharedFc = async () => {
+  const res = await client.get('/api/share/fullcourse/my');
   return res;
 };
