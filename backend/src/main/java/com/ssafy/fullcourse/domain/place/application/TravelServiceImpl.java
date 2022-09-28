@@ -31,24 +31,38 @@ public class TravelServiceImpl implements TravelService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag) throws Exception {
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag, Integer maxDist, Float lat, Float lng) throws Exception {
+        boolean checkDist = false, checkTag = false;
+        List<String> tagList = null;
+        StringTokenizer st = null;
+        if (maxDist != 0 && lat != 0 && lng != 0) checkDist = true;
+        if (!tag.equals("")) checkTag = true;
+        System.out.println(maxDist + " " + lat + " " + lng);
 
-        if (tag.equals("")) {
-            Page<Travel> page = travelRepository.findByNameContaining(keyword, pageable);
-            return page.map(PlaceRes::new);
-        } else {
-            StringTokenizer st = new StringTokenizer(tag, ",");
-            List<String> tagList = new ArrayList<>();
-
+        if (checkTag) {
+            st = new StringTokenizer(tag, ",");
+            tagList = new ArrayList<>();
             int n = st.countTokens();
             for (int i = 0; i < n; i++) {
                 tagList.add(st.nextToken());
             }
+        }
+        List<Travel> list = travelRepository.findByNameContaining(keyword);
+        for (int i = 0; i < list.size(); i++) {
+            int cnt = 0;
+            Travel t = list.get(i);
 
-            List<Travel> list = travelRepository.findByNameContaining(keyword);
-            for (int i = 0; i < list.size(); i++) {
-                int cnt = 0;
-                Travel t = list.get(i);
+            if (checkDist) {
+                // Km 단위로 계산됨.
+                Double dist = Math.sqrt(Math.pow((t.getLat() - lat) * 88.9036, 2) + Math.pow((t.getLng() - lng) * 111.3194,
+                        2));
+                if (dist >= maxDist) {
+                    list.remove(t);
+                    i--;
+                    continue;
+                }
+            }
+            if (checkTag) {
                 for (String tg : tagList) {
                     if (t.getTag() != null) {
                         if (t.getTag().contains(tg)) {
@@ -61,12 +75,12 @@ public class TravelServiceImpl implements TravelService {
                     list.remove(t);
                     i--;
                 }
-
             }
-
-            Page<Travel> page = new PageImpl(list, pageable, list.size());
-            return page.map(PlaceRes::new);
         }
+
+        Page<Travel> page = new PageImpl(list, pageable, list.size());
+        return page.map(PlaceRes::new);
+
     }
 
     @Override

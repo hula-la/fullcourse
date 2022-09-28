@@ -30,6 +30,6 @@ public class FullCourseTotalRes {
     boolean isShared;
 
     @ApiModelProperty(name="장소들", example="{1:[{type}], ]}")
-    HashMap<Integer, List<FullCourseDetailPostReq>> places;
+    HashMap<Integer, List<FullCourseDetailRes>> places;
 
 }
