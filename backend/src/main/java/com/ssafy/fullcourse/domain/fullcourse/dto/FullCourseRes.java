@@ -27,8 +27,12 @@ public class FullCourseRes {
     @ApiModelProperty(name="썸네일", example="url")
     String thumbnail;
 
+
     @ApiModelProperty(name="공유 유무", example="true")
     boolean isShared;
+
+    @ApiModelProperty(name="사용자 id", example="url")
+    Long userId;
 
     public FullCourseRes(FullCourse fullCourse) {
         this.fcId = fullCourse.getFcId();
@@ -37,9 +41,6 @@ public class FullCourseRes {
         this.endDate = fullCourse.getEndDate();
         this.thumbnail = fullCourse.getThumbnail();
         this.isShared = fullCourse.isShared();
+        this.userId = fullCourse.getUser().getUserId();
     }
-
-
-
-
 }

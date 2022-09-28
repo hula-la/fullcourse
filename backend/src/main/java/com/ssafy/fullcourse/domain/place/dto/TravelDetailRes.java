@@ -10,6 +10,7 @@ import javax.persistence.Column;
 @Getter
 @ToString
 public class TravelDetailRes {
+    private Long placeId;
     private String name;
     private String gugun;
     private Float lat;
@@ -29,4 +30,5 @@ public class TravelDetailRes {
     private Long addedCnt;
     private Long reviewCnt;
     private Long likeCnt;
+    private Long mention;
 }

@@ -73,7 +73,7 @@ public class FullCourseService {
         return fullCourse.getFcId();
     }
 
-    public Long createFullCourseDetail(int day, FullCourse fullCourse, FullCourseDetailPostReq fcDetail) {
+    public Long createFullCourseDetail(int day, FullCourse fullCourse, FullCourseDetailRes fcDetail) {
         return fullCourseDetailRepository
                 .save(fcDetail.toEntity(fullCourse, day))
                 .getFcDetailId();
@@ -94,7 +94,7 @@ public class FullCourseService {
         List<FullCourseDetail> fullCourseList =
                 fullCourseDetailRepository.findByFullCourse_FcIdOrderByDayAscCourseOrderAsc(fcId);
 
-        HashMap<Integer, List<FullCourseDetailPostReq>> places = new HashMap<>();
+        HashMap<Integer, List<FullCourseDetailRes>> places = new HashMap<>();
         for (FullCourseDetail fcd : fullCourseList) {
             if (!places.containsKey(fcd.getDay())) places.put(fcd.getDay(), new ArrayList<>());
 

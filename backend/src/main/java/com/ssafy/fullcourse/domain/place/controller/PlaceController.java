@@ -29,23 +29,26 @@ public class PlaceController {
 
     public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable,
                                                        @RequestParam(required = false, defaultValue = "") String keyword,
-                                                       @RequestParam(required = false, defaultValue = "") String tag
+                                                       @RequestParam(required = false, defaultValue = "") String tag,
+                                                       @RequestParam(required = false, defaultValue = "0") Integer maxDist,
+                                                       @RequestParam(required = false, defaultValue = "0") Float recentLat,
+                                                       @RequestParam(required = false, defaultValue = "0") Float recentLng
     ) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    travelService.getTravelList(pageable, keyword, tag)));
+                    travelService.getTravelList(pageable, keyword, tag, maxDist, recentLat, recentLng)));
         } else if (type.equals("restaurant")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    restaurantService.getRestaurantList(pageable, keyword)));
+                    restaurantService.getRestaurantList(pageable, keyword, tag, maxDist, recentLat, recentLng)));
         } else if (type.equals("hotel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    hotelService.getHotelList(pageable, keyword)));
+                    hotelService.getHotelList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("culture")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    cultureService.getCultureList(pageable, keyword)));
+                    cultureService.getCultureList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("activity")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    activityService.getActivityList(pageable, keyword)));
+                    activityService.getActivityList(pageable, keyword, maxDist, recentLat, recentLng)));
         } else if (type.equals("custom")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     customService.getCustomList(pageable, keyword)));

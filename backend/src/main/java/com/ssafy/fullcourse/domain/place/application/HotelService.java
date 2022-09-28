@@ -2,12 +2,82 @@ package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.HotelDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.entity.Hotel;
+import com.ssafy.fullcourse.domain.place.entity.HotelLike;
+import com.ssafy.fullcourse.domain.place.repository.HotelLikeRepository;
+import com.ssafy.fullcourse.domain.place.repository.HotelRepository;
+import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
+import com.ssafy.fullcourse.domain.user.entity.User;
+import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
+import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface HotelService {
+import java.util.List;
+import java.util.Optional;
 
-    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword) throws Exception;
-    public HotelDetailRes getHotelDetail(Long placeId) throws Exception;
-    public boolean hotelLike(Long placeId, Long userId) throws Exception;
+@Service
+@RequiredArgsConstructor
+public class HotelService {
+
+    private final HotelRepository hotelRepository;
+    private final HotelLikeRepository hotelLikeRepository;
+    private final UserRepository userRepository;
+
+    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
+        Page<Hotel> page = null;
+        List<Hotel> list = null;
+        if (keyword.equals("")) {
+            list = hotelRepository.findAll();
+        } else {
+            list = hotelRepository.findByNameContaining(keyword);
+        }
+        list = extractByDist(list, lat, lng, maxDist);
+        page = new PageImpl(list, pageable, list.size());
+        return page.map(PlaceRes::new);
+    }
+
+    public HotelDetailRes getHotelDetail(Long placeId) throws Exception {
+        return hotelRepository.findByPlaceId(placeId).get().toDetailDto();
+    }
+
+    @Transactional
+    public boolean hotelLike(Long placeId, Long userId) throws Exception {
+        User user = userRepository.findById(userId).get();
+        Hotel hotel = hotelRepository.findByPlaceId(placeId).get();
+
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (hotel == null) {
+            throw new PlaceNotFoundException();
+        }
+        Optional<HotelLike> hotelLike = hotelLikeRepository.findByUserAndPlace(user, hotel);
+
+        if (hotelLike.isPresent()) {
+            hotelLikeRepository.deleteById(hotelLike.get().getLikeId());
+            hotel.setLikeCnt(hotel.getLikeCnt() - 1);
+        } else {
+            hotelLikeRepository.save(HotelLike.builder().user(user).place(hotel).build());
+            hotel.setLikeCnt(hotel.getLikeCnt() + 1);
+        }
+        hotelRepository.save(hotel);
+        return true;
+    }
+
+    public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Integer maxDist){
+        for (int i = 0; i < list.size(); i++) {
+            Hotel h = list.get(i);
+            Double dist = Math.sqrt(Math.pow((h.getLat() - lat) * 88.9036, 2) + Math.pow((h.getLng() - lng) * 111.3194, 2));
+            if (dist >= maxDist) {
+                list.remove(h);
+                i--;
+            }
+        }
+        return list;
+    }
 }
