@@ -1,4 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchUserInfo } from './features/user/userActions';
 import './App.css';
 // Main
 import Layout from './layout/Layout';
@@ -7,16 +10,16 @@ import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
 import LoginPage from './pages/user/LoginPage';
 import ProfilePage from './pages/user/ProfilePage';
-// 404
-import NotFound from './pages/NotFound';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchUserInfo } from './features/user/userActions';
 import ShareFcPage from './pages/share/SharedFcPage';
 import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 // Plan
 import PlanPage from './pages/trip/PlanPage';
 import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
+// survey
+import SurveyPage from './pages/survey/SurveyPage';
+import RecommendPage from './pages/survey/RecommendPage';
+// 404
+import NotFound from './pages/NotFound';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +46,7 @@ function App() {
           <Route path="plan" element={<PlanPage />} />
           {/* survey 일정짜기 전 설문조사 */}
           <Route path="survey" element={<SurveyPage />} />
+          <Route path="recommend" element={<RecommendPage />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
