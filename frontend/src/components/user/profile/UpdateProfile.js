@@ -1,13 +1,19 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { checkNickname } from '../../../api/user';
 import { putUserInfo } from '../../../features/user/userActions';
 import EditIcon from '@mui/icons-material/Edit';
+import { unstable_useForkRef } from '@mui/utils';
+import EmailIcon from '@mui/icons-material/Email';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import { intlFormat } from 'date-fns';
 
 const Wrapper = styled.div`
-  margin: 3rem auto;
-  padding: 2rem;
+  margin: 3vw auto;
+  padding: 2vw;
 
   input[type='file'] {
     display: none;
@@ -53,6 +59,7 @@ const UserNickName = styled.div`
     border-radius: 2rem;
     justify-content: center;
     padding: 3px;
+    /* width: 60vw; */
     &:focus {
       background-color: #a4d8ff;
       transition: 0.3s;
@@ -63,9 +70,10 @@ const UserNickName = styled.div`
 const UpdateProfileForm = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 0 14rem 0 10rem;
+  margin: 0 2vw;
   text-align: center;
-
+  width: 90vw;
+  max-width: 460px;
   button {
     width: fit-content;
     margin: auto;
@@ -87,7 +95,7 @@ const UpdateProfileForm = styled.form`
     width: 50px;
     height: 2rem;
     text-align: center;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     margin-left: 10px;
     cursor: pointer;
     align-items: center;
@@ -110,6 +118,37 @@ const UpdateProfileForm = styled.form`
   }
 `;
 
+const UserInfo = styled.div`
+ display: flex;
+flex-direction: column;
+width:100%;
+div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin : 1vh 0;
+  text-align: left;
+  
+}
+.type{
+  width:25%;
+  
+  color: #4b94ca;
+  padding-bottom: 3px;
+
+}
+.info{
+  text-align: left;
+  width:60%;
+  /* border-bottom: solid 3px #a4d8ff; */
+  padding-bottom : 3px;
+  padding-right: 5px;
+}
+.icon{
+  color: #4b94ca;
+}
+`
+
 const UpdateProfile = ({ userInfo }) => {
   const [userImg, setUserImg] = useState(userInfo.imgUrl);
   const [imgFile, setImgFile] = useState(null);
@@ -117,6 +156,9 @@ const UpdateProfile = ({ userInfo }) => {
   const [userNicknameMessage, setUserNicknameMessage] = useState('');
   const [isuserNickname, setIsUserNickname] = useState(false);
   const [isNickChecked, setIsNickChecked] = useState(false);
+  const [userEmail, setUserEmail] = useState(userInfo.nickname);
+  const [userGender, setUserGender] = useState(userInfo.nickname);
+  
 
   const dispatch = useDispatch();
 
@@ -161,6 +203,11 @@ const UpdateProfile = ({ userInfo }) => {
     dispatch(putUserInfo({ userNickname, imgFile }));
   };
 
+  useEffect(()=>{
+    setUserEmail(userInfo.email.split('-')[0]);
+    setUserGender(userInfo.ageRange.split('~')[0])
+  },[])
+
   return (
     <Wrapper>
       <UpdateProfileForm onSubmit={onSubmit}>
@@ -176,6 +223,7 @@ const UpdateProfile = ({ userInfo }) => {
           accept="image/*"
           onChange={onChangeUserImg}
         />
+        
         <UserNickName>
           <span>
             <input
@@ -183,7 +231,7 @@ const UpdateProfile = ({ userInfo }) => {
               type="text"
               value={userNickname}
               onChange={onChangeNickname}
-            />
+            /><button>수정</button>
             {userNickname.length >= 0 && (
               <div
                 className={
@@ -191,11 +239,17 @@ const UpdateProfile = ({ userInfo }) => {
                 }
               >
                 {userNicknameMessage}
+                
               </div>
             )}
           </span>
-          <button>수정</button>
+          
         </UserNickName>
+        <UserInfo>
+          <div><EmailIcon className="icon"/><span className="type">Email</span><span className="info">{userEmail}</span></div>
+          <div>{userInfo.gender==="WOMAN" ? <FemaleIcon className="icon"/>:<MaleIcon className="icon"/>}<span className="type">Gender</span><span className="info">{userInfo.gender}</span></div>
+          <div><CalendarMonthIcon className="icon"/><span className="type">Age</span><span className="info">{userGender}대</span></div>
+        </UserInfo>
       </UpdateProfileForm>
     </Wrapper>
   );

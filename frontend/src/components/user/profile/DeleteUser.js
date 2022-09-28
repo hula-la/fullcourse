@@ -5,12 +5,12 @@ import { logout } from '../../../features/user/userSlice';
 import styled from 'styled-components';
 
 const Wapper = styled.div`
-  margin: 3rem auto;
-  padding: 2rem;
-  font-size: 80px;
+  margin: 4vh auto;
+  padding: 2vh;
+  font-size: 9vmin;
   text-align: center;
   .icon {
-    font-size: 200px;
+    font-size: 30vmin;
   }
 `;
 
