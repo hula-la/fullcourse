@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchFullcourseDetail, fetchTravelPlace, createTrip } from './tripActions';
+import {
+  fetchFullcourseDetail,
+  fetchTravelPlace,
+  createTrip,
+} from './tripActions';
 import format from 'date-fns/format';
 
 const initialState = {
@@ -16,8 +20,6 @@ const initialState = {
   markers: [], //마커
 
   fullcourseDetail: null,
- 
-
 };
 
 const tripSlice = createSlice({
@@ -62,6 +64,7 @@ const tripSlice = createSlice({
     // 상세 풀코스 정보 조회
     [fetchFullcourseDetail.fulfilled]: (state, { payload }) => {
       state.fullcourseDetail = payload.data;
+      console.log(state.fullcourseDetail);
     },
     [fetchFullcourseDetail.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -75,7 +78,6 @@ const tripSlice = createSlice({
   },
 });
 
-
 export const {
   setStartDate,
   setEndDate,
@@ -86,8 +88,5 @@ export const {
   setMarkers,
   clearMarkers,
 } = tripSlice.actions;
-
-
-
 
 export default tripSlice.reducer;

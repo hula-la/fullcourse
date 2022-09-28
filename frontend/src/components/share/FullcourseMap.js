@@ -16,7 +16,7 @@ const FullcourseMap = () => {
   const { fullcourseDetail } = useSelector((state) => state.trip);
   const { checkedDay } = useSelector((state) => state.share);
   const [markerList, setMarkerList] = useState([]);
-  const linePath = [];
+  const [linePath, setLinePath] = useState([]);
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -37,12 +37,14 @@ const FullcourseMap = () => {
 
   useEffect(() => {
     if (fullcourseDetail) {
+      let newLinePath = [];
       Object.keys(fullcourseDetail.places).map((place, index) => {
         const tmp = fullcourseDetail.places[place].map((pla, index) => {
           return new kakao.maps.LatLng(pla.place.lat, pla.place.lng);
         });
-        linePath[index] = tmp;
+        newLinePath = [...newLinePath, tmp];
       });
+      setLinePath(newLinePath);
     } else {
       console.log(3);
     }
@@ -95,7 +97,7 @@ const FullcourseMap = () => {
           for (var j = 0; j < markerList[i].length; j++) {
             // 지도에 표시할 선을 생성합니다
             var polyline = new kakao.maps.Polyline({
-              path: linePath, // 선을 구성하는 좌표배열 입니다
+              path: linePath[i], // 선을 구성하는 좌표배열 입니다
               strokeWeight: 5, // 선의 두께 입니다
               strokeColor: '#041688', // 선의 색깔입니다
               strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
