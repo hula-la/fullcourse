@@ -12,7 +12,7 @@ public class ActivityDetailRes {
     private Float lng;
     private String tel;
     private String gugun;
-    private String place;
+    private String address;
     private String imgUrl;
     private String holiday;
     private String content;
