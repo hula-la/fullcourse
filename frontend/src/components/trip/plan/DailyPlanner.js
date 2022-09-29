@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { createTrip } from '../../../features/trip/tripActions';
-import { setMarkers, clearMarkers } from '../../../features/trip/tripSlice';
+import { setMarkers, clearMarkers, deleteMarkers } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   border: 3px solid;
@@ -65,6 +65,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     //삭제기능 바닐라 자스로 추가
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
+        const deleteElm = e.target.closest('.delete');
         e.target.parentNode.remove();
       }
       //경로관련기능 바닐라 자스로 추가
@@ -76,11 +77,9 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     });
     const getPlaceLocations = (e) => {
       const titleElm = e.target.closest('.date'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
-      console.log('이건뭐지', titleElm.nextElementSibling);
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
         : null;
-      console.log('자식요소', itemElms);
       if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
       return itemElms.map(
         (item) =>
@@ -146,13 +145,14 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       (plannerBox) => {
         const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
           (placeItem, idx) => {
-            const comment = '임시메모';
+            const comment = null
             const courseOrder = idx;
             const placeData = placeItem.dataset;
-            const img = placeData.placeImg;
-            newTrip['thumbnail'] = img;
+            const img = null
+            newTrip['thumbnail'] = placeData.placeImg;
             const placeId = placeData.placeId;
-            const type = 'ACTIVITY'; //임시타입
+            console.log(placeData.placeType)
+            const type = placeData.placeType;
             const visited = false;
             return { comment, courseOrder, img, placeId, type, visited };
           },
@@ -175,16 +175,18 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
 
   // 기존 맵에서 marker 지울 때 쓰는 공식인데, 지금은 클리어마커로 해놓음
-  // const removeMarker = (lat, lng, e) => {
-  //   markers &&
-  //     markers.forEach((item, idx) => {
-  //       if (item.position.lat === lat && item.position.lng === lng) {
-  //         console.log('item', item);
-  //         item.setMap(null);
-  //       }
-  //     });
-  // };
+  const removeMarker = (lat, lng,e) => {
+    markers &&
+      markers.forEach((item, idx) => {
+        const copyArray = [...markers]
+        if (item.position.lat === lat && item.position.lng === lng) {
+          copyArray.splice(idx,1)
+          dispatch(deleteMarkers(copyArray))
+        }
+      });
+  };
 
+  //하나씩 삭제시키는거 넣어서 아마 없어도 될것 같은데 코드는 남겨놓음
   const clearMarker = () => {
     dispatch(clearMarkers());
   };
@@ -282,13 +284,15 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               data-place-img={item.imgUrl}
               data-place-lat={item.lat}
               data-place-lng={item.lng}
+              data-place-type={item.type}
               className="list-item"
             >
               {item.name}
+              {item.type}
               <DeleteBtn
                 className="delete"
                 onClick={(e) => {
-                  // removeMarker(item.lat, item.lng, e);
+                  removeMarker(item.lat, item.lng, e);
                 }}
               >
                 삭제
