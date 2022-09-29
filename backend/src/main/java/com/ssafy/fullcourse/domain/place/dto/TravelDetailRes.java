@@ -31,4 +31,5 @@ public class TravelDetailRes {
     private Long reviewCnt;
     private Long likeCnt;
     private Long mention;
+    private String Tag;
 }

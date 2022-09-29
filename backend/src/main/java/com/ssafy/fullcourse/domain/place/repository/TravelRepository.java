@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface TravelRepository extends BasePlaceRepository<Travel> {
 
-    @Query(value = "SELECT * FROM hackerton.literature order by RAND()",nativeQuery = true)
+    @Query(value = "SELECT * FROM travel order by RAND()",nativeQuery = true)
     List<Travel> findRandomAll();
 }

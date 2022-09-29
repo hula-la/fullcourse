@@ -104,10 +104,6 @@ public class FullCourseService {
 
             PlaceRes placeRes = getLntLat(type, placeId);
 
-//            float lat = placeRes.getLat();
-//            float lng = placeRes.getLng();
-
-
             places.get(fcd.getDay())
                     .add(fcd.toDto(placeRes));
         }
