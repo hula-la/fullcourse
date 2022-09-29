@@ -10,14 +10,19 @@ import PlaceList from './PlaceList';
 const PlaceContainer = styled.div`
   border: 1px solid;
   height: 87vh;
+  background-color: #E8F9FD;
 `;
-const PlaceOverview = styled.div``;
+
 
 const PlaceTypes = styled.button``;
 
-const PlaceName = styled.div``;
+const PageBox = styled.div`
+  width: 55vh;
+  display: flex;
+  justify-content: center;
+`
 
-const PlusBtn = styled.button``;
+
 
 const PlaceBar = ({ map }) => {
   const dispatch = useDispatch();
@@ -117,21 +122,26 @@ const PlaceBar = ({ map }) => {
             {item}
           </PlaceTypes>
         ))}
-      <PlaceOverview className="place-overview">
+     
         <PlaceList className="place-list" map={map} placeType={placeType}/>
-      </PlaceOverview>
-      {travelPlaceList ? (
-        <Pagination
+      
+      <PageBox>
+        {travelPlaceList ? (
+          <Pagination
           count={maxPageNum}
-          variant="outlined"
-          shape="rounded"
-          showFirstButton
-          showLastButton
+          // variant="outlined"
+          // shape="rounded"
+          // showFirstButton
+          // showLastButton
           defaultPage={1}
           boundaryCount={2}
+          size="small"
           onChange={onClickPage}
-        />
-      ) : null}
+          
+          />
+          ) : null}
+      </PageBox>
+    
     </PlaceContainer>
   );
 };

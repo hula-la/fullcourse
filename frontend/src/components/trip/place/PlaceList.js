@@ -4,9 +4,14 @@ import styled from 'styled-components';
 import PlaceListItem from './PlaceListItem';
 
 const Container = styled.div`
-  border: 1px solid;
-  height: 80vh;
+  margin-top: 1vh;
+  height: 75vh;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2vh;
+  padding-bottom: 1vh;
 `;
 
 
