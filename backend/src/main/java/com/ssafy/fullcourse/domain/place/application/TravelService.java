@@ -83,13 +83,17 @@ public class TravelService {
 
     }
 
-    public TravelDetailRes getTravelDetail(Long placeId) throws Exception {
-        return travelRepository.findByPlaceId(placeId).get().toDetailDto();
+    public TravelDetailRes getTravelDetail(Long placeId, String email) throws Exception {
+        TravelDetailRes travelDetailRes = travelRepository.findByPlaceId(placeId).get().toDetailDto();
+        travelDetailRes.setIsLiked(travelLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                travelRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return travelDetailRes;
     }
 
     @Transactional
-    public boolean travelLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean travelLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Travel travel = travelRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -104,11 +108,13 @@ public class TravelService {
         if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
             travel.setLikeCnt(travel.getLikeCnt() - 1);
+            response = false;
         } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
             travel.setLikeCnt(travel.getLikeCnt() + 1);
+            response = true;
         }
         travelRepository.save(travel);
-        return true;
+        return response;
     }
 }

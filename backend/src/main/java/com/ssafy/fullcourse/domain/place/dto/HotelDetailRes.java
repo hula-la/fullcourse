@@ -16,4 +16,5 @@ public class HotelDetailRes {
     private Long addedCnt;
     private Long reviewCnt;
     private Long likeCnt;
+    private Boolean isLiked;
 }

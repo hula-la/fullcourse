@@ -46,14 +46,14 @@ public class TravelRecommendService {
         TravelDetailRes[] topKSimilarPlace = new TravelDetailRes[num];
 
 
-        topKSimilarPlace[0] = travelService.getTravelDetail(selectedIdx);
+        topKSimilarPlace[0] = travelRepository.findByPlaceId(selectedIdx).get().toDetailDto();
         int cnt=1;
 
         for (int i = 0; cnt < num && i<list_entries.size(); i++) {
             long idx = (Long) list_entries.get(i).getKey();
             if (idx!=selectedIdx) {
                 System.out.println(cnt);
-                topKSimilarPlace[cnt] = travelService.getTravelDetail(idx);
+                topKSimilarPlace[cnt] = travelRepository.findByPlaceId(idx).get().toDetailDto();
                 cnt++;
             }
         }

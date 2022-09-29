@@ -37,8 +37,8 @@ public class Activity extends BasePlace {
     @Column(nullable = false, length = 20)
     private String gugun;
 
-    @Column(nullable = false, length = 30)
-    private String place;
+    @Column(nullable = false, length = 30, name = "place")
+    private String address;
 
     @Column(nullable = false, length = 300)
     private String imgUrl;
@@ -79,7 +79,7 @@ public class Activity extends BasePlace {
         res.setLng(this.getLng());
         res.setTel(this.getTel());
         res.setGugun(this.getGugun());
-        res.setPlace(this.getPlace());
+        res.setAddress(this.getAddress());
         res.setImgUrl(this.getImgUrl());
         res.setHoliday(this.getHoliday());
         res.setOpenTime(this.getOpenTime());
