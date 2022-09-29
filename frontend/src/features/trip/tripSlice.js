@@ -51,7 +51,9 @@ const tripSlice = createSlice({
     },
     clearMarkers: (state, action) => {
       state.markers = [];
-      console.log('성공?', state.markers);
+    },
+    deleteMarkers: (state, action) => {
+      state.markers = action.payload
     },
   },
   extraReducers: {
@@ -90,6 +92,7 @@ export const {
   setInitMap,
   setMarkers,
   clearMarkers,
+  deleteMarkers
 } = tripSlice.actions;
 
 export default tripSlice.reducer;
