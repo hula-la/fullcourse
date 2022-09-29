@@ -12,16 +12,19 @@ const Container = styled.div`
   overflow: overlay;
   display: grid;
   grid-template-rows: 1fr 0.5fr 5fr; //가로로 구분
+  background-color: #E8F9FD;
 `;
 
 const Introduce = styled.div`
   display: flex;
   align-items: center;
+  background-color: #FFF3F8;
 `;
 
 const VideoContainer = styled.div`
   overflow: hidden; //넘치는 부분 스크롤바 없애기
   width: 70vw;
+  height: 100vh;
   //스마트폰 미디어 쿼리
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     width: 100vw;
@@ -35,6 +38,7 @@ const MainTitle = styled.div`
   /* 전체를 감싼 div에 크기를 부여해주어야 위아래로 같이 안움직이고 아이콘만 위아래로 움직임 */
   width: 30vw;
   height: 50vh;
+ 
 `;
 
 const Logo = styled.img`
@@ -100,6 +104,7 @@ const PreviewTip = styled.p`
 `;
 
 const FullCourses = styled.div`
+  
   margin: 0 7vw;
 `;
 const StartPlaces = styled.div`

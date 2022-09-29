@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styled from 'styled-components';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
@@ -8,10 +8,12 @@ import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 import { display, padding } from '@mui/system';
+import PlaceDetailModal from './PlaceDetailModal';
+import {fetchPlaceDetail} from '../../../features/trip/tripActions'
 
 const PlaceName = styled.div`
   text-align: start;
-  font-size: 2vmin;
+  font-size: 1.9vmin;
 `;
 
 const PlusBtn = styled(AiOutlinePlusCircle)`
@@ -29,6 +31,16 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
 
 const PlaceListItem = ({ place, index, map, placeType }) => {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false)
+
+  const openDetailModal = () => {
+    setOpen(!open)
+  }
+
+  const setPlaceDetail = (placeId,placeType) => {
+    dispatch(fetchPlaceDetail({placeId,placeType}))
+  }
+
   const addPlaceToPlanner = (
     placeId,
     placeName,
@@ -84,18 +96,29 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
           marginTop: '1.8vh',
           padding: '1vh',
           backgroundColor: 'white',
-          
         }}
       >
-        <AspectRatio ratio="1" sx={{ width: 90, }}>
+        <AspectRatio ratio="1" sx={{ width: 90 }}>
           <img src={place.imgUrl} alt="" />
         </AspectRatio>
-        
+
         <Box sx={{ width: '10vw' }}>
           <PlaceName>{place.name}</PlaceName>
         </Box>
-        <Box sx={{ marginTop: '6.5vh' , display: 'flex', marginLeft: '1vw' }}>
-          <DetailBtn />
+        <Box sx={{ marginTop: '6.5vh', display: 'flex', marginLeft: '1vw' }}>
+          
+          <DetailBtn onClick={(e) => {openDetailModal(); setPlaceDetail(place.placeId, placeType,)}} />
+            {open ? (
+              <PlaceDetailModal
+                openDetailModal={openDetailModal}
+                imgUrl={place.imgUrl}
+                placeType={placeType}
+                placeId={place.placeId}
+                isLiked={place.isLiked ? 1 : 0}
+                placeName={place.name}
+       
+              />
+            ) : null}
           <PlusBtn
             className="plus"
             id={place.placeId}
