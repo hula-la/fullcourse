@@ -19,7 +19,7 @@ const initialState = {
   map: null, //초기맵을 저장하고 싶은데 이게 작동이 되는지 잘 모르겟음 이상하게 저장되는 듯
   markers: [], //마커
 
-  fullcourseDetail: { places: null },
+  fullcourseDetail: null,
 };
 
 const tripSlice = createSlice({

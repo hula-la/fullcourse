@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import PlaceList from '../../../components/user/fullcourse/PlaceList';
 import {
@@ -7,6 +6,7 @@ import {
   checkDay,
   makeDayTagList,
 } from '../../../features/share/shareSlice';
+import styled from 'styled-components';
 
 const Side = styled.div`
   display: flex;

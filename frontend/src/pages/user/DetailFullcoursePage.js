@@ -28,9 +28,9 @@ const DetailFullcoursePage = () => {
     dispatch(fetchFullcourseDetail(fcId));
   }, [dispatch, fcId]);
 
-  useEffect(() => {
-    dispatch(fetchDiary(fullcourseDetail.fcdId));
-  }, [dispatch, fcId]);
+  // useEffect(() => {
+  //   dispatch(fetchDiary(fullcourseDetail.fcdId));
+  // }, [dispatch, fcId]);
 
   useEffect(() => {
     if (fullcourseDetail) {
