@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     height: auto;
     min-height: 100%;
-    padding-bottom: 100px;
+    /* padding-bottom: 100px; */
   }
 `;
 

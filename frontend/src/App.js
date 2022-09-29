@@ -16,8 +16,8 @@ import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 import PlanPage from './pages/trip/PlanPage';
 import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 // survey
-import SurveyPage from './pages/survey/SurveyPage';
 import RecommendPage from './pages/survey/RecommendPage';
+import SurveyPage from './pages/survey/SurveyPage';
 // 404
 import NotFound from './pages/NotFound';
 
