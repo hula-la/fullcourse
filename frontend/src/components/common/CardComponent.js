@@ -16,13 +16,16 @@ import { getUserInfo } from '../../api/user';
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
     // 테스트용 css
-    width: '90%',
+    width: '100%',
   },
 }));
 
 const Wapper = styled.div`
-  margin : 1vw 1vw 1vw 0vw ;
-`
+  margin: 1vw 1vw 1vw 0vw;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 1vw 7vw;
+  }
+`;
 
 const Nickname = styled.div`
   font-family: Tmoney;
@@ -65,78 +68,75 @@ const Comment = styled(FaCommentDots)`
   color: #e36387;
   font-size: 2.2vmin;
 `;
-const CardComponent =(props)=>{
+const CardComponent = (props) => {
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
   return (
     <Wapper>
       <Card
-          className={isMobile ? classes.cardMobile : null}
-          variant="soft"
-          
-          sx={{
-            width: '16.5vw',
-            // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
-            boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
-            marginTop: '1vh',
-            ":hover": {transform: 'scale(1.05)', cursor:'pointer'},
-            ":active": {transform: 'scale(0.95)'},
-            
+        className={isMobile ? classes.cardMobile : null}
+        variant="soft"
+        sx={{
+          width: '16.5vw',
+          // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
+          boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
+          marginTop: '1vh',
+          ':hover': { transform: 'scale(1.05)', cursor: 'pointer' },
+          ':active': { transform: 'scale(0.95)' },
+        }}
+      >
+        <CardOverflow>
+          <AspectRatio ratio="3">
+            <img
+              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+              alt="card main img"
+            />
+          </AspectRatio>
 
+          <Avatar
+            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+            size="lg"
+            sx={{
+              position: 'absolute',
+              zIndex: 2,
+              right: isMobile ? '11vw' : '7.7vw',
+              bottom: 0,
+              transform: 'translateY(50%)',
+              border: '2px solid white',
+            }}
+          ></Avatar>
+        </CardOverflow>
+        <CardOverflow
+          variant="soft"
+          sx={{
+            display: 'flex-column',
+            textAlign: 'start',
+            // gap: 1.5,
+            py: 3,
+            px: 'var(--Card-padding)',
+            // borderTop: '1px solid',
+            // borderColor: 'neutral.outlinedBorder',
+            // bgcolor: 'background.level1',
+            marginTop: '0',
+            paddingTop: '4vh',
           }}
         >
-          <CardOverflow>
-            <AspectRatio ratio="3">
-              <img
-                src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
-                alt="card main img"
-              />
-            </AspectRatio>
+          <Nickname>{props.fullcourse.user.userNickName}</Nickname>
+          <CardTitle>{props.fullcourse.title}</CardTitle>
+          {props.fullcourse.day}
+          <CardContent>{props.fullcourse.detail}</CardContent>
+          {/* 이 자리에 호준이가 만든 태그 */}
 
-            <Avatar
-              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
-              size="lg"
-              sx={{
-                position: 'absolute',
-                zIndex: 2,
-                right: '7.7vw',
-                bottom: 0,
-                transform: 'translateY(50%)',
-                border: "2px solid white"
-              }}
-            ></Avatar>
-          </CardOverflow>
-          <CardOverflow
-            variant="soft"
-            sx={{
-              display: 'flex-column',
-              textAlign: 'start',
-              // gap: 1.5,
-              py: 3,
-              px: 'var(--Card-padding)',
-              // borderTop: '1px solid',
-              // borderColor: 'neutral.outlinedBorder',
-              // bgcolor: 'background.level1',
-              marginTop: '0',
-              paddingTop: '4vh',
-            }}
-          >
-            <Nickname>{props.fullcourse.user.userNickName}</Nickname>
-            <CardTitle>{props.fullcourse.title}</CardTitle>
-            {props.fullcourse.day}
-            <CardContent>{props.fullcourse.detail}</CardContent>
-            {/* 이 자리에 호준이가 만든 태그 */}
-
-            <CardFooter>
-              <Like />
-              <span>{props.fullcourse.likeCnt}</span>
-              <Comment />
-              <span>{props.fullcourse.commentCnt}</span>
-            </CardFooter>
-          </CardOverflow>
-        </Card>
+          <CardFooter>
+            <Like />
+            <span>{props.fullcourse.likeCnt}</span>
+            <Comment />
+            <span>{props.fullcourse.commentCnt}</span>
+          </CardFooter>
+        </CardOverflow>
+      </Card>
     </Wapper>
-  )
-}
+  );
+};
 
 export default CardComponent;

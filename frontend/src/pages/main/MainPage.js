@@ -15,16 +15,26 @@ const Container = styled.div`
 `;
 
 const Introduce = styled.div`
-  display: flex;
   align-items: center;
+  @media only screen and (min-device-width: 479px) {
+    display: flex;
+  }
 `;
 
 const VideoContainer = styled.div`
   overflow: hidden; //넘치는 부분 스크롤바 없애기
   width: 70vw;
+  height: 100vh;
   //스마트폰 미디어 쿼리
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    position: relative;
     width: 100vw;
+  }
+  video {
+    height: 100%;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+      filter: brightness(80%);
+    }
   }
 `;
 
@@ -35,17 +45,38 @@ const MainTitle = styled.div`
   /* 전체를 감싼 div에 크기를 부여해주어야 위아래로 같이 안움직이고 아이콘만 위아래로 움직임 */
   width: 30vw;
   height: 50vh;
+
+  margin: auto;
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 230px;
+    width: 230px;
+    background-color: white;
+    border-radius: 80vw;
+    padding: 10vw;
+  }
 `;
 
 const Logo = styled.img`
   width: 80%;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    width: 113%;
+    margin-top: 3vh;
+  }
 `;
 
 const Text = styled.div`
   font-family: Tmoney;
   color: #333333;
   margin-top: 1vh;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const StartBtn = styled.button`
@@ -69,10 +100,21 @@ const StartBtn = styled.button`
     color: #4e4e4e;
     /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 3px 2px rgba(0, 0, 0, 0.2); 괜찮은듯 부담스러움*/
   }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    color: #fff;
+    width: 35vw;
+    &:hover {
+      background-color: #8fbcde;
+      width: 35vw;
+      color: #4e4e4e;
+      /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 3px 2px rgba(0, 0, 0, 0.2); 괜찮은듯 부담스러움*/
+    }
+  }
 `;
 
 const PreviewBox = styled.div`
   cursor: pointer;
+  height: 10px;
   &:hover .previewTip {
     visibility: visible;
   }
@@ -101,9 +143,17 @@ const PreviewTip = styled.p`
 
 const FullCourses = styled.div`
   margin: 0 7vw;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 0;
+    width: 100vw;
+  }
 `;
 const StartPlaces = styled.div`
   margin: 0 7vw;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 0;
+    width: 100vw;
+  }
 `;
 
 const MainPage = () => {
@@ -120,7 +170,7 @@ const MainPage = () => {
             <source src="video/main_video1.mp4" type="video/mp4" />
           </video>
         </VideoContainer>
-        <div className="wrapper"></div>
+        {/* <div className="wrapper"></div> */}
         <MainTitle ref={section1}>
           {/* public 경로 사용하는 법 */}
           <Logo src="/img/logo2.png" alt="logo2_img" />
