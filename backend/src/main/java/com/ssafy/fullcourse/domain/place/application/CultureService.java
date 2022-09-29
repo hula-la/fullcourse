@@ -45,14 +45,18 @@ public class CultureService {
     }
 
 
-    public CultureDetailRes getCultureDetail(Long placeId) throws Exception {
-        return cultureRepository.findByPlaceId(placeId).get().toDetailDto();
+    public CultureDetailRes getCultureDetail(Long placeId, String email) throws Exception {
+        CultureDetailRes cultureDetailRes = cultureRepository.findByPlaceId(placeId).get().toDetailDto();
+        cultureDetailRes.setIsLiked(cultureLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                cultureRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return cultureDetailRes;
     }
 
 
     @Transactional
-    public boolean cultureLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean cultureLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Culture culture = cultureRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -67,12 +71,14 @@ public class CultureService {
         if (cultureLike.isPresent()) {
             cultureLikeRepository.deleteById(cultureLike.get().getLikeId());
             culture.setLikeCnt(culture.getLikeCnt() - 1);
+            response = false;
         } else {
             cultureLikeRepository.save(CultureLike.builder().user(user).place(culture).build());
             culture.setLikeCnt(culture.getLikeCnt() + 1);
+            response = true;
         }
         cultureRepository.save(culture);
-        return true;
+        return response;
     }
 
     public static List<Culture> extractByDist(List<Culture> list, Float lat, Float lng, Integer maxDist) {

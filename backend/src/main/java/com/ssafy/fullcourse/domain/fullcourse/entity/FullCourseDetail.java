@@ -44,8 +44,6 @@ public class FullCourseDetail {
     @JoinColumn(name = "fcId")
     private FullCourse fullCourse;
 
-    @OneToOne(mappedBy = "fullCourseDetail", cascade = CascadeType.REMOVE)
-    private FullCourseDiary fullCourseDiary;
 
     public FullCourseDetailRes toDto(PlaceRes place){
         return FullCourseDetailRes.builder()

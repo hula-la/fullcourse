@@ -2,6 +2,7 @@ package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
+import com.ssafy.fullcourse.domain.place.dto.RestaurantDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.entity.ActivityLike;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
@@ -45,14 +46,18 @@ public class ActivityService {
     }
 
 
-    public ActivityDetailRes getActivityDetail(Long placeId) throws Exception {
-        return activityRepository.findByPlaceId(placeId).get().toDetailDto();
+    public ActivityDetailRes getActivityDetail(Long placeId, String email) throws Exception {
+        ActivityDetailRes activityDetailRes = activityRepository.findByPlaceId(placeId).get().toDetailDto();
+        activityDetailRes.setIsLiked(activityLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                activityRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return activityDetailRes;
     }
 
 
     @Transactional
-    public boolean activityLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean activityLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Activity activity = activityRepository.findByPlaceId(placeId).get();
 
         if(user == null){
@@ -66,12 +71,14 @@ public class ActivityService {
         if(activityLike.isPresent()){
             activityLikeRepository.deleteById(activityLike.get().getLikeId());
             activity.setLikeCnt(activity.getLikeCnt() - 1);
+            response = false;
         } else {
             activityLikeRepository.save(ActivityLike.builder().user(user).place(activity).build());
             activity.setLikeCnt(activity.getLikeCnt() + 1);
+            response = true;
         }
         activityRepository.save(activity);
-        return true;
+        return response;
     }
     public static List<Activity> extractByDist(List<Activity> list, Float lat, Float lng, Integer maxDist){
         for (int i = 0; i < list.size(); i++) {

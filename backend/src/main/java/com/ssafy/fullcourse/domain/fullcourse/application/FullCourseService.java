@@ -8,11 +8,9 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.ssafy.fullcourse.domain.fullcourse.dto.*;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDiary;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseDiaryNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDetailRepository;
-import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDiaryRepository;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.*;
@@ -38,18 +36,13 @@ import java.util.*;
 public class FullCourseService {
 
     private final FullCourseRepository fullCourseRepository;
-
     private final FullCourseDetailRepository fullCourseDetailRepository;
-    private final FullCourseDiaryRepository fullCourseDiaryRepository;
-
     private final UserRepository userRepository;
-
     private final TravelRepository travelRepository;
     private final CultureRepository cultureRepository;
     private final ActivityRepository activityRepository;
     private final RestaurantRepository restaurantRepository;
     private final HotelRepository hotelRepository;
-
     private final AwsS3Service awsS3Service;
 
     @Transactional
@@ -68,6 +61,9 @@ public class FullCourseService {
 
         fullCoursePostReq.getPlaces().forEach((day, places) -> {
             places.forEach((detail) -> createFullCourseDetail(day, fullCourse, detail));
+            for (FullCourseDetailRes fcdRes : places) {
+                addedCntPlusMinus(fcdRes.getType(), fcdRes.getPlaceId(), true);
+            }
         });
 
         return fullCourse.getFcId();
@@ -102,11 +98,7 @@ public class FullCourseService {
             Long placeId = fcd.getPlaceId();
 
 
-            PlaceRes placeRes = getLntLat(type, placeId);
-
-//            float lat = placeRes.getLat();
-//            float lng = placeRes.getLng();
-
+            PlaceRes placeRes = getPlaceResByTypeAndPlaceId(type, placeId);
 
             places.get(fcd.getDay())
                     .add(fcd.toDto(placeRes));
@@ -117,6 +109,9 @@ public class FullCourseService {
 
     @Transactional
     public void deleteFullCourse(Long fcId) {
+        for(FullCourseDetail fcd : fullCourseRepository.findById(fcId).get().getFullCourseDetails()){
+            addedCntPlusMinus(fcd.getType(), fcd.getPlaceId(), false);
+        }
         fullCourseRepository.deleteById(fcId);
     }
 
@@ -134,7 +129,7 @@ public class FullCourseService {
                 fullCourseDetailRepository.findById(fcvcReq.getFcDetailId()).get();
         String type = fcDetail.getType();
 
-        PlaceRes placeRes = getLntLat(type, fcDetail.getPlaceId());
+        PlaceRes placeRes = getPlaceResByTypeAndPlaceId(type, fcDetail.getPlaceId());
 
         float lat = placeRes.getLat();
         float lng = placeRes.getLng();
@@ -161,7 +156,7 @@ public class FullCourseService {
                 fullCourseDetailRepository.findById(fcdId).get();
         String type = fcDetail.getType();
 
-        PlaceRes placeRes = getLntLat(type, fcDetail.getPlaceId());
+        PlaceRes placeRes = getPlaceResByTypeAndPlaceId(type, fcDetail.getPlaceId());
 
         float lat = placeRes.getLat();
         float lng = placeRes.getLng();
@@ -182,54 +177,37 @@ public class FullCourseService {
     }
 
     @Transactional
-    public FullCourseDiaryRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
-
-        File file = convert(img);
-        Metadata metadata = ImageMetadataReader.readMetadata(file);
-        GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
-        GeoLocation geoLocation = gpsDirectory.getGeoLocation();
-        if (geoLocation != null && !geoLocation.isZero()) {
-            double[] latLng = new double[2];
-            latLng[0] = geoLocation.getLatitude();
-            latLng[1] = geoLocation.getLongitude();
-            file.delete();
-            System.out.println(latLng[0] + " " + latLng[1]);
-            confirmVisitByImage(latLng, fcDetailId);
-        }
-
+    public FullCourseTotalRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
+        String url = null;
         FullCourseDetail fullCourseDetail =
                 fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
+        if (fullCourseDetail.getImg() != null) {
+            awsS3Service.delete(fullCourseDetail.getImg());
+        }
+        if (img != null && !img.isEmpty()) {
+            File file = convert(img);
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
+            GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+            if (gpsDirectory != null) {
+                GeoLocation geoLocation = gpsDirectory.getGeoLocation();
+                if (geoLocation != null && !geoLocation.isZero()) {
+                    double[] latLng = new double[2];
+                    latLng[0] = geoLocation.getLatitude();
+                    latLng[1] = geoLocation.getLongitude();
+                    file.delete();
+                    System.out.println(latLng[0] + " " + latLng[1]);
+                    confirmVisitByImage(latLng, fcDetailId);
+                }
+            }
+            url = awsS3Service.uploadImage(img);
+        }
 
-        String url = awsS3Service.uploadImage(img);
-        FullCourseDiary diary =
-                FullCourseDiary.builder().img(url).content(content).fullCourseDetail(fullCourseDetail).build();
-        return fullCourseDiaryRepository.save(diary).toDto();
+        fullCourseDetail.setImg(url);
+        fullCourseDetail.setComment(content);
+        fullCourseDetailRepository.save(fullCourseDetail);
+        return getFullCourseDetailById(fullCourseDetail.getFullCourse().getFcId());
     }
 
-    @Transactional
-    public FullCourseDiaryRes updateFCdiary(MultipartFile img, String content, Long fcDiaryId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        awsS3Service.delete(fullCourseDiary.getImg());
-        String url = awsS3Service.uploadImage(img);
-        FullCourseDiary diary =
-                FullCourseDiary.builder().fcDiaryId(fullCourseDiary.getFcDiaryId()).img(url).content(content).fullCourseDetail(fullCourseDiary.getFullCourseDetail()).build();
-        return fullCourseDiaryRepository.save(diary).toDto();
-    }
-
-    public FullCourseDiaryRes getFCDiary(Long fcDetailId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findByFullCourseDetail_FcDetailId(fcDetailId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        return fullCourseDiary.toDto();
-    }
-
-    @Transactional
-    public void deleteFCDiary(Long fcDiaryId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        awsS3Service.delete(fullCourseDiary.getImg());
-        fullCourseDiaryRepository.delete(fullCourseDiary);
-    }
 
     public File convert(MultipartFile multipartFile) throws IOException {
         File file = new File(multipartFile.getOriginalFilename());
@@ -240,7 +218,7 @@ public class FullCourseService {
         return file;
     }
 
-    public PlaceRes getLntLat(String type, Long placeId) {
+    public PlaceRes getPlaceResByTypeAndPlaceId(String type, Long placeId) {
         PlaceRes placeRes;
         if (type.equals("travel")) {
             Travel travel = travelRepository.findByPlaceId(placeId).get();
@@ -261,5 +239,29 @@ public class FullCourseService {
             throw new PlaceNotFoundException();
         }
         return placeRes;
+    }
+
+    public void addedCntPlusMinus(String type, Long placeId, boolean plus){
+        if(type.equals("travel")) {
+            Travel t = travelRepository.findByPlaceId(placeId).get();
+            t.setAddedCnt(plus ? t.getAddedCnt() + 1 : t.getAddedCnt() - 1);
+            travelRepository.save(t);
+        }else if(type.equals("activity")){
+            Activity a = activityRepository.findByPlaceId(placeId).get();
+            a.setAddedCnt(plus ? a.getAddedCnt() + 1 : a.getAddedCnt() - 1);
+            activityRepository.save(a);
+        }else if(type.equals("restaurant")){
+            Restaurant r = restaurantRepository.findByPlaceId(placeId).get();
+            r.setAddedCnt(plus ? r.getAddedCnt() + 1 : r.getAddedCnt() - 1);
+            restaurantRepository.save(r);
+        }else if(type.equals("culture")){
+            Culture c = cultureRepository.findByPlaceId(placeId).get();
+            c.setAddedCnt(plus ? c.getAddedCnt() + 1 : c.getAddedCnt() - 1);
+            cultureRepository.save(c);
+        }else if(type.equals("hotel")){
+            Hotel h = hotelRepository.findByPlaceId(placeId).get();
+            h.setAddedCnt(plus ? h.getAddedCnt() + 1 : h.getAddedCnt() - 1);
+            hotelRepository.save(h);
+        }
     }
 }

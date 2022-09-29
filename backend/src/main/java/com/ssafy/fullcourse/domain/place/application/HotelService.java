@@ -43,13 +43,17 @@ public class HotelService {
         return page.map(PlaceRes::new);
     }
 
-    public HotelDetailRes getHotelDetail(Long placeId) throws Exception {
-        return hotelRepository.findByPlaceId(placeId).get().toDetailDto();
+    public HotelDetailRes getHotelDetail(Long placeId, String email) throws Exception {
+        HotelDetailRes hotelDetailRes = hotelRepository.findByPlaceId(placeId).get().toDetailDto();
+        hotelDetailRes.setIsLiked(hotelLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                hotelRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return hotelDetailRes;
     }
 
     @Transactional
-    public boolean hotelLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean hotelLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Hotel hotel = hotelRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -63,12 +67,14 @@ public class HotelService {
         if (hotelLike.isPresent()) {
             hotelLikeRepository.deleteById(hotelLike.get().getLikeId());
             hotel.setLikeCnt(hotel.getLikeCnt() - 1);
+            response = false;
         } else {
             hotelLikeRepository.save(HotelLike.builder().user(user).place(hotel).build());
             hotel.setLikeCnt(hotel.getLikeCnt() + 1);
+            response = true;
         }
         hotelRepository.save(hotel);
-        return true;
+        return response;
     }
 
     public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Integer maxDist){
