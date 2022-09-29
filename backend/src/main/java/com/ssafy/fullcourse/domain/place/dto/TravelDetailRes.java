@@ -32,4 +32,5 @@ public class TravelDetailRes {
     private Long likeCnt;
     private Long mention;
     private String Tag;
+    private Boolean isLiked;
 }
