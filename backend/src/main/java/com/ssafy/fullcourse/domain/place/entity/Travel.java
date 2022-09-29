@@ -113,6 +113,7 @@ public class Travel extends BasePlace {
         res.setTransport(this.getTransport());
         res.setImgUrl(this.getImgUrl());
         res.setMention(this.getMention());
+        res.setTag(this.getTag());
         return res;
     }
 
