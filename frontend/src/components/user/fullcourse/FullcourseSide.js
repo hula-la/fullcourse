@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import PlaceList from '../../../components/share/PlaceList';
+import PlaceList from '../../../components/user/fullcourse/PlaceList';
 import {
   checkAllDay,
   checkDay,
@@ -11,7 +11,7 @@ import {
 const Side = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 30%;
 
   #userInfo {
     display: flex;

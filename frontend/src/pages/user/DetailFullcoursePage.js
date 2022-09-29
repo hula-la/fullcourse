@@ -2,11 +2,11 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import FullcourseMap from '../../components/share/FullcourseMap';
+import FullcourseMap from '../../components/user/fullcourse/FullcourseMap';
 import FullcourseSide from '../../components/user/fullcourse/FullcourseSide';
-import MyFullcourseMemo from '../../components/user/profile/MyFullcourseMemo';
 import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
+import { fetchDiary } from '../../features/user/userActions';
 
 const DetailBlock = styled.div`
   display: flex;
@@ -19,12 +19,17 @@ const DetailFullcoursePage = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.user);
   const { fullcourseDetail } = useSelector((state) => state.trip);
+  // const { places } = useSelector((state) => state.trip.fullcourseDetail);
   const [days, setDays] = useState(null);
 
   const fcId = params.fcId;
 
   useEffect(() => {
     dispatch(fetchFullcourseDetail(fcId));
+  }, [dispatch, fcId]);
+
+  useEffect(() => {
+    dispatch(fetchDiary(fullcourseDetail.fcdId));
   }, [dispatch, fcId]);
 
   useEffect(() => {
@@ -61,7 +66,7 @@ const DetailFullcoursePage = () => {
         fullcourseDetail={fullcourseDetail}
       />
       <FullcourseMap />
-      <MyFullcourseMemo />
+      {/* <MyFullcourseMemo /> */}
     </DetailBlock>
   );
 };
