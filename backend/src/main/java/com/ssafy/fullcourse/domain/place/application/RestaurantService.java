@@ -29,8 +29,8 @@ public class RestaurantService {
     private final UserRepository userRepository;
 
     public Page<PlaceRes> getRestaurantList(Pageable pageable, String keyword, String tag, Integer maxDist, Float lat, Float lng) throws Exception {
-        Page<Restaurant> page = null;
-        List<Restaurant> list = null;
+        Page<Restaurant> page;
+        List<Restaurant> list;
         if (maxDist == 0 || lat == 0 || lng == 0) {
             if (keyword.equals("") && tag.equals("")) {
                 page = restaurantRepository.findAll(pageable);
@@ -45,22 +45,17 @@ public class RestaurantService {
         } else {
             if (keyword.equals("") && tag.equals("")) {
                 list = restaurantRepository.findAll();
-                list = extractByDist(list, lat, lng, maxDist);
-                page = new PageImpl(list, pageable, list.size());
             } else if (!tag.equals("") && keyword.equals("")) {
                 list = restaurantRepository.findByCategory(tag);
-                list = extractByDist(list, lat, lng, maxDist);
-                page = new PageImpl(list, pageable, list.size());
             } else if (!keyword.equals("") && tag.equals("")) {
                 list = restaurantRepository.findByNameContaining(keyword);
-                list = extractByDist(list, lat, lng, maxDist);
-                page = new PageImpl(list, pageable, list.size());
             } else {
                 list = restaurantRepository.findByNameContainingAndCategory(keyword, tag);
-                list = extractByDist(list, lat, lng, maxDist);
-                page = new PageImpl(list, pageable, list.size());
             }
-
+            list = extractByDist(list, lat, lng, maxDist);
+            int start = (int)pageable.getOffset();
+            int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+            page = new PageImpl(list.subList(start, end), pageable, list.size());
         }
         return page.map(PlaceRes::new);
     }
