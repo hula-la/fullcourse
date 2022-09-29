@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import './main.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 // 카드관련
 import Card from '@mui/joy/Card';
@@ -10,7 +10,7 @@ import CardContent from '@mui/joy/CardContent';
 
 //액션 임포트
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
-import { setPlaceItem } from '../../features/trip/tripSlice';
+import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
 const Container = styled.div`
   animation: fadeInUp 2s;
@@ -71,16 +71,19 @@ const StartPlaceList = () => {
 
   const navigate = useNavigate();
 
-  // const addMarker = (lat, lng) => {
-  //   const position = { lat: lat, lng: lng };
-  //   const marker = new window.google.maps.Marker({
-  //     map,
-  //     position: position,
-  //   });
-  //   console.log(typeof marker);
-  //   marker['position'] = position;
-  //   dispatch(setMarkers(marker));
-  // };
+  const { markers, map } = useSelector((state) => state.trip);
+
+  //시작 위치 마커 추가
+  const addMarker = (lat, lng) => {
+    const position = { lat: lat, lng: lng };
+    const marker = new window.google.maps.Marker({
+      map,
+      position: position,
+    });
+    console.log(typeof marker);
+    marker['position'] = position;
+    dispatch(setMarkers(marker));
+  };
 
   const setStartPlaceInfo = (id, e) => {
     const placeId = id;
@@ -99,6 +102,7 @@ const StartPlaceList = () => {
         placeItemObj.lat = data.lat;
         placeItemObj.lng = data.lng;
         dispatch(setPlaceItem(placeItemObj));
+        addMarker(data.lat, data.lng)
 
       })
       .then(() => {
