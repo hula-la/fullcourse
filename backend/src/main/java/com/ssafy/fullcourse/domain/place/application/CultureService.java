@@ -37,8 +37,10 @@ public class CultureService {
         } else {
             list = cultureRepository.findByNameContaining(keyword);
         }
-        list = extractByDist(list, lat, lng, maxDist);
-        page = new PageImpl(list, pageable, list.size());
+        if(maxDist != 0) list = extractByDist(list, lat, lng, maxDist);
+        int start = (int)pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+        page = new PageImpl(list.subList(start, end), pageable, list.size());
         return page.map(PlaceRes::new);
     }
 

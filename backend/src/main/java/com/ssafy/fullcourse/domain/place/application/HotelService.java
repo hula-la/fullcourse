@@ -29,15 +29,17 @@ public class HotelService {
     private final UserRepository userRepository;
 
     public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
-        Page<Hotel> page = null;
-        List<Hotel> list = null;
+        Page<Hotel> page;
+        List<Hotel> list;
         if (keyword.equals("")) {
             list = hotelRepository.findAll();
         } else {
             list = hotelRepository.findByNameContaining(keyword);
         }
-        list = extractByDist(list, lat, lng, maxDist);
-        page = new PageImpl(list, pageable, list.size());
+        if(maxDist != 0) list = extractByDist(list, lat, lng, maxDist);
+        int start = (int)pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+        page = new PageImpl(list.subList(start, end), pageable, list.size());
         return page.map(PlaceRes::new);
     }
 
