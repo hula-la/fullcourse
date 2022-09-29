@@ -20,7 +20,6 @@ const Side = styled.div`
   #userInfo {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     align-items: center;
 
     font-size: small;
@@ -34,8 +33,9 @@ const Side = styled.div`
   }
 
   #profileImg {
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 20px;
   }
 
   .daynonelist {
@@ -76,7 +76,7 @@ const Side = styled.div`
 `;
 
 const ShareInfo = styled.div`
-  margin-left: 3rem;
+  margin-left: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,6 +92,10 @@ const ShareInfo = styled.div`
     color: #f73131;
     margin-left: 10px;
   }
+
+  .countArea {
+    margin-top: 10px;
+  }
 `;
 
 const Plan = styled.div`
@@ -106,11 +110,14 @@ const Plan = styled.div`
 const SharedTitle = styled.div`
   display: flex;
   text-align: left;
-  padding: 1.3rem;
-  margin-left: 15px;
+  padding: 1.5rem 1rem;
+  margin-left: 10px;
 
   .title {
-    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
     font-weight: bold;
   }
 
@@ -151,25 +158,38 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
         <SharedTitle>
           <div id="userInfo">
             <div id="imgBlock">
-              <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
+              <img
+                id="profileImg"
+                src={sharedFcInfo.user.imgUrl}
+                alt="profileImg"
+              />
             </div>
             <div id="userNickName">{sharedFcInfo.user.nickname}</div>
           </div>
-
           <ShareInfo>
-            <div className="title">{sharedFcInfo.title}</div>
-            {sharedFcInfo ? (
-              <>
-                {sharedFcInfo.like ? (
-                  <FavoriteIcon className="favorite" onClick={onClickLike} />
-                ) : (
-                  <FavoriteBorderIcon
-                    className="favoriteborder"
-                    onClick={onClickLike}
-                  />
-                )}
-              </>
-            ) : null}
+            <div>
+              <div className="title">
+                {sharedFcInfo.title}
+                {sharedFcInfo ? (
+                  <>
+                    {sharedFcInfo.like ? (
+                      <FavoriteIcon
+                        className="favorite"
+                        onClick={onClickLike}
+                      />
+                    ) : (
+                      <FavoriteBorderIcon
+                        className="favoriteborder"
+                        onClick={onClickLike}
+                      />
+                    )}
+                  </>
+                ) : null}
+              </div>
+              <div className="countArea">
+                조회수 {sharedFcInfo.viewCnt} , 좋아요 {sharedFcInfo.likeCnt} 개
+              </div>
+            </div>
           </ShareInfo>
         </SharedTitle>
       ) : null}

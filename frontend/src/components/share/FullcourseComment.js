@@ -11,7 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 
 const CommentBlock = styled.div`
-  width: 23%;
+  width: 25%;
 
   .detail {
     margin: 40px 10px 30px 10px;
@@ -29,7 +29,7 @@ const CommentBlock = styled.div`
 
     input {
       border: #ffffff;
-      width: 13.5vw;
+      width: 15vw;
       border-radius: 10px;
       margin-right: 10px;
       padding: 6px 0px 6px 10px;
@@ -56,18 +56,15 @@ const CommentBlock = styled.div`
   }
 
   .commentArea {
-    border-radius: 1rem;
-    padding: 0.5rem;
     height: 50vh;
-    margin: 1rem;
-    box-shadow: -1px 1px 5px 1px #078ec4;
+    margin: 0.5rem;
   }
 
   .commentBox {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 20px 15px;
+    margin: 20px 10px;
     align-items: center;
 
     button {
@@ -81,19 +78,25 @@ const CommentBlock = styled.div`
         font-weight: bold;
       }
     }
+
+    #profileImg {
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 20px;
+    }
   }
 
   .comment {
     list-style: none;
     font-size: 15px;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
 
   #userNickname {
     font-weight: bold;
-    margin: 0px 5px;
-    font-size: 15px;
+    margin: 0px 7px;
   }
 
   .likeArea {
@@ -192,9 +195,15 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         {sharedFcInfo ? (
           <>
             {sharedFcInfo.sharedFCComments.map((comment, index) => {
+              console.log(comment);
               return (
                 <div key={index} className="commentBox">
                   <li className="comment">
+                    <img
+                      id="profileImg"
+                      src={comment.imgUrl}
+                      alt="profileImg"
+                    />
                     <span id="userNickname">{comment.nickname} </span>
                     <span>{comment.comment}</span>
                   </li>
