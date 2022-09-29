@@ -45,3 +45,15 @@ export const checkNickname = async (data) => {
   const res = await client.post('api/user/nickname', { nickname: data });
   return res.data;
 };
+
+export const getDiary = async (fcDetailId) => {
+  const res = await client.get(`api/fullcourse/diary/${fcDetailId}`);
+  console.log(res);
+  return res;
+};
+
+export const postDiary = async (img, content, fcDetailId) => {
+  const formData = new FormData();
+  const res = await client.post(`api/fullcourse/diary/${fcDetailId}`, formData);
+  return res;
+};

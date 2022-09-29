@@ -8,10 +8,9 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 15%;
-  height: 100%;
-  margin-top: 3rem;
-  margin-left: 2rem;
+  width: 80%;
+  margin: 5vh auto 0 auto;
+  /* height: 100%; */
 
   img {
     width: 2.5rem;
@@ -36,9 +35,8 @@ const Side = styled.div`
 
   #buttonWrapper {
     display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-    margin-left: 1rem;
+    flex-direction: row;
+    margin-top: 1vh;
     height: 100%;
     border-radius: 10px;
   }
@@ -57,6 +55,9 @@ const StyledButton = styled.div`
   display: flex;
   align-items: center;
   border-radius: 10px;
+  font-size: 2vmin;
+  margin-left: 0.5vw;
+    padding-right: 1.5vw;
   :hover {
     background: linear-gradient(
       90deg,
@@ -80,7 +81,7 @@ const StyledButton = styled.div`
   }
 `;
 
-const SideBar = ({
+const MobileSideBar = ({
   onClickPageOne,
   onClickPageTwo,
   onClickPageThree,
@@ -112,7 +113,7 @@ const SideBar = ({
               }}
             >
               <CardTravelIcon className="icon" />
-              나의 풀코스
+              나의<br/>풀코스
             </StyledButton>
             <StyledButton
               className={selectedItem === 2 ? 'clicked' : ''}
@@ -122,7 +123,7 @@ const SideBar = ({
               }}
             >
               <AccountCircleIcon className="icon" />
-              회원정보 수정
+              회원정보<br/>수정
             </StyledButton>
             <StyledButton
               className={selectedItem === 3 ? 'clicked' : ''}
@@ -141,4 +142,4 @@ const SideBar = ({
   );
 };
 
-export default SideBar;
+export default MobileSideBar;

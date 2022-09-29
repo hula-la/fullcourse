@@ -7,18 +7,19 @@ import {
   checkDay,
   makeDayTagList,
 } from '../../features/share/shareSlice';
+import { Schedule } from '@mui/icons-material';
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
+  width: 30%;
 
   #userInfo {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
-    margin-left: 2rem;
-    margin-top: 1.6rem;
+    align-items: center;
+    
     font-size: small;
     /* font-weight: ; */
   }
@@ -42,6 +43,8 @@ const Side = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     padding-left: 0px;
+    margin-bottom:1rem;
+    margin-top:0rem;
   }
 
   .daylistitem {
@@ -71,6 +74,48 @@ const Side = styled.div`
   }
 `;
 
+
+const ShareInfo = styled.div`
+margin-left: 2rem;
+`;
+
+const Plan = styled.div`
+    /* border: 1px solid #333333; */
+    border-radius: 1rem;
+    padding: 1rem;
+    height: 60vh;
+    margin: 0.6rem;
+    box-shadow: -1px 1px 5px 1px #0000029e;
+`;
+
+const SharedTitle = styled.div`
+display: flex;
+text-align: left;
+padding-bottom: 1.5rem;
+padding:1.5rem;
+
+.container{
+  padding: 0.5em;
+}
+.title{
+font-size: 1.1rem;
+font-weight: bold;
+}
+
+.detail{
+margin-top: 0.5rem;
+font-size: 0.9rem;
+color: #333333;
+}
+
+#userNickName{
+  margin-top:0.3rem;
+  font-size:0.7rem;
+  color: #333333a3;
+  font-weight: bold;
+}
+`;
+
 const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
   const { dayTagList2 } = useSelector((state) => state.share);
@@ -93,41 +138,51 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
   return (
     <Side>
       {sharedFcInfo ? (
-        <>
-          <div id="userInfo">
-            <div id="imgBlock">
-              <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
+        <SharedTitle>
+            <div id="userInfo">
+              <div id="imgBlock">
+                <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
+              </div>
+              <div id="userNickName">{sharedFcInfo.user.nickname}</div>
             </div>
-            <p>{sharedFcInfo.user.nickname}</p>
-          </div>
-        </>
+
+          
+          <ShareInfo>
+            <div className='title'>
+              {sharedFcInfo.title}
+            </div>
+           
+          </ShareInfo>
+        </SharedTitle>
       ) : null}
-      <ul className="daynonelist">
-        <li
-          className={
-            'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
-          }
-          onClick={onClickTagsAll}
-        >
-          <div>All</div>
-        </li>
-        {dayTagList2.map((tag, index) => {
-          return (
-            <li
-              className={
-                'daylistitem' + (checkedDay === index ? ' daytag-selected' : '')
-              }
-              key={index}
-              onClick={(e) => onClickTags(index, e)}
-            >
-              <div id={tag.tag}>{tag}</div>
-            </li>
-          );
-        })}
-      </ul>
-      {fullcourseDetail ? (
-        <PlaceList placeList={fullcourseDetail.places} />
-      ) : null}
+      <Plan>
+        <ul className="daynonelist">
+          <li
+            className={
+              'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
+            }
+            onClick={onClickTagsAll}
+          >
+            <div>All</div>
+          </li>
+          {dayTagList2.map((tag, index) => {
+            return (
+              <li
+                className={
+                  'daylistitem' + (checkedDay === index ? ' daytag-selected' : '')
+                }
+                key={index}
+                onClick={(e) => onClickTags(index, e)}
+              >
+                <div id={tag.tag}>{tag}</div>
+              </li>
+            );
+          })}
+        </ul>
+        {fullcourseDetail ? (
+          <PlaceList placeList={fullcourseDetail.places} />
+        ) : null}
+      </Plan>
     </Side>
   );
 };

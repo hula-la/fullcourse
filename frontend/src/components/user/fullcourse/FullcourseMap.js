@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux/es/exports';
 import styled from 'styled-components';
 
 const MapBlock = styled.div`
-  width: 60%;
+  width: 70%;
   height: 85vh;
   #map {
     width: 100%;

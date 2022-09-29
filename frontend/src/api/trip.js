@@ -16,7 +16,9 @@ export const postTrip = async (data) => {
   return res;
 };
 
+
 export const getPlaceDetail = async (placeId, placeType) => {
   const res = await client.get(`api/place/${placeType}/detail/${placeId}`);
   return res;
 };
+
