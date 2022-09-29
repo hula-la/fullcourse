@@ -76,8 +76,9 @@ public class TravelService {
                 }
             }
         }
-
-        Page<Travel> page = new PageImpl(list, pageable, list.size());
+        int start = (int)pageable.getOffset();
+        int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
+        Page<Travel> page = new PageImpl(list.subList(start,end), pageable, list.size());
         return page.map(PlaceRes::new);
 
     }
