@@ -28,7 +28,7 @@ public class FullCourseDetailRes {
     @ApiModelProperty(name="이미지", example="url")
     String img;
 
-    @ApiModelProperty(name="메모", example="url")
+    @ApiModelProperty(name="기록", example="url")
     String comment;
 
     @ApiModelProperty(name="방문 여부", example="true")

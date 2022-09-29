@@ -179,7 +179,7 @@ public class FullCourseService {
     }
 
     @Transactional
-    public FullCourseDetailRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
+    public FullCourseTotalRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
         String url = null;
         FullCourseDetail fullCourseDetail =
                 fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
@@ -207,7 +207,7 @@ public class FullCourseService {
         fullCourseDetail.setImg(url);
         fullCourseDetail.setComment(content);
         fullCourseDetailRepository.save(fullCourseDetail);
-        return null;
+        return getFullCourseDetailById(fullCourseDetail.getFullCourse().getFcId());
     }
 
 
