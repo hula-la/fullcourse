@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { fetchTravelPlace } from '../../../features/trip/tripActions';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
 import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
 import { Pagination } from '@mui/material';
 import PlaceList from './PlaceList';
@@ -121,7 +118,7 @@ const PlaceBar = ({ map }) => {
           </PlaceTypes>
         ))}
       <PlaceOverview className="place-overview">
-        <PlaceList className="place-list" map={map}/>
+        <PlaceList className="place-list" map={map} placeType={placeType}/>
       </PlaceOverview>
       {travelPlaceList ? (
         <Pagination

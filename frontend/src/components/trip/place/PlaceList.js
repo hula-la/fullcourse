@@ -10,13 +10,13 @@ const Container = styled.div`
 `;
 
 
-const PlaceList = ({map}) => {
+const PlaceList = ({map, placeType}) => {
   const { travelPlaceList } = useSelector((state) => state.trip);
   return (
     <Container>
         {travelPlaceList
           ? travelPlaceList.content.map((place, index) => {
-              return <PlaceListItem key={index} place={place} index={index} map={map}/>;
+              return <PlaceListItem key={index} place={place} index={index} map={map} placeType={placeType}/>;
             })
           : null}
     </Container>

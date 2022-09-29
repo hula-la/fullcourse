@@ -5,12 +5,19 @@ import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
+import {AiOutlinePlusCircle} from 'react-icons/ai'
 
 const PlaceName = styled.div``;
 
-const PlusBtn = styled.button``;
+const PlusBtn = styled(AiOutlinePlusCircle)`
+  cursor: pointer;
+  font-size: 3vmin;
+  color: #E36387 ;
+`;
 
-const PlaceListItem = ({place,index,map}) => {
+
+
+const PlaceListItem = ({place,index,map,placeType}) => {
   const dispatch = useDispatch()
   const addPlaceToPlanner = (
     placeId,
@@ -18,10 +25,12 @@ const PlaceListItem = ({place,index,map}) => {
     placeImg,
     placeLat,
     placeLng,
+    placeType,
     id,
     e,
   ) => {
     e.preventDefault();
+    console.log("얘가이걸 못받음",placeType)
     let placeItemObj = new Object();
     placeItemObj.placeId = placeId;
     placeItemObj.name = placeName;
@@ -29,6 +38,7 @@ const PlaceListItem = ({place,index,map}) => {
     placeItemObj.draggable = true;
     placeItemObj.lat = placeLat;
     placeItemObj.lng = placeLng;
+    placeItemObj.type = `${placeType}`
     placeItemObj.id = id;
 
     dispatch(setPlaceItem(placeItemObj));
@@ -66,8 +76,11 @@ const PlaceListItem = ({place,index,map}) => {
           <Box sx={{ ml: 0.5 }}>
             <PlaceName>{place.name}</PlaceName>
 
+            
+         
+          </Box>
             <PlusBtn
-              className="plus" //heart대신 plus
+              className="plus"
               id={place.placeId}
               onClick={(e) => {
                 addPlaceToPlanner(
@@ -76,15 +89,13 @@ const PlaceListItem = ({place,index,map}) => {
                   place.imgUrl,
                   place.lat,
                   place.lng,
+                  placeType,
                   index,
                   e,
                 );
                 addMarker(place.lat, place.lng, e);
-              }} //여기에
-            >
-              장바구니에넣기
-            </PlusBtn>
-          </Box>
+              }}
+            />
         </Box>
       </Card>
     </div>

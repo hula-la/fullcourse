@@ -145,13 +145,14 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       (plannerBox) => {
         const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
           (placeItem, idx) => {
-            const comment = '임시메모';
+            const comment = null
             const courseOrder = idx;
             const placeData = placeItem.dataset;
-            const img = placeData.placeImg;
-            newTrip['thumbnail'] = img;
+            const img = null
+            newTrip['thumbnail'] = placeData.placeImg;
             const placeId = placeData.placeId;
-            const type = 'ACTIVITY'; //임시타입
+            console.log(placeData.placeType)
+            const type = placeData.placeType;
             const visited = false;
             return { comment, courseOrder, img, placeId, type, visited };
           },
@@ -283,9 +284,11 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               data-place-img={item.imgUrl}
               data-place-lat={item.lat}
               data-place-lng={item.lng}
+              data-place-type={item.type}
               className="list-item"
             >
               {item.name}
+              {item.type}
               <DeleteBtn
                 className="delete"
                 onClick={(e) => {
