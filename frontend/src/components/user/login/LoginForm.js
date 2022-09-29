@@ -5,7 +5,16 @@ import NaverLogin from './NaverLogin';
 
 const Wrapper = styled.div`
   position: relative;
+  display: flex;
+  justify-content: center;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   width: 100%;
+
   .hr-sect {
     display: flex;
     flex-basis: 50%;
@@ -14,6 +23,9 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     color: rgba(0, 0, 0, 0.35);
+    @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+      color: rgba(255, 255, 255);
+    }
     font-size: 16px;
     font-weight: 700;
     margin: 1.5rem auto;
@@ -23,10 +35,19 @@ const Wrapper = styled.div`
     content: '';
     flex-grow: 1;
     background: rgba(8, 0, 0, 0.35);
+    @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+      color: rgba(255, 255, 255);
+      background: rgba(255, 255, 255);
+    }
     height: 3px;
     font-size: 0px;
     line-height: 0px;
     margin: 10px 16px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    .circles {
+      z-index: -1;
+    }
   }
 `;
 
@@ -37,7 +58,7 @@ const Circle1 = styled.div`
   left: 0px;
   top: 0px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle2 = styled.div`
@@ -47,7 +68,7 @@ const Circle2 = styled.div`
   left: 20px;
   top: 100px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle3 = styled.div`
@@ -57,7 +78,7 @@ const Circle3 = styled.div`
   left: 77px;
   top: 69px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle4 = styled.div`
@@ -67,7 +88,7 @@ const Circle4 = styled.div`
   left: 131px;
   top: 33px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle5 = styled.div`
@@ -77,7 +98,7 @@ const Circle5 = styled.div`
   right: 0px;
   top: 0px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle6 = styled.div`
@@ -87,7 +108,7 @@ const Circle6 = styled.div`
   right: 20px;
   top: 100px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle7 = styled.div`
@@ -97,7 +118,7 @@ const Circle7 = styled.div`
   right: 77px;
   top: 69px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const Circle8 = styled.div`
@@ -107,7 +128,7 @@ const Circle8 = styled.div`
   right: 131px;
   top: 33px;
   border-radius: 50%;
-  background: #a6dcef;
+  background: #a6dcefa8;
 `;
 
 const LeftWrapper = styled.div`
@@ -122,13 +143,26 @@ const RightWrapper = styled.div`
   top: 20px;
 `;
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+`;
+
 const FormTitle = styled.div`
   font-weight: 700;
   font-size: 40px;
   line-height: 48px;
-  margin-top: 100px;
   color: #7fbcd2;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`;
+
+const Logo = styled.img`
+  width: 75%;
+  margin-bottom: 5vh;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    width: 85%;
+  }
 `;
 
 const GoogleLogin = styled.button`
@@ -176,25 +210,27 @@ const RightCircle = () => {
 const LoginForm = () => {
   return (
     <Wrapper>
-      <LeftCircle />
-      <RightCircle />
-      <FormTitle>
-        BUSAN
-        <br />
-        FULLCOURSE
-      </FormTitle>
-      <GoogleLogin>
-        <img
-          src="/img/GoogleLogo.webp"
-          alt="googlelogo"
-          className="googlelogo"
-        />
-        Login through Google
-      </GoogleLogin>
-      <div className="hr-sect">or</div>
-      <KakaoLogin />
-      <div className="hr-sect">or</div>
-      <NaverLogin />
+      <Content>
+        <div className="circles">
+          <LeftCircle />
+          <RightCircle />
+        </div>
+        <FormTitle>
+          <Logo src="/img/logo2.png"></Logo>
+        </FormTitle>
+        {/* <GoogleLogin>
+          <img
+            src="/img/GoogleLogo.webp"
+            alt="googlelogo"
+            className="googlelogo"
+          />
+          Login through Google
+        </GoogleLogin> */}
+        {/* <div className="hr"></div> */}
+        <KakaoLogin />
+        <div className="hr-sect">or</div>
+        <NaverLogin />
+      </Content>
     </Wrapper>
   );
 };
