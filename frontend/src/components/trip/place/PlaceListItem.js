@@ -114,8 +114,7 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
                 imgUrl={place.imgUrl}
                 placeType={placeType}
                 placeId={place.placeId}
-                isLiked={place.isLiked ? 1 : 0}
-                placeName={place.name}
+           
        
               />
             ) : null}
