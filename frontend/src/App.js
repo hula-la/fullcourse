@@ -14,7 +14,6 @@ import ShareFcPage from './pages/share/SharedFcPage';
 import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 // Plan
 import PlanPage from './pages/trip/PlanPage';
-import SurveyPage from './pages/survey/SurveyPage';
 import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 // survey
 import SurveyPage from './pages/survey/SurveyPage';
