@@ -8,11 +8,9 @@ import com.drew.metadata.exif.GpsDirectory;
 import com.ssafy.fullcourse.domain.fullcourse.dto.*;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDetail;
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourseDiary;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseDiaryNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.exception.FullCourseNotFoundException;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDetailRepository;
-import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseDiaryRepository;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
 import com.ssafy.fullcourse.domain.place.entity.*;
@@ -40,7 +38,6 @@ public class FullCourseService {
     private final FullCourseRepository fullCourseRepository;
 
     private final FullCourseDetailRepository fullCourseDetailRepository;
-    private final FullCourseDiaryRepository fullCourseDiaryRepository;
 
     private final UserRepository userRepository;
 
@@ -182,54 +179,37 @@ public class FullCourseService {
     }
 
     @Transactional
-    public FullCourseDiaryRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
-
-        File file = convert(img);
-        Metadata metadata = ImageMetadataReader.readMetadata(file);
-        GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
-        GeoLocation geoLocation = gpsDirectory.getGeoLocation();
-        if (geoLocation != null && !geoLocation.isZero()) {
-            double[] latLng = new double[2];
-            latLng[0] = geoLocation.getLatitude();
-            latLng[1] = geoLocation.getLongitude();
-            file.delete();
-            System.out.println(latLng[0] + " " + latLng[1]);
-            confirmVisitByImage(latLng, fcDetailId);
-        }
-
+    public FullCourseDetailRes createFCdiary(MultipartFile img, String content, Long fcDetailId) throws ImageProcessingException, IOException {
+        String url = null;
         FullCourseDetail fullCourseDetail =
                 fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
+        if(fullCourseDetail.getImg() != null) {
+            awsS3Service.delete(fullCourseDetail.getImg());
+        }
+        if (img != null && !img.isEmpty()) {
+            File file = convert(img);
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
+            GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+            if (gpsDirectory != null) {
+                GeoLocation geoLocation = gpsDirectory.getGeoLocation();
+                if (geoLocation != null && !geoLocation.isZero()) {
+                    double[] latLng = new double[2];
+                    latLng[0] = geoLocation.getLatitude();
+                    latLng[1] = geoLocation.getLongitude();
+                    file.delete();
+                    System.out.println(latLng[0] + " " + latLng[1]);
+                    confirmVisitByImage(latLng, fcDetailId);
+                }
+            }
+            url = awsS3Service.uploadImage(img);
+        }
 
-        String url = awsS3Service.uploadImage(img);
-        FullCourseDiary diary =
-                FullCourseDiary.builder().img(url).content(content).fullCourseDetail(fullCourseDetail).build();
-        return fullCourseDiaryRepository.save(diary).toDto();
+        fullCourseDetail.setImg(url);
+        fullCourseDetail.setComment(content);
+        fullCourseDetailRepository.save(fullCourseDetail);
+        return null;
     }
 
-    @Transactional
-    public FullCourseDiaryRes updateFCdiary(MultipartFile img, String content, Long fcDiaryId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        awsS3Service.delete(fullCourseDiary.getImg());
-        String url = awsS3Service.uploadImage(img);
-        FullCourseDiary diary =
-                FullCourseDiary.builder().fcDiaryId(fullCourseDiary.getFcDiaryId()).img(url).content(content).fullCourseDetail(fullCourseDiary.getFullCourseDetail()).build();
-        return fullCourseDiaryRepository.save(diary).toDto();
-    }
-
-    public FullCourseDiaryRes getFCDiary(Long fcDetailId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findByFullCourseDetail_FcDetailId(fcDetailId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        return fullCourseDiary.toDto();
-    }
-
-    @Transactional
-    public void deleteFCDiary(Long fcDiaryId) {
-        FullCourseDiary fullCourseDiary =
-                fullCourseDiaryRepository.findById(fcDiaryId).orElseThrow(() -> new FullCourseDiaryNotFoundException());
-        awsS3Service.delete(fullCourseDiary.getImg());
-        fullCourseDiaryRepository.delete(fullCourseDiary);
-    }
 
     public File convert(MultipartFile multipartFile) throws IOException {
         File file = new File(multipartFile.getOriginalFilename());
