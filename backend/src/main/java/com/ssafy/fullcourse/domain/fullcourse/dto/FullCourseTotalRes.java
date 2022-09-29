@@ -29,6 +29,9 @@ public class FullCourseTotalRes {
     @ApiModelProperty(name = "방문 여부")
     boolean isShared;
 
+    @ApiModelProperty(name = "유저 아이디")
+    Long userId;
+
     @ApiModelProperty(name="장소들", example="{1:[{type}], ]}")
     HashMap<Integer, List<FullCourseDetailRes>> places;
 

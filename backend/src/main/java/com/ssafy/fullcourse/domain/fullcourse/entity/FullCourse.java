@@ -54,6 +54,7 @@ public class FullCourse {
 
     public FullCourseTotalRes toDto(HashMap<Integer, List<FullCourseDetailRes>> places){
         return FullCourseTotalRes.builder()
+                .userId(this.user.getUserId())
                 .regDate(this.regDate)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
@@ -61,5 +62,9 @@ public class FullCourse {
                 .isShared(this.isShared)
                 .places(places)
                 .build();
+    }
+
+    public void updateShared(boolean state){
+        this.isShared = state;
     }
 }

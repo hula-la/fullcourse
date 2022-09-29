@@ -54,7 +54,6 @@ public class FullCourseController {
     })
     public ResponseEntity<BaseResponseBody> findMyFullCourse(@AuthenticationPrincipal String email,
                                                              Pageable pageable) {
-
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourse(email, pageable)));
     }
 
