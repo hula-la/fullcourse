@@ -61,13 +61,10 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         <>
           {sharedFcInfo.sharedFCComments.map((comment, index) => {
             return (
-              <div key={index} className="commentBox">
-                <li className="comment">
-                  <span>{comment.nickname} : </span>
-                  <span>{comment.comment}</span>
-                </li>
-                <button onClick={() => onClickDelete(comment)}>삭제</button>
-              </div>
+            <div className='detail'>
+                    {sharedFcInfo.detail}
+                  </div>
+
             );
           })}
         </>
@@ -94,6 +91,22 @@ const FullcourseComment = ({ sharedFcInfo }) => {
           <button>등록하기</button>
         </form>
       </div>
+
+      {sharedFcInfo ? (
+        <>
+          {sharedFcInfo.sharedFCComments.map((comment, index) => {
+            return (  
+              <div key={index} className="commentBox">
+                <li className="comment">
+                  <span>{comment.nickname} : </span>
+                  <span>{comment.comment}</span>
+                </li>
+                <button onClick={() => onClickDelete(comment)}>삭제</button>
+                </div>
+            );
+          })}
+        </>
+      ) : null}
     </CommentBlock>
   );
 };
