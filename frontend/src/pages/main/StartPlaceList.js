@@ -71,6 +71,17 @@ const StartPlaceList = () => {
 
   const navigate = useNavigate();
 
+  // const addMarker = (lat, lng) => {
+  //   const position = { lat: lat, lng: lng };
+  //   const marker = new window.google.maps.Marker({
+  //     map,
+  //     position: position,
+  //   });
+  //   console.log(typeof marker);
+  //   marker['position'] = position;
+  //   dispatch(setMarkers(marker));
+  // };
+
   const setStartPlaceInfo = (id, e) => {
     const placeId = id;
     const placeType = 'travel';
@@ -88,6 +99,7 @@ const StartPlaceList = () => {
         placeItemObj.lat = data.lat;
         placeItemObj.lng = data.lng;
         dispatch(setPlaceItem(placeItemObj));
+
       })
       .then(() => {
         navigate('trip/plan');
