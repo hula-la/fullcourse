@@ -18,4 +18,5 @@ public class CultureDetailRes {
     private Long reviewCnt;
     private Long likeCnt;
     private Boolean isLiked;
+    private Float reviewScore;
 }

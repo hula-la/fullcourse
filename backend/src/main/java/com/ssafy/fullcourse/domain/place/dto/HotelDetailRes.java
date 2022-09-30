@@ -17,4 +17,5 @@ public class HotelDetailRes {
     private Long reviewCnt;
     private Long likeCnt;
     private Boolean isLiked;
+    private Float reviewScore;
 }

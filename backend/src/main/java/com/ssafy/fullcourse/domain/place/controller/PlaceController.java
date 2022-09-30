@@ -27,8 +27,7 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 리스트 조회", notes = "장소 리스트를 반환함.")
     @GetMapping("/{type}/list")
-
-    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable,
+    public ResponseEntity<BaseResponseBody> listPlace(@PathVariable String type, Pageable pageable,
                                                        @RequestParam(required = false, defaultValue = "") String keyword,
                                                        @RequestParam(required = false, defaultValue = "") String tag,
                                                        @RequestParam(required = false, defaultValue = "0") Integer maxDist,
@@ -60,7 +59,7 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 상세 조회", notes = "장소의 상세정보를 반환함.")
     @GetMapping("/{type}/detail/{placeId}")
-    public ResponseEntity<BaseResponseBody> detailTravel(@PathVariable String type, @PathVariable Long placeId, @AuthenticationPrincipal String email) throws Exception {
+    public ResponseEntity<BaseResponseBody> detailPlace(@PathVariable String type, @PathVariable Long placeId, @AuthenticationPrincipal String email) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     travelService.getTravelDetail(placeId, email)));
@@ -86,7 +85,7 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 좋아요 버튼", notes = "좋아요 성공 여부를 반환")
     @PostMapping("/{type}/like/{placeId}")
-    public ResponseEntity<BaseResponseBody> likeTravel(@PathVariable String type, @PathVariable Long placeId,
+    public ResponseEntity<BaseResponseBody> likePlace(@PathVariable String type, @PathVariable Long placeId,
                                                        @AuthenticationPrincipal String email) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",

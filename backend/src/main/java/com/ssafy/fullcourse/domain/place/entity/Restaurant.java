@@ -55,7 +55,7 @@ public class Restaurant extends BasePlace {
     @Column(length = 200)
     private String award; // 어워드
 
-    private Float naverScore;
+    private Float naverScore = 0F;
 
     @Column(length = 200)
     private String imgUrl;
@@ -68,6 +68,9 @@ public class Restaurant extends BasePlace {
 
     @Column(nullable = false)
     private Long likeCnt = 0L;
+
+    @Column(nullable = false)
+    private Float reviewScore = 0F;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<RestaurantReview> reviews = new ArrayList<>();
@@ -95,6 +98,7 @@ public class Restaurant extends BasePlace {
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
         res.setLikeCnt(this.getLikeCnt());
+        res.setReviewScore(this.reviewScore);
         return res;
     }
 
