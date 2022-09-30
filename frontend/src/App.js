@@ -16,8 +16,10 @@ import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 import PlanPage from './pages/trip/PlanPage';
 import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 // survey
-import RecommendPage from './pages/survey/RecommendPage';
 import SurveyPage from './pages/survey/SurveyPage';
+import RecommendPage from './pages/survey/RecommendPage';
+// ar
+import ArPage from './pages/ar/ArPage';
 // 404
 import NotFound from './pages/NotFound';
 import ProtectedLoginRoute from './lib/ProtectedLoginRoute';
@@ -61,6 +63,9 @@ function App() {
             <Route path="recommend" element={<RecommendPage />} />
           </Route>
         </Route>
+
+        
+        <Route path="ar" element={<ArPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
