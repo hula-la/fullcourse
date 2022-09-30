@@ -66,6 +66,22 @@ const OkBtn = styled.button`
 `;
 
 const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
+
+  const getMaxDate = (date) => {
+    console.log("여기뭐있냐",range[0])
+    if (!date) {
+      return date
+    }
+
+    const startTime = new Date(date).getTime()
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return new Date(startTime + 4 * 24 * 60 * 60 * 1000)
+  }
+  
+  const maxDate = React.useMemo(() => getMaxDate(range[0].startDate), [range])
+
   return (
     <Modalbackdrop ref={refOne}>
       {open && (
@@ -80,6 +96,7 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
             months={2}
             direction="horizontal"
             minDate={new Date()}
+            maxDate={maxDate}
             className="DateRange"
           />
           <div className="Btns">
