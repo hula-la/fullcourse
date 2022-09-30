@@ -22,3 +22,15 @@ export const getPlaceDetail = async (placeId, placeType) => {
   return res;
 };
 
+//장소리뷰포스트
+export const postSharedFcComment = async (placeId, placeType, data) => {
+  const res = await client.post('api/share/comment', data);
+  return res;
+};
+
+//장소좋아요
+export const postPlaceLike = async (placeId, placeType) => {
+  const res = await client.post(`api/place/${placeType}/like/${placeId}`);
+  return res;
+};
+

@@ -176,7 +176,7 @@ const StartPlaceList = () => {
               className={isMobile ? classes.cardMobile : null}
               key={idx}
               sx={{
-                border: '1px solid white',
+                border: 'none',
                 minHeight: '280px',
                 width: '16.5vw',
                 marginTop: isMobile ? '5vh' : '10vh',

@@ -56,6 +56,7 @@ const Flex = styled.div`
   overflow-x: auto;
 `;
 
+<<<<<<< HEAD
 // const Nickname = styled.div`
 //   font-family: Tmoney;
 //   font-size: 1vmin;
@@ -169,6 +170,80 @@ const Flex = styled.div`
 //     </div>
 //   )
 // }
+=======
+const CardComponent =()=>{
+  const classes = useStyles();
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  return (
+    <div>
+      <Card
+          className={isMobile ? classes.cardMobile : null}
+          variant="soft"
+          
+          sx={{
+            width: '16.5vw',
+            // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
+            boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
+            marginTop: '10vh',
+            ":hover": {transform: 'scale(1.05)', cursor:'pointer'},
+            ":active": {transform: 'scale(0.95)'},
+            background: '#FFF3F8'
+
+          }}
+        >
+          <CardOverflow>
+            <AspectRatio ratio="3">
+              <img
+                src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+                alt="card main img"
+              />
+            </AspectRatio>
+
+            <Avatar
+              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+              size="lg"
+              sx={{
+                position: 'absolute',
+                zIndex: 2,
+                right: '7.7vw',
+                bottom: 0,
+                transform: 'translateY(50%)',
+                border: "2px solid white"
+              }}
+            ></Avatar>
+          </CardOverflow>
+          <CardOverflow
+            variant="soft"
+            sx={{
+              display: 'flex-column',
+              textAlign: 'start',
+              // gap: 1.5,
+              py: 3,
+              px: 'var(--Card-padding)',
+              // borderTop: '1px solid',
+              // borderColor: 'neutral.outlinedBorder',
+              // bgcolor: 'background.level1',
+              marginTop: '0',
+              paddingTop: '4vh',
+            }}
+          >
+            <Nickname>닉네임1</Nickname>
+            <CardTitle>제목1</CardTitle>
+            <CardContent>내용1</CardContent>
+            {/* 이 자리에 호준이가 만든 태그 */}
+
+            <CardFooter>
+              <Like />
+              <span>좋아요횟수</span>
+              <Comment />
+              <span>댓글갯수</span>
+            </CardFooter>
+          </CardOverflow>
+        </Card>
+    </div>
+  )
+}
+>>>>>>> front
 
 const FullCourseList = () => {
   const isMobile = useMediaQuery('(max-width: 767px)');

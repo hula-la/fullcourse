@@ -12,13 +12,18 @@ const Container = styled.div`
   overflow: overlay;
   display: grid;
   grid-template-rows: 1fr 0.5fr 5fr; //가로로 구분
+  background-color: #E8F9FD;
 `;
 
 const Introduce = styled.div`
   align-items: center;
+<<<<<<< HEAD
   @media only screen and (min-device-width: 479px) {
     display: flex;
   }
+=======
+  background-color: #FFF3F8;
+>>>>>>> front
 `;
 
 const VideoContainer = styled.div`
@@ -45,6 +50,7 @@ const MainTitle = styled.div`
   /* 전체를 감싼 div에 크기를 부여해주어야 위아래로 같이 안움직이고 아이콘만 위아래로 움직임 */
   width: 30vw;
   height: 50vh;
+<<<<<<< HEAD
 
   margin: auto;
 
@@ -59,6 +65,9 @@ const MainTitle = styled.div`
     border-radius: 80vw;
     padding: 10vw;
   }
+=======
+ 
+>>>>>>> front
 `;
 
 const Logo = styled.img`
@@ -142,6 +151,7 @@ const PreviewTip = styled.p`
 `;
 
 const FullCourses = styled.div`
+  
   margin: 0 7vw;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     margin: 0;

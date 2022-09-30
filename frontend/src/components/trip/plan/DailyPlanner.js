@@ -288,7 +288,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               className="list-item"
             >
               {item.name}
-              {item.type}
+              
               <DeleteBtn
                 className="delete"
                 onClick={(e) => {
