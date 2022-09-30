@@ -27,8 +27,6 @@ public class SharedFCListDto {
     private boolean isLiked;
 
     public SharedFCListDto(SharedFullCourse sharedFullCourse, boolean isLiked, List<SharedFCTagDto> tagDto) {
-        System.out.println(sharedFullCourse.toString());
-
         this.sharedFcId = sharedFullCourse.getSharedFcId();
         this.detail = sharedFullCourse.getDetail();
         this.title = sharedFullCourse.getTitle();
@@ -42,7 +40,6 @@ public class SharedFCListDto {
         this.isLiked = isLiked;
     }
     public SharedFCListDto(SharedFullCourse sharedFullCourse, List<SharedFCTagDto> tagDto) {
-        System.out.println(sharedFullCourse.getUser().getEmail());
         this.sharedFcId = sharedFullCourse.getSharedFcId();
         this.detail = sharedFullCourse.getDetail();
         this.title = sharedFullCourse.getTitle();
