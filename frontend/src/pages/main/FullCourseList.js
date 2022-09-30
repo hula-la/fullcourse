@@ -7,16 +7,11 @@ import StyledButton from '../../components/common/StyledButton';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 //Card 관련
-import AspectRatio from '@mui/joy/AspectRatio';
-import Card from '@mui/joy/Card';
-import Avatar from '@mui/joy/Avatar';
-import CardOverflow from '@mui/joy/CardOverflow';
-import { FaCommentDots } from 'react-icons/fa';
-import { GoHeart } from 'react-icons/go';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchSharedFc } from '../../features/main/mainActions';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   animation: fadeInUp 2s;
@@ -62,10 +57,18 @@ const Flex = styled.div`
 
 const FullCourseList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { sharedFcList } = useSelector((state) => state.main);
+
   useEffect(() => {
     dispatch(fetchSharedFc());
   }, [dispatch]);
+
+  const onClickFullcourse = (sharedFcId) => {
+    console.log('3');
+    navigate(`/fullcourse/detail/${sharedFcId}`);
+  };
+
   return (
     <div>
       {/* card fadeinup 시도해보자 */}
@@ -77,7 +80,14 @@ const FullCourseList = () => {
         {sharedFcList ? (
           <Flex>
             {sharedFcList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickFullcourse(fullcourse.sharedFcId)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Flex>
         ) : null}
