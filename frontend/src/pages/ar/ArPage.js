@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { fetchPlaceTravel } from '../../features/ar/arActions';
 
 const Wrapper = styled.div`
 height:calc(100vh - 80px);
@@ -14,38 +17,58 @@ body{
 
 
 const ArPage = () => {
+  const dispatch = useDispatch()
+  const [location, setLocation] = useState('');
+  const { placeTravelList } = useSelector((state) => state.ar)
   
   useEffect(() => {
-      window.onload = () => {
-          navigator.geolocation.getCurrentPosition((position) => {
-        document.querySelector('a-text').setAttribute('gps-entity-place', `latitude: ${position.coords.latitude}; longitude: ${position.coords.longitude};`)
+    dispatch(fetchPlaceTravel())
+  }, [dispatch])
+  
+  useEffect(() => {
+    console.log("placecTravelList : "+placeTravelList);
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+      setLocation(position);
       });
-     }
-  }, []);
+
+  }, [placeTravelList]);
 
   return (
-      <Wrapper>
-        <>
-            <a-scene
-            vr-mode-ui="enabled: false"
-            embedded
-            arjs="sourceType: webcam; debugUIEnabled: false;"
-            >
-            {/* <a-text
-                value="No markers around"
+    <Wrapper>
+      <a-scene
+  vr-mode-ui="enabled: false"
+  embedded
+        arjs="sourceType: webcam; debugUIEnabled: false;">
+        {location &&
+          <a-text
+            className="here"
+            value="No markers around"
+            look-at="[gps-camera]"
+            scale="5 5 5"
+            gps-entity-place={`latitude: ${location.coords.latitude}; longitude:${location.coords.longitude}`}
+          ></a-text>
+        }
+
+        {placeTravelList && placeTravelList.content.map((data, idx) => {
+
+          return (
+            <>
+              <a-text
+                value={`${data.name}`}
                 look-at="[gps-camera]"
                 scale="5 5 5"
-                  ></a-text> */}
-                <a-image
-                    //   value="This content will always face you."
-                      src="assets/asset.jpeg"
-                look-at="[gps-camera]"
-                scale="50 50 50"
-                gps-entity-place="latitude: 35.0894571; longitude: 128.8533412;"
-            ></a-image>
-            <a-camera gps-camera rotation-reader> </a-camera>
-            </a-scene>
-        </>
+                gps-entity-place={`latitude: ${data.lat}; longitude:${data.lng}`} 
+              ></a-text>
+            </>
+          )
+        }
+        )
+        }
+           
+        
+          <a-camera gps-camera rotation-reader> </a-camera>
+          </a-scene>
     </Wrapper>
   );
 };
