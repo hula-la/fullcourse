@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import KeyboardDoubleArrowDown from '@mui/icons-material/KeyboardDoubleArrowDown';
 import './main.css';
 
@@ -162,6 +163,7 @@ const StartPlaces = styled.div`
 const MainPage = () => {
   const section1 = useRef(null);
   const section2 = useRef(null);
+  const { userInfo } = useSelector((state) => state.user);
 
   return (
     <Container>
@@ -178,10 +180,15 @@ const MainPage = () => {
           {/* public 경로 사용하는 법 */}
           <Logo src="/img/logo2.png" alt="logo2_img" />
           <Text>부산, 풀코스로 모시겠습니다.</Text>
-          <Link to={'/user/login'}>
-            <StartBtn>시작하기</StartBtn>
-          </Link>
-
+          {userInfo ? (
+            <Link to={'/trip/plan'}>
+              <StartBtn>시작하기</StartBtn>
+            </Link>
+          ) : (
+            <Link to={'/user/login'}>
+              <StartBtn>시작하기</StartBtn>
+            </Link>
+          )}
           <a
             onClick={(e) => {
               e.preventDefault(e);
