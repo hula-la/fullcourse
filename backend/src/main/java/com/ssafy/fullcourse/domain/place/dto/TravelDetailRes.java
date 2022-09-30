@@ -33,4 +33,5 @@ public class TravelDetailRes {
     private Long mention;
     private String Tag;
     private Boolean isLiked;
+    private Float reviewScore;
 }

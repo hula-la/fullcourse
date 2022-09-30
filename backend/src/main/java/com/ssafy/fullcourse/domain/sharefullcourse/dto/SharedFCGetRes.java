@@ -47,6 +47,7 @@ public class SharedFCGetRes {
                         comment-> SharedFCCommentRes.builder()
                                 .commentId(comment.getFcCommentId())
                                 .nickname(comment.getUser().getNickname())
+                                .imgUrl(comment.getUser().getImgUrl())
                                 .comment(comment.getComment()).build()).collect(Collectors.toList()))
                 .thumbnail(sharedFullCourse.getThumbnail())
                 .isLike(isLike)
