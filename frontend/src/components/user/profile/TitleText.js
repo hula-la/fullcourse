@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Text = styled.div`
   height: 5vh;
-  margin-top: 4vh;
+  margin: 3vh 0;
   background: url('/img/baseline.png') center no-repeat;
   background-position-y: 0;
   background-position-x: 0;

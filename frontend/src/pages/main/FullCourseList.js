@@ -5,8 +5,6 @@ import CardComponent from '../../components/common/CardComponent';
 import StyledButton from '../../components/common/StyledButton';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
-
-//Card 관련
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -49,17 +47,20 @@ const Text = styled.span`
 const Flex = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    flex-wrap: nowrap;
+  }
+  justify-content: center;
   margin: 2vh 3vw;
   overflow-x: auto;
 `;
 
 const FullCourseList = () => {
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sharedFcList } = useSelector((state) => state.main);
-
   useEffect(() => {
     dispatch(fetchSharedFc());
   }, [dispatch]);

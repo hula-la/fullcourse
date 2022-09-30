@@ -6,33 +6,51 @@ import styled from 'styled-components';
 import { fetchPlaceTravel } from '../../features/ar/arActions';
 
 const Wrapper = styled.div`
-height:calc(100vh - 80px);
+
+/* height:100vh; */
+/* width:100vw; */
+height:100vh;
+width:100vw;
 
 body{
     margin: 0; 
     overflow: hidden;
+}
+a-camera{
+  object-fit: cover;
 }
 `
 
 
 
 const ArPage = () => {
+  window.onload = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      document.getElementById('hereLocation').setAttribute('gps-entity-place', `latitude: ${position.coords.latitude}; longitude: ${position.coords.longitude};`)
+      console.log(document.getElementById('hereLocation').getAttribute('gps-entity-place'));
+
+    });
+  }
+
   const dispatch = useDispatch()
-  const [location, setLocation] = useState('');
   const { placeTravelList } = useSelector((state) => state.ar)
   
   useEffect(() => {
     dispatch(fetchPlaceTravel())
   }, [dispatch])
   
-  useEffect(() => {
-    console.log("placecTravelList : "+placeTravelList);
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
-      setLocation(position);
-      });
+  // useEffect(() => {
+  //   console.log("placecTravelList : "+placeTravelList);
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     console.log(position);
+  //     setLocation(position);
+  //   });
+    
+  //   console.log(document.querySelector('a-text').getAttribute('gps-entity-place'));
 
-  }, [placeTravelList]);
+
+  // }, [placeTravelList]);
 
   return (
     <Wrapper>
@@ -40,15 +58,14 @@ const ArPage = () => {
   vr-mode-ui="enabled: false"
   embedded
         arjs="sourceType: webcam; debugUIEnabled: false;">
-        {location &&
           <a-text
+            id="hereLocation"
             className="here"
             value="No markers around"
             look-at="[gps-camera]"
             scale="5 5 5"
-            gps-entity-place={`latitude: ${location.coords.latitude}; longitude:${location.coords.longitude}`}
+            gps-entity-place={`latitude: 1; longitude:1`}
           ></a-text>
-        }
 
         {placeTravelList && placeTravelList.content.map((data, idx) => {
 
