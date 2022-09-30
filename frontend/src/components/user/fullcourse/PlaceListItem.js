@@ -10,7 +10,7 @@ const PlaceListItem = ({ placeKey, place }) => {
     let content;
     let img;
     Swal.fire({
-      title: '나만의 추억★',
+      title: '나만의 추억✨',
       input: 'textarea',
       inputPlaceholder: '메모를 입력해주세요.',
       inputAttributes: {

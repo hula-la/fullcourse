@@ -6,7 +6,7 @@ import PlaceDetailContent from './PlaceDetailContent';
 import { AiOutlineHeart, AiOutlineStar, AiFillHeart } from 'react-icons/ai';
 import { BiCalendarPlus } from 'react-icons/bi';
 import { createPlaceLike } from '../../../features/trip/tripActions';
-
+import PlaceReview from './PlaceReview'
 const ModalBackdrop = styled.div`
   width: 100vw;
   height: 100vh;
@@ -112,60 +112,81 @@ const Review = styled(AiOutlineStar)`
 const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
   const { placeDetail } = useSelector((state) => state.trip);
   const [isLiked, setIsLiked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
+  
   const dispatch = useDispatch();
   const placeLike = (placeId, placeType) => {
     setIsLiked(!isLiked);
     dispatch(createPlaceLike({ placeId, placeType }));
   };
-  const sendToBack = (e) => {
-    openDetailModal();
-  };
+  
+  const openReivewModal = () => {
+    console.log("뭐지")
+    setIsOpen(!isOpen)
+  }
+
+  const closePlaceDetailModal = () => {
+    openDetailModal(false)
+  }
+
   return (
     <ModalBackdrop>
       <ModalView>
-        <BackIcon onClick={sendToBack} />
+        <BackIcon onClick={closePlaceDetailModal} />
         <img className="placeImg" src={imgUrl} alt="place detail image" />
         <div className="box">
-          {placeDetail ? (
-            <IconBox>
-              {placeDetail.isLiked ? (
-                isLiked ? (
-                  <LikeNo
-                    onClick={(e) => {
-                      placeLike(placeId, placeType);
-                    }}
-                  />
-                ) : (
+          <IconBox>
+            {placeDetail ? (
+              <>
+                {placeDetail.isLiked ? (
+                  isLiked ? (
+                    <LikeNo
+                      onClick={(e) => {
+                        placeLike(placeId, placeType);
+                      }}
+                    />
+                  ) : (
+                    <LikeYes
+                      onClick={(e) => {
+                        placeLike(placeId, placeType);
+                      }}
+                    />
+                  )
+                ) : isLiked ? (
                   <LikeYes
                     onClick={(e) => {
                       placeLike(placeId, placeType);
                     }}
                   />
-                )
-              ) : isLiked ? (
-                <LikeYes
-                  onClick={(e) => {
-                    placeLike(placeId, placeType);
-                  }}
-                />
-              ) : (
-                <LikeNo
-                  onClick={(e) => {
-                    placeLike(placeId, placeType);
-                  }}
-                />
-              )}
-            </IconBox>
-          ) : null}
-          <span className="like">좋아요</span>
+                ) : (
+                  <LikeNo
+                    onClick={(e) => {
+                      placeLike(placeId, placeType);
+                    }}
+                  />
+                )}
+              </>
+            ) : null}
+            <span className="like">좋아요</span>
+          </IconBox>
           <IconBox>
             <Plus />
             <span className="like">장소담기</span>
           </IconBox>
           <IconBox>
-            <Review />
+            <Review onClick={() => {openReivewModal()}}/>
             <span className="like">리뷰쓰기</span>
+            {isOpen ? (
+              <PlaceReview
+                openReivewModal={openReivewModal}
+                placeId={placeId}
+                placeType={placeType}
+                setIsOpen={setIsOpen}
+                
+                
+              />
+            ) : null}
           </IconBox>
         </div>
 

@@ -33,12 +33,12 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false)
 
-  const openDetailModal = () => {
-    setOpen(!open)
-  }
-
+  
   const setPlaceDetail = (placeId,placeType) => {
     dispatch(fetchPlaceDetail({placeId,placeType}))
+  }
+  const openDetailModal = () => {
+    setOpen(!open)
   }
 
   const addPlaceToPlanner = (

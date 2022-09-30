@@ -34,3 +34,26 @@ export const postPlaceLike = async (placeId, placeType) => {
   return res;
 };
 
+//장소 리뷰
+export const postReview = async (img, content, placeId, placeType) => {
+  console.log("잘넘어오나",img,content,placeId,placeType);
+  const formData = new FormData();
+  formData.append('file', img);
+  formData.append(
+    'content',
+    new Blob([JSON.stringify(content)], { type: 'application/json' }),
+  );
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  const res = await client.post(
+    `api/review/${placeType}/${placeId}`,
+    formData,
+    config,
+  );
+  console.log(res);
+  return res;
+};
+

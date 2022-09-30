@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getFullcourseDetail, getTravelPlaceList, postTrip, getPlaceDetail, postPlaceLike  } from '../../api/trip';
+import { getFullcourseDetail, getTravelPlaceList, postTrip, getPlaceDetail, postPlaceLike, postReview  } from '../../api/trip';
 
 //여행명소리스트 불러오기
 export const fetchTravelPlace = createAsyncThunk(
@@ -77,11 +77,28 @@ export const fetchPlaceDetail = createAsyncThunk(
 
 //여행지좋아요
 export const createPlaceLike = createAsyncThunk(
-  'share/createPlaceLike',
+  'trip/createPlaceLike',
   async ({placeId,placeType}, { rejectWithValue }) => {
     try {
       const { data } = await postPlaceLike(placeId,placeType);
       console.log("좋아요 성공")
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+//장소리뷰쓰기
+export const createDiary = createAsyncThunk(
+  'trip/createDiary',
+  async ({ img, content, placeId, placeType }, { rejectWithValue }) => {
+    try {
+      const { data } = await postReview(img, content, placeId, placeType);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

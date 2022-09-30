@@ -95,9 +95,9 @@ const StartPlaceList = () => {
     ['/img/startplace/Haeundae.jpg', '해운대', 'Haeundae', 72],
     ['/img/startplace/Taejongdae.jpg', '태종대', 'Taejongdae', 4],
     ['/img/startplace/biff.jpg', '남포동', 'Nampodong', 174],
-    ['/img/startplace/Yonggungsa.jpg', '용궁사', 'Yonggungsa'],
-    ['/img/startplace/jagalchi.jpg', '자갈치 시장', 'Jagalchi Market'],
-    ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon'],
+    ['/img/startplace/Yonggungsa.jpg', '용궁사', 'Yonggungsa', 7],
+    ['/img/startplace/jagalchi.jpg', '자갈치 시장', 'Jagalchi Market', 173],
+    ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon', 64],
   ];
 
   const navigate = useNavigate();
@@ -132,6 +132,7 @@ const StartPlaceList = () => {
         placeItemObj.draggable = true;
         placeItemObj.lat = data.lat;
         placeItemObj.lng = data.lng;
+        placeItemObj.type = placeType
         dispatch(setPlaceItem(placeItemObj));
         addMarker(data.lat, data.lng);
       })
