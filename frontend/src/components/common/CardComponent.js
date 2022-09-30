@@ -23,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
 const Wapper = styled.div`
   margin: 1vw 1vw 1vw 0vw;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
-    margin: 1vw 7vw;
+    margin: 1vw 13vw 1vw 4vw;
+    width: 70%;
+  }
+  @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+    margin: 1vw 9vw 1vw 4vw;
   }
 `;
 
@@ -99,9 +103,9 @@ const CardComponent = (props) => {
             sx={{
               position: 'absolute',
               zIndex: 2,
-              right: isMobile ? '11vw' : '7.7vw',
+              right: '50%',
               bottom: 0,
-              transform: 'translateY(50%)',
+              transform: 'translate(50%, 50%)',
               border: '2px solid white',
             }}
           ></Avatar>
