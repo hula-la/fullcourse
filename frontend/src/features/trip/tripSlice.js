@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchFullcourseDetail,
   fetchTravelPlace,
+  fetchPlaceDetail,
   createTrip,
+  createPlaceLike
 } from './tripActions';
 import format from 'date-fns/format';
 
@@ -20,6 +22,9 @@ const initialState = {
   markers: [], //마커
 
   fullcourseDetail: null,
+  placeDetail: null,
+
+  isLiked: false,
 };
 
 const tripSlice = createSlice({
@@ -74,10 +79,29 @@ const tripSlice = createSlice({
     [fetchFullcourseDetail.rejected]: (state, { payload }) => {
       state.error = payload.error;
     },
+
+    //여행일정 생성
     [createTrip.fulfilled]: (state, { payload }) => {
       state.trip = payload.data;
     },
     [createTrip.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+
+    //여행 디테일 정보 조회
+    [fetchPlaceDetail.fulfilled]: (state, { payload }) => {
+      state.placeDetail = payload.data;
+      console.log("여행디테일",payload.data)
+    },
+    [fetchPlaceDetail.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+    //여행지 좋아요
+    [createPlaceLike.fulfilled]: (state, { payload }) => {
+      console.log("좋아요데이터",payload.data)
+      state.isLiked = payload.data;
+    },
+    [createPlaceLike.rejected]: (state, { payload }) => {
       state.error = payload.error;
     },
   },

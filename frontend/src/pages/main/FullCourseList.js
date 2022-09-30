@@ -101,7 +101,7 @@ const CardComponent =()=>{
             marginTop: '10vh',
             ":hover": {transform: 'scale(1.05)', cursor:'pointer'},
             ":active": {transform: 'scale(0.95)'},
-            
+            background: '#FFF3F8'
 
           }}
         >

@@ -142,7 +142,7 @@ const StartPlaceList = () => {
               }}
               key={idx}
               sx={{
-                border: '1px solid white',
+                border: 'none',
                 minHeight: '280px',
                 width: '16.5vw',
                 marginTop: '10vh',

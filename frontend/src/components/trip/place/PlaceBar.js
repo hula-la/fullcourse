@@ -8,16 +8,20 @@ import { Pagination } from '@mui/material';
 import PlaceList from './PlaceList';
 
 const PlaceContainer = styled.div`
-  border: 1px solid;
   height: 87vh;
+  background-color: #e8f9fd;
+  overflow-y: scroll;
 `;
-const PlaceOverview = styled.div``;
 
 const PlaceTypes = styled.button``;
 
-const PlaceName = styled.div``;
-
-const PlusBtn = styled.button``;
+const PageBox = styled.div`
+  margin-top: 60vh;
+  margin-bottom: 5vh;
+  width: 50vh;
+  display: flex;
+  justify-content: center;
+`;
 
 const PlaceBar = ({ map }) => {
   const dispatch = useDispatch();
@@ -117,21 +121,23 @@ const PlaceBar = ({ map }) => {
             {item}
           </PlaceTypes>
         ))}
-      <PlaceOverview className="place-overview">
-        <PlaceList className="place-list" map={map} placeType={placeType}/>
-      </PlaceOverview>
-      {travelPlaceList ? (
-        <Pagination
-          count={maxPageNum}
-          variant="outlined"
-          shape="rounded"
-          showFirstButton
-          showLastButton
-          defaultPage={1}
-          boundaryCount={2}
-          onChange={onClickPage}
-        />
-      ) : null}
+
+      <PlaceList className="place-list" map={map} placeType={placeType} />
+      <PageBox>
+        {travelPlaceList ? (
+          <Pagination
+            count={maxPageNum}
+            // variant="outlined"
+            // shape="rounded"
+            // showFirstButton
+            // showLastButton
+            defaultPage={1}
+            boundaryCount={2}
+            size="small"
+            onChange={onClickPage}
+          />
+        ) : null}
+      </PageBox>
     </PlaceContainer>
   );
 };
