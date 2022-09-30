@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyFullcourse } from '../../../features/user/userActions';
-import MyFullcourseItem from './MyFullcourseItem';
 import MyFullcourseShare from './MyFullcourseShare';
 import StyledButton from '../../common/StyledButton';
 import styled from 'styled-components';
@@ -37,6 +36,8 @@ const Flex = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0 3vw;
+  overflow-x: scroll;
+  min-width: 138px;
 `;
 
 const DisableButton = styled.button`
@@ -54,6 +55,9 @@ const DisableButton = styled.button`
 `;
 const Button = styled.button`
   margin-bottom: 4vh;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 2vh 0;
+  }
   outline: 0;
   padding: 5px;
   text-align: center;
@@ -127,7 +131,7 @@ const MyFullcourse = ({ userInfo }) => {
                     ) : new Date() < new Date(fullcourse.startDate) ? (
                       <DisableButton>예정</DisableButton>
                     ) : (
-                      <StyledButton>여행중</StyledButton>
+                      <Button>여행중</Button>
                     )}
                   </div>
                 );
@@ -144,12 +148,27 @@ const MyFullcourse = ({ userInfo }) => {
               );
             })}
           </div>
-        ) : (
+        ) : myFullcourseList.content.length > 0 ? (
           <Flex>
             {myFullcourseList.content.map((fullcourse, index) => {
-              return <MyfullcourseItem key={index} fullcourse={fullcourse} />;
+              return (
+                <div>
+                  <MyfullcourseItem key={index} fullcourse={fullcourse} />
+                  {fullcourse.shared ? (
+                    <DisableButton>공유완료</DisableButton>
+                  ) : new Date(fullcourse.endDate) < new Date() ? (
+                    <Button onClick={onClick}>공유하기</Button>
+                  ) : new Date() < new Date(fullcourse.startDate) ? (
+                    <DisableButton>예정</DisableButton>
+                  ) : (
+                    <Button>여행중</Button>
+                  )}
+                </div>
+              );
             })}
           </Flex>
+        ) : (
+          <Button>풀코스 만들러 가기</Button>
         )
       ) : null}
     </Wrapper>

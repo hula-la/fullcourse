@@ -21,13 +21,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Wapper = styled.div`
-  margin: 1vw 1vw 1vw 0vw;
+  margin: 1vw 2vw 1vw 0vw;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     margin: 1vw 13vw 1vw 4vw;
     width: 70%;
   }
   @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
     margin: 1vw 9vw 1vw 4vw;
+  }
+
+  .scrollBar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .scrollBar::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+
+    background-color: rgba(217, 239, 255, 1);
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 1rem;
+    border: 4px solid transparent;
+    width: 5px;
+  }
+
+  /* 스크롤바 뒷 배경 설정*/
+
+  .scrollBar::-webkit-scrollbar-track {
+    border-radius: 10px;
   }
 `;
 
@@ -40,16 +60,18 @@ const Nickname = styled.div`
 
 const CardTitle = styled.div`
   font-family: Tmoney;
-  font-size: 4vmin;
+  font-size: 2vmin;
   color: #333333;
   margin-top: 2vh;
 `;
 
 const CardContent = styled.div`
   font-family: Tmoney;
-  font-size: 2vmin;
+  font-size: 1.5vmin;
   color: #333333;
   margin-top: 1vh;
+  height: 50px;
+  text-overflow: clip;
 `;
 
 const CardFooter = styled.div`
@@ -72,6 +94,22 @@ const Comment = styled(FaCommentDots)`
   color: #e36387;
   font-size: 2.2vmin;
 `;
+
+const Tags = styled.div`
+  overflow-x: auto;
+  display: -webkit-box;
+`;
+
+const Tag = styled.div`
+  font-size: 0.9rem;
+  border: 2px solid #dc3d59;
+  border-radius: 1rem;
+  width: fit-content;
+  padding: 0.1rem 0.4rem;
+  margin: 0.3rem;
+  color: #dc3d59;
+`;
+
 const CardComponent = (props) => {
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
@@ -81,7 +119,7 @@ const CardComponent = (props) => {
         className={isMobile ? classes.cardMobile : null}
         variant="soft"
         sx={{
-          width: '16.5vw',
+          width: '15vw',
           // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           marginTop: '1vh',
@@ -127,10 +165,13 @@ const CardComponent = (props) => {
         >
           <Nickname>{props.fullcourse.user.userNickName}</Nickname>
           <CardTitle>{props.fullcourse.title}</CardTitle>
-          {props.fullcourse.day}
+          {props.fullcourse.day} Day
           <CardContent>{props.fullcourse.detail}</CardContent>
-          {/* 이 자리에 호준이가 만든 태그 */}
-
+          <Tags className="scrollBar">
+            {props.fullcourse.sharedFCTags.map((tag) => {
+              return <Tag>#{tag.tagContent}</Tag>;
+            })}
+          </Tags>
           <CardFooter>
             <Like />
             <span>{props.fullcourse.likeCnt}</span>
