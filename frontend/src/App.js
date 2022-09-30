@@ -22,8 +22,8 @@ import RecommendPage from './pages/survey/RecommendPage';
 import ArPage from './pages/ar/ArPage';
 // 404
 import NotFound from './pages/NotFound';
-import ProtectedLoginRoute from './lib/ProtectedLoginRoute';
-import ProtectedRoute from './lib/ProtectedRoute';
+import ProtectedLoginRoute from './private/ProtectedLoginRoute';
+import ProtectedRoute from './private/ProtectedRoute';
 import { useSelector } from 'react-redux';
 
 function App() {

@@ -9,6 +9,8 @@ import './main.css';
 import FullCourseList from './FullCourseList';
 import StartPlaceList from './StartPlaceList';
 
+import Swal from 'sweetalert2';
+
 const Container = styled.div`
   overflow-x: hidden;
   display: grid;
@@ -199,6 +201,13 @@ const MainPage = () => {
   const section1 = useRef(null);
   const section2 = useRef(null);
   const { userInfo } = useSelector((state) => state.user);
+
+  const onClickStart = () => {
+    Swal.fire({
+      title: '추천받기',
+      text: '추천을 받으실?',
+    });
+  };
 
   return (
     <Container>
