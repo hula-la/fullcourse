@@ -7,12 +7,11 @@ import StyledButton from '../../components/common/StyledButton';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 //Card 관련
-import AspectRatio from '@mui/joy/AspectRatio';
-import Card from '@mui/joy/Card';
-import Avatar from '@mui/joy/Avatar';
-import CardOverflow from '@mui/joy/CardOverflow';
-import { FaCommentDots } from 'react-icons/fa';
-import { GoHeart } from 'react-icons/go';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchSharedFc } from '../../features/main/mainActions';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   animation: fadeInUp 2s;
@@ -56,50 +55,20 @@ const Flex = styled.div`
   overflow-x: auto;
 `;
 
-
-
 const FullCourseList = () => {
-  const isMobile = useMediaQuery('(max-width: 767px)');
-  // carousel 설정
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 1,
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { sharedFcList } = useSelector((state) => state.main);
+
+  useEffect(() => {
+    dispatch(fetchSharedFc());
+  }, [dispatch]);
+
+  const onClickFullcourse = (sharedFcId) => {
+    console.log('3');
+    navigate(`/fullcourse/detail/${sharedFcId}`);
   };
-  const fullcourseList = [
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-  ];
+
   return (
     <div>
       {/* card fadeinup 시도해보자 */}
@@ -108,10 +77,17 @@ const FullCourseList = () => {
           <Text>추천 풀코스</Text>
           <StyledButton content="더보기" />
         </Title>
-        {fullcourseList ? (
+        {sharedFcList ? (
           <Flex>
-            {fullcourseList.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+            {sharedFcList.content.map((fullcourse, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickFullcourse(fullcourse.sharedFcId)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Flex>
         ) : null}

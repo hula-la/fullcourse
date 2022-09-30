@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { eraseUser } from '../../../features/user/userActions';
 import { logout } from '../../../features/user/userSlice';
@@ -38,10 +39,12 @@ const StyledButton = styled.div`
 
 const DeleteUser = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onClick = async () => {
     await dispatch(eraseUser());
-    dispatch(logout());
+    await dispatch(logout());
+    await navigate('/');
   };
   return (
     <Wapper>

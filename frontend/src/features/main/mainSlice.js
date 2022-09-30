@@ -1,12 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchSharedFc } from './mainActions';
 
-const initialState = {};
+const initialState = {
+  sharedFcList: null,
+};
 
 const mainSlice = createSlice({
-  name: "main",
+  name: 'main',
   initialState,
   reducers: {},
-  extraReducers: {},
+  extraReducers: {
+    [fetchSharedFc.fulfilled]: (state, { payload }) => {
+      state.sharedFcList = payload.data;
+      console.log(payload);
+    },
+    [fetchSharedFc.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+  },
 });
 
 export default mainSlice.reducer;

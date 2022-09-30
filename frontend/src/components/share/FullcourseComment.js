@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   createSharedFcComment,
   createSharedFcLike,
@@ -8,7 +9,6 @@ import {
 import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 
 const CommentBlock = styled.div`
   width: 25%;
@@ -58,6 +58,7 @@ const CommentBlock = styled.div`
   .commentArea {
     height: 50vh;
     margin: 0.5rem;
+    overflow-y: scroll;
   }
 
   .commentBox {
@@ -103,10 +104,6 @@ const CommentBlock = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
-    span {
-      cursor: pointer;
-    }
   }
 
   .favorite {
@@ -121,17 +118,24 @@ const CommentBlock = styled.div`
     margin-right: 5px;
   }
 
-  .share {
+  #btnKakao {
+    position: relative;
+    display: inline-block;
     cursor: pointer;
-    align-items: center;
+    padding-top: 40px;
     margin-left: 20px;
-    margin-right: 5px;
+    background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-kakao.png);
+    background-repeat: no-repeat;
+    width: 50px;
   }
 `;
 
 const FullcourseComment = ({ sharedFcInfo }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [comment, setComment] = useState('');
+  const { Kakao } = window;
+  const { userInfo } = useSelector((state) => state.user);
 
   const onChangeReply = (e) => {
     setComment(e.target.value);
@@ -139,10 +143,14 @@ const FullcourseComment = ({ sharedFcInfo }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createSharedFcComment({ comment, sharedFcId: sharedFcInfo.sharedFcId }),
-    );
-    e.target.reset();
+    if (!userInfo) {
+      navigate('/user/login');
+    } else {
+      dispatch(
+        createSharedFcComment({ comment, sharedFcId: sharedFcInfo.sharedFcId }),
+      );
+      e.target.reset();
+    }
   };
 
   const onClickDelete = (comment) => {
@@ -158,12 +166,29 @@ const FullcourseComment = ({ sharedFcInfo }) => {
     dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
   };
 
+  const shareKakao = (sharedFcInfo) => {
+    Kakao.Link.createDefaultButton({
+      container: '#btnKakao',
+      objectType: 'feed',
+      content: {
+        title: sharedFcInfo.title,
+        description: sharedFcInfo.detail,
+        imageUrl: sharedFcInfo.thumbnail,
+        link: {
+          mobileWebUrl:
+            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+          webUrl:
+            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+        },
+      },
+    });
+  };
+
   return (
     <CommentBlock>
       {sharedFcInfo ? (
         <div className="detail">{sharedFcInfo.detail}</div>
       ) : null}
-
       <div className="likeArea">
         {sharedFcInfo ? (
           <>
@@ -175,10 +200,17 @@ const FullcourseComment = ({ sharedFcInfo }) => {
                 onClick={onClickLike}
               />
             )}
-            <span onClick={onClickLike}>좋아요</span>
+            <span>좋아요</span>
           </>
         ) : null}
-        <ShareIcon className="share" />
+        {sharedFcInfo ? (
+          <a
+            id="btnKakao"
+            onClick={() => {
+              shareKakao(sharedFcInfo);
+            }}
+          ></a>
+        ) : null}
         <span>공유하기</span>
       </div>
       <div className="commentForm">
@@ -195,7 +227,6 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         {sharedFcInfo ? (
           <>
             {sharedFcInfo.sharedFCComments.map((comment, index) => {
-              console.log(comment);
               return (
                 <div key={index} className="commentBox">
                   <li className="comment">
@@ -207,7 +238,9 @@ const FullcourseComment = ({ sharedFcInfo }) => {
                     <span id="userNickname">{comment.nickname} </span>
                     <span>{comment.comment}</span>
                   </li>
-                  <button onClick={() => onClickDelete(comment)}>삭제</button>
+                  {userInfo && userInfo.email === comment.email ? (
+                    <button onClick={() => onClickDelete(comment)}>삭제</button>
+                  ) : null}
                 </div>
               );
             })}

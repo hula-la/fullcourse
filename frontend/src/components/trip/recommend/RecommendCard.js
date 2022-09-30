@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { likePlace } from '../../../features/survey/surveySlice';
+import { likePlace,deletePlace } from '../../../features/survey/surveySlice';
 import { useSelector, useDispatch } from 'react-redux';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -105,8 +105,17 @@ const RecommendCard = ({ place, index }) => {
     const { likePlaceIndex } = useSelector((state) => state.survey);
 
     
-      const onClickAdd = (index, e) => {
-        dispatch(likePlace(recommendPlaceList[index]));
+    const onClickAdd = (index, e) => {
+        //  이미 선택한 장소면 삭제
+        if (likePlaceIndex.includes(place.placeId)) {
+            dispatch(deletePlace(recommendPlaceList[index]));
+        }
+        //  선택한 것이 아니면
+        else {
+            // 최대 갯수를 넘지 않으면 추가
+            if (likePlaceIndex.length == 5) alert("최대 장소 선택갯수를 채웠습니다.")
+            else { dispatch(likePlace(recommendPlaceList[index])); }
+        }
       };
 
 
