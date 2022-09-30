@@ -36,7 +36,7 @@ const Side = styled.div`
   #buttonWrapper {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 1vh;
     height: 100%;
     border-radius: 10px;
@@ -57,6 +57,9 @@ const StyledButton = styled.div`
   align-items: center;
   border-radius: 10px;
   font-size: 2vmin;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    font-size: 0.8rem;
+  }
   margin-left: 0.5vw;
   padding-right: 1.5vw;
   :hover {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import TitleText from '../user/profile/TitleText';
 import SharedFcDayTagItem from './SharedFcDayTagItem';
 import FullcourseTagItem from './SharedFcTagItem';
 
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
     align-items: center;
     width: 60%;
     margin: 0 auto;
-    border-bottom: 2px solid #d9d9d9;
+    /* border-bottom: 2px solid #d9d9d9; */
   }
 
   .nonelist {
@@ -56,7 +57,6 @@ const FullcourseTag = () => {
 
   return (
     <Wrapper>
-      <Text className="ttl">풀코스 검색</Text>
       <div className="tag">
         <ul className="nonelist">
           {tagList.map((tag, index) => {

@@ -6,14 +6,6 @@ import StyledButton from '../../components/common/StyledButton';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 
-//Card 관련
-import AspectRatio from '@mui/joy/AspectRatio';
-import Card from '@mui/joy/Card';
-import Avatar from '@mui/joy/Avatar';
-import CardOverflow from '@mui/joy/CardOverflow';
-import { FaCommentDots } from 'react-icons/fa';
-import { GoHeart } from 'react-icons/go';
-
 const Container = styled.div`
   animation: fadeInUp 2s;
   margin: 10vh;
@@ -50,24 +42,18 @@ const Text = styled.span`
 const Flex = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    flex-wrap: nowrap;
+  }
+  justify-content: center;
   margin: 2vh 3vw;
   overflow-x: auto;
 `;
 
-
-
 const FullCourseList = () => {
   const isMobile = useMediaQuery('(max-width: 767px)');
-  // carousel 설정
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
+
   const fullcourseList = [
     {
       user: {
@@ -78,6 +64,7 @@ const FullCourseList = () => {
       detail: '풀코스 상세 내용',
       lickCnt: 23,
       commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
     },
     {
       user: {
@@ -88,6 +75,7 @@ const FullCourseList = () => {
       detail: '풀코스 상세 내용',
       lickCnt: 23,
       commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
     },
     {
       user: {
@@ -98,6 +86,40 @@ const FullCourseList = () => {
       detail: '풀코스 상세 내용',
       lickCnt: 23,
       commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
+    },
+    {
+      user: {
+        userNickName: 'userNickname',
+      },
+      title: '풀코스 제목',
+      day: 3,
+      detail: '풀코스 상세 내용',
+      lickCnt: 23,
+      commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
+    },
+    {
+      user: {
+        userNickName: 'userNickname',
+      },
+      title: '풀코스 제목',
+      day: 3,
+      detail: '풀코스 상세 내용',
+      lickCnt: 23,
+      commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
+    },
+    {
+      user: {
+        userNickName: 'userNickname',
+      },
+      title: '풀코스 제목',
+      day: 3,
+      detail: '풀코스 상세 내용',
+      lickCnt: 23,
+      commentCnt: 13,
+      sharedFCTags: [{ tagContent: '부산' }],
     },
   ];
   return (

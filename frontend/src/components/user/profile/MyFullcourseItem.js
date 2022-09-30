@@ -14,6 +14,7 @@ const Wapper = styled.div`
 const FullCourseInfo = styled.div`
   display: flex;
   flex-direction: row;
+  min-width: 138px;
   img {
     width: 10vw;
     height: 10vw;
@@ -31,7 +32,7 @@ const Info = styled.div`
   margin: auto 10px;
   width: 70%;
   div {
-    font-size: 30px;
+    font-size: 1.5rem;
   }
   a {
     color: black;
@@ -109,7 +110,6 @@ const MyfullcourseItem = ({ fullcourse }) => {
     setEndDate(
       months[endSplit[1]] + '.' + endSplit[2] + '(' + days[endSplit[0]] + ')',
     );
-
     let dDay;
     if (end < today) {
       // 일정 지남

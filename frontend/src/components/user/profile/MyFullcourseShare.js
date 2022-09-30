@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { createSharedFc } from '../../../features/share/shareActions';
 import EditIcon from '@mui/icons-material/Edit';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import { initializeConnect } from 'react-redux/es/components/connect';
 
 const AlertDiv = styled.div`
   .modal {
@@ -238,6 +239,9 @@ const MyFullcourseShare = (props) => {
     );
   };
 
+  const initInputMsg = () => {
+    setInputMessage('(0/500)');
+  };
   return (
     <AlertDiv>
       <div className={open ? 'openModal modal' : 'modal'}>
@@ -245,7 +249,13 @@ const MyFullcourseShare = (props) => {
           <section>
             <header>
               {header}
-              <button className="close" onClick={close}>
+              <button
+                className="close"
+                onClick={() => {
+                  close();
+                  initInputMsg();
+                }}
+              >
                 <CloseIcon />
               </button>
             </header>
@@ -256,12 +266,7 @@ const MyFullcourseShare = (props) => {
                     <EditIcon />
                     <span>제목</span>
                   </label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    onChange={onChangeInputs}
-                  />
+                  <input type="text" id="title" name="title" />
                 </div>
                 <div>
                   <label>
