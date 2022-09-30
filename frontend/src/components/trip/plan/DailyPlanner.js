@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { createTrip } from '../../../features/trip/tripActions';
-import { setMarkers, clearMarkers, deleteMarkers } from '../../../features/trip/tripSlice';
+import {
+  setMarkers,
+  clearMarkers,
+  deleteMarkers,
+} from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   border: 3px solid;
@@ -40,9 +44,76 @@ const SaveBtn = styled.button``;
 const DailyPlanner = ({ map, setMap, mapRef }) => {
   const dispatch = useDispatch();
   const [placeLocations, setPlaceLocations] = useState(null);
+  const [planDay, setPlanDay] = useState(1);
 
   const { tripDates, placeItem, startDate, endDate, regDate, markers } =
     useSelector((state) => state.trip);
+
+  const googleMapStyle = {
+    mapStyles: [
+      {
+        featureType: 'administrative',
+        elementType: 'geometry',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'administrative.land_parcel',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'poi',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels.text',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'road',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'road.local',
+        elementType: 'labels',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+      {
+        featureType: 'transit',
+        stylers: [
+          {
+            visibility: 'off',
+          },
+        ],
+      },
+    ],
+  };
 
   useEffect(() => {
     //드래그앤 드롭 바닐라 자스
@@ -76,7 +147,11 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       }
     });
     const getPlaceLocations = (e) => {
+      const DayElm = e.target.closest('.planner-box'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
+      // console.log(DayElm.querySelector('.title').innerText)
+      setPlanDay(DayElm.querySelector('.title').innerText)
       const titleElm = e.target.closest('.date'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
+      console.log(titleElm)
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
         : null;
@@ -145,13 +220,13 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       (plannerBox) => {
         const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
           (placeItem, idx) => {
-            const comment = null
+            const comment = null;
             const courseOrder = idx;
             const placeData = placeItem.dataset;
-            const img = null
+            const img = null;
             newTrip['thumbnail'] = placeData.placeImg;
             const placeId = placeData.placeId;
-            console.log(placeData.placeType)
+            console.log(placeData.placeType);
             const type = placeData.placeType;
             const visited = false;
             return { comment, courseOrder, img, placeId, type, visited };
@@ -174,19 +249,19 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     dispatch(createTrip(JSON.stringify(newTrip)));
   };
 
-  // 기존 맵에서 marker 지울 때 쓰는 공식인데, 지금은 클리어마커로 해놓음
-  const removeMarker = (lat, lng,e) => {
+  // 마커삭제
+  const removeMarker = (lat, lng, e) => {
     markers &&
       markers.forEach((item, idx) => {
-        const copyArray = [...markers]
+        const copyArray = [...markers];
         if (item.position.lat === lat && item.position.lng === lng) {
-          copyArray.splice(idx,1)
-          dispatch(deleteMarkers(copyArray))
+          copyArray.splice(idx, 1);
+          dispatch(deleteMarkers(copyArray));
         }
       });
   };
 
-  //하나씩 삭제시키는거 넣어서 아마 없어도 될것 같은데 코드는 남겨놓음
+  //하나씩 삭제시키는거 넣어서 아마 없어도 될것 같은데 코드는 남겨놓음, 장소전체삭제
   const clearMarker = () => {
     dispatch(clearMarkers());
   };
@@ -243,7 +318,8 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 35.1165, lng: 129.0401 },
-      zoom: 11,
+      zoom: 10,
+      styles: googleMapStyle.mapStyles,
     });
 
     const waypoints = [];
@@ -255,14 +331,41 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
           lng: parseFloat(item.lng),
         });
       });
+    
+    
+    const color = ['#FF5854','#66FF5C','#FFBC65','#655AFF','#E574FF']
+    var myColor = ''
+    var myIcon = new window.google.maps.MarkerImage("/img/marker/marker0.png", null, null, null, new window.google.maps.Size(28,30));
+    for (var i = 1; i < 6; i++) {
+      if (planDay === `Day${i}`) {
+        myIcon = new window.google.maps.MarkerImage(`/img/marker/marker${i-1}.png`, null, null, null, new window.google.maps.Size(28,30));
+        myColor = color[i-1] 
+      }
+    }
 
-    const markers = [];
+    waypoints && waypoints.map((item,idx) => {
+      console.log(("뭐담겨있지",item))
+      new window.google.maps.Marker({
+        map,
+        position: item,
+        icon: myIcon,
+        label: {
+          text: `${idx+1}`,
+          fontSize: "1.5vmin",
+          fontFamily: "Tmoney",
+          className: "numlabel",
+          color: "white"
+          
+          
+        },
+      });
+    })
 
     console.log(waypoints);
     const flightPath = new window.google.maps.Polyline({
       path: waypoints,
       geodesic: true,
-      strokeColor: '#FF0000',
+      strokeColor: myColor,
       strokeOpacity: 1.0,
       strokeWeight: 2,
     });
@@ -288,7 +391,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               className="list-item"
             >
               {item.name}
-              
+
               <DeleteBtn
                 className="delete"
                 onClick={(e) => {

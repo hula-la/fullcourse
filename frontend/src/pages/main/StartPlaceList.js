@@ -104,8 +104,10 @@ const StartPlaceList = () => {
 
   const { markers, map } = useSelector((state) => state.trip);
 
+  // const imageSrc = "/img/marker/marker0.png"
+
   //시작 위치 마커 추가
-  const addMarker = (lat, lng) => {
+  const addMarker = (lat, lng, name) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
@@ -113,7 +115,10 @@ const StartPlaceList = () => {
     });
     console.log(typeof marker);
     marker['position'] = position;
+    marker['placeName'] = name;
+    
     dispatch(setMarkers(marker));
+
   };
 
   const setStartPlaceInfo = (id, e) => {
@@ -134,7 +139,7 @@ const StartPlaceList = () => {
         placeItemObj.lng = data.lng;
         placeItemObj.type = placeType
         dispatch(setPlaceItem(placeItemObj));
-        addMarker(data.lat, data.lng);
+        addMarker(data.lat, data.lng, data.name);
       })
       .then(() => {
         navigate('trip/plan');
@@ -165,6 +170,7 @@ const StartPlaceList = () => {
     <div>
       <Container>
         <Title>
+          {/* <img src={imageSrc}></img> */}
           <Text>어디로 함 가볼까?</Text>
           <StyledButton content="더보기" />
         </Title>

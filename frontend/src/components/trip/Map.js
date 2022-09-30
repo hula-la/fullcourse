@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitMap } from '../../features/trip/tripSlice';
+import './map.css'
 
 const MapContainer = styled.div``;
 
 const Map = ({ map, setMap, mapRef }) => {
-  const { markers, placeItem } = useSelector((state) => state.trip);
+  const { markers  } = useSelector((state) => state.trip);
   
   useSelector((state) => state.trip);
 
@@ -78,6 +79,10 @@ const Map = ({ map, setMap, mapRef }) => {
 
   const dispatch = useDispatch();
 
+
+
+  
+
   //으음 useCallback의 사용이유가 뭘까
   //일정짜기 페이지 그리면 초기지도 그려주기
   const initMap = useCallback(() => {
@@ -90,6 +95,7 @@ const Map = ({ map, setMap, mapRef }) => {
     dispatch(setInitMap(map)) //시작하기 누르면 마커추가하기위해서, 상위로 map을 보내기위해 dispatch사용해보자
     markers &&
       markers.forEach((item, idx) => {
+        const myIcon = new window.google.maps.MarkerImage("/img/marker/marker0.png", null, null, null, new window.google.maps.Size(28,30));
         const position = {
           lat: parseFloat(item.position.lat),
           lng: parseFloat(item.position.lng),
@@ -97,9 +103,23 @@ const Map = ({ map, setMap, mapRef }) => {
         new window.google.maps.Marker({
           map,
           position: position,
+          label: {
+            text: item.placeName,
+            fontSize: "1.5vmin",
+            fontFamily: "Tmoney",
+            className: "label",
+            color: "white"
+            
+            
+          },
+          icon: myIcon,
         });
+
+  
       });
-  }, [mapRef, markers ]);
+
+
+  }, [mapRef, markers]);
 
   useEffect(() => {
     initMap();
@@ -109,3 +129,4 @@ const Map = ({ map, setMap, mapRef }) => {
 };
 
 export default Map;
+

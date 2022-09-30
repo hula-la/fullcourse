@@ -35,14 +35,15 @@ export const postPlaceLike = async (placeId, placeType) => {
 };
 
 //장소 리뷰
-export const postReview = async (img, content, placeId, placeType) => {
-  console.log("잘넘어오나",img,content,placeId,placeType);
+export const postReview = async (img, content, score, placeId, placeType) => {
+  console.log("잘넘어오나",img,content, score, placeId,placeType);
   const formData = new FormData();
   formData.append('file', img);
   formData.append(
-    'content',
-    new Blob([JSON.stringify(content)], { type: 'application/json' }),
+    'reviewPostReq',
+    new Blob([JSON.stringify({content, score})], { type: 'application/json' }),
   );
+  console.log("data형태뭐지", formData)
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',

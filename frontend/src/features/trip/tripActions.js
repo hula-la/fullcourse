@@ -94,11 +94,14 @@ export const createPlaceLike = createAsyncThunk(
 );
 
 //장소리뷰쓰기
-export const createDiary = createAsyncThunk(
+export const createReview = createAsyncThunk(
   'trip/createDiary',
-  async ({ img, content, placeId, placeType }, { rejectWithValue }) => {
+  async ({ imageFile, reviewComment, value, placeId, placeType }, { rejectWithValue }) => {
     try {
-      const { data } = await postReview(img, content, placeId, placeType);
+      console.log(value,imageFile,reviewComment,placeId,placeType)
+      console.log("제발성공")
+      const { data } = await postReview(imageFile, reviewComment, value, placeId, placeType);
+      console.log("data뭐지",data)
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

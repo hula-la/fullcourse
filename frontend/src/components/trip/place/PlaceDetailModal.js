@@ -6,7 +6,7 @@ import PlaceDetailContent from './PlaceDetailContent';
 import { AiOutlineHeart, AiOutlineStar, AiFillHeart } from 'react-icons/ai';
 import { BiCalendarPlus } from 'react-icons/bi';
 import { createPlaceLike } from '../../../features/trip/tripActions';
-import PlaceReview from './PlaceReview'
+import PlaceReview from './PlaceReview';
 const ModalBackdrop = styled.div`
   width: 100vw;
   height: 100vh;
@@ -107,28 +107,27 @@ const Review = styled(AiOutlineStar)`
   border-radius: 100%;
   margin: 0 1vw;
   background-color: #ffe3e1;
+  cursor: pointer;
 `;
 
 const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
   const { placeDetail } = useSelector((state) => state.trip);
   const [isLiked, setIsLiked] = useState(false);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  
   const dispatch = useDispatch();
   const placeLike = (placeId, placeType) => {
     setIsLiked(!isLiked);
     dispatch(createPlaceLike({ placeId, placeType }));
   };
-  
+
   const openReivewModal = () => {
-    console.log("뭐지")
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const closePlaceDetailModal = () => {
-    openDetailModal(false)
-  }
+    openDetailModal(false);
+  };
 
   return (
     <ModalBackdrop>
@@ -175,22 +174,24 @@ const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
             <span className="like">장소담기</span>
           </IconBox>
           <IconBox>
-            <Review onClick={() => {openReivewModal()}}/>
+            <Review
+              onClick={() => {
+                openReivewModal();
+              }}
+            />
             <span className="like">리뷰쓰기</span>
-            {isOpen ? (
-              <PlaceReview
-                openReivewModal={openReivewModal}
-                placeId={placeId}
-                placeType={placeType}
-                setIsOpen={setIsOpen}
-                
-                
-              />
-            ) : null}
           </IconBox>
         </div>
 
         {placeDetail ? <PlaceDetailContent /> : null}
+        {isOpen ? (
+          <PlaceReview
+            openReivewModal={openReivewModal}
+            placeId={placeId}
+            placeType={placeType}
+            setIsOpen={setIsOpen}
+          />
+        ) : null}
       </ModalView>
     </ModalBackdrop>
   );

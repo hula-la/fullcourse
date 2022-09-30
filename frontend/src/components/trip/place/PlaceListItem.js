@@ -65,14 +65,14 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
 
     dispatch(setPlaceItem(placeItemObj));
   };
-  const addMarker = (lat, lng) => {
+  const addMarker = (lat, lng,name) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
+    marker['placeName'] = name;
     dispatch(setMarkers(marker));
   };
   return (
@@ -132,7 +132,7 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
                 index,
                 e,
               );
-              addMarker(place.lat, place.lng, e);
+              addMarker(place.lat, place.lng, place.name, e);
             }}
           />
         </Box>
