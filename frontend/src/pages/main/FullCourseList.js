@@ -13,6 +13,10 @@ import Avatar from '@mui/joy/Avatar';
 import CardOverflow from '@mui/joy/CardOverflow';
 import { FaCommentDots } from 'react-icons/fa';
 import { GoHeart } from 'react-icons/go';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchSharedFc } from '../../features/main/mainActions';
 
 const Container = styled.div`
   animation: fadeInUp 2s;
@@ -57,47 +61,11 @@ const Flex = styled.div`
 `;
 
 const FullCourseList = () => {
-  const isMobile = useMediaQuery('(max-width: 767px)');
-  // carousel 설정
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-  const fullcourseList = [
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-    },
-  ];
+  const dispatch = useDispatch();
+  const { sharedFcList } = useSelector((state) => state.main);
+  useEffect(() => {
+    dispatch(fetchSharedFc());
+  }, [dispatch]);
   return (
     <div>
       {/* card fadeinup 시도해보자 */}
@@ -106,9 +74,9 @@ const FullCourseList = () => {
           <Text>추천 풀코스</Text>
           <StyledButton content="더보기" />
         </Title>
-        {fullcourseList ? (
+        {sharedFcList ? (
           <Flex>
-            {fullcourseList.map((fullcourse, index) => {
+            {sharedFcList.content.map((fullcourse, index) => {
               return <CardComponent key={index} fullcourse={fullcourse} />;
             })}
           </Flex>

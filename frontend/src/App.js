@@ -20,12 +20,19 @@ import RecommendPage from './pages/survey/RecommendPage';
 import SurveyPage from './pages/survey/SurveyPage';
 // 404
 import NotFound from './pages/NotFound';
+import ProtectedLoginRoute from './lib/ProtectedLoginRoute';
+import ProtectedRoute from './lib/ProtectedRoute';
+import { useSelector } from 'react-redux';
 
 function App() {
   const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, [dispatch]);
+
   return (
     <div className="App">
       <Routes>
@@ -33,9 +40,13 @@ function App() {
         <Route path="" element={<MainPage />} />
         {/* user */}
         <Route path="user" element={<Layout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="profile/:pageNum" element={<ProfilePage />} />
-          <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+          <Route element={<ProtectedLoginRoute userInfo={userInfo} />}>
+            <Route path="login" element={<LoginPage />} />
+          </Route>
+          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+            <Route path="profile/:pageNum" element={<ProfilePage />} />
+            <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+          </Route>
         </Route>
         <Route path="fullcourse" element={<Layout />}>
           <Route path="" element={<ShareFcPage />} />
@@ -43,10 +54,12 @@ function App() {
         </Route>
         {/* trip */}
         <Route path="trip" element={<OnlyHeaderLayout />}>
-          <Route path="plan" element={<PlanPage />} />
-          {/* survey 일정짜기 전 설문조사 */}
-          <Route path="survey" element={<SurveyPage />} />
-          <Route path="recommend" element={<RecommendPage />} />
+          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+            <Route path="plan" element={<PlanPage />} />
+            {/* survey 일정짜기 전 설문조사 */}
+            <Route path="survey" element={<SurveyPage />} />
+            <Route path="recommend" element={<RecommendPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
