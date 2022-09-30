@@ -28,8 +28,10 @@ const initialState = {
     '맛집',
   ],
   dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
+  dayTagList2: [],
   checkedTagList: [],
   checkedDayTagList: [],
+  checkedDay: 6,
 };
 
 const shareSlice = createSlice({
@@ -41,8 +43,7 @@ const shareSlice = createSlice({
         const tmp = state.checkedTagList.filter((el) => el !== payload);
         state.checkedTagList = tmp;
       } else {
-        const tmp = [...state.checkedTagList, payload];
-        state.checkedTagList = tmp;
+        state.checkedTagList = [...state.checkedTagList, payload];
       }
     },
     checkDayTag: (state, { payload }) => {
@@ -51,9 +52,21 @@ const shareSlice = createSlice({
         const tmp = state.checkedDayTagList.filter((el) => el !== day);
         state.checkedDayTagList = tmp;
       } else {
-        const tmp = [...state.checkedDayTagList, day];
-        state.checkedDayTagList = tmp;
+        state.checkedDayTagList = [...state.checkedDayTagList, day];
       }
+    },
+    makeDayTagList: (state, { payload }) => {
+      const tmp = [];
+      for (let i = 1; i <= parseInt(payload); i++) {
+        tmp.push(i + 'Day');
+      }
+      state.dayTagList2 = tmp;
+    },
+    checkDay: (state, { payload }) => {
+      state.checkedDay = payload;
+    },
+    checkAllDay: (state) => {
+      state.checkedDay = 6;
     },
   },
   extraReducers: {
@@ -117,6 +130,7 @@ const shareSlice = createSlice({
   },
 });
 
-export const { checkTag, checkDayTag } = shareSlice.actions;
+export const { checkTag, checkDayTag, makeDayTagList, checkDay, checkAllDay } =
+  shareSlice.actions;
 
 export default shareSlice.reducer;

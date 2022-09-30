@@ -1,10 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchMyFullcourse, fetchUserInfo, putUserInfo } from './userActions';
+import {
+  fetchDiary,
+  fetchMyFullcourse,
+  fetchUserInfo,
+  putUserInfo,
+} from './userActions';
 
 const initialState = {
   userInfo: null,
   error: null,
   myFullcourseList: null,
+  diaryInfo: null,
 };
 
 const userSlice = createSlice({
@@ -17,11 +23,13 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
+    // 유저정보 조회
     [fetchUserInfo.fulfilled]: (state, { payload }) => {
       state.userInfo = payload.data;
     },
     [fetchUserInfo.rejected]: (state, { payload }) => {
       state.error = payload.data;
+      // 나의 풀코스 목로 조회
     },
     [fetchMyFullcourse.fulfilled]: (state, { payload }) => {
       state.myFullcourseList = payload.data;
@@ -29,11 +37,19 @@ const userSlice = createSlice({
     },
     [fetchMyFullcourse.rejected]: (state, { payload }) => {
       state.error = payload.data;
+      // 회원정보 수정
     },
     [putUserInfo.fulfilled]: (state, { payload }) => {
       state.userInfo = payload.data;
     },
     [putUserInfo.rejected]: (state, { payload }) => {
+      state.error = payload.data;
+    },
+    // 다이어리 받아오기
+    [fetchDiary.fulfilled]: (state, { payload }) => {
+      state.diaryInfo = payload.data;
+    },
+    [fetchDiary.rejected]: (state, { payload }) => {
       state.error = payload.data;
     },
   },

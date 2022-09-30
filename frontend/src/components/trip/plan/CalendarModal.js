@@ -19,7 +19,7 @@ const ModalView = styled.div`
   margin-top: 1vh;
   margin-left: 1.5vw;
   padding: 0.5vh 0.5vh 0.5vh 0.5vh;
-
+  background: #E8F9FD;
   width: 41vw;
   display: flex;
   flex-direction: column;

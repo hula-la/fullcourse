@@ -1,8 +1,8 @@
-import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import Header from './Header';
+import Footer from './Footer';
+import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     height: auto;
     min-height: 100%;
-    padding-bottom: 100px;
+    /* padding-bottom: 100px; */
   }
 `;
 

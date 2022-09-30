@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{useRef,useState} from 'react';
 import styled from 'styled-components';
 import PlanBar from '../../components/trip/plan/PlanBar';
-import PlanMap from '../../components/trip/PlanMap';
+import Map from '../../components/trip/Map';
 import PlaceBar from '../../components/trip/place/PlaceBar';
 
 const Container = styled.div`
@@ -11,12 +11,14 @@ const Container = styled.div`
 `;
 
 const PlanPage = () => {
+  const mapRef = useRef(null);
+  const [map,setMap] = useState(null)
   return (
     <div>
       <Container>
-        <PlanBar></PlanBar>
-        <PlanMap></PlanMap>
-        <PlaceBar></PlaceBar>
+        <PlanBar map={map} setMap={setMap} mapRef={mapRef}></PlanBar>
+        <Map map={map} setMap={setMap} mapRef={mapRef}/>
+        <PlaceBar map={map}></PlaceBar>
       </Container>
     </div>
   );
