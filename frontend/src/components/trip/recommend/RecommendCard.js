@@ -27,6 +27,13 @@ animation: flip-vertical-right 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) bot
     
     height: 100%;
     width: 18rem;
+    margin: 0 1rem;
+
+    @media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+        height: 98%;
+    width: 15rem;
+    margin: 0 0.8rem;
+  }
 
     border-radius: 1rem;
     overflow:hidden;
