@@ -4,6 +4,7 @@ import userReducer from '../features/user/userSlice';
 import mainReducer from '../features/main/mainSlice';
 import shareReducer from '../features/share/shareSlice';
 import surveyReducer from '../features/survey/surveySlice';
+import arReducer from '../features/ar/arSlice'
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     main: mainReducer,
     share: shareReducer,
     survey: surveyReducer,
+    ar: arReducer
   },
   middleware: getDefaultMiddleware({
     serializableCheck: false,
