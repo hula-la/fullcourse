@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,13 @@ public class RestaurantService {
                 list = restaurantRepository.findByNameContainingAndCategory(keyword, tag);
             }
             list = extractByDist(list, lat, lng, maxDist);
+            if(pageable.getSort().toString().equals("likeCnt: DESC")){
+                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+            }
             int start = (int)pageable.getOffset();
             int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
             page = new PageImpl(list.subList(start, end), pageable, list.size());
@@ -60,13 +68,17 @@ public class RestaurantService {
         return page.map(PlaceRes::new);
     }
 
-    public RestaurantDetailRes getRestaurantDetail(Long placeId) throws Exception {
-        return restaurantRepository.findByPlaceId(placeId).get().toDetailDto();
+    public RestaurantDetailRes getRestaurantDetail(Long placeId, String email) throws Exception {
+        RestaurantDetailRes restaurantDetailRes = restaurantRepository.findByPlaceId(placeId).get().toDetailDto();
+        restaurantDetailRes.setIsLiked(restaurantLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                restaurantRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return restaurantDetailRes;
     }
 
     @Transactional
-    public boolean restaurantLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean restaurantLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Restaurant restaurant = restaurantRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -81,13 +93,15 @@ public class RestaurantService {
         if (restaurantLike.isPresent()) {
             restaurantLikeRepository.deleteById(restaurantLike.get().getLikeId());
             restaurant.setLikeCnt(restaurant.getLikeCnt() - 1);
+            response = false;
         } else {
             restaurantLikeRepository.save(RestaurantLike.builder().user(user).place(restaurant).build());
             restaurant.setLikeCnt(restaurant.getLikeCnt() + 1);
+            response = true;
         }
         restaurantRepository.save(restaurant);
 
-        return true;
+        return response;
     }
 
     public static List<Restaurant> extractByDist(List<Restaurant> list, Float lat, Float lng, Integer maxDist){

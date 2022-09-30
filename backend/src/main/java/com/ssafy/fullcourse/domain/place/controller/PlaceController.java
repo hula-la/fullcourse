@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "장소 API", tags = {"place"})
@@ -26,8 +27,7 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 리스트 조회", notes = "장소 리스트를 반환함.")
     @GetMapping("/{type}/list")
-
-    public ResponseEntity<BaseResponseBody> listTravel(@PathVariable String type, Pageable pageable,
+    public ResponseEntity<BaseResponseBody> listPlace(@PathVariable String type, Pageable pageable,
                                                        @RequestParam(required = false, defaultValue = "") String keyword,
                                                        @RequestParam(required = false, defaultValue = "") String tag,
                                                        @RequestParam(required = false, defaultValue = "0") Integer maxDist,
@@ -59,22 +59,22 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 상세 조회", notes = "장소의 상세정보를 반환함.")
     @GetMapping("/{type}/detail/{placeId}")
-    public ResponseEntity<BaseResponseBody> detailTravel(@PathVariable String type, @PathVariable Long placeId) throws Exception {
+    public ResponseEntity<BaseResponseBody> detailPlace(@PathVariable String type, @PathVariable Long placeId, @AuthenticationPrincipal String email) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    travelService.getTravelDetail(placeId)));
+                    travelService.getTravelDetail(placeId, email)));
         } else if (type.equals("restaurant")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    restaurantService.getRestaurantDetail(placeId)));
+                    restaurantService.getRestaurantDetail(placeId, email)));
         } else if (type.equals("hotel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    hotelService.getHotelDetail(placeId)));
+                    hotelService.getHotelDetail(placeId, email)));
         } else if (type.equals("culture")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    cultureService.getCultureDetail(placeId)));
+                    cultureService.getCultureDetail(placeId, email)));
         } else if (type.equals("activity")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    activityService.getActivityDetail(placeId)));
+                    activityService.getActivityDetail(placeId, email)));
         } else if (type.equals("custom")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
                     customService.getCustomDetail(placeId)));
@@ -85,23 +85,23 @@ public class PlaceController {
 
     @ApiOperation(value = "장소 좋아요 버튼", notes = "좋아요 성공 여부를 반환")
     @PostMapping("/{type}/like/{placeId}")
-    public ResponseEntity<BaseResponseBody> likeTravel(@PathVariable String type, @PathVariable Long placeId,
-                                                       @RequestBody Long userId) throws Exception {
+    public ResponseEntity<BaseResponseBody> likePlace(@PathVariable String type, @PathVariable Long placeId,
+                                                       @AuthenticationPrincipal String email) throws Exception {
         if (type.equals("travel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    travelService.travelLike(placeId, userId)));
+                    travelService.travelLike(placeId, email)));
         } else if (type.equals("restaurant")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    restaurantService.restaurantLike(placeId, userId)));
+                    restaurantService.restaurantLike(placeId, email)));
         } else if (type.equals("hotel")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", hotelService.hotelLike(placeId
-                    , userId)));
+                    , email)));
         } else if (type.equals("culture")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    cultureService.cultureLike(placeId, userId)));
+                    cultureService.cultureLike(placeId, email)));
         } else if (type.equals("activity")) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success",
-                    activityService.activityLike(placeId, userId)));
+                    activityService.activityLike(placeId, email)));
         } else {
             return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Fail", null));
         }

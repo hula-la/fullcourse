@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,16 @@ public class CultureService {
         } else {
             list = cultureRepository.findByNameContaining(keyword);
         }
-        if(maxDist != 0) list = extractByDist(list, lat, lng, maxDist);
+        if(maxDist != 0) {
+            list = extractByDist(list, lat, lng, maxDist);
+            if(pageable.getSort().toString().equals("likeCnt: DESC")){
+                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+            }
+        }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
         page = new PageImpl(list.subList(start, end), pageable, list.size());
@@ -45,14 +55,18 @@ public class CultureService {
     }
 
 
-    public CultureDetailRes getCultureDetail(Long placeId) throws Exception {
-        return cultureRepository.findByPlaceId(placeId).get().toDetailDto();
+    public CultureDetailRes getCultureDetail(Long placeId, String email) throws Exception {
+        CultureDetailRes cultureDetailRes = cultureRepository.findByPlaceId(placeId).get().toDetailDto();
+        cultureDetailRes.setIsLiked(cultureLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                cultureRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return cultureDetailRes;
     }
 
 
     @Transactional
-    public boolean cultureLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean cultureLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Culture culture = cultureRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -67,12 +81,14 @@ public class CultureService {
         if (cultureLike.isPresent()) {
             cultureLikeRepository.deleteById(cultureLike.get().getLikeId());
             culture.setLikeCnt(culture.getLikeCnt() - 1);
+            response = false;
         } else {
             cultureLikeRepository.save(CultureLike.builder().user(user).place(culture).build());
             culture.setLikeCnt(culture.getLikeCnt() + 1);
+            response = true;
         }
         cultureRepository.save(culture);
-        return true;
+        return response;
     }
 
     public static List<Culture> extractByDist(List<Culture> list, Float lat, Float lng, Integer maxDist) {

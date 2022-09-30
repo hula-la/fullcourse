@@ -37,8 +37,8 @@ public class Activity extends BasePlace {
     @Column(nullable = false, length = 20)
     private String gugun;
 
-    @Column(nullable = false, length = 30)
-    private String place;
+    @Column(nullable = false, length = 30, name = "place")
+    private String address;
 
     @Column(nullable = false, length = 300)
     private String imgUrl;
@@ -64,6 +64,9 @@ public class Activity extends BasePlace {
     @Column(nullable = false)
     private Long likeCnt = 0L;
 
+    @Column(nullable = false)
+    private Float reviewScore = 0F;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<ActivityReview> reviews = new ArrayList<>();
 
@@ -79,7 +82,7 @@ public class Activity extends BasePlace {
         res.setLng(this.getLng());
         res.setTel(this.getTel());
         res.setGugun(this.getGugun());
-        res.setPlace(this.getPlace());
+        res.setAddress(this.getAddress());
         res.setImgUrl(this.getImgUrl());
         res.setHoliday(this.getHoliday());
         res.setOpenTime(this.getOpenTime());
@@ -88,6 +91,7 @@ public class Activity extends BasePlace {
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
         res.setLikeCnt(this.getLikeCnt());
+        res.setReviewScore(this.reviewScore);
         return res;
     }
 

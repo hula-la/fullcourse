@@ -17,10 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -76,6 +73,15 @@ public class TravelService {
                 }
             }
         }
+        if(pageable.getSort().toString().equals("likeCnt: DESC")){
+            Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+        } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+        } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+        } else if (pageable.getSort().toString().equals("mention: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getMention() - o1.getMention()));
+        }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
         Page<Travel> page = new PageImpl(list.subList(start,end), pageable, list.size());
@@ -83,13 +89,17 @@ public class TravelService {
 
     }
 
-    public TravelDetailRes getTravelDetail(Long placeId) throws Exception {
-        return travelRepository.findByPlaceId(placeId).get().toDetailDto();
+    public TravelDetailRes getTravelDetail(Long placeId, String email) throws Exception {
+        TravelDetailRes travelDetailRes = travelRepository.findByPlaceId(placeId).get().toDetailDto();
+        travelDetailRes.setIsLiked(travelLikeRepository.findByUserAndPlace(userRepository.findByEmail(email).get(),
+                travelRepository.findByPlaceId(placeId).get()).isPresent() ? true : false);
+        return travelDetailRes;
     }
 
     @Transactional
-    public boolean travelLike(Long placeId, Long userId) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public boolean travelLike(Long placeId, String email) throws Exception {
+        boolean response = false;
+        User user = userRepository.findByEmail(email).get();
         Travel travel = travelRepository.findByPlaceId(placeId).get();
 
         if (user == null) {
@@ -104,11 +114,13 @@ public class TravelService {
         if (travelLike.isPresent()) {
             travelLikeRepository.deleteById(travelLike.get().getLikeId());
             travel.setLikeCnt(travel.getLikeCnt() - 1);
+            response = false;
         } else {
             travelLikeRepository.save(TravelLike.builder().user(user).place(travel).build());
             travel.setLikeCnt(travel.getLikeCnt() + 1);
+            response = true;
         }
         travelRepository.save(travel);
-        return true;
+        return response;
     }
 }

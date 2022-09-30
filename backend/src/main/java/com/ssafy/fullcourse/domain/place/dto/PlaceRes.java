@@ -17,6 +17,7 @@ public class PlaceRes {
     String imgUrl;
     Long reviewCnt;
     Long likeCnt;
+    Long addedCnt;
 
     public PlaceRes(Travel place){
         this.placeId = place.getPlaceId();
@@ -26,6 +27,7 @@ public class PlaceRes {
         this.imgUrl = place.getImgUrl();
         this.reviewCnt = place.getReviewCnt();
         this.likeCnt = place.getLikeCnt();
+        this.addedCnt = place.getAddedCnt();
     }
     public PlaceRes(Activity place){
         this.placeId = place.getPlaceId();
@@ -35,6 +37,7 @@ public class PlaceRes {
         this.imgUrl = place.getImgUrl();
         this.reviewCnt = place.getReviewCnt();
         this.likeCnt = place.getLikeCnt();
+        this.addedCnt = place.getAddedCnt();
     }
     public PlaceRes(Hotel place){
         this.placeId = place.getPlaceId();
@@ -43,6 +46,7 @@ public class PlaceRes {
         this.lng = place.getLng();
         this.reviewCnt = place.getReviewCnt();
         this.likeCnt = place.getLikeCnt();
+        this.addedCnt = place.getAddedCnt();
     }
     public PlaceRes(Restaurant place){
         this.placeId = place.getPlaceId();
@@ -52,6 +56,7 @@ public class PlaceRes {
         this.imgUrl = place.getImgUrl();
         this.reviewCnt = place.getReviewCnt();
         this.likeCnt = place.getLikeCnt();
+        this.addedCnt = place.getAddedCnt();
     }
     public PlaceRes(Culture place){
         this.placeId = place.getPlaceId();
@@ -61,6 +66,7 @@ public class PlaceRes {
         this.imgUrl = place.getImgUrl();
         this.reviewCnt = place.getReviewCnt();
         this.likeCnt = place.getLikeCnt();
+        this.addedCnt = place.getAddedCnt();
     }
     public PlaceRes(Custom place){
         this.placeId = place.getPlaceId();
