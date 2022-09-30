@@ -36,7 +36,6 @@ public class HotelReviewService extends BaseReviewService<HotelReview, Hotel, Ho
         // NotFoundException 턴지기
         if(!place.isPresent()) throw new PlaceNotFoundException();
 
-
         HotelReview baseReview = HotelReview.builder()
                 .score(reviewPostReq.getScore())
                 .content(reviewPostReq.getContent())
@@ -44,9 +43,12 @@ public class HotelReviewService extends BaseReviewService<HotelReview, Hotel, Ho
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
                 .build();
-// 평점 계산.
-        place.get().setReviewScore((place.get().getReviewCnt() * place.get().getReviewScore() + reviewPostReq.getScore()) / place.get().getReviewCnt() + 1);
+
+        // 평점 계산.
+        float updateReviewScore = (place.get().getReviewCnt() * place.get().getReviewScore() + reviewPostReq.getScore()) / (place.get().getReviewCnt() + 1);
+        place.get().updateReviewScore(updateReviewScore);
         basePlaceRepositoryMap.get(Type.getPlace()).save(place.get());
+
         if(file != null) {
             baseReview.setReviewImg(awsS3Service.uploadImage(file));
         } else {

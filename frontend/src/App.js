@@ -16,16 +16,25 @@ import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
 import PlanPage from './pages/trip/PlanPage';
 import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 // survey
-import RecommendPage from './pages/survey/RecommendPage';
 import SurveyPage from './pages/survey/SurveyPage';
+import RecommendPage from './pages/survey/RecommendPage';
+// ar
+import ArPage from './pages/ar/ArPage';
 // 404
 import NotFound from './pages/NotFound';
+import ProtectedLoginRoute from './private/ProtectedLoginRoute';
+import ProtectedRoute from './private/ProtectedRoute';
+import { useSelector } from 'react-redux';
 
 function App() {
   const dispatch = useDispatch();
+
+  const { userInfo } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, [dispatch]);
+
   return (
     <div className="App">
       <Routes>
@@ -33,9 +42,13 @@ function App() {
         <Route path="" element={<MainPage />} />
         {/* user */}
         <Route path="user" element={<Layout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="profile/:pageNum" element={<ProfilePage />} />
-          <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+          <Route element={<ProtectedLoginRoute userInfo={userInfo} />}>
+            <Route path="login" element={<LoginPage />} />
+          </Route>
+          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+            <Route path="profile/:pageNum" element={<ProfilePage />} />
+            <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+          </Route>
         </Route>
         <Route path="fullcourse" element={<Layout />}>
           <Route path="" element={<ShareFcPage />} />
@@ -43,11 +56,16 @@ function App() {
         </Route>
         {/* trip */}
         <Route path="trip" element={<OnlyHeaderLayout />}>
-          <Route path="plan" element={<PlanPage />} />
-          {/* survey 일정짜기 전 설문조사 */}
-          <Route path="survey" element={<SurveyPage />} />
-          <Route path="recommend" element={<RecommendPage />} />
+          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+            <Route path="plan" element={<PlanPage />} />
+            {/* survey 일정짜기 전 설문조사 */}
+            <Route path="survey" element={<SurveyPage />} />
+            <Route path="recommend" element={<RecommendPage />} />
+          </Route>
         </Route>
+
+        
+        <Route path="ar" element={<ArPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

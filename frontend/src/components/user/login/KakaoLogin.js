@@ -42,10 +42,10 @@ const KakaoLogin = () => {
 
   const getKakaoToken = () => {
     Kakao.Auth.login({
-      success: (authObj) => {
-        dispatch(userLoginKakao(authObj.access_token));
-        dispatch(fetchUserInfo());
-        navigate('/');
+      success: async (authObj) => {
+        await dispatch(userLoginKakao(authObj.access_token));
+        await dispatch(fetchUserInfo());
+        await navigate('/');
       },
     });
   };

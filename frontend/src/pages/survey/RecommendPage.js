@@ -2,14 +2,28 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchRecommendPlace } from '../../features/survey/surveyActions';
+import { deletePlace } from '../../features/survey/surveySlice';
 // import { likePlace } from '../../features/survey/surveySlice';
 import RecommendCard from '../../components/trip/recommend/RecommendCard';
 import styled from 'styled-components';
 
+//액션 임포트
+import { fetchPlaceDetail } from '../../features/trip/tripActions';
+import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
+
 const Wrapper = styled.div`
+position: relative;
 height:calc(100vh - 80px);
 
+`
 
+
+const PlanButton = styled.div`
+position: absolute;
+top:5%;
+right:5%;
+font-weight:bold;
+cursor:pointer;
 `
 
 const RecommendHeader = styled.div`
@@ -145,6 +159,10 @@ border-radius: 10px;
   color:#7c87d5
 }
 
+.maxLike{
+  color: red;
+}
+
 button{
   border: none;
     border-radius: 1rem;
@@ -163,6 +181,9 @@ const RecommendPage = () => {
   const { recommendPlaceList } = useSelector((state) => state.survey);
   const { likePlaceList } = useSelector((state) => state.survey);
   const { placeId } = location.state;
+  const { likePlaceIndex } = useSelector((state) => state.survey);
+
+  const { markers, map } = useSelector((state) => state.trip);
 
   useEffect(() => {
     if (placeId) {
@@ -173,6 +194,48 @@ const RecommendPage = () => {
   // const onClickAdd = (index, e) => {
   //   dispatch(likePlace(recommendPlaceList[index]));
   // };
+    // 좋아요 장소 삭제
+    const deleteLikePlace = (index, e) => {
+          dispatch(deletePlace(likePlaceList[index]));
+      }
+  
+  
+    const addMarker = (lat, lng) => {
+      const position = { lat: lat, lng: lng };
+      const marker = new window.google.maps.Marker({
+        map,
+        position: position,
+      });
+      console.log(typeof marker);
+      marker['position'] = position;
+      dispatch(setMarkers(marker));
+    };
+  
+  // 좋아요한 리스트 다 추가한 후 일정 페이지로 이동
+  const setStartPlaceInfo = (likePlaceIndex, e) => {
+    likePlaceIndex.forEach(id => {
+      const placeId = id;
+      const placeType = 'travel';
+      console.log('placeId', placeId);
+      dispatch(fetchPlaceDetail({ placeId, placeType }))
+        .unwrap()
+        .then((res) => {
+          let placeItemObj = new Object();
+          const data = res.data;
+          placeItemObj.placeId = placeId;
+          placeItemObj.name = data.name;
+          placeItemObj.imgUrl = data.imgUrl;
+          placeItemObj.draggable = true;
+          placeItemObj.lat = data.lat;
+          placeItemObj.lng = data.lng;
+          dispatch(setPlaceItem(placeItemObj));
+          addMarker(data.lat, data.lng);
+        })
+      });
+      navigate('/trip/plan');
+  }
+    
+
 
   const onClickContinue = () => {
     navigate('/trip/survey');
@@ -180,6 +243,13 @@ const RecommendPage = () => {
 
   return (
     <Wrapper>
+      <PlanButton
+        onClick={(e) => {
+          setStartPlaceInfo(likePlaceIndex, e);
+        }}>
+        일정 바로 짜기
+      </PlanButton>
+
       {recommendPlaceList && (
         <>
         <RecommendHeader>
@@ -206,7 +276,7 @@ const RecommendPage = () => {
                 return (
                   <div className='likePlace'>
                     <div className='imgContainer'>
-                      <div className='deletebtn'>
+                      <div className='deletebtn' onClick={(e) => deleteLikePlace(index, e)} >
                         -
                       </div>
 
@@ -222,11 +292,11 @@ const RecommendPage = () => {
           )}
         </div>
         <div className='buttonContainer'>
-          <div>
+          <div className={likePlaceList.length==5?`maxLike`:``}>
 
           {likePlaceList.length} /5     
           </div>
-          <button onClick={onClickContinue}>continue <span>▶</span></button>
+          <button onClick={onClickContinue}>계속 추천 받기 <span>▶</span></button>
         </div>
       </LikePlaceList>
     </Wrapper>

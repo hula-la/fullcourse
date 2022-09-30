@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Button = styled.button`
   outline: 0;
@@ -24,8 +25,13 @@ const Button = styled.button`
   }
 `;
 
-const StyledButton = (props) => {
-  return <Button>{props.content}</Button>;
+const StyledButton = ({ content }) => {
+  const navigate = useNavigate();
+  const onClickSeeMore = () => {
+    console.log('3');
+    navigate('/fullcourse');
+  };
+  return <Button onClick={onClickSeeMore}>{content}</Button>;
 };
 
 export default StyledButton;

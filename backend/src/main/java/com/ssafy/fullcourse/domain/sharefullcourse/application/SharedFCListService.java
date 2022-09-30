@@ -35,7 +35,6 @@ public class SharedFCListService {
     private final SharedFCRepositoryCustom sharedFCRepositoryCustom;
     private final UserRepository userRepository;
 
-
     public Page<SharedFCListDto> getSharedFCList(String email, String keyword, Pageable pageable) {
         Page<SharedFullCourse> page;
         if (keyword==null) page=sharedFCRepository.findAll(pageable);
