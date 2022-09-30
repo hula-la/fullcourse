@@ -36,6 +36,7 @@ const Side = styled.div`
   #buttonWrapper {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     margin-top: 1vh;
     height: 100%;
     border-radius: 10px;
@@ -57,7 +58,7 @@ const StyledButton = styled.div`
   border-radius: 10px;
   font-size: 2vmin;
   margin-left: 0.5vw;
-    padding-right: 1.5vw;
+  padding-right: 1.5vw;
   :hover {
     background: linear-gradient(
       90deg,
@@ -113,7 +114,9 @@ const MobileSideBar = ({
               }}
             >
               <CardTravelIcon className="icon" />
-              나의<br/>풀코스
+              나의
+              <br />
+              풀코스
             </StyledButton>
             <StyledButton
               className={selectedItem === 2 ? 'clicked' : ''}
@@ -123,7 +126,9 @@ const MobileSideBar = ({
               }}
             >
               <AccountCircleIcon className="icon" />
-              회원정보<br/>수정
+              회원정보
+              <br />
+              수정
             </StyledButton>
             <StyledButton
               className={selectedItem === 3 ? 'clicked' : ''}

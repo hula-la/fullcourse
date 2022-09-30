@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { createSharedFc } from '../../../features/share/shareActions';
-
+import EditIcon from '@mui/icons-material/Edit';
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 
 const AlertDiv = styled.div`
   .modal {
@@ -16,7 +17,7 @@ const AlertDiv = styled.div`
     bottom: 0;
     left: 0;
     z-index: 99;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.2);
   }
   .modal button {
     outline: none;
@@ -27,10 +28,10 @@ const AlertDiv = styled.div`
     width: 90%;
     max-width: 450px;
     margin: 0 auto;
-    border: solid 2px;
-    border-radius: 0.3rem;
-    border-color: #233e8b;
-    background-color: black;
+    border: solid 3px;
+    border-radius: 1rem;
+    border-color: #4b94ca;
+    /* background-color: black; */
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
@@ -40,6 +41,7 @@ const AlertDiv = styled.div`
     padding: 16px 50px 16px 50px;
     background-color: #ffffff;
     font-weight: 700;
+    border-bottom: solid 2px #e3e3e3;
   }
   .modal > section > header button {
     position: absolute;
@@ -56,11 +58,63 @@ const AlertDiv = styled.div`
     background-color: #ffffff;
     border-top: 1px solid #ffffff;
   }
+  .modal > section > main form {
+    display: flex;
+    flex-direction: column;
+  }
+  .modal > section > main form > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px;
+
+    input,
+    textarea {
+      margin-top: 10px;
+      outline: none;
+      font-size: 15px;
+      font-family: Tmoney;
+      text-align: center;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      text-align: left;
+      span {
+        margin-left: 8px;
+        font-size: 1.2rem;
+      }
+      .msg {
+        font-size: 0.8rem;
+      }
+      .err {
+        color: red;
+      }
+    }
+
+    #title,
+    #content {
+      height: 3vh;
+      border: none;
+      border-bottom: 2px solid #000;
+    }
+    #title:focus,
+    #content:focus {
+      border: none;
+      border-bottom: 2px solid #4b94ca;
+    }
+    #content {
+      height: 10vh;
+    }
+  }
+
   .modal > section > main button {
     padding: 6px 12px;
     background-color: #ffffff;
     border-radius: 5px;
     font-size: 13px;
+    margin: 10px;
   }
   .modal > section > footer {
     padding: 0px 16px 16px;
@@ -99,7 +153,29 @@ const AlertDiv = styled.div`
     }
   }
 `;
-
+const Button = styled.button`
+  margin-bottom: 4vh;
+  outline: 0;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  background: linear-gradient(
+    90deg,
+    rgba(217, 239, 255, 1) 100%,
+    rgba(164, 216, 255, 1) 100%
+  );
+  box-shadow: 3px 3px 5px rgba(164, 216, 255, 0.64);
+  color: darkslategray;
+  border: solid 2px #ffffff00;
+  &:hover {
+    background: #ffffff;
+    color: #4b94ca;
+    border-color: #4b94ca;
+    transition: 0.3s;
+  }
+`;
 const MyFullcourseShare = (props) => {
   const { open, close, header, fullcourse } = props;
   const dispatch = useDispatch();
@@ -109,6 +185,8 @@ const MyFullcourseShare = (props) => {
     content: '',
   });
   const [days, setDays] = useState(null);
+  const [inputMessage, setInputMessage] = useState('(0/500)');
+  const [isErr, setIsErr] = useState(false);
 
   useEffect(() => {
     const startDate = fullcourse.startDate.slice(0, 10);
@@ -119,9 +197,10 @@ const MyFullcourseShare = (props) => {
 
     const start = new Date(arr1[0], arr1[1], arr1[2]);
     const end = new Date(arr2[0], arr2[1], arr2[2]);
-    
+
     const tmp = days_between(start, end);
     setDays(tmp);
+    setInputMessage('(0/500)');
   }, [fullcourse]);
 
   //일 수 세기
@@ -137,6 +216,12 @@ const MyFullcourseShare = (props) => {
   const onChangeInputs = (e) => {
     const { name, value } = e.target;
     setInPuts({ ...inputs, [name]: value });
+    setInputMessage('(' + e.target.value.length + '/500)');
+    if (e.target.value.length > 500) {
+      setIsErr(true);
+    } else {
+      setIsErr(false);
+    }
   };
 
   const onSubmit = (e) => {
@@ -167,7 +252,10 @@ const MyFullcourseShare = (props) => {
             <main>
               <form onSubmit={onSubmit}>
                 <div>
-                  <label>제목</label>
+                  <label>
+                    <EditIcon />
+                    <span>제목</span>
+                  </label>
                   <input
                     type="text"
                     id="title"
@@ -176,8 +264,14 @@ const MyFullcourseShare = (props) => {
                   />
                 </div>
                 <div>
-                  <label>내용</label>
-                  <input
+                  <label>
+                    <CommentOutlinedIcon />
+                    <span>내용</span>
+                    <span className={isErr ? 'msg err' : 'msg'}>
+                      {inputMessage}
+                    </span>
+                  </label>
+                  <textarea
                     type="text"
                     id="content"
                     name="content"
@@ -185,7 +279,7 @@ const MyFullcourseShare = (props) => {
                   />
                 </div>
                 <footer>
-                  <button>공유하기</button>
+                  <Button>공유하기</Button>
                 </footer>
               </form>
             </main>
