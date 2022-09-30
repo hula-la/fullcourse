@@ -79,6 +79,8 @@ public class TravelService {
             Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
         } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
             Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+        } else if (pageable.getSort().toString().equals("mention: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getMention() - o1.getMention()));
         }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
