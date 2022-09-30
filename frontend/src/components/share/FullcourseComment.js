@@ -8,25 +8,127 @@ import {
 import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShareIcon from '@mui/icons-material/Share';
 
 const CommentBlock = styled.div`
-  width: 20%;
+  width: 25%;
+
+  .detail {
+    margin: 40px 10px 30px 10px;
+    color: #333333;
+    font-size: 20px;
+  }
+
+  .commentForm {
+    margin: 30px 15px 20px 20px;
+
+    form {
+      border: 1px solid #078ec4;
+      border-radius: 10px;
+    }
+
+    input {
+      border: #ffffff;
+      width: 15vw;
+      border-radius: 10px;
+      margin-right: 10px;
+      padding: 6px 0px 6px 10px;
+      font-size: 17px;
+
+      :focus {
+        outline: none;
+      }
+    }
+
+    button {
+      cursor: pointer;
+      border: #ffffff;
+      background-color: #ffffff;
+      padding: 3px 10px;
+      color: #078ec4;
+      border-radius: 20px;
+
+      &:hover {
+        color: #0abdff;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .commentArea {
+    height: 50vh;
+    margin: 0.5rem;
+  }
 
   .commentBox {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 20px 10px;
+    align-items: center;
+
+    button {
+      cursor: pointer;
+      border: #ffffff;
+      background-color: #ffffff;
+      color: #b22323;
+      border-radius: 20px;
+      &:hover {
+        color: #f73131;
+        font-weight: bold;
+      }
+    }
+
+    #profileImg {
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 20px;
+    }
   }
 
   .comment {
     list-style: none;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .commentForm {
+  #userNickname {
+    font-weight: bold;
+    margin: 0px 7px;
+  }
+
+  .likeArea {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      cursor: pointer;
+    }
+  }
+
+  .favorite {
+    cursor: pointer;
+    color: #f73131;
+    margin-right: 5px;
+  }
+
+  .favoriteborder {
+    cursor: pointer;
+    color: #f73131;
+    margin-right: 5px;
+  }
+
+  .share {
+    cursor: pointer;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 5px;
   }
 `;
+
 const FullcourseComment = ({ sharedFcInfo }) => {
   const dispatch = useDispatch();
   const [comment, setComment] = useState('');
@@ -40,6 +142,7 @@ const FullcourseComment = ({ sharedFcInfo }) => {
     dispatch(
       createSharedFcComment({ comment, sharedFcId: sharedFcInfo.sharedFcId }),
     );
+    e.target.reset();
   };
 
   const onClickDelete = (comment) => {
@@ -58,55 +161,59 @@ const FullcourseComment = ({ sharedFcInfo }) => {
   return (
     <CommentBlock>
       {sharedFcInfo ? (
-        <>
-          {sharedFcInfo.sharedFCComments.map((comment, index) => {
-            return (
-            <div className='detail'>
-                    {sharedFcInfo.detail}
-                  </div>
-
-            );
-          })}
-        </>
+        <div className="detail">{sharedFcInfo.detail}</div>
       ) : null}
-      <div className="commentForm">
+
+      <div className="likeArea">
         {sharedFcInfo ? (
           <>
             {sharedFcInfo.like ? (
-              <FavoriteIcon onClick={onClickLike} />
+              <FavoriteIcon className="favorite" onClick={onClickLike} />
             ) : (
-              <FavoriteBorderIcon onClick={onClickLike} />
+              <FavoriteBorderIcon
+                className="favoriteborder"
+                onClick={onClickLike}
+              />
             )}
+            <span onClick={onClickLike}>좋아요</span>
           </>
         ) : null}
-
-        {/* <FavoriteIcon onClick={onClickLike} />
-        <FavoriteBorderIcon onClick={onClickLike} /> */}
+        <ShareIcon className="share" />
+        <span>공유하기</span>
+      </div>
+      <div className="commentForm">
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            placeholder="댓글을 입력하세요"
+            placeholder="댓글 달기.."
             onChange={onChangeReply}
           />
-          <button>등록하기</button>
+          <button>게시</button>
         </form>
       </div>
-
-      {sharedFcInfo ? (
-        <>
-          {sharedFcInfo.sharedFCComments.map((comment, index) => {
-            return (  
-              <div key={index} className="commentBox">
-                <li className="comment">
-                  <span>{comment.nickname} : </span>
-                  <span>{comment.comment}</span>
-                </li>
-                <button onClick={() => onClickDelete(comment)}>삭제</button>
+      <div className="commentArea">
+        {sharedFcInfo ? (
+          <>
+            {sharedFcInfo.sharedFCComments.map((comment, index) => {
+              console.log(comment);
+              return (
+                <div key={index} className="commentBox">
+                  <li className="comment">
+                    <img
+                      id="profileImg"
+                      src={comment.imgUrl}
+                      alt="profileImg"
+                    />
+                    <span id="userNickname">{comment.nickname} </span>
+                    <span>{comment.comment}</span>
+                  </li>
+                  <button onClick={() => onClickDelete(comment)}>삭제</button>
                 </div>
-            );
-          })}
-        </>
-      ) : null}
+              );
+            })}
+          </>
+        ) : null}
+      </div>
     </CommentBlock>
   );
 };

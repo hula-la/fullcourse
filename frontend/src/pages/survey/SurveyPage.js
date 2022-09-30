@@ -18,20 +18,26 @@ padding: 1rem 0;
 }
 `
 const RandomPlaceList = styled.div`
-height:60%;
+height:55%;
 display: flex;
 align-items: center;
 justify-content: center;
+/* justify-content: center; */
+
 /* border-radius: 50%; */
 
-img{
+
+.placeImg{
     height: 100%;
+    max-width: 60%;
     object-fit: contain;
 }
 button img{
     height: 2rem;
 }
 .buttonContainer{
+  position: absolute;
+  right:10%;
     margin-left: 3rem;
     display: flex;
     flex-direction: column;
@@ -78,24 +84,6 @@ button img{
         100%{
         	transform: rotate(0deg) scale( 1.1 );
         }
-        /* 30%{
-        	transform: rotate(5deg);
-        } */
-        /* 40%{
-        	transform: rotate(-10deg);
-        }
-        50%{
-        	transform: rotate(10deg);
-        }
-        60%{
-        	transform: rotate(-10deg);
-        } */
-        /* 70%{
-        	transform: rotate(0deg);
-        } */
-        /* 100%{
-        	transform: rotate(0deg);
-        } */
     }
 }
 `
@@ -104,8 +92,135 @@ img{
     height: 100%;   
     object-fit: contain;
 }
+
+.likePlaceContainer{
+  height: 80%;
+  width: 70%;
+  background: pink;
+  border-radius: 1rem;
+}
 height:10%;
 `
+
+
+// 좋아요 리스트
+const LikePlaceList = styled.div`
+    padding: 0 1rem;
+height:30%;
+position: relative;
+white-space: nowrap;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+/* div{
+  height: 100%;
+} */
+img{
+  border-radius: 0.8rem;
+    height: 100%;   
+    object-fit: cover;
+
+    width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+    height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+}
+
+.imgContainer{
+  position: relative;
+}
+.imgContainer .deletebtn{
+  display: none;
+}
+.imgContainer:hover .deletebtn{
+  position: absolute;
+  right: 10%;
+  top: 6%;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: red;
+  font-weight: bold;
+  color: white;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.likePlace{
+  margin: 0 2rem;
+  font-weight: bold;
+}
+
+.likePlaceContainer{
+  display: flex;
+    align-items: center;
+
+  height: 65%;
+  width: 70%;
+  max-width: 50rem;
+  background:#e2dfff;
+  border-radius: 1rem;
+  /* height:10%; */
+  overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+/* 스크롤바 설정*/
+
+.likePlaceContainer::-webkit-scrollbar{
+  
+    width: 10px;
+}
+
+/* 스크롤바 막대 설정*/
+/* .likePlaceContainer::-webkit-scrollbar-thumb{
+  
+    background-color: transparent;
+
+  } */
+
+.likePlaceContainer::-webkit-scrollbar-thumb{
+  background-clip: padding-box;
+  
+    background-color: white;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 1rem;    
+    border: 4px solid transparent;
+  }
+  
+  /* 스크롤바 뒷 배경 설정*/
+  
+.likePlaceContainer::-webkit-scrollbar-track{
+border-radius: 10px;    
+  
+}
+
+.buttonContainer{
+  position: absolute;
+  right: 5%;
+  bottom: 30%;
+  font-weight: bold;
+  color:#5b4afe;
+
+    
+}
+.buttonContainer span{
+  color:#7c87d5
+}
+
+button{
+  border: none;
+    border-radius: 1rem;
+    padding: 0.5rem 0.6rem 0.5rem 1rem;
+    background: #e2dfff;
+    margin-top:1rem;
+    font-weight: bold;
+}
+`
+
+
 
 const SurveyPage = () => {
   const dispatch = useDispatch();
@@ -119,6 +234,7 @@ const SurveyPage = () => {
     dispatch(fetchRandomPlace());
   }, [dispatch]);
 
+  
   useEffect(() => {
     if (randomPlaceList) {
       if (likePlaceIndex.includes(randomPlaceList[number].placeId)) {
@@ -126,13 +242,17 @@ const SurveyPage = () => {
       }
     }
   }, [number]);
-
+  
   const onClickLike = () => {
     navigate('/trip/recommend', {
       state: {
         placeId: randomPlaceList[number].placeId,
       },
     });
+  };
+
+  const onClickContinue = () => {
+    navigate('/trip/survey');
   };
 
   const onClickPass = () => {
@@ -147,8 +267,8 @@ const SurveyPage = () => {
           <RandomPlaceList>
             {randomPlaceList ? (
                 <>
-                <img src={randomPlaceList[number].imgUrl} />
-                      <div className='buttonContainer'>
+                <img className='placeImg' src={randomPlaceList[number].imgUrl} />
+                  <div className='buttonContainer'>
                           
                 <button onClick={onClickLike}><img src='\img\surveyIcon\good.png'/>like</button>
                 <button onClick={onClickPass}><img src='\img\surveyIcon\bad.png'/>pass</button>
@@ -157,18 +277,38 @@ const SurveyPage = () => {
             ) : null}
               
           </RandomPlaceList>
-          <LikePlaceLst>
-              
-            <div>
-                {likePlaceList && (
-                <>
-                    {likePlaceList.map((place, index) => {
-                    return <img key={index} src={place.imgUrl} />;
-                    })}
-                </>
-                )}
-            </div>
-          </LikePlaceLst>
+          <LikePlaceList>
+        <div className='likePlaceContainer'>
+
+          {likePlaceList && (
+            <>
+              {likePlaceList.map((place, index) => {
+                return (
+                  <div className='likePlace'>
+                    <div className='imgContainer'>
+                      <div className='deletebtn'>
+                        -
+                      </div>
+
+                    <img src={place.imgUrl} />
+                    </div>
+                    <div>
+                      {place.name}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </div>
+        <div className='buttonContainer'>
+          <div>
+
+          {likePlaceList.length} /5     
+          </div>
+          <button onClick={onClickContinue}>continue <span>▶</span></button>
+        </div>
+      </LikePlaceList>
     </Wrapper>
   );
 };

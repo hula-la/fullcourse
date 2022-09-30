@@ -8,7 +8,7 @@ export const getRandomPlace = async () => {
 export const getRecommendPlace = async (placeId) => {
   console.log(placeId);
   const res = await client.get('api/recommend/similar', {
-    params: { num: 3, placeId },
+    params: { num: 4, placeId },
   });
   console.log(res);
   return res;
