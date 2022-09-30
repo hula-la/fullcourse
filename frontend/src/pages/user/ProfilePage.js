@@ -8,11 +8,14 @@ import DeleteUser from '../../components/user/profile/DeleteUser';
 import MyLikeSharedFc from '../../components/user/profile/MyLikeSharedFc';
 import MySharedFc from '../../components/user/profile/MySharedFc';
 import styled from 'styled-components';
+import MobileSideBar from '../../components/user/profile/MobileSideBar';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  /* flex-direction: column; */
   height: 1300px;
+  justify-content: start;
 
   #view {
     width: 80%;
@@ -22,6 +25,13 @@ const Wrapper = styled.div`
 const FullcourseBox = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 3vh auto;
+  padding: 3vh;
+  width: 75vw;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 0 auto;
+    padding: 0;
+  }
 `;
 
 const ProfilePage = () => {
@@ -29,6 +39,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
   const pageNum = params.pageNum ? params.pageNum : '1';
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   const onClickPageOne = () => {
     navigate(`/user/profile/1`, { replace: true });
@@ -40,13 +51,24 @@ const ProfilePage = () => {
     navigate(`/user/profile/3`, { replace: true });
   };
   return (
-    <Wrapper>
-      <SideBar
-        onClickPageOne={onClickPageOne}
-        onClickPageTwo={onClickPageTwo}
-        onClickPageThree={onClickPageThree}
-        userInfo={userInfo}
-      />
+    <Wrapper
+      style={isMobile ? { flexDirection: 'column' } : { flexDirection: 'row' }}
+    >
+      {!isMobile ? (
+        <SideBar
+          onClickPageOne={onClickPageOne}
+          onClickPageTwo={onClickPageTwo}
+          onClickPageThree={onClickPageThree}
+          userInfo={userInfo}
+        />
+      ) : (
+        <MobileSideBar
+          onClickPageOne={onClickPageOne}
+          onClickPageTwo={onClickPageTwo}
+          onClickPageThree={onClickPageThree}
+          userInfo={userInfo}
+        />
+      )}
       {pageNum === '1' && userInfo && (
         <FullcourseBox>
           <MyFullcourse userInfo={userInfo} />
