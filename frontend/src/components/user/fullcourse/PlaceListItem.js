@@ -1,23 +1,52 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createDiary } from '../../../features/user/userActions';
 import Swal from 'sweetalert2';
 
 const PlaceListItem = ({ placeKey, place }) => {
-  const onClickMemo = (e) => {
+  const dispatch = useDispatch();
+
+  const onClickMemo = (fcDetailId, e) => {
+    let content;
+    let img;
     Swal.fire({
       title: '나만의 추억★',
-      input: 'text',
+      input: 'textarea',
+      inputPlaceholder: '메모를 입력해주세요.',
       inputAttributes: {
         autocapitalize: 'off',
       },
       showCancelButton: true,
       confirmButtonText: 'Next',
       showLoaderOnConfirm: true,
-      preConfirm: (title) => {
-        return title;
+      preConfirm: (content) => {
+        return content;
       },
-      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '사진을 올려주세요!',
+          input: 'file',
+          inputAttributes: {
+            autocapitalize: 'off',
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Submit',
+          showLoaderOnConfirm: true,
+          preConfirm: (imgFile) => {
+            return imgFile;
+          },
+        }).then((imgFile) => {
+          if (imgFile.isConfirmed) {
+            content = result.value;
+            img = imgFile.value;
+            dispatch(createDiary({ img, content, fcDetailId }));
+          }
+        });
+      }
     });
   };
+
   return (
     <div>
       <p>{parseInt(placeKey) + 1}Day</p>
@@ -25,7 +54,7 @@ const PlaceListItem = ({ placeKey, place }) => {
         return (
           <div>
             <p key={index}>{p.place.name}</p>
-            <button onClick={onClickMemo}>멤</button>
+            <button onClick={(e) => onClickMemo(p.fcdId, e)}>멤</button>
           </div>
         );
       })}

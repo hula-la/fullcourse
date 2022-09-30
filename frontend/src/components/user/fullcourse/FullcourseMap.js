@@ -10,6 +10,27 @@ const MapBlock = styled.div`
     width: 100%;
     height: 100%;
   }
+  .customoverlay_main {
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    border-bottom: 2px solid #ddd;
+    float: left;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #333333;
+    margin-bottom: 120px;
+  }
+  .customoverlay_main .title {
+    display: block;
+    padding: 6px 11px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+  }
 `;
 
 const FullcourseMap = () => {
@@ -17,6 +38,7 @@ const FullcourseMap = () => {
   const { checkedDay } = useSelector((state) => state.share);
   const [markerList, setMarkerList] = useState([]);
   const [linePath, setLinePath] = useState([]);
+  const [overlayList, setOverlayList] = useState([]);
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -31,6 +53,22 @@ const FullcourseMap = () => {
         newMarkerList = [...newMarkerList, tmp];
       });
       setMarkerList(newMarkerList);
+    } else {
+    }
+  }, [fullcourseDetail]);
+
+  useEffect(() => {
+    if (fullcourseDetail) {
+      let newoverlayList = [];
+      Object.keys(fullcourseDetail.places).map((place, index) => {
+        const tmp = fullcourseDetail.places[place].map((pla, index) => {
+          return {
+            latlng: new kakao.maps.LatLng(pla.place.lat, pla.place.lng),
+          };
+        });
+        newoverlayList = [...newoverlayList, tmp];
+      });
+      setOverlayList(newoverlayList);
     } else {
     }
   }, [fullcourseDetail]);
@@ -62,6 +100,24 @@ const FullcourseMap = () => {
     if (checkedDay === 6) {
       for (var i = 0; i < markerList.length; i++) {
         for (var j = 0; j < markerList[i].length; j++) {
+          // 커스텀 오버레이에 표시할 내용입니다
+          // HTML 문자열 또는 Dom Element 입니다
+          var content =
+            '<div class="customoverlay_main">' +
+            '    <span class="title">' +
+            markerList[i][j].title +
+            '</span>' +
+            '</div>';
+          // 커스텀 오버레이가 표시될 위치입니다
+          // 커스텀 오버레이를 생성합니다
+          var customOverlay = new kakao.maps.CustomOverlay({
+            position: overlayList[i][j].latlng,
+            content: content,
+          });
+
+          // 커스텀 오버레이를 지도에 표시합니다
+          customOverlay.setMap(map);
+
           // 지도에 표시할 선을 생성합니다
           var polyline = new kakao.maps.Polyline({
             path: linePath, // 선을 구성하는 좌표배열 입니다
@@ -95,6 +151,22 @@ const FullcourseMap = () => {
       for (var i = 0; i < markerList.length; i++) {
         if (checkedDay === i) {
           for (var j = 0; j < markerList[i].length; j++) {
+            // 커스텀 오버레이에 표시할 내용입니다
+            // HTML 문자열 또는 Dom Element 입니다
+            var content =
+              '<div class="customoverlay_main">' +
+              '    <span class="title">' +
+              markerList[i][j].title +
+              '</span>' +
+              '</div>';
+            // 커스텀 오버레이가 표시될 위치입니다
+            // 커스텀 오버레이를 생성합니다
+            var customOverlay = new kakao.maps.CustomOverlay({
+              position: overlayList[i][j].latlng,
+              content: content,
+            });
+            // 커스텀 오버레이를 지도에 표시합니다
+            customOverlay.setMap(map);
             // 지도에 표시할 선을 생성합니다
             var polyline = new kakao.maps.Polyline({
               path: linePath[i], // 선을 구성하는 좌표배열 입니다
