@@ -1,7 +1,6 @@
 package com.ssafy.fullcourse.domain.review.application;
 
 import com.ssafy.fullcourse.domain.place.entity.Culture;
-import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.review.entity.CultureReview;
@@ -12,14 +11,11 @@ import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewLi
 import com.ssafy.fullcourse.domain.review.repository.baserepository.BaseReviewRepository;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
-import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.model.PlaceEnum;
-import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -35,7 +31,6 @@ public class CultureReviewService extends BaseReviewService<CultureReview, Cultu
         // NotFoundException 턴지기
         if(!place.isPresent()) throw new PlaceNotFoundException();
 
-
         CultureReview baseReview = CultureReview.builder()
                 .score(reviewPostReq.getScore())
                 .content(reviewPostReq.getContent())
@@ -43,9 +38,12 @@ public class CultureReviewService extends BaseReviewService<CultureReview, Cultu
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
                 .build();
-// 평점 계산.
-        place.get().setReviewScore((place.get().getReviewCnt() * place.get().getReviewScore() + reviewPostReq.getScore()) / place.get().getReviewCnt() + 1);
+
+        // 평점 계산.
+        float updateReviewScore = (place.get().getReviewCnt() * place.get().getReviewScore() + reviewPostReq.getScore()) / (place.get().getReviewCnt() + 1);
+        place.get().updateReviewScore(updateReviewScore);
         basePlaceRepositoryMap.get(Type.getPlace()).save(place.get());
+
         if(file != null) {
             baseReview.setReviewImg(awsS3Service.uploadImage(file));
         } else {
