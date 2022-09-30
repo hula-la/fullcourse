@@ -50,7 +50,35 @@ height:55%;
 display: flex;
 align-items: center;
 justify-content: space-around;
+
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  overflow-x: scroll;
+  display: -webkit-box;
+  }
+
+::-webkit-scrollbar{
+  
+  width: 10px;
+}
+::-webkit-scrollbar-thumb{
+  /* background-clip: padding-box; */
+  
+    background-color: none;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 1rem;    
+    border: 4px solid transparent;
+  }
+  
+  /* 스크롤바 뒷 배경 설정*/
+  
+::-webkit-scrollbar-track{
+border-radius: 10px;    
+  
+}
 `;
+
+
 
 const LikePlaceList = styled.div`
     padding: 0 1rem;
@@ -61,7 +89,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 
-white-space: nowrap;
+
 /* div{
   height: 100%;
 } */
@@ -73,6 +101,13 @@ img{
     width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
     height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
 }
+
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+  .likePlaceName{
+    font-size:0.7rem;
+  }
+  }
 
 .imgContainer{
   display: inline-block;
@@ -98,16 +133,17 @@ img{
 }
 
 .likePlace{
-  margin: 0 2rem;
+  margin: 0 1rem;
   font-weight: bold;
 }
 
 .likePlaceContainer{
+  white-space: nowrap;
   display: flex;
     align-items: center;
 
   height: 65%;
-  width: 70%;
+  width: 50%;
   max-width: 50rem;
   background:#e2dfff;
   border-radius: 1rem;
@@ -117,11 +153,14 @@ img{
 }
 
 /* 스크롤바 설정*/
+@media only screen and (min-device-width: 800px) {
 
 .likePlaceContainer::-webkit-scrollbar{
   
     width: 10px;
 }
+}
+
 
 /* 스크롤바 막대 설정*/
 /* .likePlaceContainer::-webkit-scrollbar-thumb{
@@ -282,7 +321,7 @@ const RecommendPage = () => {
 
                     <img src={place.imgUrl} />
                     </div>
-                    <div>
+                    <div className='likePlaceName'>
                       {place.name}
                     </div>
                   </div>
