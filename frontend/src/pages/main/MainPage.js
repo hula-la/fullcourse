@@ -9,10 +9,27 @@ import FullCourseList from './FullCourseList';
 import StartPlaceList from './StartPlaceList';
 
 const Container = styled.div`
-  overflow: overlay;
+  overflow-x: hidden;
   display: grid;
-  grid-template-rows: 1fr 0.5fr 5fr; //가로로 구분
-  background-color: #e8f9fd;
+  grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분
+  background: radial-gradient(
+    ellipse at center,
+    #fffeea 0%,
+    #fffeea 35%,
+    #b7e8eb 100%
+  );
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    overflow-x: hidden;
+    /* overflow: overlay; */
+    display: grid;
+    grid-template-rows: 0.2fr 0.2fr 2fr; //가로로 구분
+    background: radial-gradient(
+      ellipse at center,
+      #fffeea 0%,
+      #fffeea 35%,
+      #b7e8eb 100%
+    );
+  }
 `;
 
 const Introduce = styled.div`
@@ -159,6 +176,24 @@ const StartPlaces = styled.div`
   }
 `;
 
+const Ocean = styled.div`
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    height: 2%;
+    width: 100%;
+    position: absolute;
+    top: 465vh;
+  }
+`;
+
+const Wave = styled.div`
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    height: 10%;
+    width: 100%;
+    position: absolute;
+    top: 455vh;
+  }
+`;
+
 const MainPage = () => {
   const section1 = useRef(null);
   const section2 = useRef(null);
@@ -201,6 +236,11 @@ const MainPage = () => {
       </FullCourses>
       <StartPlaces>
         <StartPlaceList />
+        <Wave className="wave wave1"></Wave>
+        <Wave className="wave wave2"></Wave>
+        <Wave className="wave wave3"></Wave>
+        <Wave className="wave wave4"></Wave>
+        <Ocean className="ocean"></Ocean>
       </StartPlaces>
     </Container>
   );

@@ -41,6 +41,7 @@ export const fetchFullcourseDetail = createAsyncThunk(
 export const createTrip = createAsyncThunk(
   'trip/createTrip',
   async (createTripPostReq, { rejectWithValue }) => {
+    console.log("여행요청객체", createTripPostReq)
     try {
       const { data } = await postTrip(createTripPostReq);
       alert("일정생성에 성공했다네!!")
