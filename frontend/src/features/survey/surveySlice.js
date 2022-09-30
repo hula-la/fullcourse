@@ -15,8 +15,11 @@ const surveySlice = createSlice({
   reducers: {
     likePlace: (state, { payload }) => {
       state.likePlaceList = [...state.likePlaceList, payload];
-      state.number += 1;
       state.likePlaceIndex = [...state.likePlaceIndex, payload.placeId];
+    },
+    deletePlace: (state, { payload }) => {
+      state.likePlaceList = state.likePlaceList.filter(place => place.placeId != payload.placeId);
+      state.likePlaceIndex = state.likePlaceIndex.filter(id => id != payload.placeId);
     },
     passPlace: (state, { payload }) => {
       state.number += 1;
@@ -40,6 +43,6 @@ const surveySlice = createSlice({
   },
 });
 
-export const { likePlace, passPlace } = surveySlice.actions;
+export const { likePlace, passPlace,deletePlace } = surveySlice.actions;
 
 export default surveySlice.reducer;
