@@ -52,76 +52,19 @@ const Flex = styled.div`
 `;
 
 const FullCourseList = () => {
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { sharedFcList } = useSelector((state) => state.main);
 
-  const fullcourseList = [
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-    {
-      user: {
-        userNickName: 'userNickname',
-      },
-      title: '풀코스 제목',
-      day: 3,
-      detail: '풀코스 상세 내용',
-      lickCnt: 23,
-      commentCnt: 13,
-      sharedFCTags: [{ tagContent: '부산' }],
-    },
-  ];
+  useEffect(() => {
+    dispatch(fetchSharedFc());
+  }, [dispatch]);
+
+  const onClickFullcourse = (sharedFcId) => {
+    console.log('3');
+    navigate(`/fullcourse/detail/${sharedFcId}`);
+  };
+
   return (
     <div>
       {/* card fadeinup 시도해보자 */}
@@ -130,10 +73,17 @@ const FullCourseList = () => {
           <Text>추천 풀코스</Text>
           <StyledButton content="더보기" />
         </Title>
-        {fullcourseList ? (
+        {sharedFcList ? (
           <Flex>
-            {fullcourseList.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+            {sharedFcList.content.map((fullcourse, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickFullcourse(fullcourse.sharedFcId)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Flex>
         ) : null}
