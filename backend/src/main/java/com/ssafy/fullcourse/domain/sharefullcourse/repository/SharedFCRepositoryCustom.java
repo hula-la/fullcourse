@@ -1,25 +1,27 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.fullcourse.domain.fullcourse.entity.QFullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.entity.QFullCourseDetail;
 import com.ssafy.fullcourse.domain.place.entity.*;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.QSharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
+import com.ssafy.fullcourse.global.util.QueryDslUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,9 +75,31 @@ public class SharedFCRepositoryCustom {
     public Page<SharedFullCourse> searchByTagsAndDays(List<String> tags, List<Integer> days, List<String> places,
                                                       Pageable pageable){
 
-
-
         BooleanBuilder builder = new BooleanBuilder();
+
+        List<OrderSpecifier> ORDERS = new ArrayList<>();
+        if(!pageable.getSort().isEmpty()){
+            for(Sort.Order order : pageable.getSort()){
+                Order direction = order.isAscending()?Order.ASC : Order.DESC;
+
+                switch (order.getProperty()){
+                    case "viewCnt":
+                        ORDERS.add(QueryDslUtil.getSortedColum(direction,sharedFullCourse,"viewCnt"));
+                        break;
+                    case "likeCnt":
+                        ORDERS.add(QueryDslUtil.getSortedColum(direction,sharedFullCourse,"likeCnt"));
+                    case "commentCnt":
+                        ORDERS.add(QueryDslUtil.getSortedColum(direction,sharedFullCourse,"commentCnt"));
+                    case "regDate":
+                        ORDERS.add(QueryDslUtil.getSortedColum(direction,sharedFullCourse,"regDate"));
+                    default:
+                        break;
+                }
+
+            }
+        }
+
+
 
         if(tags.size() != 0) builder.and(sharedFullCourse.sharedFcId.in(
                 JPAExpressions.select(sharedFCTag.sharedFullCourse.sharedFcId)
@@ -142,6 +166,7 @@ public class SharedFCRepositoryCustom {
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .fetch();
 
         // count 쿼리를 따로 날려줌
