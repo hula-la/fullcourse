@@ -117,8 +117,12 @@ public class Travel extends BasePlace {
         res.setImgUrl(this.getImgUrl());
         res.setMention(this.getMention());
         res.setTag(this.getTag());
-        res.setReviewScore(this.reviewScore);
+        res.setReviewScore(this.getReviewScore());
         return res;
+    }
+
+    public void updateReviewScore(Float reviewScore) {
+        this.reviewScore = reviewScore;
     }
 
 }

@@ -98,8 +98,12 @@ public class Restaurant extends BasePlace {
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
         res.setLikeCnt(this.getLikeCnt());
-        res.setReviewScore(this.reviewScore);
+        res.setReviewScore(this.getReviewScore());
         return res;
+    }
+
+    public void updateReviewScore(Float reviewScore) {
+        this.reviewScore = reviewScore;
     }
 
 }
