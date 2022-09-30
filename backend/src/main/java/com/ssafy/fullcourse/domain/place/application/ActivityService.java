@@ -2,10 +2,8 @@ package com.ssafy.fullcourse.domain.place.application;
 
 import com.ssafy.fullcourse.domain.place.dto.ActivityDetailRes;
 import com.ssafy.fullcourse.domain.place.dto.PlaceRes;
-import com.ssafy.fullcourse.domain.place.dto.RestaurantDetailRes;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.entity.ActivityLike;
-import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.place.repository.ActivityLikeRepository;
 import com.ssafy.fullcourse.domain.place.repository.ActivityRepository;
 import com.ssafy.fullcourse.domain.review.exception.PlaceNotFoundException;
@@ -19,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +37,17 @@ public class ActivityService {
         } else {
             list = activityRepository.findByNameContaining(keyword);
         }
-        if(maxDist != 0) list = extractByDist(list, lat, lng, maxDist);
-        int start = (int)pageable.getOffset();
+        if (maxDist != 0) {
+            list = extractByDist(list, lat, lng, maxDist);
+            if(pageable.getSort().toString().equals("likeCnt: DESC")){
+                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+            }
+        }
+        int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
         page = new PageImpl(list.subList(start, end), pageable, list.size());
         return page.map(PlaceRes::new);
@@ -60,15 +68,16 @@ public class ActivityService {
         User user = userRepository.findByEmail(email).get();
         Activity activity = activityRepository.findByPlaceId(placeId).get();
 
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException();
-        }if(activity == null){
+        }
+        if (activity == null) {
             throw new PlaceNotFoundException();
         }
 
         Optional<ActivityLike> activityLike = activityLikeRepository.findByUserAndPlace(user, activity);
 
-        if(activityLike.isPresent()){
+        if (activityLike.isPresent()) {
             activityLikeRepository.deleteById(activityLike.get().getLikeId());
             activity.setLikeCnt(activity.getLikeCnt() - 1);
             response = false;
@@ -80,10 +89,12 @@ public class ActivityService {
         activityRepository.save(activity);
         return response;
     }
-    public static List<Activity> extractByDist(List<Activity> list, Float lat, Float lng, Integer maxDist){
+
+    public static List<Activity> extractByDist(List<Activity> list, Float lat, Float lng, Integer maxDist) {
         for (int i = 0; i < list.size(); i++) {
             Activity a = list.get(i);
-            Double dist = Math.sqrt(Math.pow((a.getLat() - lat) * 88.9036, 2) + Math.pow((a.getLng() - lng) * 111.3194, 2));
+            Double dist =
+                    Math.sqrt(Math.pow((a.getLat() - lat) * 88.9036, 2) + Math.pow((a.getLng() - lng) * 111.3194, 2));
             if (dist >= maxDist) {
                 list.remove(a);
                 i--;
