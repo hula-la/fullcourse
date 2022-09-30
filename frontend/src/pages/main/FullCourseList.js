@@ -5,6 +5,11 @@ import CardComponent from '../../components/common/CardComponent';
 import StyledButton from '../../components/common/StyledButton';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchSharedFc } from '../../features/main/mainActions';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   animation: fadeInUp 2s;
@@ -52,10 +57,10 @@ const Flex = styled.div`
 `;
 
 const FullCourseList = () => {
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sharedFcList } = useSelector((state) => state.main);
-
   useEffect(() => {
     dispatch(fetchSharedFc());
   }, [dispatch]);
