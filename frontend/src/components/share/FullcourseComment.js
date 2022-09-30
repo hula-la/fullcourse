@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   createSharedFcComment,
   createSharedFcLike,
@@ -131,6 +132,7 @@ const CommentBlock = styled.div`
 
 const FullcourseComment = ({ sharedFcInfo }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [comment, setComment] = useState('');
   const { Kakao } = window;
   const { userInfo } = useSelector((state) => state.user);
@@ -141,10 +143,14 @@ const FullcourseComment = ({ sharedFcInfo }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createSharedFcComment({ comment, sharedFcId: sharedFcInfo.sharedFcId }),
-    );
-    e.target.reset();
+    if (!userInfo) {
+      navigate('/user/login');
+    } else {
+      dispatch(
+        createSharedFcComment({ comment, sharedFcId: sharedFcInfo.sharedFcId }),
+      );
+      e.target.reset();
+    }
   };
 
   const onClickDelete = (comment) => {
@@ -232,7 +238,7 @@ const FullcourseComment = ({ sharedFcInfo }) => {
                     <span id="userNickname">{comment.nickname} </span>
                     <span>{comment.comment}</span>
                   </li>
-                  {userInfo.email === comment.email ? (
+                  {userInfo && userInfo.email === comment.email ? (
                     <button onClick={() => onClickDelete(comment)}>삭제</button>
                   ) : null}
                 </div>
