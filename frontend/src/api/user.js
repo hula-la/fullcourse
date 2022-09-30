@@ -53,7 +53,23 @@ export const getDiary = async (fcDetailId) => {
 };
 
 export const postDiary = async (img, content, fcDetailId) => {
+  console.log(fcDetailId);
   const formData = new FormData();
-  const res = await client.post(`api/fullcourse/diary/${fcDetailId}`, formData);
+  formData.append('img', img);
+  formData.append(
+    'content',
+    new Blob([JSON.stringify(content)], { type: 'application/json' }),
+  );
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  const res = await client.put(
+    `api/fullcourse/diary/${fcDetailId}`,
+    formData,
+    config,
+  );
+  console.log(res);
   return res;
 };
