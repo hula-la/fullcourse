@@ -44,11 +44,7 @@ public class SharedFCGetRes {
                 .viewCnt(sharedFullCourse.getViewCnt())
                 .sharedFCTags(sharedFullCourse.getSharedFCTags().stream().map(tag->tag.getTagContent()).collect(Collectors.toList()))
                 .sharedFCComments(sharedFullCourse.getSharedFCComments().stream().map(
-                        comment-> SharedFCCommentRes.builder()
-                                .commentId(comment.getFcCommentId())
-                                .nickname(comment.getUser().getNickname())
-                                .imgUrl(comment.getUser().getImgUrl())
-                                .comment(comment.getComment()).build()).collect(Collectors.toList()))
+                        SharedFCCommentRes::of).collect(Collectors.toList()))
                 .thumbnail(sharedFullCourse.getThumbnail())
                 .isLike(isLike)
                 .build();
