@@ -1,18 +1,33 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { useNavigate } from 'react-router-dom';
 import { createTrip } from '../../../features/trip/tripActions';
+import Swal from 'sweetalert2';
 import {
-  setMarkers,
   clearMarkers,
   deleteMarkers,
   deleteAllPlace,
 } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
-  border: 3px solid;
+  background-color:#D9D9D9;
   overflow-y: scroll;
   height: 70vh;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 15%;
+    background-color: #f5d312;
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f8edb1;
+    border-radius: 2rem;
+  }
 `;
 const PlaceBucket = styled.div`
   border: 1px solid;
@@ -44,6 +59,7 @@ const SaveBtn = styled.button``;
 
 const DailyPlanner = ({ map, setMap, mapRef }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [placeLocations, setPlaceLocations] = useState(null);
   const [planDay, setPlanDay] = useState(1);
 
@@ -137,14 +153,8 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     //삭제기능 바닐라 자스로 추가
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
-        const deleteElm = e.target.closest('.delete');
-        console.log(e.target.parentNode);
         e.target.parentNode.remove();
-      } else if (e.target.classList.contains('delete-daily')) {
-        console.log("뭐지",e.target.parentNode)
-        // e.target.parentNode.remove();
-        // clearPlaceItems()
-      }
+      } 
       //경로관련기능 바닐라 자스로 추가
       else if (e.target.closest('.planner-box')) {
         //데일리 일정에 담긴 장소정보 추가
@@ -152,12 +162,9 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         setPlaceLocations(placeLocations);
       }
     });
-    // const clearPlaceItems = () => {
-    //   document.querySelectorAll('#list-item').forEach(placeItem => placeItem.remove());
-    // }
+
     const getPlaceLocations = (e) => {
-      const DayElm = e.target.closest('.planner-box'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
-      // console.log(DayElm.querySelector('.title').innerText)
+      const DayElm = e.target.closest('.planner-box'); 
       setPlanDay(DayElm.querySelector('.title').innerText);
       const titleElm = e.target.closest('.date'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
       console.log(titleElm);
@@ -255,8 +262,22 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     tmp.forEach((tmp, idx) => {
       newTrip.places[`${idx}`] = tmp['placeInfo'];
     });
-    dispatch(createTrip(JSON.stringify(newTrip)));
+    dispatch(createTrip(JSON.stringify(newTrip)))
+      .unwrap()
+      .then((res) => {
+        Swal.fire({ imageUrl: '/img/booggie.png',
+        imageHeight: 300,
+        imageAlt: 'A tall image',
+        title: '풀코스 생성 완료!',
+        text: '부기와 함께 떠나볼까요?',
+        height: 500,
+        })
+        navigate(`/user/fullcourse/${res.data}`)
+        deleteAll()
+        clearMarker()
+      })
   };
+
 
   // 마커삭제
   const removeMarker = (lat, lng, e) => {
@@ -332,7 +353,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     });
 
     const waypoints = [];
-    console.log('이거왜이래', placeLocations);
+
     placeLocations &&
       placeLocations.map((item, idx) => {
         waypoints.push({
@@ -365,7 +386,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
 
     waypoints &&
       waypoints.map((item, idx) => {
-        console.log(('뭐담겨있지', item));
         new window.google.maps.Marker({
           map,
           position: item,
@@ -391,7 +411,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
 
     flightPath.setMap(map);
   };
-
+  //진짜 장소리스트 지우기
   const deleteAll = () => {
     dispatch(deleteAllPlace());
   };
@@ -404,6 +424,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     <PlannerContent className="planner-content">
       <PlaceBucket className="planner-box bucket">
         안녕난 장소장바구니야
+    
         <button onClick={clearPlaceItems} className="delete-all">클리어마커</button>
         {placeItem &&
           placeItem.map((item, idx) => (
@@ -447,9 +468,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         ))}
 
       <SaveBtn onClick={createNewTrip}>일정생성</SaveBtn>
-      <button onClick={deleteAll} className="delete-all">
-        전체삭제
-      </button>
+
     </PlannerContent>
   );
 };

@@ -44,7 +44,7 @@ export const createTrip = createAsyncThunk(
     console.log("여행요청객체", createTripPostReq)
     try {
       const { data } = await postTrip(createTripPostReq);
-      alert("일정생성에 성공했다네!!")
+      console.log("일정생성에 성공했다네!!")
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

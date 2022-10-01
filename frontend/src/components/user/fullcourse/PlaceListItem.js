@@ -46,9 +46,19 @@ const PlaceListItem = ({ placeKey, place }) => {
       }
     });
   };
+  const boogie = () => {
+    Swal.fire({ imageUrl: '/img/booggie.png',
+    imageHeight: 300,
+    imageAlt: 'A tall image',
+    title: '풀코스 생성 완료!',
+    text: '부기와 함께 떠나볼까요?',
+    height: 500,
+    })
+  }
 
   return (
     <div>
+      <button onClick={boogie}>부기꾸미기</button>
       <p>{parseInt(placeKey) + 1}Day</p>
       {place.map((p, index) => {
         return (

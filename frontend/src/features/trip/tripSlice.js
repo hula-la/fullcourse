@@ -69,7 +69,7 @@ const tripSlice = createSlice({
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
       state.travelPlaceList = payload.data;
-      console.log("이게되나", payload.data)
+      
       
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
