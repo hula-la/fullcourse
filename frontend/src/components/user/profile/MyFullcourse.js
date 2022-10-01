@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyFullcourse } from '../../../features/user/userActions';
 import MyFullcourseShare from './MyFullcourseShare';
-import StyledButton from '../../common/StyledButton';
 import styled from 'styled-components';
 import MyfullcourseItem from './MyFullcourseItem';
 import TitleText from './TitleText';

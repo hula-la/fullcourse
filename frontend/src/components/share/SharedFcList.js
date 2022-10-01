@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 const Empty = styled.div`
-  margin: auto;
+  margin: 21vh auto;
   font-size: 1.5rem;
 `;
 

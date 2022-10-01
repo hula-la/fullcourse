@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import FullcourseTag from '../../components/share/SharedFcTag';
 import SharedFcList from '../../components/share/SharedFcList';
+import SortSelect from '../../components/share/SortSelect';
 import TitleText from '../../components/user/profile/TitleText';
 import { fetchSharedFc } from '../../features/share/shareActions';
 import { Pagination } from '@mui/material';
@@ -10,22 +11,40 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const Wrapper = styled.div`
   margin: 0 20%;
-  input {
-    width: 20vw;
-    height: 30px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 3px;
-    font-size: 1rem;
-    text-align: center;
-    border: none;
-    background-color: rgba(217, 239, 255, 1);
-    font-family: Tmoney;
-    outline: none;
+  position: relative;
+  .icon {
+    position: relative;
+    right: 50px;
+    top: 5px;
+    cursor: pointer;
   }
 `;
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+`;
 
-const Input = styled.input``;
+const Input = styled.input`
+  width: 32vw;
+  min-width: 350px;
+  height: 40px;
+  margin: 10px 10px 10px 60px;
+  padding: 3px;
+  font-size: 1rem;
+  text-align: center;
+  border: 0.5px solid #0aa1dd;
+  border-radius: 5rem;
+  background-color: rgba(217, 239, 255, 1);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  font-family: Tmoney;
+  outline: none;
+  &:focus {
+    background-color: #d9efff59;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 30%);
+    transition: 0.5s;
+  }
+`;
 const Button = styled.button`
   margin-bottom: 4vh;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
@@ -60,7 +79,7 @@ const FullcourseShare = () => {
   const { checkedDayTagList } = useSelector((state) => state.share);
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
-  const [place, setPlace] = useState('검색어를 입력하세요');
+  const [place, setPlace] = useState('');
 
   useEffect(() => {
     if (sharedFcList !== null) {
@@ -80,6 +99,7 @@ const FullcourseShare = () => {
     dispatch(
       fetchSharedFc({ checkedTagList, checkedDayTagList, place, pageNum }),
     );
+    window.scrollTo(0, 0);
   }, [dispatch, checkedTagList, checkedDayTagList, pageNum]);
 
   const onClickPage = (e) => {
@@ -89,42 +109,50 @@ const FullcourseShare = () => {
   };
 
   const onClickSearch = (e) => {
-    setPlace(e.target.value);
+    console.log(place);
   };
 
   const onFocus = (e) => {
-    setPlace('');
+    e.target.placeholder = '';
+  };
+
+  const onChange = (e) => {
+    setPlace(e.target.value);
+    if (e.target.value.length == 0) {
+      e.target.placeholder = '가고싶은 장소를 입력하세요';
+    }
   };
 
   return (
     <div>
       <Wrapper>
         <TitleText className="ttl" content="풀코스 검색"></TitleText>
-        <input
-          placeholder={place}
+        <Input
+          placeholder="가고싶은 장소를 입력하세요"
           onFocus={onFocus}
-          onClick={onClickSearch}
-        ></input>
-        <SearchOutlinedIcon />
-        <Button>검색</Button>
+          onChange={onChange}
+        ></Input>
+        <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
+        {/* <Button>검색</Button> */}
       </Wrapper>
 
       <FullcourseTag />
-
+      <SortSelect />
       <SharedFcList />
 
-      {sharedFcList ? (
-        <Pagination
-          count={maxPageNum}
-          variant="outlined"
-          shape="rounded"
-          showFirstButton
-          showLastButton
-          defaultPage={1}
-          boundaryCount={2}
-          onChange={onClickPage}
-        />
-      ) : null}
+      <PaginationWrapper>
+        {sharedFcList ? (
+          <Pagination
+            count={maxPageNum}
+            color="primary"
+            showFirstButton
+            showLastButton
+            defaultPage={1}
+            boundaryCount={2}
+            onChange={onClickPage}
+          />
+        ) : null}
+      </PaginationWrapper>
     </div>
   );
 };
