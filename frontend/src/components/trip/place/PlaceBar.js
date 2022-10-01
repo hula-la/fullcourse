@@ -8,9 +8,31 @@ import { Pagination } from '@mui/material';
 import PlaceList from './PlaceList';
 
 const PlaceContainer = styled.div`
-  height: 87vh;
+  height: 85vh;
   background-color: #e8f9fd;
   overflow-y: scroll;
+  overflow-x: hidden;
+  margin-right: 2vh;
+  margin-top: 1vh;
+  border-radius: 0 1rem 1rem 0;
+  border-right: 3px dashed #A5F1E9;
+  border-top: 3px dashed #A5F1E9;
+  border-bottom: 3px dashed #A5F1E9;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 15%;
+    background-color: #0aa1dd;
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #E8F9FD;
+    border-radius: 2rem;
+  }
+  
 `;
 
 const PlaceTypes = styled.button``;

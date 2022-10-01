@@ -10,24 +10,31 @@ import {
   deleteAllPlace,
 } from '../../../features/trip/tripSlice';
 
+
 const PlannerContent = styled.div`
   background-color:#D9D9D9;
+  margin-top: 1vh;
+  padding: 1vh;
   overflow-y: scroll;
   height: 70vh;
+  border-radius: 0 0 1rem 1rem;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }
 
   &::-webkit-scrollbar-thumb {
     height: 15%;
-    background-color: #f5d312;
+    background-color: #0aa1dd;
     border-radius: 2rem;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #f8edb1;
+    background-color: #E8F9FD;
     border-radius: 2rem;
   }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const PlaceBucket = styled.div`
   border: 1px solid;
@@ -422,10 +429,10 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   }
   return (
     <PlannerContent className="planner-content">
+      <button onClick={clearPlaceItems} className="delete-all">클리어마커</button>
       <PlaceBucket className="planner-box bucket">
-        안녕난 장소장바구니야
+        담긴장소들
     
-        <button onClick={clearPlaceItems} className="delete-all">클리어마커</button>
         {placeItem &&
           placeItem.map((item, idx) => (
             <li

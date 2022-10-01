@@ -4,7 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInitMap } from '../../features/trip/tripSlice';
 import './map.css'
 
-const MapContainer = styled.div``;
+const MapContainer = styled.div`
+  border-radius: 1rem 0 0 1rem;
+  border-left: 3px dashed #A5F1E9;
+  border-top: 3px dashed #A5F1E9;
+  border-bottom: 3px dashed #A5F1E9;
+
+  margin-top: 1vh;
+  height:85vh
+`;
 
 const Map = ({ map, setMap, mapRef }) => {
   const { markers  } = useSelector((state) => state.trip);
