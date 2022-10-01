@@ -11,6 +11,8 @@ import {
 } from '../../../features/trip/tripSlice';
 
 import '../trip.css';
+import {TiDeleteOutline} from 'react-icons/ti'
+import { GrPowerReset } from "react-icons/gr"
 
 const PlannerContent = styled.div`
   background-color: #d9d9d9;
@@ -38,28 +40,49 @@ const PlannerContent = styled.div`
   align-items: center;
 `;
 const PlaceBucket = styled.div`
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
 
   width: 20vw;
   height: 60vh;
   background-color: #e8f9fd;
+  .bucketBox { 
+    height: auto;
+  }
+  .deleteIcon path{
+    stroke: #0aa1dd;
+  }
+
+
 `;
 
-const DeleteBtn = styled.button``;
+const DeleteBtn = styled(TiDeleteOutline)`
+  font-size: 2.5vmin;
+  color: #EB1D36;
+  cursor: pointer;
+`;
+
+const ResetBtn = styled(GrPowerReset)`
+  font-size: 3vmin;
+  
+  cursor: pointer;
+ 
+`;
 
 const PlannerBox = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid;
   width: 20vw;
-  height: 30vh;
+  height: auto;
   margin-bottom: 1vh;
 `;
 
 const MainTitle = styled.div`
   background: #b7b7b7;
   height: 5vh;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 2px;
+  /* border-radius: 0.5rem 0.5rem 0 0; */
+  line-height: 5vh;
 `;
 
 const Title = styled.div`
@@ -67,11 +90,11 @@ const Title = styled.div`
   height: 5vh;
 `;
 
-const Date = styled.p``;
+
 
 const PlannerList = styled.div`
   height: 20vh;
-  border: 1px solid;
+ 
 `;
 
 const SaveBtn = styled.button``;
@@ -197,8 +220,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     const getPlaceLocations = (e) => {
       const DayElm = e.target.closest('.planner-box');
       const item = DayElm.querySelector('.title')
-      console.log("되나용", item.dataset.planDay)
-      console.log(typeof(item.dataset.planDay))
       setPlanDay(item.dataset.planDay);
       const titleElm = e.target.closest('.title'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
       console.log(titleElm);
@@ -458,45 +479,44 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
   return (
     <PlannerContent className="planner-content">
-      <button onClick={clearPlaceItems} className="delete-all">
-        클리어마커
-      </button>
+       
+      
       <PlaceBucket className="planner-box bucket">
-        <MainTitle>장소를 추가해보세요!</MainTitle>
-
-        {placeItem &&
-          placeItem.map((item, idx) => (
-            <li
-              key={idx}
-              draggable={item.draggable}
-              data-place-id={item.placeId}
-              data-place-img={item.imgUrl}
-              data-place-lat={item.lat}
-              data-place-lng={item.lng}
-              data-place-type={item.type}
-              className="list-item"
-            >
-              {item.name}
-
-              <DeleteBtn
-                className="delete"
-                onClick={(e) => {
-                  removeMarker(item.lat, item.lng, e);
-                }}
+        
+        <MainTitle>장소를 추가해보세요<ResetBtn onClick={clearPlaceItems} className='deleteIcon' /></MainTitle>
+        <div className='bucketBox'>
+          {placeItem &&
+            placeItem.map((item, idx) => (
+              <li
+                key={idx}
+                draggable={item.draggable}
+                data-place-id={item.placeId}
+                data-place-img={item.imgUrl}
+                data-place-lat={item.lat}
+                data-place-lng={item.lng}
+                data-place-type={item.type}
+                className="list-item"
               >
-                삭제
-              </DeleteBtn>
-            </li>
-          ))}
+                {item.name}
+
+                <DeleteBtn
+                  className="delete"
+                  onClick={(e) => {
+                    removeMarker(item.lat, item.lng, e);
+                  }}
+                >
+                  삭제
+                </DeleteBtn>
+              </li>
+            ))}
+        </div>
       </PlaceBucket>
 
       {tripDates &&
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>
             <Title className="title" data-plan-day={idx + 1} onClick={drawPolyline}>Day{idx + 1} {item}</Title>
-            {/* <Date className="date" onClick={drawPolyline}>
-              {item}
-            </Date> */}
+
             <PlannerList className="planner-list">
             </PlannerList>
           </PlannerBox>

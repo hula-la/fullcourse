@@ -38,7 +38,7 @@ const Introduce = styled.div`
     display: flex;
   }
 
-  background-color: #fff3f8;
+  background-color: #ffffff;
 `;
 
 const VideoContainer = styled.div`

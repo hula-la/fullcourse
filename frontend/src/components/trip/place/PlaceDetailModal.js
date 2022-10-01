@@ -26,7 +26,7 @@ const ModalView = styled.div.attrs((props) => ({
   text-align: center;
   text-decoration: none;
   /* padding: 3.5rem 4rem; */
-  /* background-color: #fff3f8; 눈편한흰색*/
+  /* background-color: #ffffff; 눈편한흰색*/
   background-color: #e8f9fd;
   border-radius: 2vh;
   color: #333333;
