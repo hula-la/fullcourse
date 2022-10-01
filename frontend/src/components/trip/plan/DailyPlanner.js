@@ -37,9 +37,11 @@ const PlannerContent = styled.div`
   align-items: center;
 `;
 const PlaceBucket = styled.div`
-  border: 1px solid;
+  border-radius: 0.5rem;
+
   width: 20vw;
-  height: 30vh;
+  height: 60vh;
+  background-color: #e8f9fd;
 `;
 
 const DeleteBtn = styled.button``;
@@ -53,7 +55,18 @@ const PlannerBox = styled.div`
   margin-bottom: 1vh;
 `;
 
-const Title = styled.div``;
+const MainTitle = styled.div`
+  background: #b7b7b7;
+  height:5vh;
+  border-radius: 0.5rem 0.5rem 0 0;
+  
+`;
+
+const Title = styled.div`
+  background: #b7b7b7;
+  height:5vh;
+ 
+`;
 
 const Date = styled.p``;
 
@@ -431,7 +444,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     <PlannerContent className="planner-content">
       <button onClick={clearPlaceItems} className="delete-all">클리어마커</button>
       <PlaceBucket className="planner-box bucket">
-        담긴장소들
+        <MainTitle>담긴장소들</MainTitle>
     
         {placeItem &&
           placeItem.map((item, idx) => (
@@ -444,7 +457,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               data-place-lng={item.lng}
               data-place-type={item.type}
               className="list-item"
-              id={idx}
+            
             >
               {item.name}
 
