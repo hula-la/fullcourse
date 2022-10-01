@@ -73,10 +73,10 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
       return date
     }
 
+    //5일제한
     const startTime = new Date(date).getTime()
     const month = date.getMonth();
     const year = date.getFullYear();
-    const daysInMonth = new Date(year, month, 0).getDate();
     return new Date(startTime + 4 * 24 * 60 * 60 * 1000)
   }
   

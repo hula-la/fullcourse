@@ -6,6 +6,7 @@ import {
   setMarkers,
   clearMarkers,
   deleteMarkers,
+  deleteAllPlace,
 } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
@@ -137,7 +138,12 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
         const deleteElm = e.target.closest('.delete');
+        console.log(e.target.parentNode);
         e.target.parentNode.remove();
+      } else if (e.target.classList.contains('delete-daily')) {
+        console.log("뭐지",e.target.parentNode)
+        // e.target.parentNode.remove();
+        // clearPlaceItems()
       }
       //경로관련기능 바닐라 자스로 추가
       else if (e.target.closest('.planner-box')) {
@@ -146,12 +152,15 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         setPlaceLocations(placeLocations);
       }
     });
+    // const clearPlaceItems = () => {
+    //   document.querySelectorAll('#list-item').forEach(placeItem => placeItem.remove());
+    // }
     const getPlaceLocations = (e) => {
       const DayElm = e.target.closest('.planner-box'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
       // console.log(DayElm.querySelector('.title').innerText)
-      setPlanDay(DayElm.querySelector('.title').innerText)
+      setPlanDay(DayElm.querySelector('.title').innerText);
       const titleElm = e.target.closest('.date'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
-      console.log(titleElm)
+      console.log(titleElm);
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
         : null;
@@ -193,7 +202,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         { offset: Number.NEGATIVE_INFINITY },
       ).element;
     };
-  }, []);
+  }, [placeItem]);
 
   //여행 일정 객체 생성 관련1
   var newObj = {};
@@ -331,35 +340,45 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
           lng: parseFloat(item.lng),
         });
       });
-    
-    
-    const color = ['#FF5854','#66FF5C','#FFBC65','#655AFF','#E574FF']
-    var myColor = ''
-    var myIcon = new window.google.maps.MarkerImage("/img/marker/marker0.png", null, null, null, new window.google.maps.Size(28,30));
+
+    const color = ['#FF5854', '#66FF5C', '#FFBC65', '#655AFF', '#E574FF'];
+    var myColor = '';
+    var myIcon = new window.google.maps.MarkerImage(
+      '/img/marker/marker0.png',
+      null,
+      null,
+      null,
+      new window.google.maps.Size(28, 30),
+    );
     for (var i = 1; i < 6; i++) {
       if (planDay === `Day${i}`) {
-        myIcon = new window.google.maps.MarkerImage(`/img/marker/marker${i-1}.png`, null, null, null, new window.google.maps.Size(28,30));
-        myColor = color[i-1] 
+        myIcon = new window.google.maps.MarkerImage(
+          `/img/marker/marker${i - 1}.png`,
+          null,
+          null,
+          null,
+          new window.google.maps.Size(28, 30),
+        );
+        myColor = color[i - 1];
       }
     }
 
-    waypoints && waypoints.map((item,idx) => {
-      console.log(("뭐담겨있지",item))
-      new window.google.maps.Marker({
-        map,
-        position: item,
-        icon: myIcon,
-        label: {
-          text: `${idx+1}`,
-          fontSize: "1.5vmin",
-          fontFamily: "Tmoney",
-          className: "numlabel",
-          color: "white"
-          
-          
-        },
+    waypoints &&
+      waypoints.map((item, idx) => {
+        console.log(('뭐담겨있지', item));
+        new window.google.maps.Marker({
+          map,
+          position: item,
+          icon: myIcon,
+          label: {
+            text: `${idx + 1}`,
+            fontSize: '1.5vmin',
+            fontFamily: 'Tmoney',
+            className: 'numlabel',
+            color: 'white',
+          },
+        });
       });
-    })
 
     console.log(waypoints);
     const flightPath = new window.google.maps.Polyline({
@@ -373,11 +392,19 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     flightPath.setMap(map);
   };
 
+  const deleteAll = () => {
+    dispatch(deleteAllPlace());
+  };
+  const clearPlaceItems = () => {
+    document.querySelectorAll('.list-item').forEach(placeItem => placeItem.remove());
+    clearMarker()
+    // dispatch(deleteAllPlace());
+  }
   return (
     <PlannerContent className="planner-content">
       <PlaceBucket className="planner-box bucket">
         안녕난 장소장바구니야
-        <button onClick={clearMarker}>클리어마커</button>
+        <button onClick={clearPlaceItems} className="delete-all">클리어마커</button>
         {placeItem &&
           placeItem.map((item, idx) => (
             <li
@@ -389,6 +416,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
               data-place-lng={item.lng}
               data-place-type={item.type}
               className="list-item"
+              id={idx}
             >
               {item.name}
 
@@ -407,6 +435,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       {tripDates &&
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>
+            
             <Title className="title">Day{idx + 1}</Title>
             <Date className="date" onClick={drawPolyline}>
               {item}
@@ -418,6 +447,9 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         ))}
 
       <SaveBtn onClick={createNewTrip}>일정생성</SaveBtn>
+      <button onClick={deleteAll} className="delete-all">
+        전체삭제
+      </button>
     </PlannerContent>
   );
 };
