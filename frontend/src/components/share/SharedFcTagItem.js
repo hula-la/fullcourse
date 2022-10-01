@@ -25,7 +25,7 @@ const TagBlock = styled.div`
     color: #ffffff;
   }
 `;
-const FullcourseTagItem = ({ tag }) => {
+const FullcourseTagItem = ({ tag, index }) => {
   const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState(false);
   const { checkedTagList } = useSelector((state) => state.share);
@@ -47,7 +47,7 @@ const FullcourseTagItem = ({ tag }) => {
         onClick={onClick}
         className={'listitem' + (isChecked ? ' tag-selected' : '')}
       >
-        # {tag}
+        {index === 0 ? tag : '#' + tag}
       </div>
     </TagBlock>
   );
