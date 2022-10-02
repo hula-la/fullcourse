@@ -116,7 +116,7 @@ const CardComponent = (props) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`detail/${props.fullcourse.sharedFcId}`);
+    navigate(`../../../fullcourse/detail/${props.fullcourse.sharedFcId}`);
   };
   return (
     <Wapper>
