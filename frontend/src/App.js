@@ -24,12 +24,9 @@ import ArPage from './pages/ar/ArPage';
 import NotFound from './pages/NotFound';
 import ProtectedLoginRoute from './private/ProtectedLoginRoute';
 import ProtectedRoute from './private/ProtectedRoute';
-import { useSelector } from 'react-redux';
 
 function App() {
   const dispatch = useDispatch();
-
-  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(fetchUserInfo());
@@ -42,10 +39,10 @@ function App() {
         <Route path="" element={<MainPage />} />
         {/* user */}
         <Route path="user" element={<Layout />}>
-          <Route element={<ProtectedLoginRoute userInfo={userInfo} />}>
+          <Route element={<ProtectedLoginRoute />}>
             <Route path="login" element={<LoginPage />} />
           </Route>
-          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+          <Route element={<ProtectedRoute />}>
             <Route path="profile/:pageNum" element={<ProfilePage />} />
             <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
           </Route>
@@ -56,7 +53,7 @@ function App() {
         </Route>
         {/* trip */}
         <Route path="trip" element={<OnlyHeaderLayout />}>
-          <Route element={<ProtectedRoute userInfo={userInfo} />}>
+          <Route element={<ProtectedRoute />}>
             <Route path="plan" element={<PlanPage />} />
             {/* survey 일정짜기 전 설문조사 */}
             <Route path="survey" element={<SurveyPage />} />
@@ -64,7 +61,6 @@ function App() {
           </Route>
         </Route>
 
-        
         <Route path="ar" element={<ArPage />} />
 
         <Route path="*" element={<NotFound />} />
