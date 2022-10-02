@@ -51,6 +51,7 @@ const initialState = {
   checkedTagList: [],
   checkedDayTagList: [],
   checkedDay: 6,
+  howSort: 'regDate,desc',
 };
 
 const shareSlice = createSlice({
@@ -86,6 +87,10 @@ const shareSlice = createSlice({
     },
     checkAllDay: (state) => {
       state.checkedDay = 6;
+    },
+    selectSort: (state, { payload }) => {
+      state.howSort = payload + ',desc';
+      console.log(state.howSort);
     },
   },
   extraReducers: {
@@ -149,7 +154,13 @@ const shareSlice = createSlice({
   },
 });
 
-export const { checkTag, checkDayTag, makeDayTagList, checkDay, checkAllDay } =
-  shareSlice.actions;
+export const {
+  checkTag,
+  checkDayTag,
+  makeDayTagList,
+  checkDay,
+  checkAllDay,
+  selectSort,
+} = shareSlice.actions;
 
 export default shareSlice.reducer;

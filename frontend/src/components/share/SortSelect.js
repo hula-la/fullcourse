@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
+import { selectSort } from '../../features/share/shareSlice';
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -121,6 +123,8 @@ const SortSelect = () => {
       name: '댓글순',
     },
   ];
+
+  const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
   const [sort, setSort] = useState('등록순');
 
@@ -128,13 +132,11 @@ const SortSelect = () => {
     setIsActive(!isActive);
   };
 
-  const onClcikSort = (e) => {
-    setSort(e.target.getAttribute('value'));
-    console.log(e.target.getAttribute('value'));
+  const onClickSort = (index, e) => {
+    setSort(sortItem[index]['name']);
+    dispatch(selectSort(sortItem[index]['type']));
     setIsActive(!isActive);
   };
-
-  useEffect(() => {}, [sort]);
 
   return (
     <Wrapper>
@@ -149,7 +151,7 @@ const SortSelect = () => {
                 key={index}
                 value={item.name}
                 className="optionItem"
-                onClick={onClcikSort}
+                onClick={(e) => onClickSort(index, e)}
               >
                 {item.name}
               </li>
