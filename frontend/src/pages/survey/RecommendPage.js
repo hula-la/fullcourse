@@ -38,6 +38,12 @@ font-size: 1.3rem;
 
 }
 
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .title{
+    padding-right: 11rem;
+  }
+  }
+
 span{
   color: #3f73d2;
   margin: 0 0.5rem;
@@ -194,6 +200,12 @@ border-radius: 10px;
 
     
 }
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .buttonContainer{
+    width: 5rem;
+  }
+  }
 .buttonContainer span{
   color:#7c87d5
 }
