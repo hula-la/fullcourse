@@ -127,7 +127,7 @@ const MyfullcourseItem = ({ fullcourse }) => {
   return (
     <Wapper>
       <FullCourseInfo>
-        <img src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270" />
+        <img src={fullcourse.thumbnail} />
         <Info>
           <NavLink to={`/user/fullcourse/${fullcourse.fcId}`}>
             <div style={{ fontWeight: '500' }}>{DDay}</div>
