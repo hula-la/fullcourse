@@ -48,7 +48,7 @@ function App() {
             <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
           </Route>
         </Route>
-        <Route path="fullcourse" element={<Layout />}>
+        <Route path="fullcourse" element={<OnlyHeaderLayout />}>
           <Route path="" element={<ShareFcPage />} />
           <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
         </Route>
