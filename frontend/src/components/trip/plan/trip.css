@@ -90,6 +90,7 @@
 } */
 
 .list-item {
+  font-size: 2.1vmin;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
