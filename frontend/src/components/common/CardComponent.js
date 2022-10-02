@@ -135,14 +135,11 @@ const CardComponent = (props) => {
       >
         <CardOverflow>
           <AspectRatio ratio="3">
-            <img
-              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
-              alt="card main img"
-            />
+            <img src={props.fullcourse.thumbnail} alt="card main img" />
           </AspectRatio>
 
           <Avatar
-            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+            src={props.fullcourse.user.imgUrl}
             size="lg"
             sx={{
               position: 'absolute',
