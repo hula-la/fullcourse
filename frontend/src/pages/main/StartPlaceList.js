@@ -116,9 +116,8 @@ const StartPlaceList = () => {
     console.log(typeof marker);
     marker['position'] = position;
     marker['placeName'] = name;
-    
-    dispatch(setMarkers(marker));
 
+    dispatch(setMarkers(marker));
   };
 
   const setStartPlaceInfo = (id, e) => {
@@ -137,7 +136,7 @@ const StartPlaceList = () => {
         placeItemObj.draggable = true;
         placeItemObj.lat = data.lat;
         placeItemObj.lng = data.lng;
-        placeItemObj.type = placeType
+        placeItemObj.type = placeType;
         dispatch(setPlaceItem(placeItemObj));
         addMarker(data.lat, data.lng, data.name);
       })
@@ -145,7 +144,6 @@ const StartPlaceList = () => {
         navigate('trip/plan');
       });
   };
-
 
   return (
     <div>

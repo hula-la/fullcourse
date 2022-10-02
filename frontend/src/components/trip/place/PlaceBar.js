@@ -42,21 +42,33 @@ const PlaceContainer = styled.div`
   }
 `;
 
+const SortBox = styled.div`
+  margin-top: 1vh;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  margin-left: 2vh;
+`;
+
 const TypeContainer = styled.div`
-  width: 20vw;
+  width: 13vw;
+  height: 10vh;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 0.2vh;
 `;
 
 const PlaceTypes = styled.button`
   border: #0aa1dd 1px solid;
-  border-radius: 20px;
-  padding: 3px 10px;
-  margin: 10px 4px;
+
+  border-radius: 0.5rem;
+  width: 4vw;
+  height: 4vh;
   font-size: small;
   font-weight: bold;
   cursor: pointer;
   color: #0aa1dd;
+
   transition: background-color 500ms;
   &:hover {
     background-color: #0aa1dd;
@@ -87,8 +99,8 @@ const PlaceBar = ({ map }) => {
     'activity',
     'custom',
   ]);
-  
-  const showPlaceTypes = ['여행','문화','숙소','맛집','체험','커스텀']
+
+  const showPlaceTypes = ['여행', '문화', '숙소', '맛집', '체험', '커스텀'];
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
   const { travelPlaceList } = useSelector((state) => state.trip);
@@ -130,11 +142,9 @@ const PlaceBar = ({ map }) => {
 
   useEffect(() => {
     if (travelPlaceList !== null) {
-      console.log('어디서막히는거고');
       let tmp = travelPlaceList.totalElements;
       let result = parseInt(tmp / 9);
       let remainder = tmp % 9;
-      console.log('얘안뜨지', result, remainder);
       if (remainder === 0) {
         setMaxPageNum(result);
       } else {
@@ -157,19 +167,16 @@ const PlaceBar = ({ map }) => {
     e.preventDefault();
     for (var i = 0; i < placeTypes.length; i++) {
       if (i === id) {
-        
         setPlaceType(placeTypes[id]);
-
-     
       }
     }
   };
 
   return (
     <PlaceContainer className="place-container">
-      <TypeContainer>
-        {placeTypes &&
-          placeTypes.map((item, id) => (
+      <SortBox>
+        <TypeContainer>
+          {showPlaceTypes.map((item, id) => (
             <PlaceTypes
               onClick={(e) => {
                 changePlaceList(id, e);
@@ -178,29 +185,31 @@ const PlaceBar = ({ map }) => {
               {item}
             </PlaceTypes>
           ))}
-      </TypeContainer>
-      <Select
-        placeholder="SNS언급순"
-        indicator={<ArrowIcon />}
-        sx={{
-          border: 'none',
-          width: 115,
-          fontSize: '1.8vmin',
-          [`& .${selectClasses.indicator}`]: {
-            transition: '0.2s',
+        </TypeContainer>
+        <Select
+          placeholder="기본순"
+          indicator={<ArrowIcon />}
+          sx={{
+            border: 'none',
+            width: 115,
+            fontSize: '1.8vmin',
+            [`& .${selectClasses.indicator}`]: {
+              transition: '0.2s',
 
-            [`&.${selectClasses.expanded}`]: {
-              transform: 'rotate(-180deg)',
+              [`&.${selectClasses.expanded}`]: {
+                transform: 'rotate(-180deg)',
+              },
             },
-          },
-        }}
-      >
-        <Option value="dog">SNS언급순</Option>
-        <Option value="cat">별점순</Option>
-        <Option value="fish">좋아요순</Option>
-        <Option value="bird">리뷰순</Option>
-        <Option value="bird">담긴순</Option>
-      </Select>
+          }}
+        >
+          <Option value="dog">SNS언급순</Option>
+          <Option value="cat">기본순</Option>
+          <Option value="cat">별점순</Option>
+          <Option value="fish">좋아요순</Option>
+          <Option value="bird">리뷰순</Option>
+          <Option value="bird">담긴순</Option>
+        </Select>
+      </SortBox>
 
       <PlaceList className="place-list" map={map} placeType={placeType} />
       <PageBox>
