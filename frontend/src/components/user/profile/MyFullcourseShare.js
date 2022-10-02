@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
@@ -180,6 +180,8 @@ const Button = styled.button`
 const MyFullcourseShare = (props) => {
   const { open, close, header, fullcourse } = props;
   const dispatch = useDispatch();
+  const { willShareFcId } = useSelector((state) => state.share);
+  const { willShareThumbnail } = useSelector((state) => state.share);
   const [fullcourseTags, setFullcourseTags] = useState(['부산']);
   const [inputs, setInPuts] = useState({
     title: '',
@@ -233,11 +235,11 @@ const MyFullcourseShare = (props) => {
     dispatch(
       createSharedFc({
         day: days,
-        fcId: fullcourse.fcId,
+        fcId: willShareFcId,
         title: inputs.title,
         detail: inputs.content,
         tags: fullcourseTags,
-        thumbnail: fullcourse.thumbnail,
+        thumbnail: willShareThumbnail,
       }),
     );
   };

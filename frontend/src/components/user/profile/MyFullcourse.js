@@ -13,6 +13,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { selectFcId } from '../../../features/share/shareSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin: 0 5vw;
@@ -81,6 +83,7 @@ const Button = styled.button`
 const MyFullcourse = ({ userInfo }) => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { myFullcourseList } = useSelector((state) => state.user);
   const [modalOpen, setModalOpen] = useState(false);
@@ -95,7 +98,10 @@ const MyFullcourse = ({ userInfo }) => {
     setModalOpen(false);
   };
 
-  const onClick = () => {
+  const onClick = (e, fullcourse) => {
+    dispatch(
+      selectFcId({ fcId: fullcourse.fcId, thumbnail: fullcourse.thumbnail }),
+    );
     openModal();
   };
   // carousel 설정
@@ -110,6 +116,10 @@ const MyFullcourse = ({ userInfo }) => {
   useEffect(() => {
     dispatch(fetchMyFullcourse());
   }, [dispatch]);
+
+  const onClickMakeFc = () => {
+    navigate('/trip/plan');
+  };
 
   return (
     <Wrapper>
@@ -138,7 +148,9 @@ const MyFullcourse = ({ userInfo }) => {
                     {fullcourse.shared ? (
                       <DisableButton>공유완료</DisableButton>
                     ) : new Date(fullcourse.endDate) < new Date() ? (
-                      <Button onClick={onClick}>공유하기</Button>
+                      <Button onClick={(e) => onClick(e, fullcourse)}>
+                        공유하기
+                      </Button>
                     ) : new Date() < new Date(fullcourse.startDate) ? (
                       <DisableButton>예정</DisableButton>
                     ) : (
@@ -172,7 +184,7 @@ const MyFullcourse = ({ userInfo }) => {
             </Flex>
           </div>
         ) : (
-          <Button>풀코스 만들러 가기</Button>
+          <Button onClick={onClickMakeFc}>풀코스 만들러 가기</Button>
         )
       ) : null}
     </Wrapper>

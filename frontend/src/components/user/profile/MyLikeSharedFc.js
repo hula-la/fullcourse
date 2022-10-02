@@ -12,6 +12,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin: 0 5vw;
@@ -48,6 +49,7 @@ const Empty = styled.div`
 const MyLikeSharedFc = () => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { sharedFcLikeList } = useSelector((state) => state.share);
   // carousel 설정
@@ -62,6 +64,10 @@ const MyLikeSharedFc = () => {
     dispatch(fetchSharedFcLikeList());
   }, [dispatch]);
 
+  const onClickLikeSharedFc = (fullcourse, e) => {
+    navigate(`/fullcourse/detail/${fullcourse.sharedFcId}`);
+  };
+
   return (
     <Wrapper>
       <TitleText content="찜한 풀코스" />
@@ -69,13 +75,27 @@ const MyLikeSharedFc = () => {
         sharedFcLikeList.content.length >= 3 ? (
           <Slider className="slider" {...settings}>
             {sharedFcLikeList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickLikeSharedFc(fullcourse, e)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Slider>
         ) : sharedFcLikeList.content.length > 0 ? (
           <Flex>
             {sharedFcLikeList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickLikeSharedFc(fullcourse, e)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Flex>
         ) : (

@@ -52,6 +52,8 @@ const initialState = {
   checkedDayTagList: [],
   checkedDay: 6,
   howSort: 'regDate,desc',
+  willShareFcId: null,
+  willShareThumbnail: null,
 };
 
 const shareSlice = createSlice({
@@ -91,6 +93,10 @@ const shareSlice = createSlice({
     selectSort: (state, { payload }) => {
       state.howSort = payload + ',desc';
       console.log(state.howSort);
+    },
+    selectFcId: (state, { payload }) => {
+      state.willShareFcId = payload.fcId;
+      state.willShareThumbnail = payload.thumbnail;
     },
   },
   extraReducers: {
@@ -161,6 +167,7 @@ export const {
   checkDay,
   checkAllDay,
   selectSort,
+  selectFcId,
 } = shareSlice.actions;
 
 export default shareSlice.reducer;
