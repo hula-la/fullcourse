@@ -151,6 +151,7 @@ const CardComponent = (props) => {
         <CardOverflow
           variant="soft"
           sx={{
+            background:'white',
             display: 'flex-column',
             textAlign: 'start',
             // gap: 1.5,

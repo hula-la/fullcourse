@@ -420,7 +420,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 35.1165, lng: 129.0401 },
-      zoom: 10,
+      zoom: 11,
       styles: googleMapStyle.mapStyles,
     });
 

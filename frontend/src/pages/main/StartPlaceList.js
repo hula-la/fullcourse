@@ -160,13 +160,14 @@ const StartPlaceList = () => {
                 setStartPlaceInfo(item[3], e);
               }}
               className={isMobile ? classes.cardMobile : null}
+              
               key={idx}
               sx={{
                 border: 'none',
                 minHeight: '280px',
                 width: '16.5vw',
                 marginTop: isMobile ? '5vh' : '10vh',
-                transition: 'transform 0.3s, border 0.3s',
+                transition: 'transform 0.3s',
                 '&:hover': {
                   border: '1px solid #0AA1DD',
                   transform: 'translateY(-2px)',
@@ -174,7 +175,9 @@ const StartPlaceList = () => {
                 },
               }}
             >
-              <CardCover>
+              <CardCover
+                
+              >
                 <img src={item[0]} alt="" className="startPlaceImg" />
               </CardCover>
 

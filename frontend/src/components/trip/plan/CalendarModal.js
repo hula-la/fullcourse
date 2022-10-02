@@ -68,6 +68,7 @@ const OkBtn = styled.button`
 const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
 
   const getMaxDate = (date) => {
+
     if (!date) {
       return date
     }
