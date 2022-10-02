@@ -29,7 +29,7 @@ height: 100%;
 width: 18rem;
 margin: 0 1rem;
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+@media  (min-width: 375px) and (max-width: 800px) {
     height: 98%;
 width: 15rem;
 margin: 0 0.8rem;
@@ -40,6 +40,36 @@ margin: 0 0.8rem;
     overflow-x: scroll;
     padding:0 0.5rem;
 }
+}
+
+.placeTag::-webkit-scrollbar{
+    /* display: hidden; */
+    width: 10px;
+}
+
+@media only screen and (max-device-width: 800px) {
+    
+    .placeTag::-webkit-scrollbar-thumb{
+        background-color: transparent;
+    }
+}
+
+@media only screen and (min-device-width: 800px) {
+    .placeTag::-webkit-scrollbar-thumb{
+        background-color: #dc3e5a;
+        border: 3px solid white;
+        border-radius: 10px;   
+    }
+}
+    
+/* .placeTag::-webkit-scrollbar-track{
+border-radius: 10px;    
+
+} */
+
+.placeTag{
+    max-height: 30%;
+    overflow: scroll;
 }
 
     border-radius: 1rem;

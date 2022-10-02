@@ -10,6 +10,9 @@ import styled from 'styled-components';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+// skip 아이콘
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+
 const Wrapper = styled.div`
 position: relative;
 height:calc(100vh - 80px);
@@ -24,12 +27,32 @@ height:calc(100vh - 80px);
 
 `
 
+
 const PlanButton = styled.div`
+/* position: absolute;
+top:5%;
+right:5%; */
 font-weight:bold;
 cursor:pointer;
+
+display: flex;
+align-items: center;
+padding: 0.1rem 0.4rem;
+border-radius: 1rem;
+font-size: 0.8rem;
+border: 2px solid;
 `
+
+// const PlanButton = styled.div`
+// font-weight:bold;
+// cursor:pointer;
+// `
 const SurveyHeader = styled.div`
-padding: 1rem 0;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     font-weight: bold;
 .title {
     padding-bottom: 0.5rem;
@@ -400,7 +423,7 @@ const SurveyPage = () => {
           onClick={(e) => {
             setStartPlaceInfo(likePlaceIndex, e);
           }}>
-          일정 바로 짜기
+          SKIP <SkipNextIcon/>
         </PlanButton>
         <span className='tooltiptext tooltip-bottom'><p>당신이 선택한 여행지들과 함께 일정 짜기 페이지로 넘어갑니다.</p></span>
       </div>
