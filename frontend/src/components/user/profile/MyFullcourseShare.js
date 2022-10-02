@@ -217,6 +217,9 @@ const MyFullcourseShare = (props) => {
   const onChangeInputs = (e) => {
     const { name, value } = e.target;
     setInPuts({ ...inputs, [name]: value });
+  };
+
+  const checkContent = (e) => {
     setInputMessage('(' + e.target.value.length + '/500)');
     if (e.target.value.length > 500) {
       setIsErr(true);
@@ -266,7 +269,12 @@ const MyFullcourseShare = (props) => {
                     <EditIcon />
                     <span>제목</span>
                   </label>
-                  <input type="text" id="title" name="title" />
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    onChange={onChangeInputs}
+                  />
                 </div>
                 <div>
                   <label>
@@ -280,7 +288,10 @@ const MyFullcourseShare = (props) => {
                     type="text"
                     id="content"
                     name="content"
-                    onChange={onChangeInputs}
+                    onChange={(e) => {
+                      onChangeInputs(e);
+                      checkContent(e);
+                    }}
                   />
                 </div>
                 <footer>

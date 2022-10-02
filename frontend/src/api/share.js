@@ -1,3 +1,4 @@
+import { ContentPasteOffOutlined } from '@mui/icons-material';
 import client from './client';
 
 export const getSharedFc = async (data, page) => {
@@ -16,7 +17,15 @@ export const getSharedFcDetail = async (sharedFcId, email) => {
 };
 
 export const postSharedFc = async (data) => {
-  const res = await client.post('api/share/fullcourse', data);
+  const res = await client
+    .post('api/share/fullcourse', data)
+    .then((data) => {
+      console.log('성공');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   return res;
 };
 
