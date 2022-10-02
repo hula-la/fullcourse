@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -14,7 +14,9 @@ const Wrapper = styled.div`
     width: 150px;
     height: 35px;
     border-radius: 3rem;
-    border: 2px solid #0aa1dd;
+    border: 1px solid #0aa1dd;
+    background-color: rgba(217, 239, 255, 1);
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
     cursor: pointer;
     z-index: 99;
   }
@@ -31,7 +33,7 @@ const Wrapper = styled.div`
   .selectBox2:after {
     content: '';
     display: block;
-    width: 2px;
+    width: 1px;
     height: 100%;
     position: absolute;
     top: 0;
@@ -39,7 +41,7 @@ const Wrapper = styled.div`
     background-color: #0aa1dd;
   }
 
-  .selectBox2 .label {
+  .selectBox2 .select-btn {
     display: flex;
     align-items: center;
     width: inherit;
@@ -128,13 +130,16 @@ const SortSelect = () => {
 
   const onClcikSort = (e) => {
     setSort(e.target.getAttribute('value'));
+    console.log(e.target.getAttribute('value'));
     setIsActive(!isActive);
   };
+
+  useEffect(() => {}, [sort]);
 
   return (
     <Wrapper>
       <div className={isActive ? 'selectBox2 active' : 'selectBox2'}>
-        <button className="label" onClick={showOptions}>
+        <button className="select-btn" onClick={showOptions}>
           {sort}
         </button>
         <ul className="optionList">
