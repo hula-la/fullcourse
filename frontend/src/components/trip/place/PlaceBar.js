@@ -6,6 +6,9 @@ import { fetchTravelPlace } from '../../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
 import { Pagination } from '@mui/material';
 import PlaceList from './PlaceList';
+import Select, { selectClasses } from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
 const PlaceContainer = styled.div`
   height: 85vh;
@@ -15,27 +18,56 @@ const PlaceContainer = styled.div`
   margin-right: 2vh;
   margin-top: 1vh;
   border-radius: 0 1rem 1rem 0;
-  border-right: 3px dashed #A5F1E9;
-  border-top: 3px dashed #A5F1E9;
-  border-bottom: 3px dashed #A5F1E9;
+  border-right: 3px dashed #a5f1e9;
+  border-top: 3px dashed #a5f1e9;
+  border-bottom: 3px dashed #a5f1e9;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }
 
   &::-webkit-scrollbar-thumb {
     height: 15%;
-    background-color: #0aa1dd;
+    background-color: #a4d8ff;
     border-radius: 2rem;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #E8F9FD;
+    background-color: #e8f9fd;
     border-radius: 2rem;
   }
-  
+  .JoySelect-listbox {
+    background-color: white;
+    border-color: #d9d9d9;
+    font-size: 1vmin !important;
+  }
 `;
 
-const PlaceTypes = styled.button``;
+const TypeContainer = styled.div`
+  width: 20vw;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
+const PlaceTypes = styled.button`
+  border: #0aa1dd 1px solid;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin: 10px 4px;
+  font-size: small;
+  font-weight: bold;
+  cursor: pointer;
+  color: #0aa1dd;
+  transition: background-color 500ms;
+  &:hover {
+    background-color: #0aa1dd;
+    color: #ffffff;
+    font-weight: bold;
+  }
+`;
+
+const ArrowIcon = styled(KeyboardArrowDown)`
+  font-size: 2.5vmin !important;
+`;
 
 const PageBox = styled.div`
   margin-top: 60vh;
@@ -55,6 +87,8 @@ const PlaceBar = ({ map }) => {
     'activity',
     'custom',
   ]);
+  
+  const showPlaceTypes = ['여행','문화','숙소','맛집','체험','커스텀']
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
   const { travelPlaceList } = useSelector((state) => state.trip);
@@ -123,26 +157,50 @@ const PlaceBar = ({ map }) => {
     e.preventDefault();
     for (var i = 0; i < placeTypes.length; i++) {
       if (i === id) {
-        console.log('동일한걸로 찎히나', placeTypes[id]);
+        
         setPlaceType(placeTypes[id]);
 
-        // dispatch(fetchTravelPlace(placeTypes[id]));
+     
       }
     }
   };
 
   return (
     <PlaceContainer className="place-container">
-      {placeTypes &&
-        placeTypes.map((item, id) => (
-          <PlaceTypes
-            onClick={(e) => {
-              changePlaceList(id, e);
-            }}
-          >
-            {item}
-          </PlaceTypes>
-        ))}
+      <TypeContainer>
+        {placeTypes &&
+          placeTypes.map((item, id) => (
+            <PlaceTypes
+              onClick={(e) => {
+                changePlaceList(id, e);
+              }}
+            >
+              {item}
+            </PlaceTypes>
+          ))}
+      </TypeContainer>
+      <Select
+        placeholder="SNS언급순"
+        indicator={<ArrowIcon />}
+        sx={{
+          border: 'none',
+          width: 115,
+          fontSize: '1.8vmin',
+          [`& .${selectClasses.indicator}`]: {
+            transition: '0.2s',
+
+            [`&.${selectClasses.expanded}`]: {
+              transform: 'rotate(-180deg)',
+            },
+          },
+        }}
+      >
+        <Option value="dog">SNS언급순</Option>
+        <Option value="cat">별점순</Option>
+        <Option value="fish">좋아요순</Option>
+        <Option value="bird">리뷰순</Option>
+        <Option value="bird">담긴순</Option>
+      </Select>
 
       <PlaceList className="place-list" map={map} placeType={placeType} />
       <PageBox>

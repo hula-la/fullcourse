@@ -96,7 +96,7 @@ const StartPlaceList = () => {
     ['/img/startplace/Taejongdae.jpg', '태종대', 'Taejongdae', 4],
     ['/img/startplace/biff.jpg', '남포동', 'Nampodong', 174],
     ['/img/startplace/Yonggungsa.jpg', '용궁사', 'Yonggungsa', 7],
-    ['/img/startplace/jagalchi.jpg', '자갈치 시장', 'Jagalchi Market', 173],
+    ['/img/startplace/Jagalchi.jpg', '자갈치 시장', 'Jagalchi Market', 173],
     ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon', 64],
   ];
 
@@ -145,26 +145,7 @@ const StartPlaceList = () => {
         navigate('trip/plan');
       });
   };
-  //   {
-  //     "placeId": 1,
-  //     "name": "흰여울문화마을",
-  //     "lat": 35.0788,
-  //     "lng": 129.044,
-  //     "imgUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191222164810529_ttiel",
-  //     "reviewCnt": 0,
-  //     "likeCnt": 0
-  // }
 
-  // let placeItemObj = new Object();
-  // placeItemObj.placeId = placeId;
-  // placeItemObj.name = placeName;
-  // placeItemObj.imgUrl = placeImg;
-  // placeItemObj.draggable = true;
-  // placeItemObj.lat = placeLat;
-  // placeItemObj.lng = placeLng;
-  // placeItemObj.id = id;
-
-  // dispatch(setPlaceItem(placeItemObj));
 
   return (
     <div>
