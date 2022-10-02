@@ -96,7 +96,7 @@ const DateRanger = () => {
   const updateDateAndToggle = (e) => {
     //모달백드롭을 useRef를 사용해서 구현하는법
     if (refOne.current && !refOne.current.contains(e.target)) {
-      setOpen(false);
+      // setOpen(false);
     }
     const sD = new Date(document.getElementById('startDate').value);
     dispatch(setStartDate(sD));
@@ -163,6 +163,7 @@ const DateRanger = () => {
         setOpen={setOpen}
         setRange={setRange}
         getDates={getDates}
+        tripDay={tripDay}
       />
     </div>
   );
