@@ -65,7 +65,7 @@ const OkBtn = styled.button`
   }
 `;
 
-const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
+const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
 
   const getMaxDate = (date) => {
 
@@ -96,14 +96,19 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
             months={2}
             direction="horizontal"
             minDate={new Date()}
-            maxDate={maxDate}
+            // maxDate={maxDate}
             className="DateRange"
           />
           <div className="Btns">
             {/* <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn> */}
             <OkBtn
               onClick={() => {
-                setOpen((open) => !open);
+                if (tripDay>5) {
+                  alert("최대 여행 일정은 5일까지 짤수 있어요")
+                } else {
+
+                  setOpen((open) => !open);
+                }
               }}
             >
               적용하기
