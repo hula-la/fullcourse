@@ -114,14 +114,26 @@ const MyFullcourse = ({ userInfo }) => {
   return (
     <Wrapper>
       <TitleText content="나의 풀코스" />
-
+      {myFullcourseList
+        ? myFullcourseList.content.map((fullcourse, index) => {
+            return (
+              <MyFullcourseShare
+                open={modalOpen}
+                close={closeModal}
+                header={modalHeader}
+                fullcourse={fullcourse}
+                key={index}
+              ></MyFullcourseShare>
+            );
+          })
+        : null}
       {myFullcourseList ? (
         myFullcourseList.content.length >= 3 ? (
           <div>
             <Slider className="slider" {...settings}>
               {myFullcourseList.content.map((fullcourse, index) => {
                 return (
-                  <div>
+                  <div key={index}>
                     <MyfullcourseItem key={index} fullcourse={fullcourse} />
                     {fullcourse.shared ? (
                       <DisableButton>공유완료</DisableButton>
@@ -136,36 +148,29 @@ const MyFullcourse = ({ userInfo }) => {
                 );
               })}
             </Slider>
-            {myFullcourseList.content.map((fullcourse, index) => {
-              return (
-                <MyFullcourseShare
-                  open={modalOpen}
-                  close={closeModal}
-                  header={modalHeader}
-                  fullcourse={fullcourse}
-                ></MyFullcourseShare>
-              );
-            })}
           </div>
         ) : myFullcourseList.content.length > 0 ? (
-          <Flex>
-            {myFullcourseList.content.map((fullcourse, index) => {
-              return (
-                <div>
-                  <MyfullcourseItem key={index} fullcourse={fullcourse} />
-                  {fullcourse.shared ? (
-                    <DisableButton>공유완료</DisableButton>
-                  ) : new Date(fullcourse.endDate) < new Date() ? (
-                    <Button onClick={onClick}>공유하기</Button>
-                  ) : new Date() < new Date(fullcourse.startDate) ? (
-                    <DisableButton>예정</DisableButton>
-                  ) : (
-                    <Button>여행중</Button>
-                  )}
-                </div>
-              );
-            })}
-          </Flex>
+          <div>
+            <Flex>
+              {myFullcourseList.content.map((fullcourse, index) => {
+                return (
+                  <div>
+                    <MyfullcourseItem key={index} fullcourse={fullcourse} />
+
+                    {fullcourse.shared ? (
+                      <DisableButton>공유완료</DisableButton>
+                    ) : new Date(fullcourse.endDate) < new Date() ? (
+                      <Button onClick={onClick}>공유하기</Button>
+                    ) : new Date() < new Date(fullcourse.startDate) ? (
+                      <DisableButton>예정</DisableButton>
+                    ) : (
+                      <Button>여행중</Button>
+                    )}
+                  </div>
+                );
+              })}
+            </Flex>
+          </div>
         ) : (
           <Button>풀코스 만들러 가기</Button>
         )

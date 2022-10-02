@@ -60,9 +60,9 @@ const Nickname = styled.div`
 
 const CardTitle = styled.div`
   font-family: Tmoney;
-  font-size: 2vmin;
+  font-size: 2.5vmin;
   color: #333333;
-  margin-top: 2vh;
+  margin-top: 1vh;
 `;
 
 const CardContent = styled.div`
@@ -98,6 +98,7 @@ const Comment = styled(FaCommentDots)`
 const Tags = styled.div`
   overflow-x: auto;
   display: -webkit-box;
+  min-height: 52px;
 `;
 
 const Tag = styled.div`
@@ -108,6 +109,7 @@ const Tag = styled.div`
   padding: 0.1rem 0.4rem;
   margin: 0.3rem;
   color: #dc3d59;
+  height: fit-content;
 `;
 
 const CardComponent = (props) => {
@@ -123,7 +125,11 @@ const CardComponent = (props) => {
           // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           marginTop: '1vh',
-          ':hover': { transform: 'scale(1.05)', cursor: 'pointer' },
+          ':hover': {
+            boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 20%);',
+            // transform: 'scale(1.05)',
+            cursor: 'pointer',
+          },
           ':active': { transform: 'scale(0.95)' },
         }}
       >
@@ -151,7 +157,7 @@ const CardComponent = (props) => {
         <CardOverflow
           variant="soft"
           sx={{
-            background:'white',
+            background: 'white',
             display: 'flex-column',
             textAlign: 'start',
             // gap: 1.5,
@@ -166,7 +172,6 @@ const CardComponent = (props) => {
         >
           <Nickname>{props.fullcourse.user.userNickName}</Nickname>
           <CardTitle>{props.fullcourse.title}</CardTitle>
-          {props.fullcourse.day} Day
           <CardContent>{props.fullcourse.detail}</CardContent>
           <Tags className="scrollBar">
             {props.fullcourse.sharedFCTags.map((tag) => {
