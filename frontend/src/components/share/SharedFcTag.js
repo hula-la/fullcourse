@@ -24,7 +24,11 @@ const Wrapper = styled.div`
     align-items: flex-start;
     width: 70%;
     margin: 0 auto;
-    border-bottom: 2px solid #d9d9d9;
+    padding: 20px 0;
+    /* border-bottom: 2px solid #d9d9d9; */
+    background-color: #ffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
   }
 
   .nonelist {
@@ -40,7 +44,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
-    margin: 0px 0px 20px 0;
+    margin: 0;
   }
   .nonelist > li:first-child {
     width: 100px;
