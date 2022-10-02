@@ -6,9 +6,9 @@ import { fetchTravelPlace } from '../../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../../features/trip/tripSlice';
 import { Pagination } from '@mui/material';
 import PlaceList from './PlaceList';
-import Select, { selectClasses } from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
+import SortSelect from './SortSelect';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 const PlaceContainer = styled.div`
   height: 85vh;
@@ -21,6 +21,7 @@ const PlaceContainer = styled.div`
   border-right: 3px dashed #a5f1e9;
   border-top: 3px dashed #a5f1e9;
   border-bottom: 3px dashed #a5f1e9;
+
   &::-webkit-scrollbar {
     width: 0.5rem;
   }
@@ -81,6 +82,40 @@ const ArrowIcon = styled(KeyboardArrowDown)`
   font-size: 2.5vmin !important;
 `;
 
+
+const Wrapper = styled.div`
+  /* margin: 0 20%; */
+  position: relative;
+  .icon {
+    position: relative;
+    right: 50px;
+    top: 5px;
+    cursor: pointer;
+  }
+`;
+
+const Input = styled.input`
+  width: 20vw;
+
+  height: 4vh;
+  margin-left: 1.25vw;
+  margin-top: 1vh;
+  padding: 3px;
+  font-size: 1rem;
+  text-align: center;
+  border: 0.5px solid #0aa1dd;
+  border-radius: 5rem;
+  background-color: rgba(217, 239, 255, 1);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  font-family: Tmoney;
+  outline: none;
+  &:focus {
+    background-color: #eef8ff;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 30%);
+    transition: 0.5s;
+  }
+`;
+
 const PageBox = styled.div`
   margin-top: 60vh;
   margin-bottom: 5vh;
@@ -89,8 +124,12 @@ const PageBox = styled.div`
   justify-content: center;
 `;
 
+
+
 const PlaceBar = ({ map }) => {
   const dispatch = useDispatch();
+  const [sort, setSort] = useState('기본순');
+  const [sortReq, setSortReq] = useState('')
   const [placeTypes, setPlaceTypes] = useState([
     'travel',
     'culture',
@@ -105,6 +144,7 @@ const PlaceBar = ({ map }) => {
   const [pageNum, setPageNum] = useState(0);
   const { travelPlaceList } = useSelector((state) => state.trip);
   const [placeType, setPlaceType] = useState('travel');
+  const [keyword, setKeyword] = useState('');
 
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
   const addPlaceToPlanner = (
@@ -154,8 +194,8 @@ const PlaceBar = ({ map }) => {
   }, [travelPlaceList]);
 
   useEffect(() => {
-    dispatch(fetchTravelPlace({ placeType, pageNum }));
-  }, [dispatch, placeType, pageNum]);
+    dispatch(fetchTravelPlace({ sortReq, placeType, pageNum, keyword }));
+  }, [dispatch, placeType, pageNum, sortReq, keyword]);
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
@@ -172,6 +212,32 @@ const PlaceBar = ({ map }) => {
     }
   };
 
+
+  const handleOnKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      console.log(e.target.value)
+      setKeyword(e.target.value)
+    }
+  };
+
+  const onClickSearch = (e) => {
+
+ 
+    
+  };
+
+  const onFocus = (e) => {
+    e.target.placeholder = '';
+  };
+
+  const onChange = (e) => {
+    // setKeyword(e.target.value);
+    if (e.target.value.length == 0) {
+      e.target.placeholder = '키워드를 검색해보세요';
+    }
+
+  };
+
   return (
     <PlaceContainer className="place-container">
       <SortBox>
@@ -186,32 +252,22 @@ const PlaceBar = ({ map }) => {
             </PlaceTypes>
           ))}
         </TypeContainer>
-        <Select
-          placeholder="기본순"
-          indicator={<ArrowIcon />}
-          sx={{
-            border: 'none',
-            width: 115,
-            fontSize: '1.8vmin',
-            [`& .${selectClasses.indicator}`]: {
-              transition: '0.2s',
-
-              [`&.${selectClasses.expanded}`]: {
-                transform: 'rotate(-180deg)',
-              },
-            },
-          }}
-        >
-          <Option value="dog">SNS언급순</Option>
-          <Option value="cat">기본순</Option>
-          <Option value="cat">별점순</Option>
-          <Option value="fish">좋아요순</Option>
-          <Option value="bird">리뷰순</Option>
-          <Option value="bird">담긴순</Option>
-        </Select>
+        <SortSelect sort={sort} setSort={setSort} setSortReq={setSortReq} placeType={placeType}></SortSelect>
       </SortBox>
+      <Wrapper>
+       
+        <Input
+          placeholder="키워드를 검색해보세요"
+          onFocus={onFocus}
+          onChange={onChange}
+          onKeyPress={handleOnKeyPress}
+          
+        ></Input>
+        <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
+        {/* <Button>검색</Button> */}
+      </Wrapper>
 
-      <PlaceList className="place-list" map={map} placeType={placeType} />
+      <PlaceList className="place-list" map={map} placeType={placeType} keyword={keyword} />
       <PageBox>
         {travelPlaceList ? (
           <Pagination

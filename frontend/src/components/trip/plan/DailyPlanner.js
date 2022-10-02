@@ -45,7 +45,7 @@ const PlaceBucket = styled.div`
   height: 60vh;
   background-color: #ffffff;
   .bucketBox {
-    height: auto;
+    min-height: 5vh;
   }
   .deleteIcon path {
     stroke: #0aa1dd;
@@ -93,7 +93,7 @@ const Date = styled.div`
 `;
 
 const PlannerList = styled.div`
-  height: 20vh;
+  min-height: 20vh;
 `;
 
 const SaveBtn = styled.button`
@@ -419,7 +419,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
 
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 35.1165, lng: 129.0401 },
+      center: { lat: 35.1944, lng: 129.1194 },
       zoom: 11,
       styles: googleMapStyle.mapStyles,
     });

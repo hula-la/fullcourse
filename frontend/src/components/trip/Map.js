@@ -95,7 +95,7 @@ const Map = ({ map, setMap, mapRef }) => {
   //일정짜기 페이지 그리면 초기지도 그려주기
   const initMap = useCallback(() => {
     const map = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 35.1165, lng: 129.0401 },
+      center: { lat: 35.1944, lng: 129.1194 },
       zoom: 11,
       styles: googleMapStyle.mapStyles,
     });
