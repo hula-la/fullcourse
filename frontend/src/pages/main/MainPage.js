@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import KeyboardDoubleArrowDown from '@mui/icons-material/KeyboardDoubleArrowDown';
 import './main.css';
 
 import FullCourseList from './FullCourseList';
 import StartPlaceList from './StartPlaceList';
+
+import Swal from 'sweetalert2';
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -197,6 +200,29 @@ const Wave = styled.div`
 const MainPage = () => {
   const section1 = useRef(null);
   const section2 = useRef(null);
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
+
+  const onClickStart = () => {
+    Swal.fire({
+      title: '추천 받으실?',
+      // text: '추천을 받으실?',
+      imageUrl: 'img/boogie.jpg',
+      imageWidth: 400,
+      imageHeight: 280,
+      imageAlt: 'character',
+      showCancelButton: true,
+      cancelButtonText: '추천 안 받아!',
+      confirmButtonText: '고고고',
+      showLoaderOnConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/trip/survey');
+      } else {
+        navigate('/trip/plan');
+      }
+    });
+  };
 
   return (
     <Container>
@@ -213,10 +239,13 @@ const MainPage = () => {
           {/* public 경로 사용하는 법 */}
           <Logo src="/img/logo2.png" alt="logo2_img" />
           <Text>부산, 풀코스로 모시겠습니다.</Text>
-          <Link to={'/user/login'}>
-            <StartBtn>시작하기</StartBtn>
-          </Link>
-
+          {userInfo ? (
+            <StartBtn onClick={onClickStart}>시작하기</StartBtn>
+          ) : (
+            <Link to={'/user/login'}>
+              <StartBtn>시작하기</StartBtn>
+            </Link>
+          )}
           <a
             onClick={(e) => {
               e.preventDefault(e);

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { likePlace } from '../../../features/survey/surveySlice';
+import { likePlace,deletePlace } from '../../../features/survey/surveySlice';
 import { useSelector, useDispatch } from 'react-redux';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -25,8 +25,22 @@ animation: flip-vertical-right 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) bot
   }
 }
     
-    height: 100%;
-    width: 18rem;
+height: 100%;
+width: 18rem;
+margin: 0 1rem;
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+    height: 98%;
+width: 15rem;
+margin: 0 0.8rem;
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+.placeTag{
+    white-space: nowrap;
+    overflow-x: scroll;
+    padding:0 0.5rem;
+}
+}
 
     border-radius: 1rem;
     overflow:hidden;
@@ -105,8 +119,17 @@ const RecommendCard = ({ place, index }) => {
     const { likePlaceIndex } = useSelector((state) => state.survey);
 
     
-      const onClickAdd = (index, e) => {
-        dispatch(likePlace(recommendPlaceList[index]));
+    const onClickAdd = (index, e) => {
+        //  이미 선택한 장소면 삭제
+        if (likePlaceIndex.includes(place.placeId)) {
+            dispatch(deletePlace(recommendPlaceList[index]));
+        }
+        //  선택한 것이 아니면
+        else {
+            // 최대 갯수를 넘지 않으면 추가
+            if (likePlaceIndex.length == 5) alert("최대 장소 선택갯수를 채웠습니다.")
+            else { dispatch(likePlace(recommendPlaceList[index])); }
+        }
       };
 
 

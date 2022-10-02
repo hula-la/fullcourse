@@ -36,18 +36,12 @@ public class BaseReviewController {
                                                            @RequestPart(value = "reviewPostReq") @ApiParam(value="리뷰 정보")ReviewPostReq reviewPostReq,
                                                            @RequestPart(value = "file", required = false) @ApiParam(value="리뷰 파일") MultipartFile file) {
 
-        System.out.println("컨ㅋ트롤러 안 email "+email);
-
         if (email==null) {
-            System.out.println("이메일 없다~");
             throw new UserNotFoundException();
         }
 
         PlaceEnum placeEnum = PlaceEnum.valueOf(type);
         BaseReviewService baseReviewService = baseReviewServiceMap.get(placeEnum.getService());
-
-//        System.out.println("컨트롤러에서 서비스 인스턴스" + (baseReviewService instanceof ActivityReviewService)+" ** "+placeEnum.getService());
-
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", baseReviewService.createReview(placeEnum,placeId,email,reviewPostReq,file)));
 

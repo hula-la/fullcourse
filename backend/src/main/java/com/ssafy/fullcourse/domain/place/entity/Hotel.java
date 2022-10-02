@@ -48,6 +48,9 @@ public class Hotel extends BasePlace {
     @Column(nullable = false)
     private Long likeCnt = 0L;
 
+    @Column(nullable = false)
+    private Float reviewScore = 0F;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<HotelReview> reviews = new ArrayList<>();
 
@@ -67,6 +70,11 @@ public class Hotel extends BasePlace {
         res.setAddedCnt(this.getAddedCnt());
         res.setReviewCnt(this.getReviewCnt());
         res.setLikeCnt(this.getLikeCnt());
+        res.setReviewScore(this.getReviewScore());
         return res;
+    }
+
+    public void updateReviewScore(Float reviewScore) {
+        this.reviewScore = reviewScore;
     }
 }

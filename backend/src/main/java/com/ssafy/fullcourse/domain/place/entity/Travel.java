@@ -81,6 +81,9 @@ public class Travel extends BasePlace {
     @Column(nullable = false)
     private Long mention;
 
+    @Column(nullable = false)
+    private Float reviewScore = 0F;
+
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     List<TravelReview> reviews = new ArrayList<>();
 
@@ -114,7 +117,12 @@ public class Travel extends BasePlace {
         res.setImgUrl(this.getImgUrl());
         res.setMention(this.getMention());
         res.setTag(this.getTag());
+        res.setReviewScore(this.getReviewScore());
         return res;
+    }
+
+    public void updateReviewScore(Float reviewScore) {
+        this.reviewScore = reviewScore;
     }
 
 }

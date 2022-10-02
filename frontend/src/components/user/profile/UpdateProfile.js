@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 const UserImg = styled.div`
   img {
     width: 150px;
+    height: 150px;
     border-radius: 10rem;
   }
 
@@ -119,35 +120,34 @@ const UpdateProfileForm = styled.form`
 `;
 
 const UserInfo = styled.div`
- display: flex;
-flex-direction: column;
-width:100%;
-div{
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin : 1vh 0;
-  text-align: left;
-  
-}
-.type{
-  width:25%;
-  
-  color: #4b94ca;
-  padding-bottom: 3px;
+  flex-direction: column;
+  width: 100%;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1vh 0;
+    text-align: left;
+  }
+  .type {
+    width: 25%;
 
-}
-.info{
-  text-align: left;
-  width:60%;
-  /* border-bottom: solid 3px #a4d8ff; */
-  padding-bottom : 3px;
-  padding-right: 5px;
-}
-.icon{
-  color: #4b94ca;
-}
-`
+    color: #4b94ca;
+    padding-bottom: 3px;
+  }
+  .info {
+    text-align: left;
+    width: 60%;
+    /* border-bottom: solid 3px #a4d8ff; */
+    padding-bottom: 3px;
+    padding-right: 5px;
+  }
+  .icon {
+    color: #4b94ca;
+    margin-left: 3vw;
+  }
+`;
 
 const UpdateProfile = ({ userInfo }) => {
   const [userImg, setUserImg] = useState(userInfo.imgUrl);
@@ -158,7 +158,6 @@ const UpdateProfile = ({ userInfo }) => {
   const [isNickChecked, setIsNickChecked] = useState(false);
   const [userEmail, setUserEmail] = useState(userInfo.nickname);
   const [userGender, setUserGender] = useState(userInfo.nickname);
-  
 
   const dispatch = useDispatch();
 
@@ -175,7 +174,6 @@ const UpdateProfile = ({ userInfo }) => {
       reader.readAsDataURL(e.target.files[0]);
       setImgFile(e.target.files[0]);
     } else {
-      setUserImg(null);
       setImgFile(null);
     }
   };
@@ -203,10 +201,10 @@ const UpdateProfile = ({ userInfo }) => {
     dispatch(putUserInfo({ userNickname, imgFile }));
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setUserEmail(userInfo.email.split('-')[0]);
-    setUserGender(userInfo.ageRange.split('~')[0])
-  },[])
+    setUserGender(userInfo.ageRange.split('~')[0]);
+  }, []);
 
   return (
     <Wrapper>
@@ -223,7 +221,7 @@ const UpdateProfile = ({ userInfo }) => {
           accept="image/*"
           onChange={onChangeUserImg}
         />
-        
+
         <UserNickName>
           <span>
             <input
@@ -231,7 +229,8 @@ const UpdateProfile = ({ userInfo }) => {
               type="text"
               value={userNickname}
               onChange={onChangeNickname}
-            /><button>수정</button>
+            />
+            <button>수정</button>
             {userNickname.length >= 0 && (
               <div
                 className={
@@ -239,16 +238,30 @@ const UpdateProfile = ({ userInfo }) => {
                 }
               >
                 {userNicknameMessage}
-                
               </div>
             )}
           </span>
-          
         </UserNickName>
         <UserInfo>
-          <div><EmailIcon className="icon"/><span className="type">Email</span><span className="info">{userEmail}</span></div>
-          <div>{userInfo.gender==="WOMAN" ? <FemaleIcon className="icon"/>:<MaleIcon className="icon"/>}<span className="type">Gender</span><span className="info">{userInfo.gender}</span></div>
-          <div><CalendarMonthIcon className="icon"/><span className="type">Age</span><span className="info">{userGender}대</span></div>
+          <div>
+            <EmailIcon className="icon" />
+            <span className="type">Email</span>
+            <span className="info">{userEmail}</span>
+          </div>
+          <div>
+            {userInfo.gender === 'WOMAN' ? (
+              <FemaleIcon className="icon" />
+            ) : (
+              <MaleIcon className="icon" />
+            )}
+            <span className="type">Gender</span>
+            <span className="info">{userInfo.gender}</span>
+          </div>
+          <div>
+            <CalendarMonthIcon className="icon" />
+            <span className="type">Age</span>
+            <span className="info">{userGender}대</span>
+          </div>
         </UserInfo>
       </UpdateProfileForm>
     </Wrapper>

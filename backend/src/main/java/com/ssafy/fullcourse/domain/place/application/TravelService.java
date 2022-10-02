@@ -17,10 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +72,15 @@ public class TravelService {
                     i--;
                 }
             }
+        }
+        if(pageable.getSort().toString().equals("likeCnt: DESC")){
+            Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+        } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+        } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+        } else if (pageable.getSort().toString().equals("mention: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getMention() - o1.getMention()));
         }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());

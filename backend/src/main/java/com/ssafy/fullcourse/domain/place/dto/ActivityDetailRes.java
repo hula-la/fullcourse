@@ -22,4 +22,5 @@ public class ActivityDetailRes {
     private Long reviewCnt;
     private Long likeCnt;
     private Boolean isLiked;
+    private Float reviewScore;
 }
