@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+// skip 아이콘
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+
 const Wrapper = styled.div`
 position: relative;
 height:calc(100vh - 80px);
@@ -24,6 +27,13 @@ top:5%;
 right:5%;
 font-weight:bold;
 cursor:pointer;
+
+display: flex;
+align-items: center;
+padding: 0.1rem 0.4rem;
+border-radius: 1rem;
+font-size: 0.8rem;
+border: 2px solid;
 `
 
 const RecommendHeader = styled.div`
@@ -38,9 +48,9 @@ font-size: 1.3rem;
 
 }
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+@media (min-width: 375px) and (max-width: 800px) {
   .title{
-    padding-right: 11rem;
+    padding-right: 8rem;
   }
   }
 
@@ -58,7 +68,7 @@ align-items: center;
 justify-content: space-around;
 
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+@media (min-width: 375px) and (max-width: 800px) {
   overflow-x: scroll;
   display: -webkit-box;
   }
@@ -67,14 +77,18 @@ justify-content: space-around;
   
   width: 10px;
 }
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+
 ::-webkit-scrollbar-thumb{
-  /* background-clip: padding-box; */
-  
-    background-color: none;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 1rem;    
-    border: 4px solid transparent;
-  }
+  background-color: transparent;
+}
+}
+
+:hover::-webkit-scrollbar-thumb{
+background-color: #dc3e5a;
+border: 3px solid white;
+border-radius: 10px;   
+}
   
   /* 스크롤바 뒷 배경 설정*/
   
@@ -109,7 +123,10 @@ img{
 }
 
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  justify-content: flex-start;
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
   .likePlaceName{
     font-size:0.7rem;
   }
@@ -156,6 +173,7 @@ img{
   /* height:10%; */
   overflow-x: scroll;
     overflow-y: hidden;
+    margin: 0 10%;
 }
 
 /* 스크롤바 설정*/
@@ -198,12 +216,16 @@ border-radius: 10px;
   font-weight: bold;
   color:#5b4afe;
 
+  display: flex;
+    flex-direction: column;
+    align-content: center;
+
     
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
   .buttonContainer{
-    width: 5rem;
+    width: 7rem;
   }
   }
 .buttonContainer span{
@@ -217,7 +239,7 @@ border-radius: 10px;
 button{
   border: none;
     border-radius: 1rem;
-    padding: 0.5rem 0.6rem 0.5rem 1rem;
+    padding: 0.5rem 0.6rem;
     background: #e2dfff;
     margin-top:1rem;
     font-weight: bold;
@@ -298,7 +320,7 @@ const RecommendPage = () => {
         onClick={(e) => {
           setStartPlaceInfo(likePlaceIndex, e);
         }}>
-        일정 바로 짜기
+        SKIP <SkipNextIcon/>
       </PlanButton>
 
       {recommendPlaceList && (
@@ -347,7 +369,7 @@ const RecommendPage = () => {
 
           {likePlaceList.length} /5     
           </div>
-          <button onClick={onClickContinue}>계속 추천 받기 <span>▶</span></button>
+          <button onClick={onClickContinue}>CONTINUE <span>▶</span></button>
         </div>
       </LikePlaceList>
     </Wrapper>
