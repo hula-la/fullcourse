@@ -18,8 +18,9 @@ import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 // survey
 import SurveyPage from './pages/survey/SurveyPage';
 import RecommendPage from './pages/survey/RecommendPage';
-// ar
+// ar 
 import ArPage from './pages/ar/ArPage';
+import WordcloudPage from './pages/wordcloud/WordcloudPage';
 // 404
 import NotFound from './pages/NotFound';
 import ProtectedLoginRoute from './private/ProtectedLoginRoute';
@@ -62,6 +63,7 @@ function App() {
         </Route>
 
         <Route path="ar" element={<ArPage />} />
+        <Route path="wc" element={<WordcloudPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

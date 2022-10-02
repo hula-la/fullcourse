@@ -22,7 +22,7 @@
 }
 
 /* Day1 */
-.title {
+.triptitle {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -44,7 +44,7 @@
 
 }
 
-.title:hover{
+.triptitle:hover{
 
     background-color: #FA9494;
     color: #ffffff;
@@ -52,7 +52,7 @@
   }
 
 
-.title.clicked {
+.triptitle.clicked {
   background-color: #FA9494;
   color: #ffffff;
   font-weight: bold;
