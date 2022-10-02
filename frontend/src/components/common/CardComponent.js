@@ -8,7 +8,7 @@ import Avatar from '@mui/joy/Avatar';
 import CardOverflow from '@mui/joy/CardOverflow';
 import { FaCommentDots } from 'react-icons/fa';
 import { GoHeart } from 'react-icons/go';
-
+import { useNavigate } from 'react-router-dom';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import { getUserInfo } from '../../api/user';
@@ -111,13 +111,17 @@ const Tag = styled.div`
   color: #dc3d59;
   height: fit-content;
 `;
-
 const CardComponent = (props) => {
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(`detail/${props.fullcourse.sharedFcId}`);
+  };
   return (
     <Wapper>
       <Card
+        onClick={onClick}
         className={isMobile ? classes.cardMobile : null}
         variant="soft"
         sx={{
