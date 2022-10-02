@@ -24,8 +24,9 @@ import {
 
 const TripDay = styled.div`
   font-family: Tmoney;
-  font-size: 4vmin;
+  font-size: 3.5vmin;
   margin-bottom: 3vh;
+  color: #333333;
 `;
 
 const Calendar = styled(FaCalendarAlt)`
@@ -128,10 +129,13 @@ const DateRanger = () => {
 
   return (
     <div>
-      <TripDay>Day {tripDay}</TripDay>
+      <TripDay className="dateContainer">Day {tripDay}</TripDay>
 
-      <Calendar onClick={() => setOpen((open) => !open)} />
-      <TripDate>
+      <Calendar
+        className="dateContainer"
+        onClick={() => setOpen((open) => !open)}
+      />
+      <TripDate className="dateContainer">
         <StyledInput
           value={
             range[0].startDate && `${format(range[0].startDate, 'MM/dd/yyyy')}`
@@ -151,6 +155,7 @@ const DateRanger = () => {
           id="endDate"
         />
       </TripDate>
+
       <CalendarModal
         refOne={refOne}
         open={open}

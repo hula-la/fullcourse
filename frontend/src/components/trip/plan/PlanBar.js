@@ -6,9 +6,22 @@ import DailyPlanner from './DailyPlanner';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 3vh;
-  border: 1px solid;
-  height: 83vh;
+  /* padding: 1vh; */
+  margin-top: 1vh;
+  border-radius: 1rem;
+  border: 3px dashed #A5F1E9;
+  height: 85vh; 
+  margin-left:1vh;
+  margin-right: 1vh;
+
+  color: #333333;
+  
+  /* margin: 3vh auto; */
+  
+  /* background: url('/img/note.png') center no-repeat;
+  background-size: 25vw 70vh */
+
+  
 `;
 
 const PlanBar = ({map, setMap, mapRef}) => {

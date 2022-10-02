@@ -25,7 +25,7 @@ const Container = styled.div`
     overflow-x: hidden;
     /* overflow: overlay; */
     display: grid;
-    grid-template-rows: 0.2fr 0.2fr 2fr; //가로로 구분
+    grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
     background: radial-gradient(
       ellipse at center,
       #fffeea 0%,
@@ -41,7 +41,7 @@ const Introduce = styled.div`
     display: flex;
   }
 
-  background-color: #fff3f8;
+  background-color: #ffffff;
 `;
 
 const VideoContainer = styled.div`
