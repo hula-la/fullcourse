@@ -63,6 +63,10 @@ const CardTitle = styled.div`
   font-size: 2.5vmin;
   color: #333333;
   margin-top: 1vh;
+  padding-right: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const CardContent = styled.div`
@@ -83,6 +87,7 @@ const CardFooter = styled.div`
     font-family: Tmoney;
     font-size: 1vmin;
     margin-right: 1vw;
+    margin-left: 0.2vw;
   }
 `;
 

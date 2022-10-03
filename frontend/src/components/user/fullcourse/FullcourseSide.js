@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PlaceList from '../../../components/user/fullcourse/PlaceList';
 import {
@@ -11,14 +11,14 @@ import styled from 'styled-components';
 const Side = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   width: 30%;
-
+  height: 92vh;
   #userInfo {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    margin-left: 2rem;
-    margin-top: 1.6rem;
+    align-items: center;
+    margin: 1.6rem 1rem 1rem 1rem;
     font-size: small;
     /* font-weight: ; */
   }
@@ -27,15 +27,25 @@ const Side = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 15%;
   }
 
   #profileImg {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     margin-right: 1rem;
     margin: 0 auto;
+    border-radius: 5rem;
   }
 
+  #userName {
+    margin-left: 0.5rem;
+    width: 15%;
+  }
+  #fullcourseInfo {
+    width: 70%;
+    font-size: 1.5rem;
+  }
   .daynonelist {
     list-style: none;
     display: flex;
@@ -45,6 +55,7 @@ const Side = styled.div`
   }
 
   .daylistitem {
+    overflow-y: auto;
     border: #0aa1dd 1px solid;
     border-radius: 20px;
     padding: 3px 10px;
@@ -70,11 +81,44 @@ const Side = styled.div`
     font-weight: bold;
   }
 `;
+const Plan = styled.div`
+  /* border: 1px solid #333333; */
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 80%;
+  margin: 0.6rem;
+  box-shadow: -1px 1px 5px 1px #0000029e;
+`;
 
 const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
   const { dayTagList2 } = useSelector((state) => state.share);
   const { checkedDay } = useSelector((state) => state.share);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  useEffect(() => {
+    const start = new Date(fullcourseDetail.startDate);
+    const end = new Date(fullcourseDetail.endDate);
+    const startSplit = start.toDateString().split(' ');
+    const endSplit = end.toDateString().split(' ');
+    const months = {
+      Jan: '1',
+      Feb: '2',
+      Mar: '3',
+      Apr: '4',
+      May: '5',
+      Jun: '6',
+      Jul: '7',
+      Aug: '8',
+      Sep: '9',
+      Oct: '10',
+      Nov: '11',
+      Dec: '12',
+    };
+    setStartDate(months[startSplit[1]] + '.' + startSplit[2]);
+    setEndDate(months[endSplit[1]] + '.' + endSplit[2]);
+  }, []);
 
   useEffect(() => {
     dispatch(makeDayTagList(days));
@@ -87,45 +131,51 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const onClickTagsAll = (e) => {
     dispatch(checkAllDay());
   };
-
   return (
     <Side>
       {userInfo ? (
-        <>
+        <div>
           <div id="userInfo">
             <div id="imgBlock">
-              <img id="profileImg" src="/img/default.jpeg" alt="profileImg" />
+              <img id="profileImg" src={userInfo.imgUrl} alt="profileImg" />
             </div>
-            <p>{userInfo.nickname}</p>
+            <p id="userName">{userInfo.nickname}</p>
+            <div id="fullcourseInfo">
+              {startDate} → {endDate}
+            </div>
           </div>
-        </>
+        </div>
       ) : null}
-      <ul className="daynonelist">
-        <li
-          className={
-            'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
-          }
-          onClick={onClickTagsAll}
-        >
-          <div>All</div>
-        </li>
-        {dayTagList2.map((tag, index) => {
-          return (
-            <li
-              className={
-                'daylistitem' + (checkedDay === index ? ' daytag-selected' : '')
-              }
-              key={index}
-              onClick={(e) => onClickTags(index, e)}
-            >
-              <div id={tag.tag}>{tag}</div>
-            </li>
-          );
-        })}
-      </ul>
-      {fullcourseDetail ? (
-        <PlaceList placeList={fullcourseDetail.places} />
-      ) : null}
+      <Plan>
+        <ul className="daynonelist">
+          <li
+            className={
+              'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
+            }
+            onClick={onClickTagsAll}
+          >
+            <div>All</div>
+          </li>
+          {dayTagList2.map((tag, index) => {
+            return (
+              <li
+                className={
+                  'daylistitem' +
+                  (checkedDay === index ? ' daytag-selected' : '')
+                }
+                key={index}
+                onClick={(e) => onClickTags(index, e)}
+              >
+                <div id={tag.tag}>{tag}</div>
+              </li>
+            );
+          })}
+        </ul>
+
+        {fullcourseDetail ? (
+          <PlaceList placeList={fullcourseDetail.places} />
+        ) : null}
+      </Plan>
     </Side>
   );
 };
