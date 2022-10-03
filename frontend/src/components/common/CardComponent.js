@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import { getUserInfo } from '../../api/user';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
@@ -53,7 +54,7 @@ const Wapper = styled.div`
 
 const Nickname = styled.div`
   font-family: Tmoney;
-  font-size: 5vmin;
+  font-size: 1.5vmin;
   color: #333333;
   text-align: center;
 `;
@@ -74,8 +75,10 @@ const CardContent = styled.div`
   font-size: 1.5vmin;
   color: #333333;
   margin-top: 1vh;
-  height: 50px;
+  height: 55px;
+  overflow: hidden;
   text-overflow: clip;
+  white-space: break-spaces;
 `;
 
 const CardFooter = styled.div`
@@ -123,6 +126,9 @@ const CardComponent = (props) => {
   const onClick = () => {
     navigate(`../../../fullcourse/detail/${props.fullcourse.sharedFcId}`);
   };
+  useEffect(() => {
+    console.log(props.fullcourse.user);
+  }, []);
   return (
     <Wapper>
       <Card
@@ -135,11 +141,10 @@ const CardComponent = (props) => {
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           marginTop: '1vh',
           ':hover': {
-            boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 20%);',
+            boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 10%);',
             // transform: 'scale(1.05)',
             cursor: 'pointer',
           },
-          ':active': { transform: 'scale(0.95)' },
         }}
       >
         <CardOverflow>
@@ -176,7 +181,7 @@ const CardComponent = (props) => {
             paddingTop: '4vh',
           }}
         >
-          <Nickname>{props.fullcourse.user.userNickName}</Nickname>
+          <Nickname>{props.fullcourse.user.nickname}</Nickname>
           <CardTitle>{props.fullcourse.title}</CardTitle>
           <CardContent>{props.fullcourse.detail}</CardContent>
           <Tags className="scrollBar">
