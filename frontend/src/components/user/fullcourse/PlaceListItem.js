@@ -250,7 +250,7 @@ const PlaceListItem = ({ placeKey, place }) => {
               <div>
                 <p key={index}>
                   {p.place.name}
-                  <span>{p.img ? '🚩' : null}</span>
+                  <span>{p.visited ? '🚩' : null}</span>
                 </p>
                 <div className="type">{p.type}</div>
               </div>
