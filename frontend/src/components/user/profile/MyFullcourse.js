@@ -84,7 +84,6 @@ const MyFullcourse = ({ userInfo }) => {
   const dispatch = useDispatch();
   const { myFullcourseList } = useSelector((state) => state.user);
   const [modalOpen, setModalOpen] = useState(false);
-  const [travelState, setTravelState] = useState(null);
 
   const modalHeader = '공유하기';
   const openModal = () => {

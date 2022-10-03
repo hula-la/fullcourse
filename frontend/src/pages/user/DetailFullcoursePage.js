@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FullcourseMap from '../../components/user/fullcourse/FullcourseMap';
 import FullcourseSide from '../../components/user/fullcourse/FullcourseSide';
+import FullcourseMemo from '../../components/user/fullcourse/FullcourseMemo';
 import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
 import { fetchDiary } from '../../features/user/userActions';
@@ -12,6 +13,7 @@ const DetailBlock = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  max-height: 92vh;
 `;
 
 const DetailFullcoursePage = () => {
@@ -66,7 +68,7 @@ const DetailFullcoursePage = () => {
         fullcourseDetail={fullcourseDetail}
       />
       <FullcourseMap />
-      {/* <MyFullcourseMemo /> */}
+      <FullcourseMemo days={days} fullcourseDetail={fullcourseDetail} />
     </DetailBlock>
   );
 };

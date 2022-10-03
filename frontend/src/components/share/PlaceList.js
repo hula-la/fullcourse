@@ -3,44 +3,41 @@ import PlaceListItem from './PlaceListItem';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-overflow-y: scroll;
-padding: 0.5rem;
-height: 80%;
+  padding: 0.5rem;
+  overflow-y: auto;
+  height: 85%;
 
-.scroll{
+  .scroll {
     display: inline-block;
     width: 150px;
-    height: 250px;  
+    height: 250px;
     padding: 20px;
     overflow-y: scroll;
     border: 1px solid black;
     box-sizing: border-box;
     color: white;
     font-family: 'Nanum Gothic';
-    background-color: rgba(0,0,0,0.8);
-}
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 
-/* 스크롤바 설정*/
-::-webkit-scrollbar{
+  /* 스크롤바 설정*/
+  ::-webkit-scrollbar {
     width: 10px;
-}
+  }
 
-/* 스크롤바 막대 설정*/
-::-webkit-scrollbar-thumb{
+  /* 스크롤바 막대 설정*/
+  ::-webkit-scrollbar-thumb {
     background-color: #0aa1dd;
     /* 스크롤바 둥글게 설정    */
-    border-radius: 10px;    
+    border-radius: 10px;
   }
-  
+
   /* 스크롤바 뒷 배경 설정*/
-  ::-webkit-scrollbar-track{
-  border-radius: 10px;    
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
     background-color: #d4d4d4;
-}
-
-
-
-`
+  }
+`;
 
 const PlaceList = ({ placeList }) => {
   return (
