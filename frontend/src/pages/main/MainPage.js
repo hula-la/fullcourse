@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import KeyboardDoubleArrowDown from '@mui/icons-material/KeyboardDoubleArrowDown';
+import ExploreIcon from '@mui/icons-material/Explore';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import './main.css';
 
 import FullCourseList from './FullCourseList';
@@ -25,7 +28,7 @@ const Container = styled.div`
     overflow-x: hidden;
     /* overflow: overlay; */
     display: grid;
-    grid-template-rows: 0.2fr 0.2fr 2fr; //가로로 구분
+    grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
     background: radial-gradient(
       ellipse at center,
       #fffeea 0%,
@@ -41,7 +44,7 @@ const Introduce = styled.div`
     display: flex;
   }
 
-  background-color: #fff3f8;
+  background-color: #ffffff;
 `;
 
 const VideoContainer = styled.div`
@@ -197,6 +200,102 @@ const Wave = styled.div`
   }
 `;
 
+const Explore = styled.div`
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  width: 40px;
+  height: 40px;
+
+  &:hover,
+  .explore:hover {
+    .explore {
+      display: block;
+    }
+  }
+
+  .explore {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    display: none;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    &-thing {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 10%;
+      left: 10%;
+
+      &:nth-child(1) {
+        transform: translateX(-50px);
+        animation: icon1 0.5s;
+        padding-right: calc(10% + 10px);
+        color: #666;
+        cursor: pointer;
+        &:hover {
+          color: #e36387;
+        }
+      }
+
+      &:nth-child(2) {
+        transform: translateY(-50px);
+        animation: icon2 0.5s;
+        padding-bottom: calc(10% + 10px);
+        color: #666;
+        cursor: pointer;
+        &:hover {
+          color: #0aa1dd;
+        }
+      }
+    }
+  }
+
+  .explore-link {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    color: #233e8b;
+    cursor: pointer;
+    transition: ease 0.3s;
+    transform: scale(1) rotate(0deg);
+
+    &:hover {
+      transition: ease 0.3s;
+      transform: scale(1.1) rotate(45deg);
+    }
+  }
+
+  @keyframes icon1 {
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(-50px);
+    }
+  }
+  @keyframes icon2 {
+    0% {
+      opacity: 0;
+      transform: translateY(0px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-50px);
+    }
+  }
+`;
+
 const MainPage = () => {
   const section1 = useRef(null);
   const section2 = useRef(null);
@@ -224,6 +323,16 @@ const MainPage = () => {
     });
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const onClickProfile = () => {
+    navigate('user/profile/1');
+  };
   return (
     <Container>
       <Introduce id="introduce">
@@ -271,6 +380,19 @@ const MainPage = () => {
         <Wave className="wave wave4"></Wave>
         <Ocean className="ocean"></Ocean>
       </StartPlaces>
+      <Explore>
+        <div className="explore">
+          <AccountCircleIcon
+            onClick={onClickProfile}
+            className="explore-thing"
+          />
+          <AirplanemodeActiveIcon
+            onClick={scrollToTop}
+            className="explore-thing"
+          />
+        </div>
+        <ExploreIcon className="explore-link" />
+      </Explore>
     </Container>
   );
 };

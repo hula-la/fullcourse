@@ -32,20 +32,35 @@
   height: 10%;
   width: 100%;
   position: absolute;
-  top: 373vh;
+  top: 353vh;
 
   bottom: 0;
   left: 0;
   background: #015871;
   background-size: 1000px 100px;
+  
 
 
 }
 
 
+/* @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+  .ocean {
+    height: 10%;
+    width: 100%;
+ 
+  
+    bottom: 0;
+    left: 0;
+    background: #015871;
+    background-size: 1000px 100px;
+  }
+
+} */
+
 
 .wave {
-  top: 360vh;
+  top: 340vh;
   background: url('/public/img/wave.png');
   background-size: 1000px 100px;
   position: absolute;

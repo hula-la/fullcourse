@@ -7,20 +7,27 @@ import PlaceBar from '../../components/trip/place/PlaceBar';
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  height: 75vh;
+ 
+  margin-top: 0.5vh;
+  /* overflow-y: hidden; */
+
+  height: 88.3vh; 
 `;
+
 
 const PlanPage = () => {
   const mapRef = useRef(null);
   const [map,setMap] = useState(null)
   return (
-    <div>
+   
       <Container>
         <PlanBar map={map} setMap={setMap} mapRef={mapRef}></PlanBar>
+      
         <Map map={map} setMap={setMap} mapRef={mapRef}/>
+       
         <PlaceBar map={map}></PlaceBar>
       </Container>
-    </div>
+   
   );
 };
 

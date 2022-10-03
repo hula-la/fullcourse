@@ -8,7 +8,7 @@ import Avatar from '@mui/joy/Avatar';
 import CardOverflow from '@mui/joy/CardOverflow';
 import { FaCommentDots } from 'react-icons/fa';
 import { GoHeart } from 'react-icons/go';
-
+import { useNavigate } from 'react-router-dom';
 // mui에서 미디어쿼리 사용하는 방법
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import { getUserInfo } from '../../api/user';
@@ -60,9 +60,9 @@ const Nickname = styled.div`
 
 const CardTitle = styled.div`
   font-family: Tmoney;
-  font-size: 2vmin;
+  font-size: 2.5vmin;
   color: #333333;
-  margin-top: 2vh;
+  margin-top: 1vh;
 `;
 
 const CardContent = styled.div`
@@ -98,6 +98,7 @@ const Comment = styled(FaCommentDots)`
 const Tags = styled.div`
   overflow-x: auto;
   display: -webkit-box;
+  min-height: 52px;
 `;
 
 const Tag = styled.div`
@@ -108,14 +109,19 @@ const Tag = styled.div`
   padding: 0.1rem 0.4rem;
   margin: 0.3rem;
   color: #dc3d59;
+  height: fit-content;
 `;
-
 const CardComponent = (props) => {
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(`../../../fullcourse/detail/${props.fullcourse.sharedFcId}`);
+  };
   return (
     <Wapper>
       <Card
+        onClick={onClick}
         className={isMobile ? classes.cardMobile : null}
         variant="soft"
         sx={{
@@ -123,20 +129,21 @@ const CardComponent = (props) => {
           // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           marginTop: '1vh',
-          ':hover': { transform: 'scale(1.05)', cursor: 'pointer' },
+          ':hover': {
+            boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 20%);',
+            // transform: 'scale(1.05)',
+            cursor: 'pointer',
+          },
           ':active': { transform: 'scale(0.95)' },
         }}
       >
         <CardOverflow>
           <AspectRatio ratio="3">
-            <img
-              src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
-              alt="card main img"
-            />
+            <img src={props.fullcourse.thumbnail} alt="card main img" />
           </AspectRatio>
 
           <Avatar
-            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?crop=entropy&auto=format&fit=crop&w=3270"
+            src={props.fullcourse.user.imgUrl}
             size="lg"
             sx={{
               position: 'absolute',
@@ -151,6 +158,7 @@ const CardComponent = (props) => {
         <CardOverflow
           variant="soft"
           sx={{
+            background: 'white',
             display: 'flex-column',
             textAlign: 'start',
             // gap: 1.5,
@@ -165,7 +173,6 @@ const CardComponent = (props) => {
         >
           <Nickname>{props.fullcourse.user.userNickName}</Nickname>
           <CardTitle>{props.fullcourse.title}</CardTitle>
-          {props.fullcourse.day} Day
           <CardContent>{props.fullcourse.detail}</CardContent>
           <Tags className="scrollBar">
             {props.fullcourse.sharedFCTags.map((tag) => {

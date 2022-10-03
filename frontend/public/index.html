@@ -29,14 +29,14 @@
     <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"charset="utf-8"></script>
     <!-- 카카오 로그인 -->
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-    <script>Kakao.init("9b5cbd1097effce1c0e9a1b45406c85c")</script>
+    <script>Kakao.init("%REACT_APP_KAKAO_LOGIN_API_KEY%")</script>
     <!-- 카카오 맵 -->
     <script
       type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a23ef4a877d461e1d6018c165f34646c"></script>
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_MAP_API_KEY%"></script>
     <!-- 구글맵 -->
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVH-jMhV8BSCFtq-dpmmspQbztpqzWf4E&libraries=places&callback=initMap"></script>
-   
+    <script async src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GOOGLE_MAP_API_KEY%&libraries=places&callback=initMap"></script>
+  
     <!-- ar.js -->
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>

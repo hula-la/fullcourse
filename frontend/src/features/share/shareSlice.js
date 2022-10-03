@@ -16,22 +16,44 @@ const initialState = {
   error: null,
   sharedFcLikeList: null,
   tagList: [
-    '산',
-    '바다',
-    '힐링',
-    '계곡',
-    '핫플',
-    '현지맛집',
-    '돼지국밥',
-    '산책',
-    '데이트',
-    '맛집',
+    ['키워드', '필수', '핫플', '야경', '인생샷명소', '뷰맛집', '맛집'],
+
+    ['어디로', '시장', '실내', '놀이공원', '박물관', '산책로', '부산바다'],
+
+    [
+      '무엇을',
+      '역사',
+      '문화예술',
+      '체험',
+      '액티비티',
+      '등산',
+      '쇼핑',
+      '스포츠',
+      '드라이브',
+    ],
+    [
+      '어떻게',
+      '초록초록',
+      '노을',
+      '한적한',
+      '흥미로운',
+      '교육적인',
+      '걷기좋은',
+      '북적이는',
+    ],
+
+    ['누구와', '혼자', '친구와', '연인과', '아이와', '부모님과', '가족과'],
+
+    ['언제', '봄', '여름', '가을', '겨울'],
   ],
-  dayTagList: ['1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
+  dayTagList: ['일수', '1DAY', '2DAY', '3DAY', '4DAY', '5DAY'],
   dayTagList2: [],
   checkedTagList: [],
   checkedDayTagList: [],
   checkedDay: 6,
+  howSort: 'regDate,desc',
+  willShareFcId: null,
+  willShareThumbnail: null,
 };
 
 const shareSlice = createSlice({
@@ -67,6 +89,14 @@ const shareSlice = createSlice({
     },
     checkAllDay: (state) => {
       state.checkedDay = 6;
+    },
+    selectSort: (state, { payload }) => {
+      state.howSort = payload + ',desc';
+      console.log(state.howSort);
+    },
+    selectFcId: (state, { payload }) => {
+      state.willShareFcId = payload.fcId;
+      state.willShareThumbnail = payload.thumbnail;
     },
   },
   extraReducers: {
@@ -130,7 +160,14 @@ const shareSlice = createSlice({
   },
 });
 
-export const { checkTag, checkDayTag, makeDayTagList, checkDay, checkAllDay } =
-  shareSlice.actions;
+export const {
+  checkTag,
+  checkDayTag,
+  makeDayTagList,
+  checkDay,
+  checkAllDay,
+  selectSort,
+  selectFcId,
+} = shareSlice.actions;
 
 export default shareSlice.reducer;
