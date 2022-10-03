@@ -73,6 +73,11 @@ const PlaceItem = styled.div`
     display: flex;
     justify-content: space-between;
   }
+  &:hover {
+    div > p {
+      color: #0aa1dd;
+    }
+  }
 `;
 
 const Line = styled.div`
@@ -175,9 +180,12 @@ const Button = styled.div`
   width: 30%;
   padding: 3px;
   background-color: #fff;
-  border: none;
+  border: 2px solid #d9efff;
   border-radius: 5rem;
   text-align: center;
+  font-size: 0.9rem;
+  min-width: 92px;
+
   cursor: pointer;
   &:hover {
     background-color: #d9efff;

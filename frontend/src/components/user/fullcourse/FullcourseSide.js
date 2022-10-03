@@ -18,7 +18,8 @@ const Side = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 1.6rem 1rem 1rem 1rem;
+    margin: 1rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.6rem 0.5rem 0.5rem 0.5rem;
     font-size: small;
     /* font-weight: ; */
   }
@@ -88,6 +89,7 @@ const Plan = styled.div`
   height: 80%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
+  background-color: #fff;
 `;
 
 const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
@@ -118,7 +120,7 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
     };
     setStartDate(months[startSplit[1]] + '.' + startSplit[2]);
     setEndDate(months[endSplit[1]] + '.' + endSplit[2]);
-  }, []);
+  }, [fullcourseDetail]);
 
   useEffect(() => {
     dispatch(makeDayTagList(days));
@@ -133,7 +135,7 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   };
   return (
     <Side>
-      {userInfo ? (
+      {userInfo && fullcourseDetail ? (
         <div>
           <div id="userInfo">
             <div id="imgBlock">
