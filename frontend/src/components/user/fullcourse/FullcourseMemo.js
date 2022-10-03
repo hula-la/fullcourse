@@ -14,7 +14,7 @@ const PlaceWrapper = styled.div`
   height: 15%;
   margin: 10px 15px;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   div {
     width: 100%;
     text-align: left;
@@ -24,6 +24,8 @@ const PlaceWrapper = styled.div`
   }
   .name {
     font-size: 1.5rem;
+    border-bottom: 4px solid #0aa1dd;
+    width: fit-content;
   }
   .visit {
     width: 100%;
@@ -42,7 +44,7 @@ const MemoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 85%;
-  padding: 0 15px;
+  padding: 0 20px;
   padding-bottom: 15px;
   border-top: 2px solid #0aa1dd;
 `;
@@ -79,11 +81,8 @@ const FullcourseMemo = ({ placeKey, place }) => {
   return (
     <MemoBlock>
       <PlaceWrapper>
-        <div className="day">1 Day</div>
         <div className="name">자갈치시장</div>
-        <div>
-          <span className="visit">방문 인증완료 </span>
-        </div>
+        <span className="visit">방문 인증완료 </span>
       </PlaceWrapper>
       <MemoWrapper>
         <Img>
