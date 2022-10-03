@@ -42,7 +42,7 @@ const Flex = styled.div`
 `;
 
 const DisableButton = styled.button`
-  margin-bottom: 4vh;
+  margin: 2vh 0;
   outline: 0;
   padding: 5px;
   text-align: center;
@@ -55,7 +55,7 @@ const DisableButton = styled.button`
   border: solid 2px #ffffff00;
 `;
 const Button = styled.button`
-  margin-bottom: 4vh;
+  margin: 2vh 0;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     margin: 2vh 0;
   }

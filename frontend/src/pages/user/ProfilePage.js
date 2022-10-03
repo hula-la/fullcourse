@@ -14,8 +14,9 @@ import { makeStyles, useMediaQuery } from '@material-ui/core';
 const Wrapper = styled.div`
   display: flex;
   /* flex-direction: column; */
-  height: 1300px;
+  /* height: 1300px; */
   justify-content: start;
+  padding-bottom: 10vh;
 
   #view {
     width: 80%;

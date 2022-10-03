@@ -17,18 +17,14 @@ import { useEffect } from 'react';
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
     // 테스트용 css
-    width: '100%',
+    // width: '100%',
   },
 }));
 
 const Wapper = styled.div`
-  margin: 1vw 2vw 1vw 0vw;
+  margin: 1vw;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
-    margin: 1vw 13vw 1vw 4vw;
-    width: 70%;
-  }
-  @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
-    margin: 1vw 9vw 1vw 4vw;
+    width: 100%;
   }
 
   .scrollBar::-webkit-scrollbar {
@@ -62,6 +58,9 @@ const Nickname = styled.div`
 const CardTitle = styled.div`
   font-family: Tmoney;
   font-size: 2.5vmin;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    font-size: 3.5vmin;
+  }
   color: #333333;
   margin-top: 1vh;
   padding-right: 5px;
@@ -73,10 +72,14 @@ const CardTitle = styled.div`
 const CardContent = styled.div`
   font-family: Tmoney;
   font-size: 1.5vmin;
+
   color: #333333;
   margin-top: 1vh;
   height: 55px;
   overflow: hidden;
+  height: calc(1.5vmin * 4);
+  max-height: 55px;
+  min-height: 26px;
   text-overflow: clip;
   white-space: break-spaces;
 `;
@@ -84,13 +87,12 @@ const CardContent = styled.div`
 const CardFooter = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 2vh;
 
   span {
     font-family: Tmoney;
-    font-size: 1vmin;
+    font-size: 1.5vmin;
     margin-right: 1vw;
-    margin-left: 0.2vw;
+    margin-left: 0.5vw;
   }
 `;
 
@@ -107,6 +109,7 @@ const Tags = styled.div`
   overflow-x: auto;
   display: -webkit-box;
   min-height: 52px;
+  margin-top: 1vh;
 `;
 
 const Tag = styled.div`
@@ -136,7 +139,8 @@ const CardComponent = (props) => {
         className={isMobile ? classes.cardMobile : null}
         variant="soft"
         sx={{
-          width: '15vw',
+          width: '14.5vw',
+          minWidth: '200px',
           // boxShadow: '0px 2px 4px 0px rgb(0 0 0 / 10%);' }}, 스투비플래너 카드 예시
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           marginTop: '1vh',

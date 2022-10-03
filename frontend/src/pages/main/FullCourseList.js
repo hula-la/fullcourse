@@ -51,7 +51,7 @@ const Flex = styled.div`
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     flex-wrap: nowrap;
   }
-  justify-content: center;
+  justify-content: space-between;
   margin: 2vh 3vw;
   overflow-x: auto;
 `;
