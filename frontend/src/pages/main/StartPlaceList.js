@@ -151,7 +151,7 @@ const StartPlaceList = () => {
         <Title>
           {/* <img src={imageSrc}></img> */}
           <Text>어디로 함 가볼까?</Text>
-          <StyledButton content="더보기" />
+          {/* <StyledButton content="더보기" /> */}
         </Title>
         <GridBox>
           {startPlaceInfoList.map((item, idx) => (
@@ -160,7 +160,6 @@ const StartPlaceList = () => {
                 setStartPlaceInfo(item[3], e);
               }}
               className={isMobile ? classes.cardMobile : null}
-              
               key={idx}
               sx={{
                 border: 'none',
@@ -175,9 +174,7 @@ const StartPlaceList = () => {
                 },
               }}
             >
-              <CardCover
-                
-              >
+              <CardCover>
                 <img src={item[0]} alt="" className="startPlaceImg" />
               </CardCover>
 

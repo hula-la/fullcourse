@@ -53,7 +53,7 @@ const Wapper = styled.div`
 
 const Nickname = styled.div`
   font-family: Tmoney;
-  font-size: 1vmin;
+  font-size: 5vmin;
   color: #333333;
   text-align: center;
 `;

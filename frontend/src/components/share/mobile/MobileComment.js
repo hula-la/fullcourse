@@ -10,20 +10,25 @@ import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-
 const CommentBlock = styled.div`
-position: absolute;
-z-index: 5;
-top:0;
-height: 100vh;
-background:white;
+  background: aliceblue;
+  height: 100vh;
+  width: 100vw;
+
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  height: 100vh;
+  /* background:white; */
 
   width: 100%;
 
-  
+  .postBtn {
+    width: 4rem;
+  }
 
   .detail {
-    margin:40px 30px 30px 30px;
+    margin: 40px 30px 30px 30px;
     color: #333333;
     font-size: 20px;
   }
@@ -34,33 +39,37 @@ background:white;
     form {
       border: 1px solid #078ec4;
       border-radius: 10px;
+
+      background: white;
+      display: flex;
+      justify-content: space-between;
     }
+  }
 
-    input {
-      border: #ffffff;
-      width: 15vw;
-      border-radius: 10px;
-      margin-right: 10px;
-      padding: 6px 0px 6px 10px;
-      font-size: 17px;
+  input {
+    border: #ffffff;
+    width: calc(100%- 4rem);
+    border-radius: 10px;
+    margin-right: 10px;
+    padding: 6px 0px 6px 10px;
+    font-size: 17px;
 
-      :focus {
-        outline: none;
-      }
+    :focus {
+      outline: none;
     }
+  }
 
-    button {
-      cursor: pointer;
-      border: #ffffff;
-      background-color: #ffffff;
-      padding: 3px 10px;
-      color: #078ec4;
-      border-radius: 20px;
+  button {
+    cursor: pointer;
+    border: #ffffff;
+    background-color: #ffffff;
+    padding: 3px 10px;
+    color: #078ec4;
+    border-radius: 20px;
 
-      &:hover {
-        color: #0abdff;
-        font-weight: bold;
-      }
+    &:hover {
+      color: #0abdff;
+      font-weight: bold;
     }
   }
 
@@ -68,6 +77,9 @@ background:white;
     height: 50vh;
     margin: 0.5rem;
     overflow-y: scroll;
+    background: white;
+    border: 3px solid #bbbbbb;
+    border-radius: 0.5rem;
   }
 
   .commentBox {
@@ -195,8 +207,6 @@ const MobileComment = ({ sharedFcInfo }) => {
 
   return (
     <CommentBlock>
-      
-
       {sharedFcInfo ? (
         <div className="detail">{sharedFcInfo.detail}</div>
       ) : null}
@@ -231,7 +241,7 @@ const MobileComment = ({ sharedFcInfo }) => {
             placeholder="댓글 달기.."
             onChange={onChangeReply}
           />
-          <button>게시</button>
+          <button className="postBtn">게시</button>
         </form>
       </div>
       <div className="commentArea">

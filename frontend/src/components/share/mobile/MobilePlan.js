@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import PlaceList from '../PlaceList';
@@ -11,46 +11,48 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Side = styled.div`
-
   display: flex;
   flex-direction: column;
   width: 100%;
-  
-  .activeDiv{
+
+  .activeDiv {
     background: #fffef4;
     position: absolute;
     z-index: 3;
     width: 100%;
     box-sizing: border-box;
-
   }
 
   @keyframes slideUp {
-  from {top: 30vh;
-    height: calc(55vh - 80px);
+    from {
+      top: 30vh;
+      height: calc(55vh - 80px);
+    }
+    to {
+      top: 0;
+      height: calc(85vh - 80px);
+    }
   }
-  to { top:0;
-    height: calc(85vh - 80px);
-  }
-}
-@keyframes slideDown {
-  from {top: 0;
-    height: calc(85vh - 80px);
-  }
-  to { top:30vh;
-    height: calc(55vh - 80px);
-  }
+  @keyframes slideDown {
+    from {
+      top: 0;
+      height: calc(85vh - 80px);
+    }
+    to {
+      top: 30vh;
+      height: calc(55vh - 80px);
+    }
   }
 
-  .maxPlan{
-    top:0;
+  .maxPlan {
+    top: 0;
     animation: slideUp;
     animation-duration: 1s;
     /* background: #fffef4; */
     height: calc(85vh - 80px);
   }
-  .minPlan{
-    top:30vh;
+  .minPlan {
+    top: 30vh;
     animation: slideDown;
     animation-duration: 1s;
     height: calc(55vh - 80px);
@@ -94,17 +96,20 @@ const Side = styled.div`
 `;
 
 const Plan = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   border-radius: 1rem;
   padding: 1rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
-  height:100%;
+  height: 100%;
   box-sizing: border-box;
 
-  KeyboardArrowUpIcon{
-    width:2rem;
+  KeyboardArrowUpIcon {
+    width: 2rem;
   }
 `;
-
 
 const MobilePlan = ({ sharedFcInfo, fullcourseDetail }) => {
   const [ismapreduce, setIsmapreduce] = useState(false);
@@ -126,8 +131,6 @@ const MobilePlan = ({ sharedFcInfo, fullcourseDetail }) => {
     dispatch(checkAllDay());
   };
 
-
-
   const toggleActive = (e) => {
     setIsmapreduce((prev) => {
       return !prev;
@@ -136,45 +139,42 @@ const MobilePlan = ({ sharedFcInfo, fullcourseDetail }) => {
 
   return (
     <Side>
-      <div className={`activeDiv ${(ismapreduce? " maxPlan" : " minPlan")}`}>
-        
-
+      <div className={`activeDiv ${ismapreduce ? ' maxPlan' : ' minPlan'}`}>
         <Plan>
-          {!ismapreduce ?
-          <KeyboardArrowUpIcon
-              onClick={toggleActive} /> :
-              <KeyboardArrowDownIcon
-              onClick={toggleActive}/>
-          }
-        <ul className="daynonelist">
-          <li
-            className={
-              'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
-            }
-            onClick={onClickTagsAll}
-          >
-            <div>All</div>
-          </li>
-          {dayTagList2.map((tag, index) => {
-            return (
-              <li
-                className={
-                  'daylistitem' +
-                  (checkedDay === index ? ' daytag-selected' : '')
-                }
-                key={index}
-                onClick={(e) => onClickTags(index, e)}
-              >
-                <div id={tag.tag}>{tag}</div>
-              </li>
-            );
-          })}
-        </ul>
-        {fullcourseDetail ? (
-          <PlaceList placeList={fullcourseDetail.places} />
-        ) : null}
+          {!ismapreduce ? (
+            <KeyboardArrowUpIcon onClick={toggleActive} />
+          ) : (
+            <KeyboardArrowDownIcon onClick={toggleActive} />
+          )}
+          <ul className="daynonelist">
+            <li
+              className={
+                'daylistitem' + (checkedDay === 6 ? ' daytag-selected' : '')
+              }
+              onClick={onClickTagsAll}
+            >
+              <div>All</div>
+            </li>
+            {dayTagList2.map((tag, index) => {
+              return (
+                <li
+                  className={
+                    'daylistitem' +
+                    (checkedDay === index ? ' daytag-selected' : '')
+                  }
+                  key={index}
+                  onClick={(e) => onClickTags(index, e)}
+                >
+                  <div id={tag.tag}>{tag}</div>
+                </li>
+              );
+            })}
+          </ul>
+          {fullcourseDetail ? (
+            <PlaceList placeList={fullcourseDetail.places} />
+          ) : null}
         </Plan>
-        </div>
+      </div>
     </Side>
   );
 };

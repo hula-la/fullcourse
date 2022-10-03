@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <NavBar>
       <NavLink to="/">
-        <img className="logo" src="/img/Logo2.png" alt="logo" />
+        <img className="logo" src="/img/logo2.png" alt="logo" />
       </NavLink>
       <Menu>
         {!userInfo ? (
