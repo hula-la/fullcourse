@@ -39,13 +39,13 @@ public class HotelService {
         }
         if(maxDist != 0) {
             list = extractByDist(list, lat, lng, maxDist);
-            if(pageable.getSort().toString().equals("likeCnt: DESC")){
-                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
-            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
-            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
-            }
+        }
+        if(pageable.getSort().toString().equals("likeCnt: DESC")){
+            Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+        } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+        } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
         }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
