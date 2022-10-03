@@ -76,12 +76,16 @@ const PlaceTypes = styled.button`
     color: #ffffff;
     font-weight: bold;
   }
+
+  &.type-selected {
+    color: #ffffff;
+    background-color: #0aa1dd;
+  }
 `;
 
 const ArrowIcon = styled(KeyboardArrowDown)`
   font-size: 2.5vmin !important;
 `;
-
 
 const Wrapper = styled.div`
   /* margin: 0 20%; */
@@ -124,12 +128,10 @@ const PageBox = styled.div`
   justify-content: center;
 `;
 
-
-
 const PlaceBar = ({ map }) => {
   const dispatch = useDispatch();
   const [sort, setSort] = useState('기본순');
-  const [sortReq, setSortReq] = useState('')
+  const [sortReq, setSortReq] = useState('');
   const [placeTypes, setPlaceTypes] = useState([
     'travel',
     'culture',
@@ -145,6 +147,7 @@ const PlaceBar = ({ map }) => {
   const { travelPlaceList } = useSelector((state) => state.trip);
   const [placeType, setPlaceType] = useState('travel');
   const [keyword, setKeyword] = useState('');
+  const [isActive, setIsActive] = useState(0);
 
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
   const addPlaceToPlanner = (
@@ -208,23 +211,19 @@ const PlaceBar = ({ map }) => {
     for (var i = 0; i < placeTypes.length; i++) {
       if (i === id) {
         setPlaceType(placeTypes[id]);
+        setIsActive(id);
       }
     }
   };
 
-
   const handleOnKeyPress = (e) => {
     if (e.key === 'Enter') {
-      console.log(e.target.value)
-      setKeyword(e.target.value)
+      console.log(e.target.value);
+      setKeyword(e.target.value);
     }
   };
 
-  const onClickSearch = (e) => {
-
- 
-    
-  };
+  const onClickSearch = (e) => {};
 
   const onFocus = (e) => {
     e.target.placeholder = '';
@@ -235,7 +234,6 @@ const PlaceBar = ({ map }) => {
     if (e.target.value.length == 0) {
       e.target.placeholder = '키워드를 검색해보세요';
     }
-
   };
 
   return (
@@ -244,6 +242,7 @@ const PlaceBar = ({ map }) => {
         <TypeContainer>
           {showPlaceTypes.map((item, id) => (
             <PlaceTypes
+              className={id === isActive ? 'type-selected' : ''}
               onClick={(e) => {
                 changePlaceList(id, e);
               }}
@@ -252,22 +251,30 @@ const PlaceBar = ({ map }) => {
             </PlaceTypes>
           ))}
         </TypeContainer>
-        <SortSelect sort={sort} setSort={setSort} setSortReq={setSortReq} placeType={placeType}></SortSelect>
+        <SortSelect
+          sort={sort}
+          setSort={setSort}
+          setSortReq={setSortReq}
+          placeType={placeType}
+        ></SortSelect>
       </SortBox>
       <Wrapper>
-       
         <Input
           placeholder="키워드를 검색해보세요"
           onFocus={onFocus}
           onChange={onChange}
           onKeyPress={handleOnKeyPress}
-          
         ></Input>
         <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
         {/* <Button>검색</Button> */}
       </Wrapper>
 
-      <PlaceList className="place-list" map={map} placeType={placeType} keyword={keyword} />
+      <PlaceList
+        className="place-list"
+        map={map}
+        placeType={placeType}
+        keyword={keyword}
+      />
       <PageBox>
         {travelPlaceList ? (
           <Pagination
