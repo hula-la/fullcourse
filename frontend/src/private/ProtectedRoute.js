@@ -1,15 +1,13 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-export const ProtectedLoginRoute = ({
-  userInfo,
-  redirectPath = '/user/login',
-}) => {
-  if (!userInfo) {
+export const ProtectedRoute = ({ redirectPath = '/user/login' }) => {
+  const accessToken = 'Bearer ' + localStorage.getItem('accessToken');
+  if (!accessToken) {
     return <Navigate to={redirectPath} replace />;
   }
 
   return <Outlet />;
 };
 
-export default ProtectedLoginRoute;
+export default ProtectedRoute;

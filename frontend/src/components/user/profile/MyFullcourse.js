@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyFullcourse } from '../../../features/user/userActions';
 import MyFullcourseShare from './MyFullcourseShare';
-import StyledButton from '../../common/StyledButton';
 import styled from 'styled-components';
 import MyfullcourseItem from './MyFullcourseItem';
 import TitleText from './TitleText';
@@ -14,6 +13,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { selectFcId } from '../../../features/share/shareSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin: 0 5vw;
@@ -82,6 +83,7 @@ const Button = styled.button`
 const MyFullcourse = ({ userInfo }) => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { myFullcourseList } = useSelector((state) => state.user);
   const [modalOpen, setModalOpen] = useState(false);
@@ -96,7 +98,10 @@ const MyFullcourse = ({ userInfo }) => {
     setModalOpen(false);
   };
 
-  const onClick = () => {
+  const onClick = (e, fullcourse) => {
+    dispatch(
+      selectFcId({ fcId: fullcourse.fcId, thumbnail: fullcourse.thumbnail }),
+    );
     openModal();
   };
   // carousel 설정
@@ -112,18 +117,58 @@ const MyFullcourse = ({ userInfo }) => {
     dispatch(fetchMyFullcourse());
   }, [dispatch]);
 
+  const onClickMakeFc = () => {
+    navigate('/trip/plan');
+  };
+
   return (
     <Wrapper>
       <TitleText content="나의 풀코스" />
-
+      {myFullcourseList
+        ? myFullcourseList.content.map((fullcourse, index) => {
+            return (
+              <MyFullcourseShare
+                open={modalOpen}
+                close={closeModal}
+                header={modalHeader}
+                fullcourse={fullcourse}
+                key={index}
+              ></MyFullcourseShare>
+            );
+          })
+        : null}
       {myFullcourseList ? (
         myFullcourseList.content.length >= 3 ? (
           <div>
             <Slider className="slider" {...settings}>
               {myFullcourseList.content.map((fullcourse, index) => {
                 return (
+                  <div key={index}>
+                    <MyfullcourseItem key={index} fullcourse={fullcourse} />
+                    {fullcourse.shared ? (
+                      <DisableButton>공유완료</DisableButton>
+                    ) : new Date(fullcourse.endDate) < new Date() ? (
+                      <Button onClick={(e) => onClick(e, fullcourse)}>
+                        공유하기
+                      </Button>
+                    ) : new Date() < new Date(fullcourse.startDate) ? (
+                      <DisableButton>예정</DisableButton>
+                    ) : (
+                      <Button>여행중</Button>
+                    )}
+                  </div>
+                );
+              })}
+            </Slider>
+          </div>
+        ) : myFullcourseList.content.length > 0 ? (
+          <div>
+            <Flex>
+              {myFullcourseList.content.map((fullcourse, index) => {
+                return (
                   <div>
                     <MyfullcourseItem key={index} fullcourse={fullcourse} />
+
                     {fullcourse.shared ? (
                       <DisableButton>공유완료</DisableButton>
                     ) : new Date(fullcourse.endDate) < new Date() ? (
@@ -136,39 +181,10 @@ const MyFullcourse = ({ userInfo }) => {
                   </div>
                 );
               })}
-            </Slider>
-            {myFullcourseList.content.map((fullcourse, index) => {
-              return (
-                <MyFullcourseShare
-                  open={modalOpen}
-                  close={closeModal}
-                  header={modalHeader}
-                  fullcourse={fullcourse}
-                ></MyFullcourseShare>
-              );
-            })}
+            </Flex>
           </div>
-        ) : myFullcourseList.content.length > 0 ? (
-          <Flex>
-            {myFullcourseList.content.map((fullcourse, index) => {
-              return (
-                <div>
-                  <MyfullcourseItem key={index} fullcourse={fullcourse} />
-                  {fullcourse.shared ? (
-                    <DisableButton>공유완료</DisableButton>
-                  ) : new Date(fullcourse.endDate) < new Date() ? (
-                    <Button onClick={onClick}>공유하기</Button>
-                  ) : new Date() < new Date(fullcourse.startDate) ? (
-                    <DisableButton>예정</DisableButton>
-                  ) : (
-                    <Button>여행중</Button>
-                  )}
-                </div>
-              );
-            })}
-          </Flex>
         ) : (
-          <Button>풀코스 만들러 가기</Button>
+          <Button onClick={onClickMakeFc}>풀코스 만들러 가기</Button>
         )
       ) : null}
     </Wrapper>

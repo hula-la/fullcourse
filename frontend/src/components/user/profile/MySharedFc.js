@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { makeStyles, useMediaQuery } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   margin: 0 5vw;
@@ -45,6 +46,7 @@ const Empty = styled.div`
 const MySharedFc = () => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mySharedFcList } = useSelector((state) => state.share);
 
@@ -61,6 +63,10 @@ const MySharedFc = () => {
     dispatch(fetchMySharedFc());
   }, [dispatch]);
 
+  const onClickSharedFc = (fullcourse, e) => {
+    navigate(`/fullcourse/detail/${fullcourse.sharedFcId}`);
+  };
+
   return (
     <Wrapper>
       <TitleText content="공유한 풀코스" />
@@ -68,13 +74,27 @@ const MySharedFc = () => {
         mySharedFcList.content.length >= 3 ? (
           <Slider className="slider" {...settings}>
             {mySharedFcList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickSharedFc(fullcourse, e)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Slider>
         ) : mySharedFcList.content.length > 0 ? (
           <Flex>
             {mySharedFcList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClickSharedFc(fullcourse, e)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })}
           </Flex>
         ) : (

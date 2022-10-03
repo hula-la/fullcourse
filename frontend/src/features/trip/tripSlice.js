@@ -60,12 +60,16 @@ const tripSlice = createSlice({
     deleteMarkers: (state, action) => {
       state.markers = action.payload
     },
+    deleteAllPlace: (state,action) => {
+      console.log("전체삭제")
+      state.placeItem = []
+    }
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
       state.travelPlaceList = payload.data;
-      console.log("이게되나", payload.data)
+      
       
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
@@ -116,7 +120,8 @@ export const {
   setInitMap,
   setMarkers,
   clearMarkers,
-  deleteMarkers
+  deleteMarkers,
+  deleteAllPlace,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

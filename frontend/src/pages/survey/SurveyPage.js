@@ -10,11 +10,15 @@ import styled from 'styled-components';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+// skip 아이콘
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+
 const Wrapper = styled.div`
 position: relative;
 height:calc(100vh - 80px);
 
 .planButtonContainer{
+
   position: absolute;
   top:5%;
   right:5%;
@@ -23,16 +27,39 @@ height:calc(100vh - 80px);
 
 `
 
+
 const PlanButton = styled.div`
+/* position: absolute;
+top:5%;
+right:5%; */
 font-weight:bold;
 cursor:pointer;
+
+display: flex;
+align-items: center;
+padding: 0.1rem 0.4rem;
+border-radius: 1rem;
+font-size: 0.8rem;
+border: 2px solid;
 `
+
+// const PlanButton = styled.div`
+// font-weight:bold;
+// cursor:pointer;
+// `
 const SurveyHeader = styled.div`
-padding: 1rem 0;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     font-weight: bold;
 .title {
     padding-bottom: 0.5rem;
     font-size: 1.5rem;
+}
+.subtitle{
+  padding: 0 2rem;
 }
 `
 const RandomPlaceList = styled.div`
@@ -92,12 +119,20 @@ button img{
     height: 2rem;
 }
 .buttonContainer{
+  
+
   position: absolute;
   right:10%;
     margin-left: 3rem;
     display: flex;
     flex-direction: column;
 }
+
+ @media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .buttonContainer{
+    right:2%;
+  }
+  }
 
 .tooltip{
 
@@ -174,6 +209,10 @@ display: flex;
 align-items: center;
 justify-content: center;
 
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  height:25%;
+  }
+
 
 /* div{
   height: 100%;
@@ -210,8 +249,14 @@ img{
     cursor: pointer;
 }
 
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .likePlaceName{
+    font-size:0.8rem;
+  }
+  }
+
 .likePlace{
-  margin: 0 2rem;
+  margin: 0 1rem;
   font-weight: bold;
 }
 
@@ -221,7 +266,7 @@ img{
     align-items: center;
 
   height: 65%;
-  width: 70%;
+  width: 50%;
   max-width: 50rem;
   background:#e2dfff;
   border-radius: 1rem;
@@ -231,10 +276,12 @@ img{
 }
 
 /* 스크롤바 설정*/
+@media only screen and (min-device-width: 479px) {
 
 .likePlaceContainer::-webkit-scrollbar{
   
     width: 10px;
+}
 }
 
 /* 스크롤바 막대 설정*/
@@ -376,7 +423,7 @@ const SurveyPage = () => {
           onClick={(e) => {
             setStartPlaceInfo(likePlaceIndex, e);
           }}>
-          일정 바로 짜기
+          SKIP <SkipNextIcon/>
         </PlanButton>
         <span className='tooltiptext tooltip-bottom'><p>당신이 선택한 여행지들과 함께 일정 짜기 페이지로 넘어갑니다.</p></span>
       </div>
@@ -426,7 +473,7 @@ const SurveyPage = () => {
 
                     <img src={place.imgUrl} />
                     </div>
-                    <div>
+                    <div className='likePlaceName'>
                       {place.name}
                     </div>
                   </div>

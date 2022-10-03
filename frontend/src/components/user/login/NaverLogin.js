@@ -47,7 +47,7 @@ const NaverLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const NAVER_CLIENT_ID = 'nD3LMlh8XVw9Vkf10kQL';
+  const NAVER_CLIENT_ID = `${process.env.REACT_APP_NAVER_CLIENT_ID}`;
   const NAVER_CALLBACK_URL = 'http://localhost:3000/user/login';
 
   const initializeNaverLogin = () => {

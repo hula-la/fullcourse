@@ -11,6 +11,9 @@ import styled from 'styled-components';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+// skip 아이콘
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+
 const Wrapper = styled.div`
 position: relative;
 height:calc(100vh - 80px);
@@ -24,6 +27,13 @@ top:5%;
 right:5%;
 font-weight:bold;
 cursor:pointer;
+
+display: flex;
+align-items: center;
+padding: 0.1rem 0.4rem;
+border-radius: 1rem;
+font-size: 0.8rem;
+border: 2px solid;
 `
 
 const RecommendHeader = styled.div`
@@ -38,6 +48,12 @@ font-size: 1.3rem;
 
 }
 
+@media (min-width: 375px) and (max-width: 800px) {
+  .title{
+    padding-right: 8rem;
+  }
+  }
+
 span{
   color: #3f73d2;
   margin: 0 0.5rem;
@@ -50,7 +66,39 @@ height:55%;
 display: flex;
 align-items: center;
 justify-content: space-around;
+
+
+@media (min-width: 375px) and (max-width: 800px) {
+  overflow-x: scroll;
+  display: -webkit-box;
+  }
+
+::-webkit-scrollbar{
+  
+  width: 10px;
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+
+::-webkit-scrollbar-thumb{
+  background-color: transparent;
+}
+}
+
+:hover::-webkit-scrollbar-thumb{
+background-color: #dc3e5a;
+border: 3px solid white;
+border-radius: 10px;   
+}
+  
+  /* 스크롤바 뒷 배경 설정*/
+  
+::-webkit-scrollbar-track{
+border-radius: 10px;    
+  
+}
 `;
+
+
 
 const LikePlaceList = styled.div`
     padding: 0 1rem;
@@ -61,7 +109,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 
-white-space: nowrap;
+
 /* div{
   height: 100%;
 } */
@@ -73,6 +121,16 @@ img{
     width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
     height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
 }
+
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  justify-content: flex-start;
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .likePlaceName{
+    font-size:0.7rem;
+  }
+  }
 
 .imgContainer{
   display: inline-block;
@@ -98,30 +156,35 @@ img{
 }
 
 .likePlace{
-  margin: 0 2rem;
+  margin: 0 1rem;
   font-weight: bold;
 }
 
 .likePlaceContainer{
+  white-space: nowrap;
   display: flex;
     align-items: center;
 
   height: 65%;
-  width: 70%;
+  width: 50%;
   max-width: 50rem;
   background:#e2dfff;
   border-radius: 1rem;
   /* height:10%; */
   overflow-x: scroll;
     overflow-y: hidden;
+    margin: 0 10%;
 }
 
 /* 스크롤바 설정*/
+@media only screen and (min-device-width: 800px) {
 
 .likePlaceContainer::-webkit-scrollbar{
   
     width: 10px;
 }
+}
+
 
 /* 스크롤바 막대 설정*/
 /* .likePlaceContainer::-webkit-scrollbar-thumb{
@@ -153,8 +216,18 @@ border-radius: 10px;
   font-weight: bold;
   color:#5b4afe;
 
+  display: flex;
+    flex-direction: column;
+    align-content: center;
+
     
 }
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
+  .buttonContainer{
+    width: 7rem;
+  }
+  }
 .buttonContainer span{
   color:#7c87d5
 }
@@ -166,7 +239,7 @@ border-radius: 10px;
 button{
   border: none;
     border-radius: 1rem;
-    padding: 0.5rem 0.6rem 0.5rem 1rem;
+    padding: 0.5rem 0.6rem;
     background: #e2dfff;
     margin-top:1rem;
     font-weight: bold;
@@ -247,7 +320,7 @@ const RecommendPage = () => {
         onClick={(e) => {
           setStartPlaceInfo(likePlaceIndex, e);
         }}>
-        일정 바로 짜기
+        SKIP <SkipNextIcon/>
       </PlanButton>
 
       {recommendPlaceList && (
@@ -282,7 +355,7 @@ const RecommendPage = () => {
 
                     <img src={place.imgUrl} />
                     </div>
-                    <div>
+                    <div className='likePlaceName'>
                       {place.name}
                     </div>
                   </div>
@@ -296,7 +369,7 @@ const RecommendPage = () => {
 
           {likePlaceList.length} /5     
           </div>
-          <button onClick={onClickContinue}>계속 추천 받기 <span>▶</span></button>
+          <button onClick={onClickContinue}>CONTINUE <span>▶</span></button>
         </div>
       </LikePlaceList>
     </Wrapper>
