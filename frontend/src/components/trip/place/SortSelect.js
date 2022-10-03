@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
-import { selectSort } from '../../features/share/shareSlice';
 
 const Wrapper = styled.div`
-  padding: 10px;
+  padding: 7px;
   display: flex;
   justify-content: center;
   .selectBox2 * {
@@ -13,8 +11,8 @@ const Wrapper = styled.div`
   }
   .selectBox2 {
     position: relative;
-    width: 150px;
-    height: 35px;
+    width: 8vw;
+    height: 4vh;
     border-radius: 3rem;
     border: 1px solid #0aa1dd;
     background-color: rgba(217, 239, 255, 1);
@@ -104,39 +102,117 @@ const Wrapper = styled.div`
   }
 `;
 
-const SortSelect = () => {
-  const sortItem = [
+const SortSelect = ({ sort, setSort, setSortReq, placeType }) => {
+  const [sortItem, setSortItem] = useState([]);
+  //여행
+  const defaultSortItem = [
     {
-      type: 'regDate',
-      name: '등록순',
-    },
-    {
-      type: 'viewCnt',
-      name: '조회순',
+      type: 'mention',
+      name: 'SNS언급순',
     },
     {
       type: 'likeCnt',
       name: '좋아요순',
     },
     {
-      type: 'commentCnt',
-      name: '댓글순',
+      type: '',
+      name: '기본순',
+    },
+    {
+      type: 'addedCnt',
+      name: '담긴순',
+    },
+    {
+      type: 'reviewCnt',
+      name: '리뷰순',
+    },
+    {
+      type: 'reviewScore',
+      name: '별점순',
     },
   ];
 
-  const dispatch = useDispatch();
+  //맛집
+  const sortItem1 = [
+    {
+      type: 'naverScore',
+      name: 'Naver평점',
+    },
+    {
+      type: 'likeCnt',
+      name: '좋아요순',
+    },
+    {
+      type: '',
+      name: '기본순',
+    },
+    {
+      type: 'addedCnt',
+      name: '담긴순',
+    },
+    {
+      type: 'reviewCnt',
+      name: '리뷰순',
+    },
+    {
+      type: 'reviewScore',
+      name: '별점순',
+    },
+  ];
+  //축제, 문화, 액티비티
+  const sortItem2 = [
+    {
+      type: 'likeCnt',
+      name: '좋아요순',
+    },
+    {
+      type: '',
+      name: '기본순',
+    },
+    {
+      type: 'addedCnt',
+      name: '담긴순',
+    },
+    {
+      type: 'reviewCnt',
+      name: '리뷰순',
+    },
+    {
+      type: 'reviewScore',
+      name: '별점순',
+    },
+  ];
   const [isActive, setIsActive] = useState(false);
-  const [sort, setSort] = useState('등록순');
 
   const showOptions = () => {
+    if (placeType === 'travel') {
+      setSortItem(defaultSortItem);
+    } else if (placeType === 'restaurant') {
+      setSortItem(sortItem1);
+    } else if (placeType === 'custom') {
+    } else {
+      setSortItem(sortItem2);
+    }
+
     setIsActive(!isActive);
   };
 
-  const onClickSort = (index, e) => {
-    setSort(sortItem[index]['name']);
-    dispatch(selectSort(sortItem[index]['type']));
+  const onClcikSort = (e) => {
+    setSort(e.target.getAttribute('value'));
+    console.log(e.target.getAttribute('value'));
+    if (placeType === 'custom') {
+      setSortReq('');
+    } else {
+      sortItem.map((item, idx) => {
+        if (item.name === e.target.getAttribute('value')) {
+          setSortReq(item.type);
+        }
+      });
+    }
     setIsActive(!isActive);
   };
+
+  useEffect(() => {}, [sort, sortItem, placeType]);
 
   return (
     <Wrapper>
@@ -151,7 +227,7 @@ const SortSelect = () => {
                 key={index}
                 value={item.name}
                 className="optionItem"
-                onClick={(e) => onClickSort(index, e)}
+                onClick={onClcikSort}
               >
                 {item.name}
               </li>

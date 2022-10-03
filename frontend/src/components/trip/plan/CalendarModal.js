@@ -7,6 +7,8 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import ko from 'date-fns/locale/ko'; //달력 한글 포맷
 
+import Swal from 'sweetalert2';
+
 const Modalbackdrop = styled.div`
   width: 10vw;
   z-index: 4;
@@ -19,7 +21,7 @@ const ModalView = styled.div`
   margin-top: 1vh;
   margin-left: 1.5vw;
   padding: 0.5vh 0.5vh 0.5vh 0.5vh;
-  background: #E8F9FD;
+  background: #e8f9fd;
   width: 41vw;
   display: flex;
   flex-direction: column;
@@ -65,22 +67,28 @@ const OkBtn = styled.button`
   }
 `;
 
-const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
+const AlertText = styled.div`
+  margin-right: 28vw;
+  font-size: 2.1vmin;
+  line-height: 4vh;
+  color: #4e4e4e;
+`
 
-  const getMaxDate = (date) => {
+const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
+  // const getMaxDate = (date) => {
 
-    if (!date) {
-      return date
-    }
+  //   if (!date) {
+  //     return date
+  //   }
 
-    //5일제한
-    const startTime = new Date(date).getTime()
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    return new Date(startTime + 4 * 24 * 60 * 60 * 1000)
-  }
-  
-  const maxDate = React.useMemo(() => getMaxDate(range[0].startDate), [range])
+  //   //5일제한
+  //   const startTime = new Date(date).getTime()
+  //   const month = date.getMonth();
+  //   const year = date.getFullYear();
+  //   return new Date(startTime + 4 * 24 * 60 * 60 * 1000)
+  // }
+
+  // const maxDate = React.useMemo(() => getMaxDate(range[0].startDate), [range])
 
   return (
     <Modalbackdrop ref={refOne}>
@@ -96,14 +104,28 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange }) => {
             months={2}
             direction="horizontal"
             minDate={new Date()}
-            maxDate={maxDate}
+            // maxDate={maxDate}
             className="DateRange"
           />
           <div className="Btns">
+            <AlertText>
+              최대 일정 : 5일
+            </AlertText>
             {/* <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn> */}
             <OkBtn
               onClick={() => {
-                setOpen((open) => !open);
+                if (tripDay > 5) {
+                  Swal.fire({
+                    imageUrl: '/img/boogie2.png',
+                    imageHeight: 300,
+                    imageAlt: 'A tall image',
+                    text: '최대 일정은 5일까지 짤 수 있어요😂',
+                    // text: '부기와 함께 떠나볼까요?',
+                    height: 300,
+                  });
+                } else {
+                  setOpen((open) => !open);
+                }
               }}
             >
               적용하기

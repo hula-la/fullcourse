@@ -3,9 +3,10 @@ import PlaceListItem from './PlaceListItem';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
+  overflow-y: scroll;
+  width: 100%;
   padding: 0.5rem;
-  overflow-y: auto;
-  height: 85%;
+  height: 80%;
 
   .scroll {
     display: inline-block;

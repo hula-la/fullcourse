@@ -13,7 +13,7 @@ import {
 export const fetchSharedFc = createAsyncThunk(
   'share/fetchSharedFc',
   async (
-    { checkedTagList, checkedDayTagList, place, pageNum },
+    { checkedTagList, checkedDayTagList, place, pageNum, howSort },
     { rejectWithValue },
   ) => {
     try {
@@ -24,6 +24,7 @@ export const fetchSharedFc = createAsyncThunk(
           place,
         },
         pageNum,
+        howSort,
       );
       return data;
     } catch (error) {

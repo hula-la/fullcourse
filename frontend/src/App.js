@@ -20,6 +20,7 @@ import SurveyPage from './pages/survey/SurveyPage';
 import RecommendPage from './pages/survey/RecommendPage';
 // ar
 import ArPage from './pages/ar/ArPage';
+import WordcloudPage from './pages/wordcloud/WordcloudPage';
 // 404
 import NotFound from './pages/NotFound';
 import ProtectedLoginRoute from './private/ProtectedLoginRoute';
@@ -47,7 +48,7 @@ function App() {
             <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
           </Route>
         </Route>
-        <Route path="fullcourse" element={<Layout />}>
+        <Route path="fullcourse" element={<OnlyHeaderLayout />}>
           <Route path="" element={<ShareFcPage />} />
           <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
         </Route>
@@ -62,6 +63,7 @@ function App() {
         </Route>
 
         <Route path="ar" element={<ArPage />} />
+        <Route path="wc" element={<WordcloudPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

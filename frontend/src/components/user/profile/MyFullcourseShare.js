@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import { createSharedFc } from '../../../features/share/shareActions';
 import EditIcon from '@mui/icons-material/Edit';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import { initializeConnect } from 'react-redux/es/components/connect';
+import FullcourseTagItem from '../../share/SharedFcTagItem';
 
 const AlertDiv = styled.div`
   .modal {
@@ -153,6 +154,29 @@ const AlertDiv = styled.div`
       opacity: 1;
     }
   }
+
+  .tag {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    width: 70%;
+    margin: 0 auto;
+    padding: 20px 0;
+    /* border-bottom: 2px solid #d9d9d9; */
+    background-color: #ffff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  }
+
+  .nonelist {
+    list-style: none;
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: start;
+    margin: 0px 0px;
+  }
 `;
 const Button = styled.button`
   margin-bottom: 4vh;
@@ -180,6 +204,8 @@ const Button = styled.button`
 const MyFullcourseShare = (props) => {
   const { open, close, header, fullcourse } = props;
   const dispatch = useDispatch();
+  const { willShareFcId } = useSelector((state) => state.share);
+  const { willShareThumbnail } = useSelector((state) => state.share);
   const [fullcourseTags, setFullcourseTags] = useState(['부산']);
   const [inputs, setInPuts] = useState({
     title: '',
@@ -188,6 +214,7 @@ const MyFullcourseShare = (props) => {
   const [days, setDays] = useState(null);
   const [inputMessage, setInputMessage] = useState('(0/500)');
   const [isErr, setIsErr] = useState(false);
+  const { tagList } = useSelector((state) => state.share);
 
   useEffect(() => {
     const startDate = fullcourse.startDate.slice(0, 10);
@@ -233,11 +260,11 @@ const MyFullcourseShare = (props) => {
     dispatch(
       createSharedFc({
         day: days,
-        fcId: fullcourse.fcId,
+        fcId: willShareFcId,
         title: inputs.title,
         detail: inputs.content,
         tags: fullcourseTags,
-        thumbnail: fullcourse.thumbnail,
+        thumbnail: willShareThumbnail,
       }),
     );
   };
@@ -294,6 +321,21 @@ const MyFullcourseShare = (props) => {
                     }}
                   />
                 </div>
+                {/* <div className="tag">
+                  {tagList.map((arr, index) => {
+                    return (
+                      <ul className="nonelist" key={index}>
+                        {arr.map((tag, index) => {
+                          return (
+                            <li key={index}>
+                              <FullcourseTagItem tag={tag} index={index} />
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    );
+                  })}
+                </div> */}
                 <footer>
                   <Button>공유하기</Button>
                 </footer>

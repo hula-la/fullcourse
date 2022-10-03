@@ -1,10 +1,9 @@
 import { ContentPasteOffOutlined } from '@mui/icons-material';
 import client from './client';
 
-export const getSharedFc = async (data, page) => {
-  console.log(data);
+export const getSharedFc = async (data, page, sort) => {
   const res = await client.post('api/share/fullcourse/search', data, {
-    params: { page, size: 9 },
+    params: { page, size: 9, sort },
   });
   return res;
 };

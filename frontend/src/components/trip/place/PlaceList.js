@@ -11,11 +11,35 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const PlaceList = ({ map, placeType }) => {
+const Empty = styled.div`
+  margin: 21vh auto;
+  font-size: 1.2rem;
+`;
+
+const PlaceList = ({ map, placeType, keyword }) => {
   const { travelPlaceList } = useSelector((state) => state.trip);
   return (
     <Container>
-      {travelPlaceList
+      {travelPlaceList ? (
+        travelPlaceList.content.length > 0 ? (
+          travelPlaceList.content.map((place, index) => {
+            return (
+              <PlaceListItem
+                key={index}
+                place={place}
+                index={index}
+                map={map}
+                placeType={placeType}
+                keyword={keyword}
+              />
+            );
+          })
+        ) : (
+          <Empty>😅 찾는 조건의 장소가 없습니다. 😅</Empty>
+        )
+      ) : null}
+
+      {/* {travelPlaceList
         ? travelPlaceList.content.map((place, index) => {
             return (
               <PlaceListItem
@@ -27,7 +51,7 @@ const PlaceList = ({ map, placeType }) => {
               />
             );
           })
-        : null}
+        : null} */}
     </Container>
   );
 };

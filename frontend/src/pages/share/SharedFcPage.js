@@ -77,6 +77,7 @@ const FullcourseShare = () => {
   const { sharedFcList } = useSelector((state) => state.share);
   const { checkedTagList } = useSelector((state) => state.share);
   const { checkedDayTagList } = useSelector((state) => state.share);
+  const { howSort } = useSelector((state) => state.share);
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
   const [place, setPlace] = useState('');
@@ -97,10 +98,16 @@ const FullcourseShare = () => {
 
   useEffect(() => {
     dispatch(
-      fetchSharedFc({ checkedTagList, checkedDayTagList, place, pageNum }),
+      fetchSharedFc({
+        checkedTagList,
+        checkedDayTagList,
+        place,
+        pageNum,
+        howSort,
+      }),
     );
     window.scrollTo(0, 0);
-  }, [dispatch, checkedTagList, checkedDayTagList, pageNum]);
+  }, [dispatch, checkedTagList, checkedDayTagList, pageNum, howSort]);
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
@@ -109,7 +116,22 @@ const FullcourseShare = () => {
   };
 
   const onClickSearch = (e) => {
-    console.log(place);
+    dispatch(
+      fetchSharedFc({
+        checkedTagList,
+        checkedDayTagList,
+        place,
+        pageNum,
+        howSort,
+      }),
+    );
+    window.scrollTo(0, 0);
+  };
+
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onClickSearch();
+    }
   };
 
   const onFocus = (e) => {
@@ -131,6 +153,7 @@ const FullcourseShare = () => {
           placeholder="가고싶은 장소를 입력하세요"
           onFocus={onFocus}
           onChange={onChange}
+          onKeyPress={onKeyPress}
         ></Input>
         <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
         {/* <Button>검색</Button> */}

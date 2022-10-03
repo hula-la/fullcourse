@@ -4,6 +4,7 @@ import SharedFcListItem from './SharedFcListItem';
 import CardComponent from '../common/CardComponent';
 import styled from 'styled-components';
 import './main.css';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +23,11 @@ const Empty = styled.div`
 
 const SharedFcList = () => {
   const { sharedFcList } = useSelector((state) => state.share);
+  const navigate = useNavigate();
+
+  const onClick = (e, sharedFcId) => {
+    navigate(`/fullcourse/detail/${sharedFcId}/`);
+  };
 
   return (
     <div>
@@ -29,7 +35,14 @@ const SharedFcList = () => {
         {sharedFcList ? (
           sharedFcList.content.length > 0 ? (
             sharedFcList.content.map((fullcourse, index) => {
-              return <CardComponent key={index} fullcourse={fullcourse} />;
+              return (
+                <div
+                  key={index}
+                  onClick={(e) => onClick(e, fullcourse.sharedFcId)}
+                >
+                  <CardComponent fullcourse={fullcourse} />
+                </div>
+              );
             })
           ) : (
             <Empty>😅 찾는 조건의 풀코스가 없습니다. 😅</Empty>

@@ -10,7 +10,7 @@ import {
   deleteAllPlace,
 } from '../../../features/trip/tripSlice';
 
-import '../trip.css';
+import './trip.css';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { GrPowerReset } from 'react-icons/gr';
 
@@ -45,7 +45,7 @@ const PlaceBucket = styled.div`
   height: 60vh;
   background-color: #ffffff;
   .bucketBox {
-    height: auto;
+    min-height: 5vh;
   }
   .deleteIcon path {
     stroke: #0aa1dd;
@@ -93,7 +93,7 @@ const Date = styled.div`
 `;
 
 const PlannerList = styled.div`
-  height: 20vh;
+  min-height: 20vh;
 `;
 
 const SaveBtn = styled.button`
@@ -221,7 +221,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         setPlaceLocations(placeLocations);
         const selectedBox = e.target.closest('.planner-box');
         removeAllClickedStyle();
-        addClickedStyle(selectedBox.querySelector('.title'));
+        addClickedStyle(selectedBox.querySelector('.triptitle'));
       }
     });
 
@@ -230,15 +230,15 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     const removeClickedStyle = (elm) => elm.classList.remove('clicked');
 
     const removeAllClickedStyle = () => {
-      Array.from(document.querySelectorAll('.title')).forEach((title) =>
-        removeClickedStyle(title),
+      Array.from(document.querySelectorAll('.triptitle')).forEach((triptitle) =>
+        removeClickedStyle(triptitle),
       );
     };
     const getPlaceLocations = (e) => {
       const DayElm = e.target.closest('.planner-box');
-      const item = DayElm.querySelector('.title');
+      const item = DayElm.querySelector('.triptitle');
       setPlanDay(item.dataset.planDay);
-      const titleElm = e.target.closest('.title'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
+      const titleElm = e.target.closest('.triptitle'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
       console.log(titleElm);
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
@@ -419,7 +419,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
 
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 35.1165, lng: 129.0401 },
+      center: { lat: 35.1944, lng: 129.1194 },
       zoom: 11,
       styles: googleMapStyle.mapStyles,
     });
@@ -533,7 +533,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>
             <Title
-              className="title"
+              className="triptitle"
               data-plan-day={idx + 1}
               onClick={drawPolyline}
             >
