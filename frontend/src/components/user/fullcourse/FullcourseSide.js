@@ -100,26 +100,28 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const [endDate, setEndDate] = useState();
 
   useEffect(() => {
-    const start = new Date(fullcourseDetail.startDate);
-    const end = new Date(fullcourseDetail.endDate);
-    const startSplit = start.toDateString().split(' ');
-    const endSplit = end.toDateString().split(' ');
-    const months = {
-      Jan: '1',
-      Feb: '2',
-      Mar: '3',
-      Apr: '4',
-      May: '5',
-      Jun: '6',
-      Jul: '7',
-      Aug: '8',
-      Sep: '9',
-      Oct: '10',
-      Nov: '11',
-      Dec: '12',
-    };
-    setStartDate(months[startSplit[1]] + '.' + startSplit[2]);
-    setEndDate(months[endSplit[1]] + '.' + endSplit[2]);
+    if (fullcourseDetail) {
+      const start = new Date(fullcourseDetail.startDate);
+      const end = new Date(fullcourseDetail.endDate);
+      const startSplit = start.toDateString().split(' ');
+      const endSplit = end.toDateString().split(' ');
+      const months = {
+        Jan: '1',
+        Feb: '2',
+        Mar: '3',
+        Apr: '4',
+        May: '5',
+        Jun: '6',
+        Jul: '7',
+        Aug: '8',
+        Sep: '9',
+        Oct: '10',
+        Nov: '11',
+        Dec: '12',
+      };
+      setStartDate(months[startSplit[1]] + '.' + startSplit[2]);
+      setEndDate(months[endSplit[1]] + '.' + endSplit[2]);
+    }
   }, [fullcourseDetail]);
 
   useEffect(() => {
