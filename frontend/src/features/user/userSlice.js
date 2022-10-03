@@ -18,7 +18,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.clear();
+      sessionStorage.clear();
       state.userInfo = null;
     },
   },
