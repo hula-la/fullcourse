@@ -4,6 +4,7 @@ import { fetchMyFullcourse, fetchUserInfo, putUserInfo } from './userActions';
 const initialState = {
   userInfo: null,
   error: null,
+  statusCode: null,
   myFullcourseList: null,
   diaryInfo: null,
   showMemo: { first: 0, last: 0 },

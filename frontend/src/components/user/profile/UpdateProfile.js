@@ -8,6 +8,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import Swal from 'sweetalert2';
 
 const Wrapper = styled.div`
   margin: 3vw auto;
@@ -166,6 +167,8 @@ const UpdateProfile = ({ userInfo }) => {
       const base64 = reader.result;
       if (base64) {
         setUserImg(base64.toString());
+      } else {
+        setUserImg(null);
       }
     };
     if (e.target.files[0]) {
@@ -194,9 +197,17 @@ const UpdateProfile = ({ userInfo }) => {
     }
   }, []);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(putUserInfo({ userNickname, imgFile }));
+    const { payload } = await dispatch(putUserInfo({ userNickname, imgFile }));
+    if (payload.statusCode === 200) {
+      Swal.fire({
+        icon: 'success',
+        title: '프로필이 변경되었습니다',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
   };
 
   useEffect(() => {
