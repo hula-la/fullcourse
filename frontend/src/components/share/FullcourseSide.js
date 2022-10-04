@@ -16,27 +16,16 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   width: 30%;
+  min-width: 19rem;
+  background-color:#e2f1fa;
 
-  #userInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    font-size: small;
-    /* font-weight: ; */
-  }
-
+/* 
   #imgBlock {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+  } */
 
-  #profileImg {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 20px;
-  }
 
   .daynonelist {
     list-style: none;
@@ -76,39 +65,44 @@ const Side = styled.div`
 `;
 
 const ShareInfo = styled.div`
-  margin-left: 2rem;
+  padding-left: 1rem;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  border-left: 6px solid #0aa1dd;
 
   .favorite {
     cursor: pointer;
     color: #f73131;
     margin-left: 10px;
   }
-
+  
   .favoriteborder {
     cursor: pointer;
     color: #f73131;
     margin-left: 10px;
+    /* margin: 0 10px; */
   }
 
   .countArea {
     margin-top: 10px;
+    font-size: 0.8rem;
   }
 `;
 
 const Plan = styled.div`
-  /* border: 1px solid #333333; */
   border-radius: 1rem;
   padding: 1rem;
-  height: 60vh;
+  height: 100%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
+  background:white;
 `;
 
 const SharedTitle = styled.div`
-  display: flex;
+
+
+  /* display: flex; */
   text-align: left;
   padding: 1.5rem 1rem;
   margin-left: 10px;
@@ -121,12 +115,7 @@ const SharedTitle = styled.div`
     font-weight: bold;
   }
 
-  #userNickName {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: #333333a3;
-    font-weight: bold;
-  }
+
 `;
 
 const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
@@ -156,39 +145,33 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
     <Side>
       {sharedFcInfo ? (
         <SharedTitle>
-          <div id="userInfo">
-            <div id="imgBlock">
-              <img
-                id="profileImg"
-                src={sharedFcInfo.user.imgUrl}
-                alt="profileImg"
-              />
-            </div>
-            <div id="userNickName">{sharedFcInfo.user.nickname}</div>
-          </div>
+          
           <ShareInfo>
             <div>
               <div className="title">
                 {sharedFcInfo.title}
-                {sharedFcInfo ? (
-                  <>
-                    {sharedFcInfo.like ? (
-                      <FavoriteIcon
-                        className="favorite"
-                        onClick={onClickLike}
-                      />
-                    ) : (
-                      <FavoriteBorderIcon
-                        className="favoriteborder"
-                        onClick={onClickLike}
-                      />
-                    )}
-                  </>
-                ) : null}
               </div>
               <div className="countArea">
                 조회수 {sharedFcInfo.viewCnt} , 좋아요 {sharedFcInfo.likeCnt} 개
               </div>
+            </div>
+            <div>
+
+              {sharedFcInfo ? (
+                <>
+                  {sharedFcInfo.like ? (
+                    <FavoriteIcon
+                      className="favorite"
+                      onClick={onClickLike}
+                    />
+                  ) : (
+                    <FavoriteBorderIcon
+                      className="favoriteborder"
+                      onClick={onClickLike}
+                    />
+                  )}
+                </>
+              ) : null}
             </div>
           </ShareInfo>
         </SharedTitle>
