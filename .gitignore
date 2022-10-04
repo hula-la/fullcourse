@@ -626,3 +626,5 @@ application-private.yml
 =======
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,intellij,visualstudiocode,venv,python,java,react,windows,macos,node
 >>>>>>> develop/fastapi
+
+frontend/yarn.lock
