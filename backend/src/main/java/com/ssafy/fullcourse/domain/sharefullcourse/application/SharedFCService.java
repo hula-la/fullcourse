@@ -4,6 +4,7 @@ import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCGetRes;
+import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCLikeResDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
@@ -117,7 +118,7 @@ public class SharedFCService {
 
     // 공유 풀코스 좋아요
     @Transactional
-    public boolean likeSharedFC(Long sharedId, String email) {
+    public SharedFCLikeResDto likeSharedFC(Long sharedId, String email) {
         System.out.println(email);
 
         SharedFullCourse sharedFullCourse = sharedFCRepository.findBySharedFcId(sharedId);
@@ -125,17 +126,26 @@ public class SharedFCService {
         // 좋아요 확인
         Optional<SharedFCLike> opt = sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email, sharedFullCourse);
 
+//        반환 객체
+        boolean isLike;
+        Long likeCnt = sharedFullCourse.getLikeCnt();
+
         if(opt.isPresent()){ // 좋아요 취소
             sharedFCLikeRepository.delete(opt.get());
             sharedFCRepository.updateLikeCnt(sharedId, -1);
-            return false;
+
+            likeCnt--;
+            isLike=false;
         }else{ // 좋아요
             sharedFCLikeRepository.save(SharedFCLike.builder()
                     .user(userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException()))
                     .sharedFullCourse(sharedFullCourse).build());
             sharedFCRepository.updateLikeCnt(sharedId, 1);
-            return true;
+
+            likeCnt++;
+            isLike=true;
         }
+        return new SharedFCLikeResDto(isLike,likeCnt);
     }
 
     // 공유된 풀코스인지 확인
