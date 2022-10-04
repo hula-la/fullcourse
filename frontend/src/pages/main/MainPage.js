@@ -40,6 +40,7 @@ const Container = styled.div`
 
 const Introduce = styled.div`
   align-items: center;
+  height: 100vh;
   @media only screen and (min-device-width: 479px) {
     display: flex;
   }

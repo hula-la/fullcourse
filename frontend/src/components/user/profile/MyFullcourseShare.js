@@ -321,7 +321,7 @@ const MyFullcourseShare = (props) => {
                     }}
                   />
                 </div>
-                <div className="tag">
+                {/* <div className="tag">
                   {tagList.map((arr, index) => {
                     return (
                       <ul className="nonelist" key={index}>
@@ -335,7 +335,7 @@ const MyFullcourseShare = (props) => {
                       </ul>
                     );
                   })}
-                </div>
+                </div> */}
                 <footer>
                   <Button>공유하기</Button>
                 </footer>

@@ -3,7 +3,6 @@ package com.ssafy.fullcourse.global.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +33,17 @@ public class RedisUtil {
     public Map<Object, Object> getHashEntry(Long key1){
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         return hashOperations.entries(String.valueOf(key1));
+    }
+
+    // String key 해쉬 저장
+    public void setStringHash(String key, HashMap<String, Long> map) {
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        hashOperations.putAll(key,map);
+    }
+
+    public Map<Object, Object> getStringHash(String key) {
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        return hashOperations.entries(key);
     }
 
     // 데이터 저장
