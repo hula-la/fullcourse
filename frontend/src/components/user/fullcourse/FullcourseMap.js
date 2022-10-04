@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux/es/exports';
 import styled from 'styled-components';
+import './place.css';
 
 const MapBlock = styled.div`
   width: 60%;
@@ -31,6 +32,12 @@ const MapBlock = styled.div`
     font-weight: bold;
     text-align: center;
   }
+`;
+
+const PlaceImg = styled.div`
+  width: 30%;
+  text-align: center;
+  position: relative;
 `;
 
 const FullcourseMap = () => {
@@ -98,8 +105,8 @@ const FullcourseMap = () => {
     var map = new kakao.maps.Map(container, options);
 
     if (checkedDay === 6) {
-      for (var i = 0; i < markerList.length; i++) {
-        for (var j = 0; j < markerList[i].length; j++) {
+      for (let i = 0; i < markerList.length; i++) {
+        for (let j = 0; j < markerList[i].length; j++) {
           // 커스텀 오버레이에 표시할 내용입니다
           // HTML 문자열 또는 Dom Element 입니다
           var content =
@@ -108,16 +115,13 @@ const FullcourseMap = () => {
             markerList[i][j].title +
             '</span>' +
             '</div>';
-          // 커스텀 오버레이가 표시될 위치입니다
-          // 커스텀 오버레이를 생성합니다
-          var customOverlay = new kakao.maps.CustomOverlay({
+
+          let customOverlay1 = new kakao.maps.CustomOverlay({
             position: overlayList[i][j].latlng,
             content: content,
           });
 
-          // 커스텀 오버레이를 지도에 표시합니다
-          customOverlay.setMap(map);
-
+          customOverlay1.setMap(map);
           // 지도에 표시할 선을 생성합니다
           var polyline = new kakao.maps.Polyline({
             path: linePath, // 선을 구성하는 좌표배열 입니다
@@ -139,12 +143,49 @@ const FullcourseMap = () => {
           );
 
           // 마커를 생성합니다
-          var marker = new kakao.maps.Marker({
+          let marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
             position: markerList[i][j].latlng, // 마커를 표시할 위치
             title: markerList[i][j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
             image: markerImage, // 마커 이미지
           });
+
+          let iwContent =
+            '<div class="place">' +
+            '<div ' +
+            'class="placeMemo">' +
+            '<p>' +
+            markerList[i][j].title +
+            '✨' +
+            '</p>' +
+            '</div>' +
+            '<img ' +
+            'class="placeImg"' +
+            'src=' +
+            fullcourseDetail.places[i][j].img +
+            ' />' +
+            '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+          // 커스텀 오버레이가 표시될 위치입니다
+          // 커스텀 오버레이를 생성합니다
+          let customOverlay = new kakao.maps.CustomOverlay({
+            position: overlayList[i][j].latlng,
+            content: iwContent,
+          });
+
+          // 커스텀 오버레이를 지도에 표시합니다
+
+          if (fullcourseDetail.places[i][j].img) {
+            kakao.maps.event.addListener(marker, 'mouseover', function () {
+              // 마커 위에 인포윈도우를 표시합니다
+              customOverlay.setMap(map);
+            });
+            kakao.maps.event.addListener(marker, 'mouseout', function () {
+              setTimeout(function () {
+                customOverlay.setMap();
+              });
+            });
+          }
         }
       }
     } else {

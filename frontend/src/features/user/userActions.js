@@ -1,12 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteUser,
-  getDiary,
   getMyFullcourse,
   getUserInfo,
   loginKakao,
   loginNaver,
-  postDiary,
   updateUserInfo,
 } from '../../api/user';
 
@@ -98,38 +96,6 @@ export const eraseUser = createAsyncThunk(
   async (tmp, { rejectWithValue }) => {
     try {
       const { data } = await deleteUser();
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  },
-);
-
-export const fetchDiary = createAsyncThunk(
-  'user/fetchDiary',
-  async (fcId, { rejectWithValue }) => {
-    try {
-      const { data } = await getDiary(fcId);
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  },
-);
-
-export const createDiary = createAsyncThunk(
-  'user/createDiary',
-  async ({ img, content, fcDetailId }, { rejectWithValue }) => {
-    try {
-      const { data } = await postDiary(img, content, fcDetailId);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

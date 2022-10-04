@@ -4,12 +4,10 @@ import styled from 'styled-components';
 import { checkNickname } from '../../../api/user';
 import { putUserInfo } from '../../../features/user/userActions';
 import EditIcon from '@mui/icons-material/Edit';
-import { unstable_useForkRef } from '@mui/utils';
 import EmailIcon from '@mui/icons-material/Email';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
-import { intlFormat } from 'date-fns';
 
 const Wrapper = styled.div`
   margin: 3vw auto;

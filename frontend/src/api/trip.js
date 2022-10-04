@@ -7,8 +7,9 @@ export const getFullcourseDetail = async (fcId) => {
 
 export const getTravelPlaceList = async (placeType, page, sortReq, keyword) => {
   const res = await client.get(`api/place/${placeType}/list`, {
-    params: { page, size: 9, sort:`${sortReq},desc`, keyword }});
-  console.log("잘보내고 있는거 같은데")
+    params: { page, size: 9, sort: `${sortReq},desc`, keyword },
+  });
+  console.log('잘보내고 있는거 같은데');
   return res;
 };
 
@@ -16,7 +17,6 @@ export const postTrip = async (data) => {
   const res = await client.post(`api/fullcourse`, data);
   return res;
 };
-
 
 export const getPlaceDetail = async (placeId, placeType) => {
   const res = await client.get(`api/place/${placeType}/detail/${placeId}`);
@@ -37,14 +37,16 @@ export const postPlaceLike = async (placeId, placeType) => {
 
 //장소 리뷰
 export const postReview = async (img, content, score, placeId, placeType) => {
-  console.log("잘넘어오나",img,content, score, placeId,placeType);
+  console.log('잘넘어오나', img, content, score, placeId, placeType);
   const formData = new FormData();
   formData.append('file', img);
   formData.append(
     'reviewPostReq',
-    new Blob([JSON.stringify({content, score})], { type: 'application/json' }),
+    new Blob([JSON.stringify({ content, score })], {
+      type: 'application/json',
+    }),
   );
-  console.log("data형태뭐지", formData)
+  console.log('data형태뭐지', formData);
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -59,3 +61,20 @@ export const postReview = async (img, content, score, placeId, placeType) => {
   return res;
 };
 
+export const postDiary = async (img, content, fcDetailId) => {
+  const formData = new FormData();
+  formData.append('img', img);
+  formData.append('content', content);
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+  const res = await client.put(
+    `api/fullcourse/diary/${fcDetailId}`,
+    formData,
+    config,
+  );
+  console.log(res);
+  return res;
+};

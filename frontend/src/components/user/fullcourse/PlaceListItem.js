@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createDiary } from '../../../features/user/userActions';
+import { createDiary } from '../../../features/trip/tripActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { changeShowMemo } from '../../../features/user/userSlice';
 
 const Wrapper = styled.div`
   position: relative;
@@ -66,6 +66,7 @@ const PlaceItem = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  cursor: pointer;
 
   margin: 0 20px;
   /* padding: 10px 0; */
@@ -149,6 +150,8 @@ const PlaceImg = styled.div`
   text-align: center;
   position: relative;
   .placeImg {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
     width: 2.5rem;
     height: 2.5rem;
     cursor: pointer;
@@ -196,7 +199,11 @@ const Button = styled.div`
 const PlaceListItem = ({ placeKey, place }) => {
   const dispatch = useDispatch();
   const [hover, setHover] = useState();
-  const onClickPlaceItem = () => {};
+
+  const onClickPlaceItem = (index, e) => {
+    dispatch(changeShowMemo({ first: parseInt(placeKey), last: index }));
+  };
+
   const onClickMemo = (fcDetailId, e) => {
     let content;
     let img;
@@ -243,7 +250,7 @@ const PlaceListItem = ({ placeKey, place }) => {
       <p className="day">{parseInt(placeKey) + 1}Day</p>
       {place.map((p, index) => {
         return (
-          <PlaceItem onClick={onClickPlaceItem()}>
+          <PlaceItem onClick={(e) => onClickPlaceItem(index, e)}>
             <Line>
               <div
                 className={`idx${placeKey} ${
@@ -263,22 +270,9 @@ const PlaceListItem = ({ placeKey, place }) => {
                 <div className="type">{p.type}</div>
               </div>
             </PlaceInfo>
-            {p.img && p.comment ? (
+            {p.img || p.comment ? (
               <PlaceImg>
-                <img
-                  className="placeImg"
-                  src={p.img}
-                  onMouseEnter={() => setHover(p.place.placeId)}
-                  onMouseLeave={() => setHover(-1)}
-                />
-                <div
-                  className={
-                    p.place.placeId === hover ? 'placeMemo show' : 'placeMemo'
-                  }
-                >
-                  <p>{p.place.name}✨</p>
-                  <div>{p.comment}</div>
-                </div>
+                <img className="placeImg" src={p.img} />
               </PlaceImg>
             ) : (
               <Button onClick={(e) => onClickMemo(p.fcdId, e)}>
