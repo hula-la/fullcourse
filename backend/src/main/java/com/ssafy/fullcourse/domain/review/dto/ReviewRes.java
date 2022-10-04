@@ -38,13 +38,23 @@ public class ReviewRes {
     @ApiModelProperty(name="평점", example="3")
     Float score;
 
+    @ApiModelProperty(name = "방문여부")
+    Boolean isVisited;
+
+    @ApiModelProperty(name = "이미지")
+    String imgUrl;
+
+    @ApiModelProperty(name = "닉네임")
+    String nickname;
     public ReviewRes(BaseReview baseReview) {
         this.reviewId = baseReview.getReviewId();
         this.content = baseReview.getContent();
         this.score = baseReview.getScore();
         this.placeId = baseReview.getPlace().getPlaceId();
-//        this.userId = baseReview.getUser().getUserId();
+        this.nickname = baseReview.getUser().getNickname();
         this.likeCnt = baseReview.getLikeCnt();
+        this.isVisited = baseReview.getIsVisited();
+        this.imgUrl = baseReview.getReviewImg();
     }
 
 //    public static ReviewRes of(BaseReview baseReview) {
