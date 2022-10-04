@@ -244,12 +244,13 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         ? [...titleElm.nextElementSibling.children]
         : null;
       if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
+      console.log("이거뭐지",itemElms)
       return itemElms.map(
         (item) =>
-          (item[item.dataset.placeId] = {
-            lat: item.dataset.placeLat,
-            lng: item.dataset.placeLng,
-          }),
+        (item[item.dataset.placeId] = {
+          lat: item.dataset.placeLat,
+          lng: item.dataset.placeLng,
+        }),
       );
     };
 
