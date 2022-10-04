@@ -34,6 +34,9 @@ public class BaseReview<P extends BasePlace> {
     @Column(nullable = false)
     private Long likeCnt = 0L;
 
+    @Column(nullable = false)
+    private Boolean isVisited = false;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId")
     private User user;

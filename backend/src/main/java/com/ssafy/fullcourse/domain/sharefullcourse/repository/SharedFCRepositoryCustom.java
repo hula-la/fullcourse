@@ -154,9 +154,10 @@ public class SharedFCRepositoryCustom {
                     .distinct()
                     .fetch()
                     .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
+            System.out.println(fcIds.toString());
+            builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
         }
 
-        builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
 
 
         List<SharedFullCourse> result = queryFactory

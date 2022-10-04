@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.review.api;
 
+import com.drew.imaging.ImageProcessingException;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
 import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Api(value = "리뷰 API", tags = {"review"})
@@ -34,7 +36,7 @@ public class BaseReviewController {
                                                            @PathVariable Long placeId,
                                                            @AuthenticationPrincipal String email,
                                                            @RequestPart(value = "reviewPostReq") @ApiParam(value="리뷰 정보")ReviewPostReq reviewPostReq,
-                                                           @RequestPart(value = "file", required = false) @ApiParam(value="리뷰 파일") MultipartFile file) {
+                                                           @RequestPart(value = "file", required = false) @ApiParam(value="리뷰 파일") MultipartFile file) throws ImageProcessingException, IOException {
 
         if (email==null) {
             throw new UserNotFoundException();
