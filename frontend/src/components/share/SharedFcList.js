@@ -12,7 +12,6 @@ const Container = styled.div`
   justify-content: center;
   width: 60%;
   margin: 0 auto;
-  padding-left: 2vw;
   animation: fadeInUp 2s;
 `;
 

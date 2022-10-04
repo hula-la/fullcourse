@@ -27,9 +27,9 @@ const PaginationWrapper = styled.div`
 
 const Input = styled.input`
   width: 32vw;
-  min-width: 350px;
+  min-width: 200px;
   height: 40px;
-  margin: 10px 10px 10px 60px;
+  margin: 10px;
   padding: 3px;
   font-size: 1rem;
   text-align: center;
@@ -43,6 +43,8 @@ const Input = styled.input`
     background-color: #eef8ff;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 30%);
     transition: 0.5s;
+  }
+  .input {
   }
 `;
 const Button = styled.button`
@@ -149,14 +151,16 @@ const FullcourseShare = () => {
     <div>
       <Wrapper>
         <TitleText className="ttl" content="풀코스 검색"></TitleText>
-        <Input
-          placeholder="가고싶은 장소를 입력하세요"
-          onFocus={onFocus}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-        ></Input>
-        <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
-        {/* <Button>검색</Button> */}
+        <div className="input">
+          <Input
+            placeholder="가고싶은 장소를 입력하세요"
+            onFocus={onFocus}
+            onChange={onChange}
+            onKeyPress={onKeyPress}
+          ></Input>
+
+          <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
+        </div>
       </Wrapper>
 
       <FullcourseTag />
