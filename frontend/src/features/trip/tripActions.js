@@ -4,10 +4,10 @@ import { getFullcourseDetail, getTravelPlaceList, postTrip, getPlaceDetail, post
 //여행명소리스트 불러오기
 export const fetchTravelPlace = createAsyncThunk(
   'trip/fetchTravelPlace',
-  async ({placeType,pageNum, sortReq, keyword}, { rejectWithValue }) => {
+  async ({placeType,pageNum, sortReq, keyword, maxDist, recentLat, recentLng}, { rejectWithValue }) => {
     console.log("요청잘가나",sortReq)
     try {
-      const { data } = await getTravelPlaceList(placeType,pageNum, sortReq, keyword);
+      const { data } = await getTravelPlaceList(placeType,pageNum, sortReq, keyword, maxDist, recentLat, recentLng);
       console.log("이거가능한가?")
       console.log(data)
       return data;
