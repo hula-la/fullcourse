@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
@@ -9,11 +9,31 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 import { display, padding } from '@mui/system';
 import PlaceDetailModal from './PlaceDetailModal';
-import {fetchPlaceDetail} from '../../../features/trip/tripActions'
+import { fetchPlaceDetail } from '../../../features/trip/tripActions';
+import { AiFillHeart } from 'react-icons/ai';
+import { Rating } from '@mui/material';
+import { fetchTravelPlace } from '../../../features/trip/tripActions';
 
 const PlaceName = styled.div`
   text-align: start;
   font-size: 1.9vmin;
+`;
+
+const LikeContent = styled.div`
+  display: flex;
+  align-items: center;
+  /* font-size:1vmin; */
+  .rating {
+    font-size: 2.3vmin;
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    margin:0;
+    margin-right: 0.3vw;
+    padding: 0;
+    font-size: 2vmin;
+  }
 `;
 
 const PlusBtn = styled(AiOutlinePlusCircle)`
@@ -29,17 +49,29 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
   margin-right: 0.5vh;
 `;
 
-const PlaceListItem = ({ place, index, map, placeType }) => {
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false)
+const Like = styled(AiFillHeart)`
+  font-size: 2vmin;
+  color: #e36387;
+`;
 
-  
-  const setPlaceDetail = (placeId,placeType) => {
-    dispatch(fetchPlaceDetail({placeId,placeType}))
-  }
+const PlaceListItem = ({
+  place,
+  index,
+  map,
+  placeType,
+  sortReq,
+  pageNum,
+  keyword,
+}) => {
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+
+  const setPlaceDetail = (placeId, placeType) => {
+    dispatch(fetchPlaceDetail({ placeId, placeType }));
+  };
   const openDetailModal = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   const addPlaceToPlanner = (
     placeId,
@@ -65,7 +97,7 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
 
     dispatch(setPlaceItem(placeItemObj));
   };
-  const addMarker = (lat, lng,name) => {
+  const addMarker = (lat, lng, name) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
@@ -75,6 +107,7 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
     marker['placeName'] = name;
     dispatch(setMarkers(marker));
   };
+
   return (
     <div>
       <Card
@@ -104,20 +137,32 @@ const PlaceListItem = ({ place, index, map, placeType }) => {
 
         <Box sx={{ width: '10vw' }}>
           <PlaceName>{place.name}</PlaceName>
+          <LikeContent>
+            <Like />
+            <p>{place.likeCnt}</p>
+            <Rating
+              name="read-only"
+              value={place.reviewScore}
+              readOnly
+              className="rating"
+            />
+          </LikeContent>
         </Box>
         <Box sx={{ marginTop: '6.5vh', display: 'flex', marginLeft: '1vw' }}>
-          
-          <DetailBtn onClick={(e) => {openDetailModal(); setPlaceDetail(place.placeId, placeType,)}} />
-            {open ? (
-              <PlaceDetailModal
-                openDetailModal={openDetailModal}
-                imgUrl={place.imgUrl}
-                placeType={placeType}
-                placeId={place.placeId}
-           
-       
-              />
-            ) : null}
+          <DetailBtn
+            onClick={(e) => {
+              openDetailModal();
+              setPlaceDetail(place.placeId, placeType);
+            }}
+          />
+          {open ? (
+            <PlaceDetailModal
+              openDetailModal={openDetailModal}
+              imgUrl={place.imgUrl}
+              placeType={placeType}
+              placeId={place.placeId}
+            />
+          ) : null}
           <PlusBtn
             className="plus"
             id={place.placeId}

@@ -7,6 +7,8 @@ import {
   postPlaceLike,
   postReview,
   postDiary,
+  getPlaceReview,
+  deletePlaceReview,
 } from '../../api/trip';
 
 //여행명소리스트 불러오기
@@ -141,6 +143,41 @@ export const createDiary = createAsyncThunk(
     console.log(content);
     try {
       const { data } = await postDiary(img, content, fcDetailId);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+//리뷰조회
+export const fetchPlaceReview = createAsyncThunk(
+  'trip/fetchPlaceReview',
+  async ({ placeId, placeType }, { rejectWithValue }) => {
+    console.log('어디서멈춤', placeId, placeType);
+    try {
+      const { data } = await getPlaceReview(placeId, placeType);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+//리뷰삭제
+export const dropPlaceReview = createAsyncThunk(
+  'share/dropPlaceReview',
+  async ({ placeType, reviewId }, { rejectWithValue }) => {
+    try {
+      const { data } = await deletePlaceReview(placeType, reviewId);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

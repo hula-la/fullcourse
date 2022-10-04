@@ -274,15 +274,13 @@ const PlaceBar = ({ map }) => {
         map={map}
         placeType={placeType}
         keyword={keyword}
+        sortReq={sortReq}
+        pageNum={pageNum}
       />
       <PageBox>
         {travelPlaceList ? (
           <Pagination
             count={maxPageNum}
-            // variant="outlined"
-            // shape="rounded"
-            // showFirstButton
-            // showLastButton
             defaultPage={1}
             boundaryCount={2}
             size="small"

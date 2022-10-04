@@ -10,15 +10,19 @@ import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
+import ShareIcon from '@mui/icons-material/Share';
+
+import ClearIcon from '@mui/icons-material/Clear';
+
 const CommentBlock = styled.div`
   background: aliceblue;
-  height: 100vh;
+  height: calc(100vh - 80px);
   width: 100vw;
 
   position: absolute;
   z-index: 5;
   top: 0;
-  height: 100vh;
+  /* height: 100vh; */
   /* background:white; */
 
   width: 100%;
@@ -45,6 +49,19 @@ const CommentBlock = styled.div`
       justify-content: space-between;
     }
   }
+
+  .clearBtn{
+      cursor: pointer;
+      border: #ffffff;
+      background-color: #ffffff;
+      color: #b22323;
+      border-radius: 20px;
+      &:hover {
+        color: #f73131;
+        font-weight: bold;
+      }
+
+    }
 
   input {
     border: #ffffff;
@@ -78,7 +95,7 @@ const CommentBlock = styled.div`
     margin: 0.5rem;
     overflow-y: scroll;
     background: white;
-    border: 3px solid #bbbbbb;
+    border: 3px solid #078ec478;
     border-radius: 0.5rem;
   }
 
@@ -119,12 +136,25 @@ const CommentBlock = styled.div`
   #userNickname {
     font-weight: bold;
     margin: 0px 7px;
+    white-space: nowrap;
   }
 
   .likeArea {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .btnContainer{
+    margin: 0 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    &:hover{
+      background:#c8e8fb;
+    }
   }
 
   .favorite {
@@ -139,16 +169,13 @@ const CommentBlock = styled.div`
     margin-right: 5px;
   }
 
-  #btnKakao {
+  #btnKakaoCap {
     position: relative;
     display: inline-block;
     cursor: pointer;
-    padding-top: 40px;
-    margin-left: 20px;
-    background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-kakao.png);
-    background-repeat: no-repeat;
-    width: 50px;
+    margin-right:0.5rem;
   }
+
 `;
 
 const MobileComment = ({ sharedFcInfo }) => {
@@ -211,28 +238,31 @@ const MobileComment = ({ sharedFcInfo }) => {
         <div className="detail">{sharedFcInfo.detail}</div>
       ) : null}
       <div className="likeArea">
+        <div className='btnContainer' onClick={onClickLike}>
         {sharedFcInfo ? (
           <>
             {sharedFcInfo.like ? (
-              <FavoriteIcon className="favorite" onClick={onClickLike} />
+              <FavoriteIcon className="favorite" />
             ) : (
               <FavoriteBorderIcon
                 className="favoriteborder"
-                onClick={onClickLike}
+                
               />
             )}
             <span>좋아요</span>
           </>
         ) : null}
+        </div>
+        <div  id="btnKakao" className='btnContainer'
+          onClick={() => {
+            shareKakao(sharedFcInfo);
+          }}>
         {sharedFcInfo ? (
-          <a
-            id="btnKakao"
-            onClick={() => {
-              shareKakao(sharedFcInfo);
-            }}
-          ></a>
+          <ShareIcon
+            />
         ) : null}
-        <span>공유하기</span>
+        <span  id="btnKakaoCap" >공유하기</span>
+          </div>
       </div>
       <div className="commentForm">
         <form onSubmit={onSubmit}>
@@ -260,7 +290,10 @@ const MobileComment = ({ sharedFcInfo }) => {
                     <span>{comment.comment}</span>
                   </li>
                   {userInfo && userInfo.email === comment.email ? (
-                    <button onClick={() => onClickDelete(comment)}>삭제</button>
+                    <div className='clearBtn'>
+                      <ClearIcon onClick={() => onClickDelete(comment)}/>
+
+                    </div>
                   ) : null}
                 </div>
               );

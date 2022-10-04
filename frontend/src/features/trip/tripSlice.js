@@ -6,6 +6,8 @@ import {
   createTrip,
   createPlaceLike,
   createDiary,
+  fetchPlaceReview,
+  dropPlaceReview,
 } from './tripActions';
 import format from 'date-fns/format';
 
@@ -28,6 +30,8 @@ const initialState = {
   isLiked: false,
 
   isUpdate: false,
+
+  reviews: null,
 };
 
 const tripSlice = createSlice({
@@ -75,6 +79,7 @@ const tripSlice = createSlice({
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
       state.travelPlaceList = payload.data;
+      console.log(state.travelPlaceList);
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -115,6 +120,19 @@ const tripSlice = createSlice({
     // 여행지 기록 기능
     [createDiary.fulfilled]: (state, { payload }) => {
       state.fullcourseDetail = payload.data;
+    },
+    //장소리뷰
+    [fetchPlaceReview.fulfilled]: (state, { payload }) => {
+      state.reviews = payload.data;
+      console.log('장소리뷰', payload.data);
+    },
+    [fetchPlaceReview.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+    //장소리뷰삭제
+    [dropPlaceReview.fulfilled]: (state, { payload }) => {},
+    [dropPlaceReview.rejected]: (state, { payload }) => {
+      state.error = payload.data;
     },
   },
 });

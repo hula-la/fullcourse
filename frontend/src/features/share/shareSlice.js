@@ -150,7 +150,8 @@ const shareSlice = createSlice({
     [createSharedFcLike.fulfilled]: (state, { payload }) => {
       state.sharedFcInfo = {
         ...state.sharedFcInfo,
-        like: payload.data,
+        like: payload.data.like,
+        likeCnt: payload.data.likeCnt,
       };
     },
     // 나의 공유풀코스 목록 조회
