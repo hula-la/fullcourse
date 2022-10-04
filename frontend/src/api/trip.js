@@ -5,9 +5,25 @@ export const getFullcourseDetail = async (fcId) => {
   return res;
 };
 
-export const getTravelPlaceList = async (placeType, page, sortReq, keyword) => {
+export const getTravelPlaceList = async (
+  placeType,
+  page,
+  sortReq,
+  keyword,
+  maxDist,
+  recentLat,
+  recentLng,
+) => {
   const res = await client.get(`api/place/${placeType}/list`, {
-    params: { page, size: 9, sort: `${sortReq},desc`, keyword },
+    params: {
+      page,
+      size: 9,
+      sort: `${sortReq},desc`,
+      keyword,
+      maxDist,
+      recentLat,
+      recentLng,
+    },
   });
   console.log('잘보내고 있는거 같은데');
   return res;

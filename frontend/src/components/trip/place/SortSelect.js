@@ -102,7 +102,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const SortSelect = ({ sort, setSort, setSortReq, placeType }) => {
+const SortSelect = ({ sort, setSort, setSortReq, placeType, setPageNum }) => {
   const [sortItem, setSortItem] = useState([]);
   //여행
   const defaultSortItem = [
@@ -198,6 +198,7 @@ const SortSelect = ({ sort, setSort, setSortReq, placeType }) => {
   };
 
   const onClcikSort = (e) => {
+    setPageNum(0)
     setSort(e.target.getAttribute('value'));
     console.log(e.target.getAttribute('value'));
     if (placeType === 'custom') {
