@@ -10,6 +10,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.exception.AlreadyExistException;
 import com.ssafy.fullcourse.domain.sharefullcourse.exception.SharedFCNotFoundException;
+import com.ssafy.fullcourse.domain.sharefullcourse.exception.UserNotMatchException;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCTagRepository;
@@ -100,8 +101,13 @@ public class SharedFCService {
 
     // 공유 풀코스 삭제
     @Transactional
-    public void deleteSharedFC(Long sharedFdId) {
-        SharedFullCourse saved =sharedFCRepository.findBySharedFcId(sharedFdId);
+    public void deleteSharedFC(Long sharedFdId,String email) {
+        SharedFullCourse saved =Optional.ofNullable(sharedFCRepository.findBySharedFcId(sharedFdId)).orElseThrow(
+                ()->new SharedFCNotFoundException("등록되지 않은 공유풀코스 입니다.")
+        );
+        if(!email.equals(saved.getUser().getEmail())) throw new UserNotMatchException("권한이 없습니다.");
+
+
         FullCourse fullCourse = saved.getFullCourse();
         fullCourse.updateShared(false);
         fullCourseRepository.save(fullCourse);

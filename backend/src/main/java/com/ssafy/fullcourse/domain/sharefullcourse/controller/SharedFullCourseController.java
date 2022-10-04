@@ -100,9 +100,8 @@ public class SharedFullCourseController {
     /** 공유 풀코스 삭제 **/
     @DeleteMapping("/fullcourse/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 삭제", notes = "공유 풀코스를 삭제합니다.")
-    public ResponseEntity<BaseResponseBody> deleteSharedFC(@PathVariable Long sharedFcId) {
-
-        sharedFCService.deleteSharedFC(sharedFcId);
+    public ResponseEntity<BaseResponseBody> deleteSharedFC(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId) {
+        sharedFCService.deleteSharedFC(sharedFcId,email);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
 
     }
