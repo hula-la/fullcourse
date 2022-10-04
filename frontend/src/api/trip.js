@@ -59,3 +59,20 @@ export const postReview = async (img, content, score, placeId, placeType) => {
   return res;
 };
 
+
+//장소리뷰조회
+export const getPlaceReview = async (placeId,placeType) => {
+  console.log("여기까진오나",placeId,placeType)
+  const res = await client.get(`api/review/${placeType}/list/${placeId}/`);
+  console.log("어디서멈춤",res)
+  return res;
+};
+
+
+//리뷰삭제
+export const deletePlaceReview = async (placeType, reviewId) => {
+  const res = await client.delete(
+    `api/review/${placeType}/${reviewId}`,
+  );
+  return res;
+};
