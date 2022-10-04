@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     background-color: rgba(217, 239, 255, 1);
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
     cursor: pointer;
-    z-index: 99;
+    z-index: 1;
   }
   .selectBox2:before {
     content: '▾';

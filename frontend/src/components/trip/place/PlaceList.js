@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React,{useEffect} from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PlaceListItem from './PlaceListItem';
 
@@ -16,8 +16,10 @@ const Empty = styled.div`
   font-size: 1.2rem;
 `;
 
-const PlaceList = ({ map, placeType, keyword }) => {
+const PlaceList = ({ map, placeType, keyword, sortReq,pageNum }) => {
   const { travelPlaceList } = useSelector((state) => state.trip);
+  const dispatch = useDispatch()
+
   return (
     <Container>
       {travelPlaceList ? (
@@ -31,6 +33,8 @@ const PlaceList = ({ map, placeType, keyword }) => {
                 map={map}
                 placeType={placeType}
                 keyword={keyword}
+                sortReq={sortReq}
+                pageNum={pageNum}
               />
             );
           })
@@ -39,19 +43,6 @@ const PlaceList = ({ map, placeType, keyword }) => {
         )
       ) : null}
 
-      {/* {travelPlaceList
-        ? travelPlaceList.content.map((place, index) => {
-            return (
-              <PlaceListItem
-                key={index}
-                place={place}
-                index={index}
-                map={map}
-                placeType={placeType}
-              />
-            );
-          })
-        : null} */}
     </Container>
   );
 };
