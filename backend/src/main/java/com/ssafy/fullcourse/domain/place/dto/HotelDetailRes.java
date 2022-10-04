@@ -15,6 +15,7 @@ public class HotelDetailRes {
     private String tel;
     private Long addedCnt;
     private Long reviewCnt;
+    private String imgUrl;
     private Long likeCnt;
     private Boolean isLiked;
     private Float reviewScore;

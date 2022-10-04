@@ -39,6 +39,9 @@ public class Hotel extends BasePlace {
     @Column(length = 20)
     private String tel;
 
+    @Column(length = 300)
+    private String imgUrl;
+
     @Column(nullable = false)
     private Long addedCnt = 0L;
 
@@ -71,6 +74,7 @@ public class Hotel extends BasePlace {
         res.setReviewCnt(this.getReviewCnt());
         res.setLikeCnt(this.getLikeCnt());
         res.setReviewScore(this.getReviewScore());
+        res.setImgUrl(this.getImgUrl());
         return res;
     }
 
