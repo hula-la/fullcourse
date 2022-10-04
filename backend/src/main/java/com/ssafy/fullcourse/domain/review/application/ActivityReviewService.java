@@ -1,5 +1,10 @@
 package com.ssafy.fullcourse.domain.review.application;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.GpsDirectory;
 import com.ssafy.fullcourse.domain.place.entity.Activity;
 import com.ssafy.fullcourse.domain.review.application.baseservice.BaseReviewService;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
@@ -16,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -24,7 +32,7 @@ public class ActivityReviewService extends BaseReviewService<ActivityReview, Act
 
 
     @Override
-    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) throws IOException, ImageProcessingException {
         Optional<Activity> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -38,7 +46,34 @@ public class ActivityReviewService extends BaseReviewService<ActivityReview, Act
                 .likeCnt(0L)
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
+                .isVisited(false)
                 .build();
+
+        if(file != null && !file.isEmpty()){
+            File f = convert(file);
+            Metadata metadata = ImageMetadataReader.readMetadata(f);
+            GpsDirectory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+            if (gpsDirectory != null) {
+                GeoLocation geoLocation = gpsDirectory.getGeoLocation();
+                if (geoLocation != null && !geoLocation.isZero()) {
+                    double[] latLng = new double[2];
+                    latLng[0] = geoLocation.getLatitude();
+                    latLng[1] = geoLocation.getLongitude();
+                    f.delete();
+                    System.out.println(latLng[0] + " " + latLng[1]);
+                    //confirmVisitByImage(latLng, fcDetailId);
+                    float lat = place.get().getLat();
+                    float lng = place.get().getLng();
+
+                    Double dist =
+                            Math.sqrt(Math.pow((latLng[0] - lat) * 88.9036, 2) + Math.pow((latLng[1] - lng) * 111.3194, 2));
+                    System.out.println("계산된 거리 : " + dist + "Km");
+                    if (dist < 1) {
+                        baseReview.setIsVisited(true);
+                    }
+                }
+            }
+        }
 
         // 평점 계산.
         float updateReviewScore = (place.get().getReviewCnt() * place.get().getReviewScore() + reviewPostReq.getScore()) / (place.get().getReviewCnt() + 1);
@@ -85,5 +120,13 @@ public class ActivityReviewService extends BaseReviewService<ActivityReview, Act
 
 
         return true;
+    }
+    public File convert(MultipartFile multipartFile) throws IOException {
+        File file = new File(multipartFile.getOriginalFilename());
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(multipartFile.getBytes());
+        fos.close();
+        return file;
     }
 }
