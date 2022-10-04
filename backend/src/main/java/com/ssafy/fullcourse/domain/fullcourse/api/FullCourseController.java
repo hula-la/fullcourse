@@ -92,7 +92,7 @@ public class FullCourseController {
     @ApiOperation(value="풀코스 장소 기록 등록/수정/삭제")
     public ResponseEntity<BaseResponseBody> registerDiary(@ApiParam(value="풀코스 *디테일* id", required = true)@PathVariable Long fcDetailId,
                                                           @RequestPart(required = false) MultipartFile img,
-                                                          @RequestPart(required = false) String content) throws ImageProcessingException, IOException {
+                                                          @RequestParam(required = false) String content) throws ImageProcessingException, IOException {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.createFCdiary(img,content,fcDetailId)));
     }
 
