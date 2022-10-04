@@ -15,8 +15,10 @@ const Side = styled.div`
   flex-direction: column;
   width: 100%;
 
+  background: white;
+
   .activeDiv {
-    background: #fffef4;
+    background: white;
     position: absolute;
     z-index: 3;
     width: 100%;
