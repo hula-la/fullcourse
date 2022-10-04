@@ -153,10 +153,14 @@ const PlaceImg = styled.div`
     height: 2.5rem;
     cursor: pointer;
   }
+  .placeImgB {
+    width: 10rem;
+    height: 10rem;
+  }
   .placeMemo {
     visibility: hidden;
     position: absolute;
-    top: 1.25rem;
+    top: 11rem;
     right: 70%;
     translate: 0 -50%;
     z-index: 5;
@@ -277,6 +281,7 @@ const PlaceListItem = ({ placeKey, place }) => {
                   }
                 >
                   <p>{p.place.name}✨</p>
+                  <img className="placeImgB" src={p.img} />
                   <div>{p.comment}</div>
                 </div>
               </PlaceImg>
