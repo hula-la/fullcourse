@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.review.application.baseservice;
 
+import com.drew.imaging.ImageProcessingException;
 import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -69,7 +71,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
 
     @Transactional
-    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) throws IOException, ImageProcessingException {
         Optional<P> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 

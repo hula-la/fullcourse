@@ -38,6 +38,9 @@ public class ReviewRes {
     @ApiModelProperty(name="평점", example="3")
     Float score;
 
+    @ApiModelProperty(name = "방문여부")
+    Boolean isVisited;
+
     public ReviewRes(BaseReview baseReview) {
         this.reviewId = baseReview.getReviewId();
         this.content = baseReview.getContent();
@@ -45,6 +48,7 @@ public class ReviewRes {
         this.placeId = baseReview.getPlace().getPlaceId();
 //        this.userId = baseReview.getUser().getUserId();
         this.likeCnt = baseReview.getLikeCnt();
+        this.isVisited = baseReview.getIsVisited();
     }
 
 //    public static ReviewRes of(BaseReview baseReview) {
