@@ -41,6 +41,9 @@ public class ReviewRes {
     @ApiModelProperty(name = "방문여부")
     Boolean isVisited;
 
+    @ApiModelProperty(name = "이미지")
+    String imgUrl;
+
     public ReviewRes(BaseReview baseReview) {
         this.reviewId = baseReview.getReviewId();
         this.content = baseReview.getContent();
@@ -49,6 +52,7 @@ public class ReviewRes {
 //        this.userId = baseReview.getUser().getUserId();
         this.likeCnt = baseReview.getLikeCnt();
         this.isVisited = baseReview.getIsVisited();
+        this.imgUrl = baseReview.getReviewImg();
     }
 
 //    public static ReviewRes of(BaseReview baseReview) {
