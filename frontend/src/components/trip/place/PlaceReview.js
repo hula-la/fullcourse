@@ -163,9 +163,7 @@ const PlaceReview = ({ openReviewModal, placeId, placeType, setIsOpen }) => {
   };
 
   const submitReview = (placeType, placeId, e) => {
-    console.log('뭐지', reviewComment);
-    console.log('뭐지', imageFile);
-    console.log('뭐지',value)
+
 
     dispatch(createReview({ imageFile, reviewComment,value, placeId, placeType }));
   };
@@ -230,7 +228,7 @@ const PlaceReview = ({ openReviewModal, placeId, placeType, setIsOpen }) => {
           placeholder={'내용을 입력하세요'}
           onChange={onChangeInput}
         ></StyledInput>
-        <OkBtn onClick={(e) => submitReview(placeType, placeId, e)}>
+        <OkBtn onClick={(e) => {submitReview(placeType, placeId, e); sendToBack()}}>
           작성완료
         </OkBtn>
       </ModalView>

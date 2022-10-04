@@ -3,10 +3,18 @@ import styled from 'styled-components';
 import { MdClear } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import PlaceDetailContent from './PlaceDetailContent';
-import { AiOutlineHeart, AiOutlineStar, AiFillHeart } from 'react-icons/ai';
-import { BiCalendarPlus } from 'react-icons/bi';
+import {
+  AiOutlineHeart,
+  AiOutlineStar,
+  AiFillHeart,
+  AiOutlineComment,
+} from 'react-icons/ai';
+
 import { createPlaceLike } from '../../../features/trip/tripActions';
 import PlaceReview from './PlaceReview';
+import { fetchPlaceReview } from '../../../features/trip/tripActions';
+import ReviewListModal from './ReviewListModal';
+
 const ModalBackdrop = styled.div`
   width: 100vw;
   height: 100vh;
@@ -33,13 +41,29 @@ const ModalView = styled.div.attrs((props) => ({
   position: relative;
   width: 30vw;
   height: 70vh;
+  /* overflow-y: scroll; */
   /* border: 3px dashed #0aa1dd; */
   box-shadow: 1px 2px 4px 1px rgb(0 0 0 / 10%);
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 15%;
+    background-color: #a4d8ff;
+    border-radius: 1rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #e8f9fd;
+    border-radius: 30px;
+  }
 
   .placeImg {
     max-width: 100%;
     height: 30vh;
     border-radius: 2vh 2vh 0 0;
+    min-height: 30vh;
   }
 
   .box {
@@ -81,6 +105,7 @@ const LikeYes = styled(AiFillHeart)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
+  &:hover { transform: scale(1.05) }
 `;
 const LikeNo = styled(AiOutlineHeart)`
   font-size: 4.5vmin;
@@ -90,15 +115,17 @@ const LikeNo = styled(AiOutlineHeart)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
+  &:hover { transform: scale(1.05) }
 `;
-const Plus = styled(BiCalendarPlus)`
+const ReviewList = styled(AiOutlineComment)`
   font-size: 4.5vmin;
   color: #e36387;
   border: 4px solid #ffe3e1;
   border-radius: 100%;
-
+  cursor: pointer;
   margin: 0 1vw;
   background-color: #ffe3e1;
+  &:hover { transform: scale(1.05) }
 `;
 const Review = styled(AiOutlineStar)`
   font-size: 4.5vmin;
@@ -108,12 +135,14 @@ const Review = styled(AiOutlineStar)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
+  &:hover { transform: scale(1.05) }
 `;
 
 const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
-  const { placeDetail } = useSelector((state) => state.trip);
+  const { placeDetail, reviews } = useSelector((state) => state.trip);
   const [isLiked, setIsLiked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isListOpen, setIsListOpen] = useState(false);
 
   const dispatch = useDispatch();
   const placeLike = (placeId, placeType) => {
@@ -125,9 +154,17 @@ const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
     setIsOpen(!isOpen);
   };
 
+  const openReivewListModal = () => {
+    setIsListOpen(!isListOpen);
+  };
+
   const closePlaceDetailModal = () => {
     openDetailModal(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchPlaceReview({ placeId, placeType }));
+  }, []);
 
   return (
     <ModalBackdrop>
@@ -170,8 +207,12 @@ const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
             <span className="like">좋아요</span>
           </IconBox>
           <IconBox>
-            <Plus />
-            <span className="like">장소담기</span>
+            <ReviewList
+              onClick={() => {
+                openReivewListModal();
+              }}
+            />
+            <span className="like">리뷰목록</span>
           </IconBox>
           <IconBox>
             <Review
@@ -190,6 +231,14 @@ const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
             placeId={placeId}
             placeType={placeType}
             setIsOpen={setIsOpen}
+          />
+        ) : null}
+        {isListOpen ? (
+          <ReviewListModal
+            openReivewListModal={openReivewListModal}
+            placeId={placeId}
+            placeType={placeType}
+            setIsListOpen={setIsListOpen}
           />
         ) : null}
       </ModalView>
