@@ -3,10 +3,9 @@ import PlaceListItem from './PlaceListItem';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
-  padding: 0.5rem;
-  height: 80%;
-
+  padding: 1rem 0.5rem;
+  overflow-y: auto;
+  height: 85%;
   .scroll {
     display: inline-block;
     width: 150px;
@@ -43,7 +42,7 @@ const PlaceList = ({ placeList }) => {
   return (
     <Wrapper>
       {placeList ? (
-        <>
+        <div>
           {Object.keys(placeList).map((placeKey, index) => {
             return (
               <PlaceListItem
@@ -53,7 +52,7 @@ const PlaceList = ({ placeList }) => {
               />
             );
           })}
-        </>
+        </div>
       ) : null}
     </Wrapper>
   );

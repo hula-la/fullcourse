@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createDiary } from '../../../features/user/userActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Wrapper = styled.div`
   position: relative;
@@ -18,19 +19,21 @@ const Wrapper = styled.div`
     position: absolute;
     top: -0.8rem;
     left: calc(50% - 2rem);
-    z-index: 71;
-    background-color: white;
+    z-index: 2;
+    background-color: #fff;
     /* padding: 10px; */
     width: 4rem;
     text-align: center;
     margin: 0px;
     height: 1.6rem;
+    border-radius: 1rem;
   }
 `;
 
 const PlaceIdx = styled.div`
   margin-right: 10px;
   z-index: 2;
+  width: 10%;
   div {
     color: white;
     text-align: center;
@@ -66,6 +69,15 @@ const PlaceItem = styled.div`
 
   margin: 0 20px;
   /* padding: 10px 0; */
+  .memo {
+    display: flex;
+    justify-content: space-between;
+  }
+  &:hover {
+    div > p {
+      color: #0aa1dd;
+    }
+  }
 `;
 
 const Line = styled.div`
@@ -110,17 +122,81 @@ const Line = styled.div`
 
 const PlaceInfo = styled.div`
   display: flex;
-
+  width: 60%;
   padding: 10px;
   .type {
     font-size: 0.8rem;
     color: #9e9e9e;
   }
+  p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  span {
+    padding-left: 2px;
+    font-size: 15px;
+  }
+  .icon {
+    padding-left: 2px;
+    font-size: 15px;
+    color: #0aa1dd;
+  }
+`;
+
+const PlaceImg = styled.div`
+  width: 30%;
+  text-align: center;
+  position: relative;
+  .placeImg {
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+  }
+  .placeMemo {
+    visibility: hidden;
+    position: absolute;
+    top: 1.25rem;
+    right: 70%;
+    translate: 0 -50%;
+    z-index: 5;
+    width: 16rem;
+    margin-right: 1rem;
+    border: 2px solid #0aa1dd;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 1px 2px 10px 0px rgb(0, 0, 0, 0.15);
+  }
+  .placeMemo.show {
+    visibility: visible;
+  }
+  .placeMemo > div {
+    border-top: 2px dashed #0aa1dd;
+    padding: 1.2rem;
+  }
+`;
+
+const Button = styled.div`
+  width: 30%;
+  padding: 3px;
+  background-color: #fff;
+  border: 2px solid #d9efff;
+  border-radius: 5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  min-width: 92px;
+
+  cursor: pointer;
+  &:hover {
+    background-color: #d9efff;
+    transition: 0.3s;
+  }
 `;
 
 const PlaceListItem = ({ placeKey, place }) => {
   const dispatch = useDispatch();
-
+  const [hover, setHover] = useState();
+  const onClickPlaceItem = () => {};
   const onClickMemo = (fcDetailId, e) => {
     let content;
     let img;
@@ -162,13 +238,12 @@ const PlaceListItem = ({ placeKey, place }) => {
     });
   };
 
-
   return (
     <Wrapper>
-      <p>{parseInt(placeKey) + 1}Day</p>
+      <p className="day">{parseInt(placeKey) + 1}Day</p>
       {place.map((p, index) => {
         return (
-          <PlaceItem>
+          <PlaceItem onClick={onClickPlaceItem()}>
             <Line>
               <div
                 className={`idx${placeKey} ${
@@ -181,11 +256,35 @@ const PlaceListItem = ({ placeKey, place }) => {
             </PlaceIdx>
             <PlaceInfo>
               <div>
-                <p key={index}>{p.place.name}</p>
+                <p key={index}>
+                  {p.place.name}
+                  <span>{p.visited ? '🚩' : null}</span>
+                </p>
                 <div className="type">{p.type}</div>
               </div>
-              <button onClick={(e) => onClickMemo(p.fcdId, e)}>멤</button>
             </PlaceInfo>
+            {p.img && p.comment ? (
+              <PlaceImg>
+                <img
+                  className="placeImg"
+                  src={p.img}
+                  onMouseEnter={() => setHover(p.place.placeId)}
+                  onMouseLeave={() => setHover(-1)}
+                />
+                <div
+                  className={
+                    p.place.placeId === hover ? 'placeMemo show' : 'placeMemo'
+                  }
+                >
+                  <p>{p.place.name}✨</p>
+                  <div>{p.comment}</div>
+                </div>
+              </PlaceImg>
+            ) : (
+              <Button onClick={(e) => onClickMemo(p.fcdId, e)}>
+                기록하기 📚
+              </Button>
+            )}
           </PlaceItem>
         );
       })}

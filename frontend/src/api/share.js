@@ -22,7 +22,7 @@ export const postSharedFc = async (data) => {
       console.log('성공');
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.response.data);
     });
 
   return res;

@@ -9,7 +9,7 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((config) => {
-  const accessToken = 'Bearer ' + localStorage.getItem('accessToken');
+  const accessToken = 'Bearer ' + sessionStorage.getItem('accessToken');
   config.headers['access-token'] = accessToken;
   return config;
 });
