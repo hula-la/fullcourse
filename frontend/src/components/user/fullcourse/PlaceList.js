@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   padding: 1rem 0.5rem;
   overflow-y: auto;
-  height: 85%;
+  height:78%;
   .scroll {
     display: inline-block;
     width: 150px;
