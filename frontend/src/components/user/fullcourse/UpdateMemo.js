@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import EditIcon from '@mui/icons-material/Edit';
 import { createDiary } from '../../../features/trip/tripActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import UpdateMemo from './UpdateMemo';
 import { clickUpdate } from '../../../features/trip/tripSlice';
 
 const MemoBlock = styled.div`
@@ -53,10 +53,14 @@ const MemoWrapper = styled.div`
   padding: 0 20px;
   padding-bottom: 15px;
   border-top: 2px solid #0aa1dd;
+  input[type='file'] {
+    display: none;
+  }
 `;
 
 const Img = styled.div`
   height: 50%;
+  position: relative;
   margin-top: 15px;
   .img {
     height: 100%;
@@ -68,13 +72,24 @@ const Img = styled.div`
     box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
     object-fit: cover;
   }
+  label {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+  label .icon {
+    border: solid 2px black;
+    border-radius: 1rem;
+    padding: 2px;
+    background-color: black;
+    color: white;
+  }
 `;
 
-const Comment = styled.div`
-  height: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Comment = styled.textarea`
+  height: 14rem;
+  resize: none;
   margin-top: 15px;
   border-radius: 1rem;
   border: 3px dashed #0aa1dd;
@@ -100,16 +115,16 @@ const Button = styled.div`
   }
 `;
 
-const FullcourseMemo = ({ fullcourseDetail }) => {
+const UpdateMemo = () => {
   const dispatch = useDispatch();
+  const { fullcourseDetail } = useSelector((state) => state.trip);
   const { showMemo } = useSelector((state) => state.user);
-  const { isUpdate } = useSelector((state) => state.trip);
   const [comment, setComment] = useState(null);
   const [img, setImg] = useState(null);
+  const [imgFile, setImgFile] = useState(null);
   const [visited, setVisited] = useState(null);
   const [placeName, setPlaceName] = useState(null);
   const [fcdId, setFcdId] = useState(null);
-  // const [isUpdate, setIsUpdate] = useState(0);
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -122,96 +137,69 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
     }
   }, [showMemo, fullcourseDetail]);
 
-  const onClickMemo = () => {
-    let content;
-    let img;
-    Swal.fire({
-      title: '나만의 추억✨',
-      input: 'textarea',
-      inputPlaceholder: '메모를 입력해주세요.',
-      inputAttributes: {
-        autocapitalize: 'off',
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Next',
-      showLoaderOnConfirm: true,
-      preConfirm: (content) => {
-        return content;
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: '사진을 올려주세요!',
-          input: 'file',
-          inputAttributes: {
-            autocapitalize: 'off',
-          },
-          showCancelButton: true,
-          confirmButtonText: 'Submit',
-          showLoaderOnConfirm: true,
-          preConfirm: (imgFile) => {
-            return imgFile;
-          },
-        }).then((imgFile) => {
-          if (imgFile.isConfirmed) {
-            content = result.value;
-            img = imgFile.value;
-            dispatch(
-              createDiary({
-                img,
-                content,
-                fcDetailId: fcdId,
-              }),
-            );
-          }
-        });
+  const onChangeMemo = (e) => {
+    setComment(e.target.value);
+  };
+
+  const onChangeImg = (e) => {
+    let reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      if (base64) {
+        setImg(base64.toString());
       }
-    });
+    };
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+      setImgFile(e.target.files[0]);
+    } else {
+      setImgFile(null);
+    }
   };
 
   const onClickUpdate = () => {
+    dispatch(
+      createDiary({ img: imgFile, content: comment, fcDetailId: fcdId }),
+    );
+    setImgFile(null);
     dispatch(clickUpdate());
   };
 
   return (
-    <>
-      {!isUpdate ? (
-        <MemoBlock>
-          <PlaceWrapper>
-            <Button onClick={onClickUpdate}>수정하기</Button>
-            <div className="name">{placeName}</div>
-            {visited ? <span className="visit">방문 인증완료 </span> : null}
-          </PlaceWrapper>
-          {img || comment ? (
-            <MemoWrapper>
-              <Img>
-                {img ? (
-                  <div className="img">
-                    <img src={img} />
-                  </div>
-                ) : (
-                  <div className="img">
-                    <img src="/img/boogie.jpg" />
-                  </div>
-                )}
-              </Img>
-              <Comment>
-                {comment.length > 0 ? (
-                  <div className="commnet">{comment}</div>
-                ) : (
-                  <div className="commnet">등록된 메모가 없습니다!</div>
-                )}
-              </Comment>
-            </MemoWrapper>
+    <MemoBlock>
+      <PlaceWrapper>
+        <Button onClick={onClickUpdate}>수정완료</Button>
+        <div className="name">{placeName}</div>
+        {visited ? <span className="visit">방문 인증완료 </span> : null}
+      </PlaceWrapper>
+      <MemoWrapper>
+        <Img>
+          {img ? (
+            <div className="img">
+              <img src={img} />
+            </div>
           ) : (
-            <Button onClick={onClickMemo}>기록하기 📚</Button>
+            <div className="img">
+              <img src="/img/boogie.jpg" />
+            </div>
           )}
-        </MemoBlock>
-      ) : (
-        <UpdateMemo />
-      )}
-    </>
+          <label for="file">
+            <EditIcon className="icon" />
+          </label>
+        </Img>
+        <input
+          name="file"
+          id="file"
+          type="file"
+          accept="image/*"
+          onChange={onChangeImg}
+        />
+
+        <Comment onChange={onChangeMemo} value={comment}></Comment>
+      </MemoWrapper>
+    </MemoBlock>
   );
 };
 
-export default FullcourseMemo;
+export default UpdateMemo;

@@ -129,7 +129,7 @@ export const createSharedFcLike = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue(error.message);
       }

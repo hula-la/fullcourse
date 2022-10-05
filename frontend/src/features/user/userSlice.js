@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  fetchDiary,
-  fetchMyFullcourse,
-  fetchUserInfo,
-  putUserInfo,
-} from './userActions';
+import { fetchMyFullcourse, fetchUserInfo, putUserInfo } from './userActions';
 
 const initialState = {
   userInfo: null,
   error: null,
+  statusCode: null,
   myFullcourseList: null,
   diaryInfo: null,
+  showMemo: { first: 0, last: 0 },
 };
 
 const userSlice = createSlice({
@@ -20,6 +17,9 @@ const userSlice = createSlice({
     logout: (state) => {
       sessionStorage.clear();
       state.userInfo = null;
+    },
+    changeShowMemo: (state, { payload }) => {
+      state.showMemo = { ...state.showMemo, ...payload };
     },
   },
   extraReducers: {
@@ -45,16 +45,9 @@ const userSlice = createSlice({
     [putUserInfo.rejected]: (state, { payload }) => {
       state.error = payload.data;
     },
-    // 다이어리 받아오기
-    [fetchDiary.fulfilled]: (state, { payload }) => {
-      state.diaryInfo = payload.data;
-    },
-    [fetchDiary.rejected]: (state, { payload }) => {
-      state.error = payload.data;
-    },
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, changeShowMemo } = userSlice.actions;
 
 export default userSlice.reducer;

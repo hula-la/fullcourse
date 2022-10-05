@@ -6,37 +6,27 @@ import {
   checkAllDay,
   checkDay,
   makeDayTagList,
+  resetError,
 } from '../../features/share/shareSlice';
 import { createSharedFcLike } from '../../features/share/shareActions';
 import { Schedule } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Swal from 'sweetalert2';
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
   width: 30%;
+  min-width: 19rem;
+  background-color: #e2f1fa;
 
-  #userInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    font-size: small;
-    /* font-weight: ; */
-  }
-
+  /* 
   #imgBlock {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  #profileImg {
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 20px;
-  }
+  } */
 
   .daynonelist {
     list-style: none;
@@ -66,7 +56,7 @@ const Side = styled.div`
   }
 
   .daytag-selected {
-    z-index: 100;
+    z-index: 3;
     opacity: 1;
     background-color: #0aa1dd;
     color: #ffffff;
@@ -76,10 +66,11 @@ const Side = styled.div`
 `;
 
 const ShareInfo = styled.div`
-  margin-left: 2rem;
+  padding-left: 1rem;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  border-left: 6px solid #0aa1dd;
 
   .favorite {
     cursor: pointer;
@@ -91,24 +82,26 @@ const ShareInfo = styled.div`
     cursor: pointer;
     color: #f73131;
     margin-left: 10px;
+    /* margin: 0 10px; */
   }
 
   .countArea {
     margin-top: 10px;
+    font-size: 0.8rem;
   }
 `;
 
 const Plan = styled.div`
-  /* border: 1px solid #333333; */
   border-radius: 1rem;
   padding: 1rem;
-  height: 60vh;
+  height: 100%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
+  background: white;
 `;
 
 const SharedTitle = styled.div`
-  display: flex;
+  /* display: flex; */
   text-align: left;
   padding: 1.5rem 1rem;
   margin-left: 10px;
@@ -120,19 +113,26 @@ const SharedTitle = styled.div`
     font-size: 1.3rem;
     font-weight: bold;
   }
-
-  #userNickName {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: #333333a3;
-    font-weight: bold;
-  }
 `;
 
 const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
   const { dayTagList2 } = useSelector((state) => state.share);
   const { checkedDay } = useSelector((state) => state.share);
+  const { errorCode } = useSelector((state) => state.share);
+  const { errorMessage } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    if (errorCode) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMessage,
+        footer: '<a href="/user/login">로그인 하러가기</a>',
+      });
+      dispatch(resetError());
+    }
+  }, [errorCode]);
 
   useEffect(() => {
     if (sharedFcInfo) {
@@ -156,39 +156,26 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
     <Side>
       {sharedFcInfo ? (
         <SharedTitle>
-          <div id="userInfo">
-            <div id="imgBlock">
-              <img
-                id="profileImg"
-                src={sharedFcInfo.user.imgUrl}
-                alt="profileImg"
-              />
-            </div>
-            <div id="userNickName">{sharedFcInfo.user.nickname}</div>
-          </div>
           <ShareInfo>
             <div>
-              <div className="title">
-                {sharedFcInfo.title}
-                {sharedFcInfo ? (
-                  <>
-                    {sharedFcInfo.like ? (
-                      <FavoriteIcon
-                        className="favorite"
-                        onClick={onClickLike}
-                      />
-                    ) : (
-                      <FavoriteBorderIcon
-                        className="favoriteborder"
-                        onClick={onClickLike}
-                      />
-                    )}
-                  </>
-                ) : null}
-              </div>
+              <div className="title">{sharedFcInfo.title}</div>
               <div className="countArea">
                 조회수 {sharedFcInfo.viewCnt} , 좋아요 {sharedFcInfo.likeCnt} 개
               </div>
+            </div>
+            <div>
+              {sharedFcInfo ? (
+                <>
+                  {sharedFcInfo.like ? (
+                    <FavoriteIcon className="favorite" onClick={onClickLike} />
+                  ) : (
+                    <FavoriteBorderIcon
+                      className="favoriteborder"
+                      onClick={onClickLike}
+                    />
+                  )}
+                </>
+              ) : null}
             </div>
           </ShareInfo>
         </SharedTitle>

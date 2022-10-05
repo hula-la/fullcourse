@@ -108,7 +108,6 @@ const FullcourseShare = () => {
         howSort,
       }),
     );
-    window.scrollTo(0, 0);
   }, [dispatch, checkedTagList, checkedDayTagList, pageNum, howSort]);
 
   const onClickPage = (e) => {

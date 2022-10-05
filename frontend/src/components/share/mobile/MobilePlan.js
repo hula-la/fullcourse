@@ -15,8 +15,10 @@ const Side = styled.div`
   flex-direction: column;
   width: 100%;
 
+  background: white;
+
   .activeDiv {
-    background: #fffef4;
+    background: white;
     position: absolute;
     z-index: 3;
     width: 100%;
@@ -86,7 +88,7 @@ const Side = styled.div`
   }
 
   .daytag-selected {
-    z-index: 100;
+    z-index: 3;
     opacity: 1;
     background-color: #0aa1dd;
     color: #ffffff;

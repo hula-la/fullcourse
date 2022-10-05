@@ -89,7 +89,6 @@ const SideBar = ({
   const [selectedItem, setSelectedItem] = useState(1);
 
   const onClickMenu = (props) => {
-    console.log(props);
     setSelectedItem(props);
   };
 
