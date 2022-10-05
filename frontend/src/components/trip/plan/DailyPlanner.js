@@ -19,7 +19,7 @@ import { setDates } from '../../../features/trip/tripSlice';
 const PlannerContent = styled.div`
   background-color: #e8f9fd;
   margin-top: 1vh;
-  padding: 1vh;
+  /* padding: 1vh; */
   overflow-y: scroll;
   height: 70vh;
   border-radius: 0 0 1rem 1rem;
@@ -40,18 +40,32 @@ const PlannerContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .sticky {
+    position:sticky;
+    top:0px;
+
+  }
 `;
 const PlaceBucket = styled.div`
-  margin-top: 1vh;
+  margin-top: 2vh;
   width: 20vw;
   height: 60vh;
+  border: 1.5px solid #a4d8ff;
   background-color: #ffffff;
   .bucketBox {
     min-height: 5vh;
   }
   .deleteIcon path {
     stroke: #0aa1dd;
+    &:hover {
+
+    stroke: #06739e;
+
   }
+
+  }
+
 `;
 
 const DeleteBtn = styled(TiDeleteOutline)`
@@ -109,7 +123,7 @@ const SaveBtn = styled.button`
   height: 6vh;
   padding: 0.7vh;
   margin-top: 1vh;
-  margin-bottom: 1vh;
+  margin-bottom: 1.5vh;
   border-radius: 0.3rem;
   font-family: Tmoney;
   font-size: 1.8vmin;
@@ -464,7 +478,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
   return (
     <PlannerContent className="planner-content">
-      <PlaceBucket className="planner-box bucket">
+      <PlaceBucket className="planner-box bucket sticky">
         <MainTitle>
           장소를 추가해보세요
           <ResetBtn onClick={clearPlaceItems} className="deleteIcon" />
