@@ -191,27 +191,31 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
 
   useEffect(() => {
+    init()
     //드래그앤 드롭 바닐라 자스
     const plannerContent = document.querySelector('.planner-content');
     plannerContent.addEventListener('dragstart', (e) => {
       if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.add('dragging');
+        console.log("호준아 코딩좀하자")
       }
     });
     plannerContent.addEventListener('dragend', (e) => {
       if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.remove('dragging');
+        console.log("호준아 제발코딩좀하자")
       }
     });
     plannerContent.addEventListener('dragover', (e) => {
       if (e.target.closest('.planner-list')) {
         sortAndDisplayItem(e);
+        console.log("호준아 제발제발코딩좀하자")
       }
     });
     //삭제기능 바닐라 자스로 추가
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
-        console.log("e.target.parentNode", e.target.parentNode)
+        console.log('e.target.parentNode', e.target.parentNode);
         e.target.parentNode.remove();
       }
       //경로관련기능 바닐라 자스로 추가
@@ -244,23 +248,29 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         ? [...titleElm.nextElementSibling.children]
         : null;
       if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
-      console.log("이거뭐지",itemElms)
+      console.log('이거뭐지', itemElms);
       return itemElms.map(
         (item) =>
-        (item[item.dataset.placeId] = {
-          lat: item.dataset.placeLat,
-          lng: item.dataset.placeLng,
-        }),
+          (item[item.dataset.placeId] = {
+            lat: item.dataset.placeLat,
+            lng: item.dataset.placeLng,
+          }),
       );
     };
 
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
+      console.log("뭐가문제야",e.target)
+      console.log("안녕난 아 왜 컨테이너",container)
       const item = document.querySelector('.dragging');
+      // console.log("여긴가")
       const afterElement = getDragAfterElement(container, e.clientY);
       if (afterElement) {
         container.insertBefore(item, afterElement);
+        console.log("여긴가",item,afterElement)
+        console.log("뭐냐", item)
       } else {
+        console.log("아니이거되야하는데",item)
         container.appendChild(item);
       }
       e.preventDefault();
@@ -417,7 +427,48 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   //     });
   //   }
   // };
+  function touchHandler(event) {
+    var touch = event.changedTouches[0];
 
+    var simulatedEvent = document.createEvent('MouseEvent');
+    simulatedEvent.initMouseEvent(
+      {
+        touchstart: 'dragstart',
+        touchmove: 'dragover',
+        // touchmove: 'dragging',
+        touchend: 'dragend',
+      }[event.type],
+      true,
+      true,
+      window,
+      1,
+      touch.screenX,
+      touch.screenY,
+      touch.clientX,
+      touch.clientY,
+      false,
+      false,
+      false,
+      false,
+      0,
+      null,
+    );
+
+    touch.target.dispatchEvent(simulatedEvent);
+    event.cancelable && event.preventDefault()
+    
+    
+   console.log(simulatedEvent)
+  }
+
+  function init() {
+    console.log("이게되는건가")
+    document.addEventListener('touchstart', touchHandler, true,);
+    document.addEventListener('touchmove', touchHandler, true);
+    document.addEventListener('touchend', touchHandler, true);
+    document.addEventListener('touchcancel', touchHandler, true);
+  }
+  
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 35.1944, lng: 129.1194 },

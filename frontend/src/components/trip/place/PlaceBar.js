@@ -345,6 +345,7 @@ const PlaceBar = ({ map }) => {
 
   return (
     <PlaceContainer className="place-container">
+      {/* {maxDist} */}
       <SortBox>
         <TypeContainer>
           {showPlaceTypes.map((item, id) => (
