@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -95,7 +96,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
             baseReview.setReviewImg(defaultImg);
         }
 
-
+        baseReview.setRegDate(new Date());
         baseReviewRepository.save(baseReview);
         return baseReview.getReviewId();
     }
@@ -106,7 +107,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         Optional<P> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         if(!place.isPresent()) throw new PlaceNotFoundException();
-        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findByPlace(place.get(), pageable);
+        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findByPlaceOrderByRegDateDesc(place.get(), pageable);
+
         return page.map(ReviewRes::new);
     }
 
