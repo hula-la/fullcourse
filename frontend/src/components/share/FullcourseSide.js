@@ -54,7 +54,7 @@ const Side = styled.div`
   }
 
   .daytag-selected {
-    z-index: 100;
+    z-index: 3;
     opacity: 1;
     background-color: #0aa1dd;
     color: #ffffff;
