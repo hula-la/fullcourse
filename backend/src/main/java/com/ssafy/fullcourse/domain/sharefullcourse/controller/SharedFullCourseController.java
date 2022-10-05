@@ -1,13 +1,10 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
 import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
-import com.ssafy.fullcourse.domain.user.entity.User;
-import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
 import com.ssafy.fullcourse.domain.user.repository.UserRepository;
 import com.ssafy.fullcourse.global.error.ServerError;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
@@ -17,14 +14,12 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

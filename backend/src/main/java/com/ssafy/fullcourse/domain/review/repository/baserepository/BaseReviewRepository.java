@@ -11,6 +11,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 //@Repository
 @NoRepositoryBean
 public interface BaseReviewRepository<R extends BaseReview, P extends BasePlace> extends JpaRepository<R, Long> {
-    Page<R> findByPlace(P place, Pageable pageable);
+    Page<R> findByPlaceOrderByRegDateDesc(P place, Pageable pageable);
 
 }

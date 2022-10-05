@@ -28,6 +28,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,6 +52,7 @@ public class HotelReviewService extends BaseReviewService<HotelReview, Hotel, Ho
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
                 .isVisited(false)
+                .regDate(new Date())
                 .build();
         if(file != null && !file.isEmpty()){
             File f = convert(file);

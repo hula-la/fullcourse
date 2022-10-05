@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @ApiModel("ReviewPostRequest")
@@ -49,6 +51,9 @@ public class ReviewRes {
 
     @ApiModelProperty(name = "이메일")
     String email;
+
+    @ApiModelProperty(name = "등록날짜")
+    Date regDate;
     public ReviewRes(BaseReview baseReview) {
         this.reviewId = baseReview.getReviewId();
         this.content = baseReview.getContent();
@@ -59,6 +64,7 @@ public class ReviewRes {
         this.isVisited = baseReview.getIsVisited();
         this.imgUrl = baseReview.getReviewImg();
         this.email = baseReview.getUser().getEmail();
+        this.regDate = baseReview.getRegDate();
     }
 
 //    public static ReviewRes of(BaseReview baseReview) {
