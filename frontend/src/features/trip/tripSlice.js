@@ -32,6 +32,10 @@ const initialState = {
   isUpdate: false,
 
   reviews: null,
+
+  error: null,
+  errorCode: null,
+  errorMessage: null,
 };
 
 const tripSlice = createSlice({
@@ -72,6 +76,10 @@ const tripSlice = createSlice({
     clickUpdate: (state) => {
       state.isUpdate = !state.isUpdate;
     },
+    resetError: (state) => {
+      state.errorCode = null;
+      state.errorMessage = null;
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -102,7 +110,7 @@ const tripSlice = createSlice({
       state.placeDetail = payload.data;
     },
     [fetchPlaceDetail.rejected]: (state, { payload }) => {
-      state.error = payload.error;
+      state.errorCode = payload;
     },
     //여행지 좋아요
     [createPlaceLike.fulfilled]: (state, { payload }) => {
@@ -142,6 +150,7 @@ export const {
   deleteMarkers,
   deleteAllPlace,
   clickUpdate,
+  resetError
 } = tripSlice.actions;
 
 export default tripSlice.reducer;
