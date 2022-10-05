@@ -68,7 +68,7 @@ const DetailFullcoursePage = () => {
         fullcourseDetail={fullcourseDetail}
       />
       <FullcourseMap />
-      <FullcourseMemo days={days} fullcourseDetail={fullcourseDetail} />
+      <FullcourseMemo fullcourseDetail={fullcourseDetail} />
     </DetailBlock>
   );
 };

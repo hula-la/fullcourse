@@ -22,6 +22,10 @@ const Wrapper = styled.div`
     top: 2%;
     right: 3%;
   }
+
+  .maxLike {
+    color: red;
+  }
 `;
 
 const PlanButton = styled.div`
@@ -37,6 +41,11 @@ right:5%; */
   border-radius: 1rem;
   font-size: 0.8rem;
   border: 2px solid;
+
+  &:hover{
+    transform: scale(1.1);
+    animation-duration: 0.2s;
+  }
 `;
 
 // const PlanButton = styled.div`
@@ -178,20 +187,6 @@ const RandomPlaceList = styled.div`
     }
   }
 `;
-const LikePlaceLst = styled.div`
-  img {
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .likePlaceContainer {
-    height: 80%;
-    width: 70%;
-    background: pink;
-    border-radius: 1rem;
-  }
-  height: 10%;
-`;
 
 // 좋아요 리스트
 const LikePlaceList = styled.div`
@@ -210,6 +205,10 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
+.likeCnt{
+  padding: 0.4rem;
+}
+
   img {
     border-radius: 0.8rem;
     height: 100%;
@@ -253,14 +252,22 @@ const LikePlaceList = styled.div`
     font-weight: bold;
   }
 
+  .likePlaceBox{
+    height: 65%;
+    width: 50%;
+    max-width: 50rem;
+  }
+
   .likePlaceContainer {
     white-space: nowrap;
     display: flex;
     align-items: center;
 
-    height: 65%;
+    height: 100%;
+    width: 100%;
+    /* height: 65%;
     width: 50%;
-    max-width: 50rem;
+    max-width: 50rem; */
     background: #e2dfff;
     border-radius: 1rem;
     /* height:10%; */
@@ -455,39 +462,40 @@ const SurveyPage = () => {
         ) : null}
       </RandomPlaceList>
       <LikePlaceList>
-        {likePlaceList.length >= 0 ? (
-          <>
-            <div className="likePlaceContainer">
-              {likePlaceList.map((place, index) => {
-                return (
-                  <div className="likePlace">
-                    <div className="imgContainer">
-                      <div
-                        className="deletebtn"
-                        onClick={(e) => deleteLikePlace(index, e)}
-                      >
-                        -
-                      </div>
+        <div className="tooltip likePlaceBox">
+                <span className="tooltiptext tooltip-top">
+                  <p>당신이 선택한 장소들이 담깁니다.</p>
+                </span>
+          {likePlaceList.length >= 0 && (
+            <>
+              <div className="likePlaceContainer">
+                {likePlaceList.map((place, index) => {
+                  return (
+                    <div className="likePlace">
+                      <div className="imgContainer">
+                        <div
+                          className="deletebtn"
+                          onClick={(e) => deleteLikePlace(index, e)}
+                        >
+                          -
+                        </div>
 
-                      <img src={place.imgUrl} />
+                        <img src={place.imgUrl} />
+                      </div>
+                      <div className="likePlaceName">{place.name}</div>
                     </div>
-                    <div className="likePlaceName">{place.name}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        ) : (
-          <>
-            <div>일정 바로 짜기</div>
-            {/* <div>마음에 드는 여행지라면,  like 버튼을 눌러보세요.</div>
-            <div>마음에 드는 여행지라면,  like 버튼을 눌러보세요.</div>
-            <div>마음에 드는 여행지라면,  like 버튼을 눌러보세요.</div> */}
-          </>
-        )}
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+        </div>
         <div className="buttonContainer">
           <div className="tooltip">
+          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
             {likePlaceList.length} /5
+          </div>
             <div className="tooltiptext tooltip-left">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const MapBlock = styled.div`
   width: 60%;
-  height: 85vh;
+  /* height: 85vh; */
   #map {
     width: 100%;
     height: 100%;

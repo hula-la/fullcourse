@@ -9,6 +9,7 @@ import PlaceList from './PlaceList';
 import SortSelect from './SortSelect';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { Slider } from '@material-ui/core';
 
 const PlaceContainer = styled.div`
   height: 85vh;
@@ -49,6 +50,12 @@ const SortBox = styled.div`
   align-items: end;
   justify-content: center;
   margin-left: 2vh;
+  margin: 0;
+  .slider {
+    width: 5vw;
+    margin: 0;
+    margin-bottom: 1vh;
+  }
 `;
 
 const TypeContainer = styled.div`
@@ -83,12 +90,7 @@ const PlaceTypes = styled.button`
   }
 `;
 
-const ArrowIcon = styled(KeyboardArrowDown)`
-  font-size: 2.5vmin !important;
-`;
-
 const Wrapper = styled.div`
-  /* margin: 0 20%; */
   position: relative;
   .icon {
     position: relative;
@@ -148,40 +150,117 @@ const PlaceBar = ({ map }) => {
   const [placeType, setPlaceType] = useState('travel');
   const [keyword, setKeyword] = useState('');
   const [isActive, setIsActive] = useState(0);
+  const [maxDist, setMaxDist] = useState(0);
+  const [recentLat, setRecentLat] = useState(0);
+  const [recentLng, setRecentLng] = useState(0);
+  const marks = [
+    {
+      value: 0,
+      label: '0km',
+    },
+    {
+      value: 50,
+      label: '5km',
+    },
+    {
+      value: 100,
+      label: '10km',
+    },
+  ];
+
+  var lats = [];
+  var lngs = [];
+  var flag = false;
+  var flag2 = false;
+  const onHandleSlider = (value) => {
+    // console.log("슬라이더",value)
+     if (value) {
+
+       setMaxDist(value / 10);
+     }     
+    }
+  
+  const onClickSlider = () => {
+    setPageNum(0)
+    const dailyItem = [...document.querySelectorAll('.daily')].map(
+      (plannerBox) => {
+        const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
+          (placeItem, idx) => {
+            const placeData = placeItem.dataset;
+            const lng = placeData.placeLng;
+            const lat = placeData.placeLat;
+            lngs.forEach((item, idx) => {
+              if (item === lng) {
+                flag = true;
+              } else {
+                flag = false;
+              }
+            });
+            if (flag === false) {
+              lngs.push(parseFloat(lng));
+            }
+            lats.forEach((item, idx) => {
+              if (item === lat) {
+                flag2 = true;
+              } else {
+                flag2 = false;
+              }
+            });
+            if (flag2 === false) {
+              lats.push(parseFloat(lat));
+            }
+          },
+        );
+      },
+    );
+    console.log(lats, lngs);
+    const resLat = lats.reduce(function add(sum, currValue) {
+      return sum + currValue;
+    }, 0)
+    const avgLat = resLat/lats.length
+    console.log(avgLat)
+    setRecentLat(avgLat)
+    const resLng = lngs.reduce(function add(sum, currValue) {
+      return sum + currValue;
+    }, 0)
+    const avgLng = resLng/lngs.length
+    console.log(avgLng)
+    setRecentLng(avgLng)
+  };
 
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  const addPlaceToPlanner = (
-    placeId,
-    placeName,
-    placeImg,
-    placeLat,
-    placeLng,
-    id,
-    e,
-  ) => {
-    e.preventDefault();
-    let placeItemObj = new Object();
-    placeItemObj.placeId = placeId;
-    placeItemObj.name = placeName;
-    placeItemObj.imgUrl = placeImg;
-    placeItemObj.draggable = true;
-    placeItemObj.lat = placeLat;
-    placeItemObj.lng = placeLng;
-    placeItemObj.id = id;
+  // const addPlaceToPlanner = (
+  //   placeId,
+  //   placeName,
+  //   placeImg,
+  //   placeLat,
+  //   placeLng,
+  //   id,
+  //   e,
+  // ) => {
+  //   e.preventDefault();
+  //   let placeItemObj = new Object();
+  //   placeItemObj.placeId = placeId;
+  //   placeItemObj.name = placeName;
+  //   placeItemObj.imgUrl = placeImg;
+  //   placeItemObj.draggable = true;
+  //   placeItemObj.lat = placeLat;
+  //   placeItemObj.lng = placeLng;
+  //   placeItemObj.id = id;
 
-    dispatch(setPlaceItem(placeItemObj));
-  };
+  //   dispatch(setPlaceItem(placeItemObj));
+  // };
 
-  const addMarker = (lat, lng) => {
-    const position = { lat: lat, lng: lng };
-    const marker = new window.google.maps.Marker({
-      map,
-      position: position,
-    });
-    console.log(typeof marker);
-    marker['position'] = position;
-    dispatch(setMarkers(marker));
-  };
+  // const addMarker = (lat, lng) => {
+  //   const position = { lat: lat, lng: lng };
+  //   const marker = new window.google.maps.Marker({
+  //     map,
+  //     position: position,
+  //   });
+  //   console.log(typeof marker);
+  //   marker['position'] = position;
+  //   dispatch(setMarkers(marker));
+  // };
 
   useEffect(() => {
     if (travelPlaceList !== null) {
@@ -197,18 +276,22 @@ const PlaceBar = ({ map }) => {
   }, [travelPlaceList]);
 
   useEffect(() => {
-    dispatch(fetchTravelPlace({ sortReq, placeType, pageNum, keyword }));
-  }, [dispatch, placeType, pageNum, sortReq, keyword]);
+    dispatch(fetchTravelPlace({ sortReq, placeType, pageNum, keyword, maxDist, recentLat, recentLng}));
+  }, [dispatch, placeType, pageNum, sortReq, keyword, maxDist, recentLat, recentLng]);
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
-    console.log(nowPage);
+    console.log("이게뭐지",nowPage);
+    
     setPageNum(nowPage - 1);
   };
 
   const changePlaceList = (id, e) => {
     e.preventDefault();
+    setPageNum(0)
+    console.log("set되나",pageNum)
     for (var i = 0; i < placeTypes.length; i++) {
+      
       if (i === id) {
         setPlaceType(placeTypes[id]);
         setIsActive(id);
@@ -220,6 +303,7 @@ const PlaceBar = ({ map }) => {
     if (e.key === 'Enter') {
       console.log(e.target.value);
       setKeyword(e.target.value);
+      setPageNum(0)
     }
   };
 
@@ -230,7 +314,6 @@ const PlaceBar = ({ map }) => {
   };
 
   const onChange = (e) => {
-    // setKeyword(e.target.value);
     if (e.target.value.length == 0) {
       e.target.placeholder = '키워드를 검색해보세요';
     }
@@ -242,6 +325,7 @@ const PlaceBar = ({ map }) => {
         <TypeContainer>
           {showPlaceTypes.map((item, id) => (
             <PlaceTypes
+              key={id}
               className={id === isActive ? 'type-selected' : ''}
               onClick={(e) => {
                 changePlaceList(id, e);
@@ -251,12 +335,22 @@ const PlaceBar = ({ map }) => {
             </PlaceTypes>
           ))}
         </TypeContainer>
-        <SortSelect
-          sort={sort}
-          setSort={setSort}
-          setSortReq={setSortReq}
-          placeType={placeType}
-        ></SortSelect>
+        <div>
+          <Slider
+            className="slider"
+            getAriaValueText={onHandleSlider}
+            step={5}
+            marks={marks}
+            onClick={onClickSlider}
+          />
+          <SortSelect
+            sort={sort}
+            setSort={setSort}
+            setSortReq={setSortReq}
+            placeType={placeType}
+            setPageNum={setPageNum}
+          ></SortSelect>
+        </div>
       </SortBox>
       <Wrapper>
         <Input
@@ -266,7 +360,6 @@ const PlaceBar = ({ map }) => {
           onKeyPress={handleOnKeyPress}
         ></Input>
         <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
-        {/* <Button>검색</Button> */}
       </Wrapper>
 
       <PlaceList
@@ -274,15 +367,13 @@ const PlaceBar = ({ map }) => {
         map={map}
         placeType={placeType}
         keyword={keyword}
+        sortReq={sortReq}
+        pageNum={pageNum}
       />
       <PageBox>
         {travelPlaceList ? (
           <Pagination
             count={maxPageNum}
-            // variant="outlined"
-            // shape="rounded"
-            // showFirstButton
-            // showLastButton
             defaultPage={1}
             boundaryCount={2}
             size="small"

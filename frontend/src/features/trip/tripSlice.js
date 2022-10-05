@@ -4,7 +4,10 @@ import {
   fetchTravelPlace,
   fetchPlaceDetail,
   createTrip,
-  createPlaceLike
+  createPlaceLike,
+  createDiary,
+  fetchPlaceReview,
+  dropPlaceReview,
 } from './tripActions';
 import format from 'date-fns/format';
 
@@ -25,6 +28,10 @@ const initialState = {
   placeDetail: null,
 
   isLiked: false,
+
+  isUpdate: false,
+
+  reviews: null,
 };
 
 const tripSlice = createSlice({
@@ -44,7 +51,7 @@ const tripSlice = createSlice({
       state.tripDates = action.payload;
     },
     setPlaceItem: (state, action) => {
-      console.log("setPlaceItem")
+      console.log('setPlaceItem');
       state.placeItem.push(action.payload);
     },
     setInitMap: (state, action) => {
@@ -58,19 +65,21 @@ const tripSlice = createSlice({
       state.markers = [];
     },
     deleteMarkers: (state, action) => {
-      state.markers = action.payload
+      state.markers = action.payload;
     },
-    deleteAllPlace: (state,action) => {
-      console.log("전체삭제")
-      state.placeItem = []
-    }
+    deleteAllPlace: (state, action) => {
+      console.log('전체삭제');
+      state.placeItem = [];
+    },
+    clickUpdate: (state) => {
+      state.isUpdate = !state.isUpdate;
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
       state.travelPlaceList = payload.data;
-      
-      
+      console.log(state.travelPlaceList);
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -95,18 +104,35 @@ const tripSlice = createSlice({
     //여행 디테일 정보 조회
     [fetchPlaceDetail.fulfilled]: (state, { payload }) => {
       state.placeDetail = payload.data;
-      console.log("여행디테일",payload.data)
+      console.log('여행디테일', payload.data);
     },
     [fetchPlaceDetail.rejected]: (state, { payload }) => {
       state.error = payload.error;
     },
     //여행지 좋아요
     [createPlaceLike.fulfilled]: (state, { payload }) => {
-      console.log("좋아요데이터",payload.data)
+      console.log('좋아요데이터', payload.data);
       state.isLiked = payload.data;
     },
     [createPlaceLike.rejected]: (state, { payload }) => {
       state.error = payload.error;
+    },
+    // 여행지 기록 기능
+    [createDiary.fulfilled]: (state, { payload }) => {
+      state.fullcourseDetail = payload.data;
+    },
+    //장소리뷰
+    [fetchPlaceReview.fulfilled]: (state, { payload }) => {
+      state.reviews = payload.data;
+      console.log('장소리뷰', payload.data);
+    },
+    [fetchPlaceReview.rejected]: (state, { payload }) => {
+      state.error = payload.error;
+    },
+    //장소리뷰삭제
+    [dropPlaceReview.fulfilled]: (state, { payload }) => {},
+    [dropPlaceReview.rejected]: (state, { payload }) => {
+      state.error = payload.data;
     },
   },
 });
@@ -122,6 +148,7 @@ export const {
   clearMarkers,
   deleteMarkers,
   deleteAllPlace,
+  clickUpdate,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

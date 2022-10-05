@@ -47,6 +47,7 @@ export const getSharedFcLikeList = async () => {
 
 export const postSharedFcLike = async (sharedFcId) => {
   const res = await client.post(`api/share/like/${sharedFcId}`);
+  console.log(res)
   return res;
 };
 
