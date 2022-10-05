@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  fetchMyFullcourse,
   fetchSharedFc,
   createSharedFcComment,
   fetchSharedFcDetail,
@@ -7,9 +8,11 @@ import {
   fetchSharedFcLikeList,
   createSharedFcLike,
   fetchMySharedFc,
+  createSharedFc,
 } from './shareActions';
 
 const initialState = {
+  myFullcourseList: null,
   sharedFcList: null,
   mySharedFcList: null,
   sharedFcInfo: null,
@@ -112,6 +115,12 @@ const shareSlice = createSlice({
     },
   },
   extraReducers: {
+    [fetchMyFullcourse.fulfilled]: (state, { payload }) => {
+      state.myFullcourseList = payload.data;
+    },
+    [fetchMyFullcourse.rejected]: (state, { payload }) => {
+      state.error = payload.data;
+    },
     // 공유풀코스 목록 조회
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
       state.sharedFcList = payload.data;
@@ -125,6 +134,14 @@ const shareSlice = createSlice({
     },
     [fetchSharedFcDetail.rejected]: (state, { payload }) => {
       state.error = payload.data;
+    },
+    // 풀코스 공유하기
+    [createSharedFc.fulfilled]: (state, { payload }) => {
+      state.myFullcourseList = payload.data.fclist;
+      state.mySharedFcList = payload.data.sharedFCList;
+    },
+    [createSharedFc.rejected]: (state, { payload }) => {
+      console.log(payload);
     },
     // 공유풀코스 댓글 생성
     [createSharedFcComment.fulfilled]: (state, { payload }) => {

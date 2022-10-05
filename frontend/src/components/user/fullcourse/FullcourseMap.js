@@ -48,6 +48,7 @@ const FullcourseMap = () => {
   const [markerList, setMarkerList] = useState([]);
   const [linePath, setLinePath] = useState([]);
   const [overlayList, setOverlayList] = useState([]);
+  const lineColorList = ['#ff5854', '#66ff5c', '#ffbc65', '#655aff', '#e574ff'];
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -113,6 +114,8 @@ const FullcourseMap = () => {
     if (checkedDay === 6) {
       for (let i = 0; i < markerList.length; i++) {
         for (let j = 0; j < markerList[i].length; j++) {
+          console.log(i);
+          console.log(lineColorList[i]);
           // 커스텀 오버레이에 표시할 내용입니다
           // HTML 문자열 또는 Dom Element 입니다
           var content =
@@ -129,10 +132,10 @@ const FullcourseMap = () => {
 
           customOverlay1.setMap(map);
           // 지도에 표시할 선을 생성합니다
-          var polyline = new kakao.maps.Polyline({
-            path: linePath, // 선을 구성하는 좌표배열 입니다
+          let polyline = new kakao.maps.Polyline({
+            path: linePath[i], // 선을 구성하는 좌표배열 입니다
             strokeWeight: 5, // 선의 두께 입니다
-            strokeColor: '#041688', // 선의 색깔입니다
+            strokeColor: lineColorList[i], // 선의 색깔입니다
             strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
             strokeStyle: 'solid', // 선의 스타일입니다
           });
@@ -215,10 +218,10 @@ const FullcourseMap = () => {
             // 커스텀 오버레이를 지도에 표시합니다
             customOverlay.setMap(map);
             // 지도에 표시할 선을 생성합니다
-            var polyline = new kakao.maps.Polyline({
+            let polyline = new kakao.maps.Polyline({
               path: linePath[i], // 선을 구성하는 좌표배열 입니다
               strokeWeight: 5, // 선의 두께 입니다
-              strokeColor: '#041688', // 선의 색깔입니다
+              strokeColor: lineColorList[i], // 선의 색깔입니다
               strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
               strokeStyle: 'solid', // 선의 스타일입니다
             });

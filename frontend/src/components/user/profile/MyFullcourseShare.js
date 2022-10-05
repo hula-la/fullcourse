@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { createSharedFc } from '../../../features/share/shareActions';
 import EditIcon from '@mui/icons-material/Edit';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import { initializeConnect } from 'react-redux/es/components/connect';
-import FullcourseTagItem from '../../share/SharedFcTagItem';
+import Swal from 'sweetalert2';
 
 const AlertDiv = styled.div`
   .modal {
@@ -255,9 +254,24 @@ const MyFullcourseShare = (props) => {
     }
   };
 
-  const onSubmit = (e) => {
+  // const onClickShare = async (e) => {
+  //   e.preventDefault();
+  //   const { payload } = await dispatch(
+  //     createSharedFc({
+  //       day: days,
+  //       fcId: willShareFcId,
+  //       title: inputs.title,
+  //       detail: inputs.content,
+  //       tags: fullcourseTags,
+  //       thumbnail: willShareThumbnail,
+  //     }),
+  //   );
+  //   console.log(payload);
+  // };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(
+    const { payload } = await dispatch(
       createSharedFc({
         day: days,
         fcId: willShareFcId,
@@ -267,6 +281,24 @@ const MyFullcourseShare = (props) => {
         thumbnail: willShareThumbnail,
       }),
     );
+    console.log(payload);
+    if (payload.statusCode === 200) {
+      close();
+      Swal.fire({
+        icon: 'success',
+        title: '공유 완료!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      close();
+      Swal.fire({
+        icon: 'error',
+        title: '요청을 실패하였습니다.',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const initInputMsg = () => {
