@@ -226,9 +226,10 @@ const RecommendCard = ({ place, index }) => {
         };
       });
 
+      
       setWords(data);
     });
-  }, []);
+  }, [place]);
 
   // useEffect(() => {
   //   console.log(words)

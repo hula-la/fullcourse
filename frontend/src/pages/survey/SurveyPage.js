@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRandomPlace } from '../../features/survey/surveyActions';
-import { deletePlace, passPlace } from '../../features/survey/surveySlice';
+import { deletePlace, passPlace,setNumber } from '../../features/survey/surveySlice';
 import styled from 'styled-components';
 
 //액션 임포트
@@ -337,12 +337,25 @@ const SurveyPage = () => {
   const { markers, map } = useSelector((state) => state.trip);
 
   useEffect(() => {
+    // if (number == randomPlaceList.length) {
+    //   alert("마지막 장소입니다.");
+    //   setNumber(randomPlaceList.length - 1);
+    // }
+    console.log(randomPlaceList.length);
+    console.log(number);
+  }, [number]);
+
+  useEffect(() => {
     dispatch(fetchRandomPlace());
   }, [dispatch]);
 
   useEffect(() => {
-    if (randomPlaceList) {
-      if (likePlaceIndex.includes(randomPlaceList[number].placeId)) {
+    if (randomPlaceList.length != 0) {
+      if (number == randomPlaceList.length) {
+        dispatch(setNumber(randomPlaceList.length - 1));
+        alert("마지막 장소입니다.");
+      }
+      else if (likePlaceIndex.includes(randomPlaceList[number].placeId)) {
         dispatch(passPlace());
       }
     }
@@ -424,7 +437,9 @@ const SurveyPage = () => {
         </div>
       </SurveyHeader>
       <RandomPlaceList>
-        {randomPlaceList ? (
+        {(randomPlaceList.length != 0 &&
+        number < randomPlaceList.length)
+        ? (
           <>
             <span className="placeImgContainer">
               <img className="placeImg" src={randomPlaceList[number].imgUrl} />
