@@ -6,6 +6,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,8 @@ public class WordCountService {
     public HashMap<String,Long> getCount(List<String> wordList) {
         JavaRDD<String> words = sc.parallelize(wordList);
         Map<String, Long> wordCounts = words.countByValue();
+//        System.out.println("test22 : " + wordCounts);
+
 
         List<Map.Entry<String, Long>> result = new ArrayList<>(wordCounts.entrySet());
         Collections.sort(result, new Comparator<Map.Entry<String, Long>>() {
@@ -25,18 +28,10 @@ public class WordCountService {
             }
         });
 
-//
-//        List<String> keySet = new ArrayList<>(wordCounts.keySet());
-//        keySet.sort((o1, o2) -> wordCounts.get(o2).compareTo(wordCounts.get(o1)));
-//
-//        Map<String, Long> result = new HashMap<>();
-//        for (String key : keySet) {
-//            result.put(key, wordCounts.get(key));
-//        }
-
         HashMap<String, Long> map = new HashMap<>();
         for(int i = 0; i < result.size(); i++) {
-            if(i > 20) break;
+            if(map.size() >= 45) break;
+
             if(result.get(i).getKey().trim().length()==1) continue;
             map.put(result.get(i).getKey().trim(), result.get(i).getValue());
         }
