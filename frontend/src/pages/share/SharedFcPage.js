@@ -104,11 +104,24 @@ const FullcourseShare = () => {
         checkedTagList,
         checkedDayTagList,
         place,
+        pageNum: 0,
+        howSort,
+      }),
+    );
+    setPageNum(0);
+  }, [dispatch, checkedTagList, checkedDayTagList, howSort]);
+
+  useEffect(() => {
+    dispatch(
+      fetchSharedFc({
+        checkedTagList,
+        checkedDayTagList,
+        place,
         pageNum,
         howSort,
       }),
     );
-  }, [dispatch, checkedTagList, checkedDayTagList, pageNum, howSort]);
+  }, [dispatch, pageNum]);
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);

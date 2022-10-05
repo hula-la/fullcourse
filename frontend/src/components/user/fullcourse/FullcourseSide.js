@@ -13,7 +13,8 @@ const Side = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   width: 30%;
-  height: 92vh;
+  height: 89vh;
+  background-color : #dfefff;
   #userInfo {
     display: flex;
     flex-direction: row;
@@ -28,7 +29,6 @@ const Side = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 15%;
   }
 
   #profileImg {
@@ -41,11 +41,20 @@ const Side = styled.div`
 
   #userName {
     margin-left: 0.5rem;
-    width: 15%;
   }
   #fullcourseInfo {
-    width: 70%;
+    display: flex;
+    margin: auto 0;
+    padding: 0.6rem 0.5rem 0rem 0.5rem;
     font-size: 1.5rem;
+    border-bottom: 4px solid #0aa1dd;
+    align-items: center;
+    height: fit-content;
+  }
+  #info-wrapper{
+    display: flex;
+    flex-direction: row;
+    height:22%
   }
   .daynonelist {
     list-style: none;
@@ -86,7 +95,7 @@ const Plan = styled.div`
   /* border: 1px solid #333333; */
   border-radius: 1rem;
   padding: 1rem;
-  height: 80%;
+  height: 76%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
   background-color: #fff;
@@ -138,16 +147,17 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   return (
     <Side>
       {userInfo && fullcourseDetail ? (
-        <div>
+        <div id="info-wrapper">
           <div id="userInfo">
             <div id="imgBlock">
               <img id="profileImg" src={userInfo.imgUrl} alt="profileImg" />
             </div>
             <p id="userName">{userInfo.nickname}</p>
-            <div id="fullcourseInfo">
+
+          </div>
+          <div id="fullcourseInfo">
               {startDate} → {endDate}
             </div>
-          </div>
         </div>
       ) : null}
       <Plan>

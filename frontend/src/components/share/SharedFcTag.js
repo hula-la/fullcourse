@@ -39,6 +39,21 @@ const Wrapper = styled.div`
     justify-content: start;
     margin: 0px 0px;
   }
+  .selected{
+    width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+    padding-right:40px;
+  }
+  .selected-list{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+  }
   .daynonelist {
     list-style: none;
     display: flex;
@@ -77,9 +92,21 @@ const Text = styled.div`
 const FullcourseTag = () => {
   const { tagList } = useSelector((state) => state.share);
   const { dayTagList } = useSelector((state) => state.share);
-
+  const { checkedTagList } = useSelector((state) => state.share);
+  
   return (
     <Wrapper>
+      {/* <div className="selected">
+      <ul className="selected-list">
+        {checkedTagList ? checkedTagList.map((tag,index)=>{
+          return(
+            
+          <div>
+            <FullcourseTagItem  tag={tag} index={index}/>
+            </div>)
+          }):null}
+        </ul>
+      </div> */}
       <div className="tag">
         {tagList.map((arr, index) => {
           return (
