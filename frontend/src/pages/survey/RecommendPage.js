@@ -320,8 +320,10 @@ const RecommendPage = () => {
           placeItemObj.draggable = true;
           placeItemObj.lat = data.lat;
           placeItemObj.lng = data.lng;
+          placeItemObj.type = placeType
           dispatch(setPlaceItem(placeItemObj));
           addMarker(data.lat, data.lng);
+          console.log("setting이 잘되나",placeItemObj)
         });
     });
     navigate('/trip/plan');

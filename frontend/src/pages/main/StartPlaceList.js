@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import './main.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,9 @@ import CardContent from '@mui/joy/CardContent';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+
+import { resetError } from '../../features/trip/tripSlice';
+import Swal from 'sweetalert2';
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
     // 테스트용 css
@@ -99,6 +102,24 @@ const StartPlaceList = () => {
     ['/img/startplace/Jagalchi.jpg', '자갈치 시장', 'Jagalchi Market', 173],
     ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon', 64],
   ];
+
+  const { errorCode } = useSelector((state) => state.trip);
+  const { errorMessage } = useSelector((state) => state.trip);
+
+
+  useEffect(() => {
+    if (errorCode) {
+      Swal.fire({
+        imageUrl: '/img/boogie2.png',
+        imageHeight: 300,
+        imageAlt: 'A tall image',
+        text: '로그인이 필요한 서비스에요😂',
+        height: 300,
+        footer: '<a href="/user/login">로그인 하러가기</a>',
+      });
+      dispatch(resetError());
+    }
+  }, [errorCode]);
 
   const navigate = useNavigate();
 
