@@ -1,7 +1,6 @@
-import React,{useState}  from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-
 
 import PlaceDetailModal from '../trip/place/PlaceDetailModal';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
@@ -148,23 +147,23 @@ const PlaceListItem = ({ placeKey, place }) => {
   // }
   return (
     <Wrapper>
-
       <p className="day">{parseInt(placeKey) + 1}Day</p>
 
       {place.map((p, index) => {
-      {/* 상세정보 모달 */}
-      
-      return (
-        <PlaceItem>
-        {open ? (
-          <PlaceDetailModal
-            openDetailModal={openDetailModal}
-            imgUrl={place[index].place.imgUrl}
-            placeType={place[index].type}
+        {
+          /* 상세정보 모달 */
+        }
+
+        return (
+          <PlaceItem>
+            {open ? (
+              <PlaceDetailModal
+                openDetailModal={openDetailModal}
+                imgUrl={place[index].place.imgUrl}
+                placeType={place[index].type}
                 placeId={place[index].placeId}
               />
-          ) : null
-          }
+            ) : null}
             <Line>
               <div
                 className={`idx${placeKey} ${
@@ -182,12 +181,10 @@ const PlaceListItem = ({ placeKey, place }) => {
               <div className="type">{p.type}</div>
             </PlaceInfo>
             <DetailBtn
-            onClick={(e) => {
+              onClick={(e) => {
                 openDetailModal();
-              console.log("place :" + place[index]);
-              console.log(place[index]);
-              setPlaceDetail(place[index].placeId, place[index].type);
-            }}
+                setPlaceDetail(place[index].placeId, place[index].type);
+              }}
             />
           </PlaceItem>
         );

@@ -29,7 +29,7 @@ const LikeContent = styled.div`
     padding: 0;
   }
   p {
-    margin:0;
+    margin: 0;
     margin-right: 0.3vw;
     padding: 0;
     font-size: 2vmin;
@@ -84,7 +84,6 @@ const PlaceListItem = ({
     e,
   ) => {
     e.preventDefault();
-    console.log('얘가이걸 못받음', placeType);
     let placeItemObj = new Object();
     placeItemObj.placeId = placeId;
     placeItemObj.name = placeName;

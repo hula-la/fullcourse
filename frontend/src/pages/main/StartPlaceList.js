@@ -113,7 +113,6 @@ const StartPlaceList = () => {
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
     marker['placeName'] = name;
 
@@ -123,11 +122,9 @@ const StartPlaceList = () => {
   const setStartPlaceInfo = (id, e) => {
     const placeId = id;
     const placeType = 'travel';
-    console.log('placeId', placeId);
     dispatch(fetchPlaceDetail({ placeId, placeType }))
       .unwrap()
       .then((res) => {
-        console.log('되나', res.data);
         let placeItemObj = new Object();
         const data = res.data;
         placeItemObj.placeId = placeId;

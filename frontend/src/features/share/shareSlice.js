@@ -108,7 +108,6 @@ const shareSlice = createSlice({
     // 공유풀코스 목록 조회
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
       state.sharedFcList = payload.data;
-      console.log(payload);
     },
     [fetchSharedFc.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -116,7 +115,6 @@ const shareSlice = createSlice({
     // 공유풀코스 상세정보 조회
     [fetchSharedFcDetail.fulfilled]: (state, { payload }) => {
       state.sharedFcInfo = payload.data;
-      console.log(state.sharedFcInfo);
     },
     [fetchSharedFcDetail.rejected]: (state, { payload }) => {
       state.error = payload.data;
@@ -130,7 +128,6 @@ const shareSlice = createSlice({
     },
     [createSharedFcComment.rejected]: (state, { payload }) => {
       state.error = payload.data;
-      console.log(state.error);
     },
     // 공유풀코스 댓글 삭제
     [dropSharedFcComment.fulfilled]: (state, { payload }) => {
@@ -145,15 +142,12 @@ const shareSlice = createSlice({
     // 찜한 풀코스 목록 조회
     [fetchSharedFcLikeList.fulfilled]: (state, { payload }) => {
       state.sharedFcLikeList = payload.data;
-      console.log(state.sharedFcLikeList);
     },
     [fetchSharedFcLikeList.rejected]: (state, { payload }) => {
       state.error = payload.data;
-      console.log(state.sharedFcLikeList);
     },
     // 공유 풀코스 좋아요
     [createSharedFcLike.fulfilled]: (state, { payload }) => {
-      console.log(payload);
       state.sharedFcInfo = {
         ...state.sharedFcInfo,
         like: payload.data.like,
@@ -163,7 +157,6 @@ const shareSlice = createSlice({
     [createSharedFcLike.rejected]: (state, { payload }) => {
       state.errorCode = payload.statusCode;
       state.errorMessage = payload.message;
-      console.log(state.errorMessage);
     },
     // 나의 공유풀코스 목록 조회
     [fetchMySharedFc.fulfilled]: (state, { payload }) => {

@@ -1,4 +1,4 @@
-import React,{useState, useEffect}  from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { likePlace, deletePlace } from '../../../features/survey/surveySlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import { GoHeart } from 'react-icons/go';
 import PlaceDetailModal from '../place/PlaceDetailModal';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 
-import ReactWordcloud from "react-wordcloud";
+import ReactWordcloud from 'react-wordcloud';
 import { createWordCloud } from '../../../features/wordcloud/wcAction';
 import { fetchPlaceDetail } from '../../../features/trip/tripActions';
 
@@ -18,60 +18,57 @@ import ReactCardFlip from 'react-card-flip';
 
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-
 const options = {
-  colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
+  colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'],
   enableTooltip: true,
   deterministic: false,
-  fontFamily: "impact",
+  fontFamily: 'impact',
   fontSizes: [5, 60],
-  fontStyle: "normal",
-  fontWeight: "normal",
+  fontStyle: 'normal',
+  fontWeight: 'normal',
   padding: 1,
   rotations: 3,
   rotationAngles: [0, 90],
-  scale: "sqrt",
-  spiral: "archimedean",
-  transitionDuration: 1000
+  scale: 'sqrt',
+  spiral: 'archimedean',
+  transitionDuration: 1000,
 };
 
 const Wrapper = styled.div`
-  
   position: relative;
 
   .react-card-flip {
-    
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
     position: relative;
     /* transition: .4s; */
     /* transform-style: preserve-3d; */
-  
-  }	
+  }
 
-  .flipBtn{
+  .flipBtn {
     position: absolute;
     bottom: 0.3rem;
     right: 0.3rem;
     cursor: pointer;
 
     &:hover {
-      transform:scale(1.1);
-	    transition:.3s;
+      transform: scale(1.1);
+      transition: 0.3s;
     }
   }
-  
-  .front, .back {
-  overflow: hidden;
-  border-radius: 1rem;
+
+  .front,
+  .back {
+    overflow: hidden;
+    border-radius: 1rem;
     box-shadow: 1px 1px 5px darkgrey;
     background: white;
 
-  position: absolute;
-  width: 100%; 
-  height: 100%;
-  backface-visibility: hidden;
-}
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
 
   @keyframes flip-vertical-right {
     0% {
@@ -120,7 +117,6 @@ const Wrapper = styled.div`
     }
   }
 
-
   /* .placeTag::-webkit-scrollbar-track{
 border-radius: 10px;    
 
@@ -130,7 +126,6 @@ border-radius: 10px;
     max-height: 30%;
     overflow: scroll;
   }
-
 
   img {
     width: 100%;
@@ -212,8 +207,8 @@ const RecommendCard = ({ place, index }) => {
   const dispatch = useDispatch();
   const { recommendPlaceList } = useSelector((state) => state.survey);
   const { likePlaceIndex } = useSelector((state) => state.survey);
-  const [words, setWords] = useState('')
-  const [isFlipped, setIsFlipped] = useState('')
+  const [words, setWords] = useState('');
+  const [isFlipped, setIsFlipped] = useState('');
 
   const [open, setOpen] = useState(false);
 
@@ -222,21 +217,18 @@ const RecommendCard = ({ place, index }) => {
   };
 
   useEffect(() => {
-    console.log(place);
-    console.log(place.name);
-    dispatch(createWordCloud(place.name))
-      .then((result) => {
-        // setWords(result.payload.entries)
-        let data = Object.entries(result.payload).map((entry) => {
-          return {
-            text: entry[0],
-            value: entry[1]
-          };
-        });
+    dispatch(createWordCloud(place.name)).then((result) => {
+      // setWords(result.payload.entries)
+      let data = Object.entries(result.payload).map((entry) => {
+        return {
+          text: entry[0],
+          value: entry[1],
+        };
+      });
 
-        setWords(data);
-      })
-  },[])
+      setWords(data);
+    });
+  }, []);
 
   // useEffect(() => {
   //   console.log(words)
@@ -257,23 +249,23 @@ const RecommendCard = ({ place, index }) => {
     }
   };
 
-  const flipCard = (e) =>{
+  const flipCard = (e) => {
     e.preventDefault();
-    setIsFlipped(pre => !pre);
-  }
+    setIsFlipped((pre) => !pre);
+  };
 
-    // 모달 열고 닫기
-    const openDetailModal = () => {
-      setOpen(!open);
-    };
+  // 모달 열고 닫기
+  const openDetailModal = () => {
+    setOpen(!open);
+  };
 
   return (
     <Wrapper>
       <ReactCardFlip class="card" isFlipped={isFlipped}>
         {/* 앞면 */}
-        <div className='front'>
-        <div className='flipBtn' onClick={flipCard}>
-            <img src="/img/recommend/wordcloudbtn.png"/>
+        <div className="front">
+          <div className="flipBtn" onClick={flipCard}>
+            <img src="/img/recommend/wordcloudbtn.png" />
           </div>
 
           <img src={place.imgUrl} />
@@ -299,35 +291,31 @@ const RecommendCard = ({ place, index }) => {
             <Like /> <p>{place.likeCnt}</p>
             <Comment /> <p>{place.reviewCnt}</p>
             <DetailBtn
-            onClick={(e) => {
-              openDetailModal();
-              setPlaceDetail(place.placeId, "travel");
-            }}
+              onClick={(e) => {
+                openDetailModal();
+                setPlaceDetail(place.placeId, 'travel');
+              }}
             />
           </CardFooter>
-
         </div>
-{/* 뒷면 */}
-        <div className='back'>
-          <div className='flipBtn' onClick={flipCard}>
-          <KeyboardBackspaceIcon />
+        {/* 뒷면 */}
+        <div className="back">
+          <div className="flipBtn" onClick={flipCard}>
+            <KeyboardBackspaceIcon />
             {/* <img src="/img/recommend/wordcloudbtn.png"/> */}
           </div>
-        <ReactWordcloud options={options} words={words} />
-
+          <ReactWordcloud options={options} words={words} />
         </div>
-
       </ReactCardFlip>
-          {/* {words} */}
-            {open ? (
-            <PlaceDetailModal
-              openDetailModal={openDetailModal}
-              imgUrl={place.imgUrl}
-              placeType="travel"
-              placeId={place.placeId}
-            />
-          ) : null}
-
+      {/* {words} */}
+      {open ? (
+        <PlaceDetailModal
+          openDetailModal={openDetailModal}
+          imgUrl={place.imgUrl}
+          placeType="travel"
+          placeId={place.placeId}
+        />
+      ) : null}
     </Wrapper>
   );
 };

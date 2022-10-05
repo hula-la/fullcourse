@@ -42,7 +42,7 @@ right:5%; */
   font-size: 0.8rem;
   border: 2px solid;
 
-  &:hover{
+  &:hover {
     transform: scale(1.1);
     animation-duration: 0.2s;
   }
@@ -205,9 +205,9 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
-.likeCnt{
-  padding: 0.4rem;
-}
+  .likeCnt {
+    padding: 0.4rem;
+  }
 
   img {
     border-radius: 0.8rem;
@@ -252,7 +252,7 @@ const LikePlaceList = styled.div`
     font-weight: bold;
   }
 
-  .likePlaceBox{
+  .likePlaceBox {
     height: 65%;
     width: 50%;
     max-width: 50rem;
@@ -360,7 +360,6 @@ const SurveyPage = () => {
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
     dispatch(setMarkers(marker));
   };
@@ -370,7 +369,6 @@ const SurveyPage = () => {
     likePlaceIndex.forEach((id) => {
       const placeId = id;
       const placeType = 'travel';
-      console.log('placeId', placeId);
       dispatch(fetchPlaceDetail({ placeId, placeType }))
         .unwrap()
         .then((res) => {
@@ -463,9 +461,9 @@ const SurveyPage = () => {
       </RandomPlaceList>
       <LikePlaceList>
         <div className="tooltip likePlaceBox">
-                <span className="tooltiptext tooltip-top">
-                  <p>당신이 선택한 장소들이 담깁니다.</p>
-                </span>
+          <span className="tooltiptext tooltip-top">
+            <p>당신이 선택한 장소들이 담깁니다.</p>
+          </span>
           {likePlaceList.length >= 0 && (
             <>
               <div className="likePlaceContainer">
@@ -489,13 +487,16 @@ const SurveyPage = () => {
               </div>
             </>
           )}
-
         </div>
         <div className="buttonContainer">
           <div className="tooltip">
-          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
-            {likePlaceList.length} /5
-          </div>
+            <div
+              className={
+                likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`
+              }
+            >
+              {likePlaceList.length} /5
+            </div>
             <div className="tooltiptext tooltip-left">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>

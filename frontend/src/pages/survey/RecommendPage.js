@@ -33,7 +33,7 @@ const PlanButton = styled.div`
   font-size: 0.8rem;
   border: 2px solid;
 
-  &:hover{
+  &:hover {
     transform: scale(1.1);
     animation-duration: 0.2s;
   }
@@ -107,9 +107,9 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
-.likeCnt{
-  padding: 0.4rem;
-}
+  .likeCnt {
+    padding: 0.4rem;
+  }
   img {
     border-radius: 0.8rem;
     height: 100%;
@@ -119,11 +119,11 @@ const LikePlaceList = styled.div`
     height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
   }
 
-  .continueBtn{
+  .continueBtn {
     cursor: pointer;
 
     &:hover {
-      background:#c8c3ff;
+      background: #c8c3ff;
     }
   }
 
@@ -163,7 +163,7 @@ const LikePlaceList = styled.div`
     margin: 0 1rem;
     font-weight: bold;
   }
-  .likePlaceBox{
+  .likePlaceBox {
     height: 65%;
     width: 50%;
     max-width: 50rem;
@@ -281,7 +281,6 @@ const RecommendPage = () => {
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
     dispatch(setMarkers(marker));
   };
@@ -291,7 +290,6 @@ const RecommendPage = () => {
     likePlaceIndex.forEach((id) => {
       const placeId = id;
       const placeType = 'travel';
-      console.log('placeId', placeId);
       dispatch(fetchPlaceDetail({ placeId, placeType }))
         .unwrap()
         .then((res) => {
@@ -341,10 +339,10 @@ const RecommendPage = () => {
       )}
 
       <LikePlaceList>
-      <div className="tooltip likePlaceBox">
-                <span className="tooltiptext tooltip-top">
-                  <p>당신이 선택한 장소들이 담깁니다.</p>
-                </span>
+        <div className="tooltip likePlaceBox">
+          <span className="tooltiptext tooltip-top">
+            <p>당신이 선택한 장소들이 담깁니다.</p>
+          </span>
           {likePlaceList.length >= 0 && (
             <>
               <div className="likePlaceContainer">
@@ -368,18 +366,21 @@ const RecommendPage = () => {
               </div>
             </>
           )}
-
         </div>
         <div className="buttonContainer">
-        <div className="tooltip">
-          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
-            {likePlaceList.length} /5
-          </div>
+          <div className="tooltip">
+            <div
+              className={
+                likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`
+              }
+            >
+              {likePlaceList.length} /5
+            </div>
             <div className="tooltiptext tooltip-left">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>
           </div>
-          <button className='continueBtn' onClick={onClickContinue}>
+          <button className="continueBtn" onClick={onClickContinue}>
             계속 <span>▶</span>
           </button>
         </div>

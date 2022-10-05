@@ -56,7 +56,6 @@ export const fetchSharedFcDetail = createAsyncThunk(
 export const createSharedFc = createAsyncThunk(
   'share/createSharedFc',
   async (sharedFcPostReq, { rejectWithValue }) => {
-    console.log(sharedFcPostReq);
     try {
       const { data } = await postSharedFc(sharedFcPostReq);
       return data;

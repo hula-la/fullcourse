@@ -191,31 +191,27 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
 
   useEffect(() => {
-    init()
+    init();
     //드래그앤 드롭 바닐라 자스
     const plannerContent = document.querySelector('.planner-content');
     plannerContent.addEventListener('dragstart', (e) => {
       if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.add('dragging');
-        console.log("호준아 코딩좀하자")
       }
     });
     plannerContent.addEventListener('dragend', (e) => {
       if (e.target.closest('.list-item')) {
         e.target.closest('.list-item').classList.remove('dragging');
-        console.log("호준아 제발코딩좀하자")
       }
     });
     plannerContent.addEventListener('dragover', (e) => {
       if (e.target.closest('.planner-list')) {
         sortAndDisplayItem(e);
-        console.log("호준아 제발제발코딩좀하자")
       }
     });
     //삭제기능 바닐라 자스로 추가
     plannerContent.addEventListener('click', (e) => {
       if (e.target.classList.contains('delete')) {
-        console.log('e.target.parentNode', e.target.parentNode);
         e.target.parentNode.remove();
       }
       //경로관련기능 바닐라 자스로 추가
@@ -243,12 +239,10 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       const item = DayElm.querySelector('.triptitle');
       setPlanDay(item.dataset.planDay);
       const titleElm = e.target.closest('.triptitle'); //데일리 일정박스 바로 위에 있는 엘리먼트로 클래스 걸어주면될듯
-      console.log(titleElm);
       const itemElms = titleElm.nextElementSibling.children
         ? [...titleElm.nextElementSibling.children]
         : null;
       if (!itemElms || itemElms.length < 2) return null; //경로 두군데는 이상이어야함
-      console.log('이거뭐지', itemElms);
       return itemElms.map(
         (item) =>
           (item[item.dataset.placeId] = {
@@ -261,7 +255,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
       const item = document.querySelector('.dragging');
-      // console.log("여긴가")
       const afterElement = getDragAfterElement(container, e.clientY);
       if (afterElement) {
         container.insertBefore(item, afterElement);
@@ -320,7 +313,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
             const img = null;
             newTrip['thumbnail'] = placeData.placeImg;
             const placeId = placeData.placeId;
-            console.log(placeData.placeType);
             const type = placeData.placeType;
             const visited = false;
             return { comment, courseOrder, img, placeId, type, visited };
@@ -450,20 +442,16 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     );
 
     touch.target.dispatchEvent(simulatedEvent);
-    event.cancelable && event.preventDefault()
-    
-    
-   console.log(simulatedEvent)
+    event.cancelable && event.preventDefault();
   }
 
   function init() {
-    console.log("이게되는건가")
-    document.addEventListener('touchstart', touchHandler, true,);
+    document.addEventListener('touchstart', touchHandler, true);
     document.addEventListener('touchmove', touchHandler, true);
     document.addEventListener('touchend', touchHandler, true);
     document.addEventListener('touchcancel', touchHandler, true);
   }
-  
+
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 35.1944, lng: 129.1194 },
@@ -519,7 +507,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
         });
       });
 
-    console.log(waypoints);
     const flightPath = new window.google.maps.Polyline({
       path: waypoints,
       geodesic: true,

@@ -89,7 +89,6 @@ const FullcourseShare = () => {
       let tmp = sharedFcList.totalElements;
       let result = parseInt(tmp / 9);
       let remainder = tmp % 9;
-      console.log(result, remainder);
       if (remainder === 0) {
         setMaxPageNum(result);
       } else {
@@ -125,7 +124,6 @@ const FullcourseShare = () => {
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
-    console.log(nowPage);
     setPageNum(nowPage - 1);
   };
 

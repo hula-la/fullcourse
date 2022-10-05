@@ -129,9 +129,7 @@ const CardComponent = (props) => {
   const onClick = () => {
     navigate(`../../../fullcourse/detail/${props.fullcourse.sharedFcId}`);
   };
-  useEffect(() => {
-    console.log(props.fullcourse.user);
-  }, []);
+
   return (
     <Wapper>
       <Card

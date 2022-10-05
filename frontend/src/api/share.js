@@ -18,12 +18,8 @@ export const getSharedFcDetail = async (sharedFcId, email) => {
 export const postSharedFc = async (data) => {
   const res = await client
     .post('api/share/fullcourse', data)
-    .then((data) => {
-      console.log('성공');
-    })
-    .catch((err) => {
-      console.log(err.response.data);
-    });
+    .then((data) => {})
+    .catch((err) => {});
 
   return res;
 };
@@ -47,7 +43,6 @@ export const getSharedFcLikeList = async () => {
 
 export const postSharedFcLike = async (sharedFcId) => {
   const res = await client.post(`api/share/like/${sharedFcId}`);
-  console.log(res)
   return res;
 };
 

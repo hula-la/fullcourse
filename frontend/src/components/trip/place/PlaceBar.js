@@ -212,18 +212,15 @@ const PlaceBar = ({ map }) => {
         );
       },
     );
-    console.log(lats, lngs);
     const resLat = lats.reduce(function add(sum, currValue) {
       return sum + currValue;
     }, 0);
     const avgLat = resLat / lats.length;
-    console.log(avgLat);
     setRecentLat(avgLat);
     const resLng = lngs.reduce(function add(sum, currValue) {
       return sum + currValue;
     }, 0);
     const avgLng = resLng / lngs.length;
-    console.log(avgLng);
     setRecentLng(avgLng);
   };
 
@@ -299,7 +296,6 @@ const PlaceBar = ({ map }) => {
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
-    console.log('이게뭐지', nowPage);
 
     setPageNum(nowPage - 1);
   };
@@ -308,10 +304,9 @@ const PlaceBar = ({ map }) => {
     e.preventDefault();
     // setKeyword('')
     setPageNum(0);
-    setMaxDist(0)
-    setRecentLat(0)
-    setRecentLng(0)
-    console.log('set되나', pageNum);
+    setMaxDist(0);
+    setRecentLat(0);
+    setRecentLng(0);
     for (var i = 0; i < placeTypes.length; i++) {
       if (i === id) {
         setPlaceType(placeTypes[id]);
@@ -322,12 +317,11 @@ const PlaceBar = ({ map }) => {
 
   const handleOnKeyPress = (e) => {
     if (e.key === 'Enter') {
-      console.log(e.target.value);
       setKeyword(e.target.value);
       setPageNum(0);
-      setMaxDist(0)
-      setRecentLat(0)
-      setRecentLng(0)
+      setMaxDist(0);
+      setRecentLat(0);
+      setRecentLng(0);
     }
   };
 

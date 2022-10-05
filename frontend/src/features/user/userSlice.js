@@ -33,7 +33,6 @@ const userSlice = createSlice({
     },
     [fetchMyFullcourse.fulfilled]: (state, { payload }) => {
       state.myFullcourseList = payload.data;
-      console.log(state.myFullcourseList);
     },
     [fetchMyFullcourse.rejected]: (state, { payload }) => {
       state.error = payload.data;

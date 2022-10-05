@@ -25,7 +25,6 @@ export const getTravelPlaceList = async (
       recentLng,
     },
   });
-  console.log('잘보내고 있는거 같은데');
   return res;
 };
 
@@ -53,7 +52,6 @@ export const postPlaceLike = async (placeId, placeType) => {
 
 //장소 리뷰
 export const postReview = async (img, content, score, placeId, placeType) => {
-  console.log('잘넘어오나', img, content, score, placeId, placeType);
   const formData = new FormData();
   formData.append('file', img);
   formData.append(
@@ -62,7 +60,6 @@ export const postReview = async (img, content, score, placeId, placeType) => {
       type: 'application/json',
     }),
   );
-  console.log('data형태뭐지', formData);
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -73,7 +70,6 @@ export const postReview = async (img, content, score, placeId, placeType) => {
     formData,
     config,
   );
-  console.log(res);
   return res;
 };
 
@@ -91,15 +87,12 @@ export const postDiary = async (img, content, fcDetailId) => {
     formData,
     config,
   );
-  console.log(res);
   return res;
 };
 
 //장소리뷰조회
 export const getPlaceReview = async (placeId, placeType) => {
-  console.log('여기까진오나', placeId, placeType);
   const res = await client.get(`api/review/${placeType}/list/${placeId}/`);
-  console.log('어디서멈춤', res);
   return res;
 };
 
