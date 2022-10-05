@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ public class SharedFCService {
 
     // 공유 풀코스 생성
     @Transactional
-    public Long createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, String email) {
+    public SharedFullCourse createSharedFC(SharedFCDto sharedFCDto, List<SharedFCTagDto> tags, String email) {
         Optional<SharedFullCourse> opt = Optional.ofNullable(sharedFCRepository.findByFullCourseFcId(sharedFCDto.getFcId()));
         if(opt.isPresent()) throw new AlreadyExistException("이미 공유한 풀코스 입니다.");
 
@@ -52,7 +53,7 @@ public class SharedFCService {
         SharedFullCourse saved = sharedFCRepository.save(sharedFullCourse);
         if(saved != null) {
             fullCourse.updateShared(true);
-            return saved.getSharedFcId(); // 생성 성공
+            return saved;
         }
         else throw new ServerError("공유 풀코스 생성 중 알 수 없는 에러가 발생했습니다.");
 
@@ -165,6 +166,17 @@ public class SharedFCService {
             sharedFullCourse.getSharedFCTags().add(sharedFCTag);
             sharedFCTag.setSharedFullCourse(sharedFullCourse);
         }
+    }
+
+    // 유저의 공유 풀코스리스트, 풀코스 리스트 리턴
+    public HashMap<String, Object> getList(String email) {
+        HashMap<String,Object> map = new HashMap<>();
+        List<SharedFullCourse> sharedFullCourseList = sharedFCRepository.findSharedFCListByUser_Email(email);
+        map.put("share", sharedFullCourseList);
+        List<FullCourse> fullCourseList = fullCourseRepository.findByUser_Email(email);
+        map.put("full", fullCourseList);
+
+        return map;
     }
 
 }
