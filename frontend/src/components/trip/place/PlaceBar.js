@@ -173,15 +173,14 @@ const PlaceBar = ({ map }) => {
   var flag = false;
   var flag2 = false;
   const onHandleSlider = (value) => {
-    // console.log("슬라이더",value)
-     if (value) {
-
-       setMaxDist(value / 10);
-     }     
+    if (value) {
+      setMaxDist(value / 10);
     }
-  
+  };
+
   const onClickSlider = () => {
-    setPageNum(0)
+    // setKeyword('')
+    setPageNum(0);
     const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
         const placeInfo = [...plannerBox.querySelectorAll('.list-item')].map(
@@ -216,16 +215,16 @@ const PlaceBar = ({ map }) => {
     console.log(lats, lngs);
     const resLat = lats.reduce(function add(sum, currValue) {
       return sum + currValue;
-    }, 0)
-    const avgLat = resLat/lats.length
-    console.log(avgLat)
-    setRecentLat(avgLat)
+    }, 0);
+    const avgLat = resLat / lats.length;
+    console.log(avgLat);
+    setRecentLat(avgLat);
     const resLng = lngs.reduce(function add(sum, currValue) {
       return sum + currValue;
-    }, 0)
-    const avgLng = resLng/lngs.length
-    console.log(avgLng)
-    setRecentLng(avgLng)
+    }, 0);
+    const avgLng = resLng / lngs.length;
+    console.log(avgLng);
+    setRecentLng(avgLng);
   };
 
   // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
@@ -276,22 +275,44 @@ const PlaceBar = ({ map }) => {
   }, [travelPlaceList]);
 
   useEffect(() => {
-    dispatch(fetchTravelPlace({ sortReq, placeType, pageNum, keyword, maxDist, recentLat, recentLng}));
-  }, [dispatch, placeType, pageNum, sortReq, keyword, maxDist, recentLat, recentLng]);
+    dispatch(
+      fetchTravelPlace({
+        sortReq,
+        placeType,
+        pageNum,
+        keyword,
+        maxDist,
+        recentLat,
+        recentLng,
+      }),
+    );
+  }, [
+    dispatch,
+    placeType,
+    pageNum,
+    sortReq,
+    keyword,
+    maxDist,
+    recentLat,
+    recentLng,
+  ]);
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
-    console.log("이게뭐지",nowPage);
-    
+    console.log('이게뭐지', nowPage);
+
     setPageNum(nowPage - 1);
   };
 
   const changePlaceList = (id, e) => {
     e.preventDefault();
-    setPageNum(0)
-    console.log("set되나",pageNum)
+    // setKeyword('')
+    setPageNum(0);
+    setMaxDist(0)
+    setRecentLat(0)
+    setRecentLng(0)
+    console.log('set되나', pageNum);
     for (var i = 0; i < placeTypes.length; i++) {
-      
       if (i === id) {
         setPlaceType(placeTypes[id]);
         setIsActive(id);
@@ -303,7 +324,10 @@ const PlaceBar = ({ map }) => {
     if (e.key === 'Enter') {
       console.log(e.target.value);
       setKeyword(e.target.value);
-      setPageNum(0)
+      setPageNum(0);
+      setMaxDist(0)
+      setRecentLat(0)
+      setRecentLng(0)
     }
   };
 
@@ -321,6 +345,7 @@ const PlaceBar = ({ map }) => {
 
   return (
     <PlaceContainer className="place-container">
+      {/* {maxDist} */}
       <SortBox>
         <TypeContainer>
           {showPlaceTypes.map((item, id) => (
@@ -349,6 +374,10 @@ const PlaceBar = ({ map }) => {
             setSortReq={setSortReq}
             placeType={placeType}
             setPageNum={setPageNum}
+            setMaxDist={setMaxDist}
+            setRecentLat={setRecentLat}
+            setRecentLng={setRecentLng}
+            setKeyword={setKeyword}
           ></SortSelect>
         </div>
       </SortBox>
