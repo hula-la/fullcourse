@@ -1,11 +1,10 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
-import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
-import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.global.error.ServerError;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
@@ -31,9 +30,7 @@ import java.util.stream.Collectors;
 public class SharedFullCourseController {
 
     private final SharedFCService sharedFCService;
-    private final FullCourseRepository fullCourseRepository;
     private final SharedFCCommentService sharedFCCommentService;
-    private final UserRepository userRepository;
     private final SharedFCListService sharedFCListService;
 
     /** 공유 풀코스 등록 **/
@@ -47,12 +44,11 @@ public class SharedFullCourseController {
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
-        // 공유 풀코스 등록
-        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags, email);
-        if (sharedFcId != null) {
-            HashMap<String,Long> res = new HashMap<>();
-            res.put("sharedFcId",sharedFcId);
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", res));
+        // 공유 풀코스 등록시 유저의 풀코스리스트, 공유풀코스리스트 반환
+        SharedFullCourse sharedFC = sharedFCService.createSharedFC(sharedFCDto, tags, email);
+        if (sharedFC != null) {
+            HashMap<String, Object> map = sharedFCService.getList(email);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", map));
         } else {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "공유 풀코스 생성 중 오류", null));
         }
