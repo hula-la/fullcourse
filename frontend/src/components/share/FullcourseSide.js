@@ -17,15 +17,14 @@ const Side = styled.div`
   flex-direction: column;
   width: 30%;
   min-width: 19rem;
-  background-color:#e2f1fa;
+  background-color: #e2f1fa;
 
-/* 
+  /* 
   #imgBlock {
     display: flex;
     justify-content: center;
     align-items: center;
   } */
-
 
   .daynonelist {
     list-style: none;
@@ -76,7 +75,7 @@ const ShareInfo = styled.div`
     color: #f73131;
     margin-left: 10px;
   }
-  
+
   .favoriteborder {
     cursor: pointer;
     color: #f73131;
@@ -96,12 +95,10 @@ const Plan = styled.div`
   height: 100%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
-  background:white;
+  background: white;
 `;
 
 const SharedTitle = styled.div`
-
-
   /* display: flex; */
   text-align: left;
   padding: 1.5rem 1rem;
@@ -114,8 +111,6 @@ const SharedTitle = styled.div`
     font-size: 1.3rem;
     font-weight: bold;
   }
-
-
 `;
 
 const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
@@ -137,33 +132,27 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
     dispatch(checkAllDay());
   };
 
-  const onClickLike = () => {
-    dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
+  const onClickLike = async () => {
+    const payload = await dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
+    console.log(payload);
   };
 
   return (
     <Side>
       {sharedFcInfo ? (
         <SharedTitle>
-          
           <ShareInfo>
             <div>
-              <div className="title">
-                {sharedFcInfo.title}
-              </div>
+              <div className="title">{sharedFcInfo.title}</div>
               <div className="countArea">
                 조회수 {sharedFcInfo.viewCnt} , 좋아요 {sharedFcInfo.likeCnt} 개
               </div>
             </div>
             <div>
-
               {sharedFcInfo ? (
                 <>
                   {sharedFcInfo.like ? (
-                    <FavoriteIcon
-                      className="favorite"
-                      onClick={onClickLike}
-                    />
+                    <FavoriteIcon className="favorite" onClick={onClickLike} />
                   ) : (
                     <FavoriteBorderIcon
                       className="favoriteborder"

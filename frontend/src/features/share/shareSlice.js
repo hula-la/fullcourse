@@ -92,7 +92,6 @@ const shareSlice = createSlice({
     },
     selectSort: (state, { payload }) => {
       state.howSort = payload + ',desc';
-      console.log(state.howSort);
     },
     selectFcId: (state, { payload }) => {
       state.willShareFcId = payload.fcId;
@@ -148,11 +147,15 @@ const shareSlice = createSlice({
     },
     // 공유 풀코스 좋아요
     [createSharedFcLike.fulfilled]: (state, { payload }) => {
+      console.log(payload);
       state.sharedFcInfo = {
         ...state.sharedFcInfo,
         like: payload.data.like,
         likeCnt: payload.data.likeCnt,
       };
+    },
+    [createSharedFcLike.rejected]: (state, { payload }) => {
+      state.error = payload;
     },
     // 나의 공유풀코스 목록 조회
     [fetchMySharedFc.fulfilled]: (state, { payload }) => {
