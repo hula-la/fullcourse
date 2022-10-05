@@ -1,5 +1,12 @@
-import React from 'react';
+import React,{useState}  from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+
+import PlaceDetailModal from '../trip/place/PlaceDetailModal';
+import { IoIosInformationCircleOutline } from 'react-icons/io';
+
+import { fetchPlaceDetail } from '../../features/trip/tripActions';
 
 const Wrapper = styled.div`
   position: relative;
@@ -15,7 +22,7 @@ const Wrapper = styled.div`
     position: absolute;
     top: -0.8rem;
     left: calc(50% - 2rem);
-    z-index: 71;
+    z-index: 2;
     background-color: white;
     /* padding: 10px; */
     width: 4rem;
@@ -63,6 +70,18 @@ const PlaceItem = styled.div`
 
   margin: 0 20px;
   /* padding: 10px 0; */
+`;
+
+const DetailBtn = styled(IoIosInformationCircleOutline)`
+  cursor: pointer;
+  font-size: 3.2vmin;
+  color: #0aa1dd;
+  margin-right: 0.5vh;
+
+  &:hover {
+    background: #d0d0ff;
+    border-radius: 50%;
+  }
 `;
 
 const Line = styled.div`
@@ -114,17 +133,38 @@ const PlaceInfo = styled.div`
 `;
 
 const PlaceListItem = ({ placeKey, place }) => {
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const setPlaceDetail = (placeId, placeType) => {
+    dispatch(fetchPlaceDetail({ placeId, placeType }));
+  };
+  // 모달 열고 닫기
+  const openDetailModal = () => {
+    setOpen(!open);
+  };
   // const placeType = {
   //   Activity: "액티비티",
 
   // }
   return (
     <Wrapper>
+
       <p className="day">{parseInt(placeKey) + 1}Day</p>
 
       {place.map((p, index) => {
-        return (
-          <PlaceItem>
+      {/* 상세정보 모달 */}
+      
+      return (
+        <PlaceItem>
+        {open ? (
+          <PlaceDetailModal
+            openDetailModal={openDetailModal}
+            imgUrl={place[index].place.imgUrl}
+            placeType={place[index].type}
+                placeId={place[index].placeId}
+              />
+          ) : null
+          }
             <Line>
               <div
                 className={`idx${placeKey} ${
@@ -141,6 +181,14 @@ const PlaceListItem = ({ placeKey, place }) => {
               </div>
               <div className="type">{p.type}</div>
             </PlaceInfo>
+            <DetailBtn
+            onClick={(e) => {
+                openDetailModal();
+              console.log("place :" + place[index]);
+              console.log(place[index]);
+              setPlaceDetail(place[index].placeId, place[index].type);
+            }}
+            />
           </PlaceItem>
         );
       })}
