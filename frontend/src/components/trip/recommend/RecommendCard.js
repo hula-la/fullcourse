@@ -7,8 +7,16 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { FaCommentDots } from 'react-icons/fa';
 import { GoHeart } from 'react-icons/go';
 
+import PlaceDetailModal from '../place/PlaceDetailModal';
+import { IoIosInformationCircleOutline } from 'react-icons/io';
+
 import ReactWordcloud from "react-wordcloud";
 import { createWordCloud } from '../../../features/wordcloud/wcAction';
+import { fetchPlaceDetail } from '../../../features/trip/tripActions';
+
+import ReactCardFlip from 'react-card-flip';
+
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 const options = {
@@ -31,22 +39,29 @@ const Wrapper = styled.div`
   
   position: relative;
 
-  
-  
-  
-  /* 카드 뒤집기 효과 추가 */
-  /* overflow: hidden; */
-  .card {
+  .react-card-flip {
     
-  width: 100%; 
-  height: 100%; 
-  position: relative;
-  transition: .4s;
-  transform-style: preserve-3d;
+    width: 100%; 
+    height: 100%; 
+    position: relative;
+    /* transition: .4s; */
+    /* transform-style: preserve-3d; */
+  
+  }	
 
-}	
+  .flipBtn{
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.3rem;
+    cursor: pointer;
 
-.front, .back {
+    &:hover {
+      transform:scale(1.1);
+	    transition:.3s;
+    }
+  }
+  
+  .front, .back {
   overflow: hidden;
   border-radius: 1rem;
     box-shadow: 1px 1px 5px darkgrey;
@@ -57,26 +72,6 @@ const Wrapper = styled.div`
   height: 100%;
   backface-visibility: hidden;
 }
-
-/* .front {
-  background: red; 
-} */
-
-// 뒷면은 사전에 미리 뒤집기
-.back { 
-  /* background: royalblue;  */
-  transform: rotateY(180deg);
-}
-
-// 호버 시 뒤집기
-:hover .card {
-  transform: rotateY(180deg);
-}
-/* --------------------- */
-
-
-  animation: flip-vertical-right 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955)
-    both;
 
   @keyframes flip-vertical-right {
     0% {
@@ -169,6 +164,18 @@ border-radius: 10px;
   }
 `;
 
+const DetailBtn = styled(IoIosInformationCircleOutline)`
+  cursor: pointer;
+  font-size: 3.2vmin;
+  color: #0aa1dd;
+  margin-right: 0.5vh;
+
+  &:hover {
+    background: #d0d0ff;
+    border-radius: 50%;
+  }
+`;
+
 const Tag = styled.div`
   font-size: 0.9rem;
   border: 2px solid #dc3d59;
@@ -206,8 +213,16 @@ const RecommendCard = ({ place, index }) => {
   const { recommendPlaceList } = useSelector((state) => state.survey);
   const { likePlaceIndex } = useSelector((state) => state.survey);
   const [words, setWords] = useState('')
+  const [isFlipped, setIsFlipped] = useState('')
+
+  const [open, setOpen] = useState(false);
+
+  const setPlaceDetail = (placeId, placeType) => {
+    dispatch(fetchPlaceDetail({ placeId, placeType }));
+  };
 
   useEffect(() => {
+    console.log(place);
     console.log(place.name);
     dispatch(createWordCloud(place.name))
       .then((result) => {
@@ -242,11 +257,25 @@ const RecommendCard = ({ place, index }) => {
     }
   };
 
+  const flipCard = (e) =>{
+    e.preventDefault();
+    setIsFlipped(pre => !pre);
+  }
+
+    // 모달 열고 닫기
+    const openDetailModal = () => {
+      setOpen(!open);
+    };
+
   return (
     <Wrapper>
-      <div className='card'>
+      <ReactCardFlip class="card" isFlipped={isFlipped}>
         {/* 앞면 */}
         <div className='front'>
+        <div className='flipBtn' onClick={flipCard}>
+            <img src="/img/recommend/wordcloudbtn.png"/>
+          </div>
+
           <img src={place.imgUrl} />
           <div className="cardHead">
             <div></div>
@@ -269,16 +298,36 @@ const RecommendCard = ({ place, index }) => {
           <CardFooter>
             <Like /> <p>{place.likeCnt}</p>
             <Comment /> <p>{place.reviewCnt}</p>
+            <DetailBtn
+            onClick={(e) => {
+              openDetailModal();
+              setPlaceDetail(place.placeId, "travel");
+            }}
+            />
           </CardFooter>
 
         </div>
 {/* 뒷면 */}
         <div className='back'>
+          <div className='flipBtn' onClick={flipCard}>
+          <KeyboardBackspaceIcon />
+            {/* <img src="/img/recommend/wordcloudbtn.png"/> */}
+          </div>
         <ReactWordcloud options={options} words={words} />
 
         </div>
 
-      </div>
+      </ReactCardFlip>
+          {/* {words} */}
+            {open ? (
+            <PlaceDetailModal
+              openDetailModal={openDetailModal}
+              imgUrl={place.imgUrl}
+              placeType="travel"
+              placeId={place.placeId}
+            />
+          ) : null}
+
     </Wrapper>
   );
 };
