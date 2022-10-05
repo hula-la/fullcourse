@@ -27,19 +27,15 @@ public class SparkController {
 
     @GetMapping("/count")
     public void count() {
-//        public HashMap<String, Long> count() {
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL); //Full, Light
-        komoran.setUserDic("/Users/son/SSAFY/FullCourse/backend/src/main/java/com/ssafy/fullcourse/spark/user.dic"); // UserDic 경로지정
+        komoran.setUserDic("C:\\dev\\FullCourse\\backend\\src\\main\\java\\com\\ssafy\\fullcourse\\spark\\user.dic"); // UserDic 경로지정
 
         String str = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader("/Users/son/SSAFY/FullCourse/backend/src/main/java/com/ssafy/fullcourse/spark/wordcloud.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("C:\\dev\\FullCourse\\backend\\src\\main\\java\\com\\ssafy\\fullcourse\\spark\\wordcloud.txt"));
             br.readLine();
 
             String st;
-//            while((st = br.readLine()) != null) {
-//                str += st;
-//            }
 
             while((st = br.readLine()) != null) {
                 String place = st;
@@ -59,24 +55,10 @@ public class SparkController {
             throw new RuntimeException(e);
         }
         System.out.println(str);
-
-
-//        System.out.println("Plane Text : " + str);
-//        System.out.println("getNouns : "+analyzeResultList.getNouns());
-//        System.out.println("getPlaneText : "+analyzeResultList.getPlainText());
-//        System.out.println("getList : "+analyzeResultList.getList());
-//        System.out.println("getMorphesByTags : "+ analyzeResultList.getMorphesByTags("NNP"));
-//
-//        List<String> wordList = Arrays.asList(analyzeResultList.getMorphesByTags("NNP").toString().split(","));
-
-//        HashMap<String, Long> map = wordCountService.getCount(wordList);
-//        redisUtil.setStringHash("흰여울마을", map);
-
-//        return map;
     }
 
     @GetMapping("/{place}")
     public Map<Object, Object> getWordCloud(@PathVariable String place) {
-        return redisUtil.getStringHash(place);
+        return redisUtil.getStringHash(place.trim());
     }
 }

@@ -30,7 +30,7 @@ public class WordCountService {
 
         HashMap<String, Long> map = new HashMap<>();
         for(int i = 0; i < result.size(); i++) {
-            if(map.size() >= 40) break;
+            if(map.size() >= 45) break;
 
             if(result.get(i).getKey().trim().length()==1) continue;
             map.put(result.get(i).getKey().trim(), result.get(i).getValue());
