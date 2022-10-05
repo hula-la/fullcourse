@@ -56,6 +56,8 @@ const initialState = {
   howSort: 'regDate,desc',
   willShareFcId: null,
   willShareThumbnail: null,
+  moveLat: null,
+  moveLng: null,
 };
 
 const shareSlice = createSlice({
@@ -102,6 +104,11 @@ const shareSlice = createSlice({
     resetError: (state) => {
       state.errorCode = null;
       state.errorMessage = null;
+    },
+    moveMap: (state, { payload }) => {
+      console.log(payload);
+      state.moveLat = payload.lat;
+      state.moveLng = payload.lng;
     },
   },
   extraReducers: {
@@ -174,6 +181,7 @@ export const {
   selectSort,
   selectFcId,
   resetError,
+  moveMap,
 } = shareSlice.actions;
 
 export default shareSlice.reducer;

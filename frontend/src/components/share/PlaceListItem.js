@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* global kakao */
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
@@ -6,6 +7,7 @@ import PlaceDetailModal from '../trip/place/PlaceDetailModal';
 import { IoIosInformationCircleOutline } from 'react-icons/io';
 
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
+import { moveMap } from '../../features/share/shareSlice';
 
 const Wrapper = styled.div`
   position: relative;
@@ -67,8 +69,12 @@ const PlaceItem = styled.div`
   align-items: center;
   position: relative;
 
-  margin: 0 20px;
+  padding: 0 20px;
   /* padding: 10px 0; */
+  cursor: pointer;
+  &:hover {
+    background: #e2f1fa85;
+  }
 `;
 
 const DetailBtn = styled(IoIosInformationCircleOutline)`
@@ -88,7 +94,7 @@ const Line = styled.div`
     height: 100%;
 
     position: absolute;
-    left: 12px;
+    left: 31px;
     top: 0;
   }
   .start {
@@ -134,9 +140,21 @@ const PlaceInfo = styled.div`
 const PlaceListItem = ({ placeKey, place }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+
+  // 지도 중심 이동시키기
+  const onClickPlace = (index) => {
+    dispatch(
+      moveMap({
+        lat: place[index]['place']['lat'],
+        lng: place[index]['place']['lng'],
+      }),
+    );
+  };
+
   const setPlaceDetail = (placeId, placeType) => {
     dispatch(fetchPlaceDetail({ placeId, placeType }));
   };
+
   // 모달 열고 닫기
   const openDetailModal = () => {
     setOpen(!open);
@@ -150,12 +168,8 @@ const PlaceListItem = ({ placeKey, place }) => {
       <p className="day">{parseInt(placeKey) + 1}Day</p>
 
       {place.map((p, index) => {
-        {
-          /* 상세정보 모달 */
-        }
-
         return (
-          <PlaceItem>
+          <PlaceItem onClick={(e) => onClickPlace(index)}>
             {open ? (
               <PlaceDetailModal
                 openDetailModal={openDetailModal}

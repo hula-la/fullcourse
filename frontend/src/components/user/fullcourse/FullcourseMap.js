@@ -43,6 +43,8 @@ const PlaceImg = styled.div`
 const FullcourseMap = () => {
   const { fullcourseDetail } = useSelector((state) => state.trip);
   const { checkedDay } = useSelector((state) => state.share);
+  const { moveLat } = useSelector((state) => state.share);
+  const { moveLng } = useSelector((state) => state.share);
   const [markerList, setMarkerList] = useState([]);
   const [linePath, setLinePath] = useState([]);
   const [overlayList, setOverlayList] = useState([]);
@@ -98,10 +100,15 @@ const FullcourseMap = () => {
     var container = document.getElementById('map');
     var options = {
       center: new kakao.maps.LatLng(35.17962489619582, 129.07480154639234),
-      level: 9,
+      level: 6,
     };
 
     var map = new kakao.maps.Map(container, options);
+
+    if (moveLat) {
+      let moveLatLon = new kakao.maps.LatLng(moveLat, moveLng);
+      map.setCenter(moveLatLon);
+    }
 
     if (checkedDay === 6) {
       for (let i = 0; i < markerList.length; i++) {
@@ -234,11 +241,48 @@ const FullcourseMap = () => {
               title: markerList[i][j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image: markerImage, // 마커 이미지
             });
+
+            let iwContent =
+              '<div class="place">' +
+              '<div ' +
+              'class="placeMemo">' +
+              '<p>' +
+              markerList[i][j].title +
+              '✨' +
+              '</p>' +
+              '</div>' +
+              '<img ' +
+              'class="placeImg"' +
+              'src=' +
+              fullcourseDetail.places[i][j].img +
+              ' />' +
+              '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+            // 커스텀 오버레이가 표시될 위치입니다
+            // 커스텀 오버레이를 생성합니다
+            let customOverlay3 = new kakao.maps.CustomOverlay({
+              position: overlayList[i][j].latlng,
+              content: iwContent,
+            });
+
+            // 커스텀 오버레이를 지도에 표시합니다
+
+            if (fullcourseDetail.places[i][j].img) {
+              kakao.maps.event.addListener(marker, 'mouseover', function () {
+                // 마커 위에 인포윈도우를 표시합니다
+                customOverlay3.setMap(map);
+              });
+              kakao.maps.event.addListener(marker, 'mouseout', function () {
+                setTimeout(function () {
+                  customOverlay3.setMap();
+                });
+              });
+            }
           }
         }
       }
     }
-  }, [markerList, checkedDay]);
+  }, [markerList, checkedDay, moveLat, moveLng]);
 
   return (
     <MapBlock>

@@ -95,7 +95,8 @@ const Comment = styled.textarea`
   border: 3px dashed #0aa1dd;
   background-color: #fff;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
-  font-size: 1.2rem;
+  font-size: 0.9rem;
+  font-family: 'Tmoney';
 `;
 
 const Button = styled.div`
