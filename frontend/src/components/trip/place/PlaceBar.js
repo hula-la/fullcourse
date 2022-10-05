@@ -187,7 +187,7 @@ const PlaceBar = ({ map }) => {
   };
 
   const onClickSlider = () => {
-    // setKeyword('')
+    
     setPageNum(0);
     const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
@@ -313,7 +313,7 @@ const PlaceBar = ({ map }) => {
 
   return (
     <PlaceContainer className="place-container">
-      {/* {maxDist} */}
+   
       <TypeContainer>
         {showPlaceTypes.map((item, id) => (
           <PlaceTypes
