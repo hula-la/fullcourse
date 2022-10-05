@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchRandomPlace, fetchRecommendPlace } from './surveyActions';
 
 const initialState = {
-  randomPlaceList: null,
-  recommendPlaceList: null,
+  randomPlaceList: [],
+  recommendPlaceList: [],
   likePlaceList: [],
   likePlaceIndex: [],
   number: 0,
@@ -13,6 +13,10 @@ const surveySlice = createSlice({
   name: 'survey',
   initialState,
   reducers: {
+    setNumber: (state, { payload }) => {
+      console.log(payload);
+  state.number = payload;
+    },
     likePlace: (state, { payload }) => {
       state.likePlaceList = [...state.likePlaceList, payload];
       state.likePlaceIndex = [...state.likePlaceIndex, payload.placeId];
@@ -43,6 +47,6 @@ const surveySlice = createSlice({
   },
 });
 
-export const { likePlace, passPlace,deletePlace } = surveySlice.actions;
+export const { likePlace, passPlace,deletePlace,setNumber } = surveySlice.actions;
 
 export default surveySlice.reducer;

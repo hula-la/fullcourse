@@ -255,11 +255,18 @@ const RecommendPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { recommendPlaceList } = useSelector((state) => state.survey);
+  const { randomPlaceList } = useSelector((state) => state.survey);
+  const { number } = useSelector((state) => state.survey);
   const { likePlaceList } = useSelector((state) => state.survey);
   const { placeId } = location.state;
   const { likePlaceIndex } = useSelector((state) => state.survey);
 
   const { markers, map } = useSelector((state) => state.trip);
+
+  useEffect(() => {
+    console.log(randomPlaceList.length);
+    console.log(number);
+  }, [number]);
 
   useEffect(() => {
     if (placeId) {
@@ -322,7 +329,7 @@ const RecommendPage = () => {
         일정짜기 <SkipNextIcon />
       </PlanButton>
 
-      {recommendPlaceList && (
+      {recommendPlaceList.length!=0 && (
         <>
           <RecommendHeader>
             <div className="title">
