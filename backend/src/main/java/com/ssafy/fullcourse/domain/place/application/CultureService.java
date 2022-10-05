@@ -30,7 +30,7 @@ public class CultureService {
     private final UserRepository userRepository;
 
 
-    public Page<PlaceRes> getCultureList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getCultureList(Pageable pageable, String keyword, Float maxDist, Float lat, Float lng) throws Exception {
         Page<Culture> page = null;
         List<Culture> list = null;
         if (keyword.equals("")) {
@@ -38,7 +38,7 @@ public class CultureService {
         } else {
             list = cultureRepository.findByNameContaining(keyword);
         }
-        if(maxDist != 0) {
+        if(maxDist > 0.5) {
             list = extractByDist(list, lat, lng, maxDist);
         }
         if(pageable.getSort().toString().equals("likeCnt: DESC")){
@@ -91,7 +91,7 @@ public class CultureService {
         return response;
     }
 
-    public static List<Culture> extractByDist(List<Culture> list, Float lat, Float lng, Integer maxDist) {
+    public static List<Culture> extractByDist(List<Culture> list, Float lat, Float lng, Float maxDist) {
         for (int i = 0; i < list.size(); i++) {
             Culture c = list.get(i);
             Double dist = Math.sqrt(Math.pow((c.getLat() - lat) * 88.9036, 2) + Math.pow((c.getLng() - lng) * 111.3194, 2));

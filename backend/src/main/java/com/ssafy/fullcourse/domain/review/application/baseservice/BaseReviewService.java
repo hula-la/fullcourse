@@ -63,6 +63,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         if(!review.isPresent()) throw new ReviewNotFoundException();
 
+        awsS3Service.delete(review.get().getReviewImg());
+
 //        System.out.println(review.get() instanceof CultureReview); //
 
         baseReviewRepository.deleteById(reviewId);
@@ -117,7 +119,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
         R review = reviewOpt.get();
         
         
-        String imgUrl = defaultImg;
+        String imgUrl;
         
         
         if(file != null) {
@@ -125,6 +127,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
                 awsS3Service.delete(review.getReviewImg());
             }
             imgUrl = awsS3Service.uploadImage(file);
+        } else {
+            imgUrl = review.getReviewImg();
         }
         
         
@@ -162,21 +166,5 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         return true;
     }
-
-//    public String saveImg(MultipartFile file){
-//
-//        if(file == null) {
-//            findUser.update(userDto.getNickname(), findUser.getImgUrl());
-//        } else {
-//            if (!findUser.getImgUrl().equals(defaultImg)) {
-//                awsS3Service.delete(findUser.getImgUrl());
-//            }
-//            userDto.setFile(file);
-//            findUser.update(userDto.getNickname(), awsS3Service.uploadImage(userDto.getFile()));
-//        }
-//
-//        userRepository.save(findUser);
-//        return imgPath;
-//    }
 
 }

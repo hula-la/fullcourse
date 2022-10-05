@@ -70,7 +70,7 @@ public class SharedFullCourseController {
     public ResponseEntity<BaseResponseBody> detailSharedFC(
             @ApiParam(value="공유 풀코스 id", required = true)
             @PathVariable  Long sharedFcId,
-            @RequestParam String email
+            @AuthenticationPrincipal String email
             ) {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCService.detailSharedFC(sharedFcId, email)));
 
@@ -82,7 +82,7 @@ public class SharedFullCourseController {
     public ResponseEntity<BaseResponseBody> updateSharedFC(
             @PathVariable Long sharedFcId,
             @RequestBody SharedFCReq sharedFCReq,
-            @RequestParam String email) {
+            @AuthenticationPrincipal String email) {
 
 
         SharedFCDto sharedFCDto  = SharedFCDto.of(sharedFCReq);
@@ -161,7 +161,7 @@ public class SharedFullCourseController {
 
     // 공유 풀코스 리스트 조회
     @GetMapping("/fullcourse")
-    public ResponseEntity<BaseResponseBody> getSharedFCList(String email, String keyword, Pageable pageable) {
+    public ResponseEntity<BaseResponseBody> getSharedFCList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
         Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(email,keyword,pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }

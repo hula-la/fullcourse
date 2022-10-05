@@ -181,9 +181,6 @@ public class FullCourseService {
         String url = null;
         FullCourseDetail fullCourseDetail =
                 fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
-        if (fullCourseDetail.getImg() != null) {
-            awsS3Service.delete(fullCourseDetail.getImg());
-        }
         if (img != null && !img.isEmpty()) {
             File file = convert(img);
             Metadata metadata = ImageMetadataReader.readMetadata(file);
@@ -199,10 +196,13 @@ public class FullCourseService {
                     confirmVisitByImage(latLng, fcDetailId);
                 }
             }
+            if (fullCourseDetail.getImg() != null) {
+                awsS3Service.delete(fullCourseDetail.getImg());
+            }
             url = awsS3Service.uploadImage(img);
+            fullCourseDetail.setImg(url);
         }
 
-        fullCourseDetail.setImg(url);
         fullCourseDetail.setComment(content);
         fullCourseDetailRepository.save(fullCourseDetail);
         return getFullCourseDetailById(fullCourseDetail.getFullCourse().getFcId());

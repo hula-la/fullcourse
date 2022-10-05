@@ -29,10 +29,10 @@ public class RestaurantService {
     private final RestaurantLikeRepository restaurantLikeRepository;
     private final UserRepository userRepository;
 
-    public Page<PlaceRes> getRestaurantList(Pageable pageable, String keyword, String tag, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getRestaurantList(Pageable pageable, String keyword, String tag, Float maxDist, Float lat, Float lng) throws Exception {
         Page<Restaurant> page;
         List<Restaurant> list;
-        if (maxDist == 0 || lat == 0 || lng == 0) {
+        if (maxDist > 0.5 || lat == 0 || lng == 0) {
             if (keyword.equals("") && tag.equals("")) {
                 page = restaurantRepository.findAll(pageable);
             } else if (!tag.equals("") && keyword.equals("")) {
@@ -104,7 +104,7 @@ public class RestaurantService {
         return response;
     }
 
-    public static List<Restaurant> extractByDist(List<Restaurant> list, Float lat, Float lng, Integer maxDist){
+    public static List<Restaurant> extractByDist(List<Restaurant> list, Float lat, Float lng, Float maxDist){
         for (int i = 0; i < list.size(); i++) {
             Restaurant r = list.get(i);
             Double dist = Math.sqrt(Math.pow((r.getLat() - lat) * 88.9036, 2) + Math.pow((r.getLng() - lng) * 111.3194, 2));
