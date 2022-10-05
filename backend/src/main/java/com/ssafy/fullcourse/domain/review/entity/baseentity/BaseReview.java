@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+import java.util.Date;
+
 import static javax.persistence.FetchType.LAZY;
 
 //@DynamicInsert
@@ -45,6 +47,8 @@ public class BaseReview<P extends BasePlace> {
     @JoinColumn(name = "placeId")
     private P place;
 
+    @Column(nullable = false)
+    private Date regDate;
 
     public void update(String content, Float score, String imgUrl){
         this.content = content;

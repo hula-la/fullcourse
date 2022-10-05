@@ -24,6 +24,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -46,6 +47,7 @@ public class CultureReviewService extends BaseReviewService<CultureReview, Cultu
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
                 .isVisited(false)
+                .regDate(new Date())
                 .build();
 
         if(file != null && !file.isEmpty()){

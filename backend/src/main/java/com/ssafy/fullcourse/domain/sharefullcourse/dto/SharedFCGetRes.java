@@ -1,9 +1,11 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.dto;
 
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCComment;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.user.dto.UserDto;
 import lombok.*;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +33,9 @@ public class SharedFCGetRes {
     private boolean isLike;
 
     public static SharedFCGetRes of(SharedFullCourse sharedFullCourse, Boolean isLike){
+        List<SharedFCComment> list = sharedFullCourse.getSharedFCComments();
+        Collections.reverse(list);
+        sharedFullCourse.setSharedFCComments(list);
         return SharedFCGetRes.builder()
                 .fcId(sharedFullCourse.getFullCourse().getFcId())
                 .sharedFcId(sharedFullCourse.getSharedFcId())

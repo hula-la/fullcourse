@@ -24,6 +24,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -45,6 +46,7 @@ public class TravelReviewService extends BaseReviewService<TravelReview, Travel,
                 .place(place.get())
                 .user(userRepository.findByEmail(email).get())
                 .isVisited(false)
+                .regDate(new Date())
                 .build();
         if(file != null && !file.isEmpty()){
             File f = convert(file);
