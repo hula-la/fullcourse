@@ -32,6 +32,11 @@ const PlanButton = styled.div`
   border-radius: 1rem;
   font-size: 0.8rem;
   border: 2px solid;
+
+  &:hover{
+    transform: scale(1.1);
+    animation-duration: 0.2s;
+  }
 `;
 
 const RecommendHeader = styled.div`
@@ -102,6 +107,9 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
+.likeCnt{
+  padding: 0.4rem;
+}
   img {
     border-radius: 0.8rem;
     height: 100%;
@@ -109,6 +117,14 @@ const LikePlaceList = styled.div`
 
     width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
     height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+  }
+
+  .continueBtn{
+    cursor: pointer;
+
+    &:hover {
+      background:#c8c3ff;
+    }
   }
 
   @media only screen and (min-device-width: 375px) and (max-device-width: 800px) {
@@ -147,21 +163,27 @@ const LikePlaceList = styled.div`
     margin: 0 1rem;
     font-weight: bold;
   }
+  .likePlaceBox{
+    height: 65%;
+    width: 50%;
+    max-width: 50rem;
+  }
 
   .likePlaceContainer {
     white-space: nowrap;
     display: flex;
     align-items: center;
 
-    height: 65%;
-    width: 63%;
-    max-width: 50rem;
+    height: 100%;
+    width: 100%;
+    /* height: 65%;
+    width: 50%;
+    max-width: 50rem; */
     background: #e2dfff;
     border-radius: 1rem;
     /* height:10%; */
     overflow-x: scroll;
     overflow-y: hidden;
-    margin: 0 10%;
   }
 
   /* 스크롤바 설정*/
@@ -319,34 +341,45 @@ const RecommendPage = () => {
       )}
 
       <LikePlaceList>
-        <div className="likePlaceContainer">
-          {likePlaceList && (
+      <div className="tooltip likePlaceBox">
+                <span className="tooltiptext tooltip-top">
+                  <p>당신이 선택한 장소들이 담깁니다.</p>
+                </span>
+          {likePlaceList.length >= 0 && (
             <>
-              {likePlaceList.map((place, index) => {
-                return (
-                  <div className="likePlace">
-                    <div className="imgContainer">
-                      <div
-                        className="deletebtn"
-                        onClick={(e) => deleteLikePlace(index, e)}
-                      >
-                        -
-                      </div>
+              <div className="likePlaceContainer">
+                {likePlaceList.map((place, index) => {
+                  return (
+                    <div className="likePlace">
+                      <div className="imgContainer">
+                        <div
+                          className="deletebtn"
+                          onClick={(e) => deleteLikePlace(index, e)}
+                        >
+                          -
+                        </div>
 
-                      <img src={place.imgUrl} />
+                        <img src={place.imgUrl} />
+                      </div>
+                      <div className="likePlaceName">{place.name}</div>
                     </div>
-                    <div className="likePlaceName">{place.name}</div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </>
           )}
+
         </div>
         <div className="buttonContainer">
-          <div className={likePlaceList.length == 5 ? `maxLike` : ``}>
+        <div className="tooltip">
+          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
             {likePlaceList.length} /5
           </div>
-          <button onClick={onClickContinue}>
+            <div className="tooltiptext tooltip-left">
+              <p>최대 5개의 장소를 선택해보세요.</p>
+            </div>
+          </div>
+          <button className='continueBtn' onClick={onClickContinue}>
             계속 <span>▶</span>
           </button>
         </div>
