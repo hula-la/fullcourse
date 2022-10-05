@@ -294,13 +294,14 @@ const RecommendPage = () => {
     dispatch(deletePlace(likePlaceList[index]));
   };
 
-  const addMarker = (lat, lng) => {
+  const addMarker = (lat, lng, name) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
       position: position,
     });
     marker['position'] = position;
+    marker['placeName'] = name;
     dispatch(setMarkers(marker));
   };
 
@@ -322,7 +323,7 @@ const RecommendPage = () => {
           placeItemObj.lng = data.lng;
           placeItemObj.type = placeType
           dispatch(setPlaceItem(placeItemObj));
-          addMarker(data.lat, data.lng);
+          addMarker(data.lat, data.lng, data.name);
           console.log("setting이 잘되나",placeItemObj)
         });
     });
