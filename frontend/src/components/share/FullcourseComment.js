@@ -15,7 +15,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const CommentBlock = styled.div`
 display: flex;
-    height: calc(100vh - 80px);
+    height: 100vh;
     flex-direction: column;
 
   width: 30%;
@@ -385,8 +385,8 @@ const FullcourseComment = ({ sharedFcInfo }) => {
                       alt="profileImg"
                     />
                     <div className="commentContentContainer">
-                      <span id="userNickname">{comment.nickname} </span>
-                      
+                      <span id="userNickname">{comment.nickname}</span>
+                      <span> {comment.regDate.substr(0, 10)} {comment.regDate.substr(11,8)}</span>
                     <span className="commentContent">{comment.comment}</span>
 
                     </div>

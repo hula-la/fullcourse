@@ -21,7 +21,7 @@ const OnlyHeaderLayout = () => {
   return (
     <Wrapper>
       <div className="content">
-        {/* <Header /> */}
+        <Header />
         <div>
           <Outlet />
         </div>

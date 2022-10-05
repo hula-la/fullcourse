@@ -81,7 +81,7 @@ const FullcourseShare = () => {
   const { checkedDayTagList } = useSelector((state) => state.share);
   const { howSort } = useSelector((state) => state.share);
   const [maxPageNum, setMaxPageNum] = useState(null);
-  const [pageNum, setPageNum] = useState(0);
+  const [pageNum, setPageNum] = useState(1);
   const [place, setPlace] = useState('');
 
   useEffect(() => {
@@ -107,7 +107,7 @@ const FullcourseShare = () => {
         howSort,
       }),
     );
-    setPageNum(0);
+    setPageNum(1);
   }, [dispatch, checkedTagList, checkedDayTagList, howSort]);
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const FullcourseShare = () => {
         checkedTagList,
         checkedDayTagList,
         place,
-        pageNum,
+        pageNum: pageNum - 1,
         howSort,
       }),
     );
@@ -124,16 +124,17 @@ const FullcourseShare = () => {
 
   const onClickPage = (e) => {
     const nowPage = parseInt(e.target.outerText);
-    setPageNum(nowPage - 1);
+    setPageNum(nowPage);
   };
 
   const onClickSearch = (e) => {
+    setPageNum(1);
     dispatch(
       fetchSharedFc({
         checkedTagList,
         checkedDayTagList,
         place,
-        pageNum,
+        pageNum: 0,
         howSort,
       }),
     );
@@ -180,6 +181,7 @@ const FullcourseShare = () => {
       <PaginationWrapper>
         {sharedFcList ? (
           <Pagination
+            page={pageNum}
             count={maxPageNum}
             color="primary"
             showFirstButton

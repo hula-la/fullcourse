@@ -16,7 +16,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const CommentBlock = styled.div`
   background: aliceblue;
-  height: calc(100vh - 80px);
+  height: 100vh;
   width: 100vw;
 
   position: absolute;

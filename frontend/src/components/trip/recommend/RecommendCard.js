@@ -57,6 +57,11 @@ const Wrapper = styled.div`
     }
   }
 
+  .front img{
+    max-height: 15vh;
+    object-fit: cover;
+  }
+
   .front,
   .back {
     overflow: hidden;
@@ -123,7 +128,7 @@ border-radius: 10px;
 } */
 
   .placeTag {
-    max-height: 30%;
+    max-height: 33%;
     overflow: scroll;
   }
 
@@ -226,9 +231,10 @@ const RecommendCard = ({ place, index }) => {
         };
       });
 
+      
       setWords(data);
     });
-  }, []);
+  }, [place]);
 
   // useEffect(() => {
   //   console.log(words)

@@ -10,13 +10,37 @@ const MapBlock = styled.div`
     width: 100%;
     height: 100%;
   }
+  .customoverlay_main {
+    position: relative;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    border-bottom: 2px solid #ddd;
+    float: left;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #333333;
+    margin-bottom: 120px;
+  }
+  .customoverlay_main .title {
+    display: block;
+    padding: 6px 11px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+  }
 `;
 
 const FullcourseMap = () => {
   const { fullcourseDetail } = useSelector((state) => state.trip);
   const { checkedDay } = useSelector((state) => state.share);
+  const { moveLat } = useSelector((state) => state.share);
+  const { moveLng } = useSelector((state) => state.share);
   const [markerList, setMarkerList] = useState([]);
   const [linePath, setLinePath] = useState([]);
+  const [overlayList, setOverlayList] = useState([]);
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -31,6 +55,22 @@ const FullcourseMap = () => {
         newMarkerList = [...newMarkerList, tmp];
       });
       setMarkerList(newMarkerList);
+    } else {
+    }
+  }, [fullcourseDetail]);
+
+  useEffect(() => {
+    if (fullcourseDetail) {
+      let newoverlayList = [];
+      Object.keys(fullcourseDetail.places).map((place, index) => {
+        const tmp = fullcourseDetail.places[place].map((pla, index) => {
+          return {
+            latlng: new kakao.maps.LatLng(pla.place.lat, pla.place.lng),
+          };
+        });
+        newoverlayList = [...newoverlayList, tmp];
+      });
+      setOverlayList(newoverlayList);
     } else {
     }
   }, [fullcourseDetail]);
@@ -53,14 +93,34 @@ const FullcourseMap = () => {
     var container = document.getElementById('map');
     var options = {
       center: new kakao.maps.LatLng(35.17962489619582, 129.07480154639234),
-      level: 9,
+      level: 6,
     };
 
     var map = new kakao.maps.Map(container, options);
 
+    if (moveLat) {
+      let moveLatLon = new kakao.maps.LatLng(moveLat, moveLng);
+      map.setCenter(moveLatLon);
+    }
+
     if (checkedDay === 6) {
       for (var i = 0; i < markerList.length; i++) {
         for (var j = 0; j < markerList[i].length; j++) {
+          // 커스텀 오버레이에 표시할 내용입니다
+          // HTML 문자열 또는 Dom Element 입니다
+          var content =
+            '<div class="customoverlay_main">' +
+            '    <span class="title">' +
+            markerList[i][j].title +
+            '</span>' +
+            '</div>';
+
+          let customOverlay1 = new kakao.maps.CustomOverlay({
+            position: overlayList[i][j].latlng,
+            content: content,
+          });
+
+          customOverlay1.setMap(map);
           // 지도에 표시할 선을 생성합니다
           var polyline = new kakao.maps.Polyline({
             path: linePath, // 선을 구성하는 좌표배열 입니다
@@ -94,6 +154,21 @@ const FullcourseMap = () => {
       for (var i = 0; i < markerList.length; i++) {
         if (checkedDay === i) {
           for (var j = 0; j < markerList[i].length; j++) {
+            // 커스텀 오버레이에 표시할 내용입니다
+            // HTML 문자열 또는 Dom Element 입니다
+            var content =
+              '<div class="customoverlay_main">' +
+              '    <span class="title">' +
+              markerList[i][j].title +
+              '</span>' +
+              '</div>';
+
+            let customOverlay1 = new kakao.maps.CustomOverlay({
+              position: overlayList[i][j].latlng,
+              content: content,
+            });
+
+            customOverlay1.setMap(map);
             // 지도에 표시할 선을 생성합니다
             var polyline = new kakao.maps.Polyline({
               path: linePath[i], // 선을 구성하는 좌표배열 입니다
@@ -121,11 +196,48 @@ const FullcourseMap = () => {
               title: markerList[i][j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
               image: markerImage, // 마커 이미지
             });
+
+            let iwContent =
+              '<div class="place">' +
+              '<div ' +
+              'class="placeMemo">' +
+              '<p>' +
+              markerList[i][j].title +
+              '✨' +
+              '</p>' +
+              '</div>' +
+              '<img ' +
+              'class="placeImg"' +
+              'src=' +
+              fullcourseDetail.places[i][j].img +
+              ' />' +
+              '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+            // 커스텀 오버레이가 표시될 위치입니다
+            // 커스텀 오버레이를 생성합니다
+            let customOverlay3 = new kakao.maps.CustomOverlay({
+              position: overlayList[i][j].latlng,
+              content: iwContent,
+            });
+
+            // 커스텀 오버레이를 지도에 표시합니다
+
+            if (fullcourseDetail.places[i][j].img) {
+              kakao.maps.event.addListener(marker, 'mouseover', function () {
+                // 마커 위에 인포윈도우를 표시합니다
+                customOverlay3.setMap(map);
+              });
+              kakao.maps.event.addListener(marker, 'mouseout', function () {
+                setTimeout(function () {
+                  customOverlay3.setMap();
+                });
+              });
+            }
           }
         }
       }
     }
-  }, [markerList, checkedDay]);
+  }, [markerList, checkedDay, moveLat, moveLng]);
 
   return (
     <MapBlock>

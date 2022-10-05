@@ -97,6 +97,7 @@ const ReviewListItem = ({ review, placeType, cnt }) => {
         <hr className="line"></hr>
         <div className="reviewTop">
           <h5>{review.nickname} <span>{review.isVisited ? '🚩' : null}</span></h5>
+          <h5>{review.regDate.substr(0, 10)} {review.regDate.substr(11, 8)}</h5>
           {userInfo && userInfo.email === review.email ? (
             <button onClick={() => onClickDelete(review)}>삭제</button>
           ) : null}
