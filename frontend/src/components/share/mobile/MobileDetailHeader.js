@@ -101,6 +101,7 @@ const ShareInfo = styled.div`
 
 const SharedTitle = styled.div`
   display: flex;
+  width:100%;
   text-align: left;
   padding: 1.5rem 1rem;
   align-items: center;

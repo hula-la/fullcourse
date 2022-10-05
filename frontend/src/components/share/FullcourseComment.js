@@ -213,7 +213,7 @@ display: flex;
     margin-right: 5px;
   }
 
-  #btnKakao {
+  #btnKakaoCap {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -340,7 +340,7 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         {sharedFcInfo ? (
           <>
             {sharedFcInfo.like ? (
-              <FavoriteIcon className="favorite" onClick={onClickLike} />
+              <FavoriteIcon className="favorite" />
             ) : (
               <FavoriteBorderIcon
                 className="favoriteborder"
@@ -351,15 +351,15 @@ const FullcourseComment = ({ sharedFcInfo }) => {
           </>
         ) : null}
         </div>
-        <div className='btnContainer'
+        <div id="btnKakao" className='btnContainer'
           onClick={() => {
             shareKakao(sharedFcInfo);
           }}>
         {sharedFcInfo ? (
-          <ShareIcon id="btnKakao"
+          <ShareIcon 
             />
         ) : null}
-        <span>공유하기</span>
+        <span id="btnKakaoCap">공유하기</span>
           </div>
       </div>
         <div className="commentForm">
