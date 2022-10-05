@@ -54,7 +54,7 @@ const MyLikeSharedFc = () => {
   const dispatch = useDispatch();
   const { sharedFcLikeList } = useSelector((state) => state.share);
 
-  const [fcLength, setFcLength] = useState(3);
+  const [fcLength, setFcLength] = useState();
   // carousel 설정
   const settings = {
     dots: true,
@@ -81,7 +81,7 @@ const MyLikeSharedFc = () => {
   return (
     <Wrapper>
       <TitleText content="찜한 풀코스" />
-      {sharedFcLikeList && sharedFcLikeList.content.length >= 3 ? (
+      {sharedFcLikeList ? (
         <Slider
           className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
           {...{

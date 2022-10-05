@@ -56,10 +56,10 @@ const PlaceIdx = styled.div`
   }
 
   .idx3 {
-    background: green;
+    background: #655aff;
   }
   .idx4 {
-    background: pink;
+    background: #e574ff;
   }
 `;
 
@@ -113,10 +113,10 @@ const Line = styled.div`
   }
 
   .idx3 {
-    border-left: 2px solid green;
+    border-left: 2px solid #655aff;
   }
   .idx4 {
-    border-left: 2px solid pink;
+    border-left: 2px solid #e574ff;
   }
 `;
 

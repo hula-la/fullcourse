@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteSharedFcComment,
+  getMyFullcourse,
   getMySharedFc,
   getSharedFc,
   getSharedFcDetail,
@@ -9,6 +10,22 @@ import {
   postSharedFcComment,
   postSharedFcLike,
 } from '../../api/share';
+
+export const fetchMyFullcourse = createAsyncThunk(
+  'user/fetchMyfullcourse',
+  async (tmp, { rejectWithValue }) => {
+    try {
+      const { data } = await getMyFullcourse();
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
 
 export const fetchSharedFc = createAsyncThunk(
   'share/fetchSharedFc',
@@ -45,9 +62,9 @@ export const fetchSharedFcDetail = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data);
       } else {
-        return rejectWithValue(error.message);
+        return rejectWithValue(error);
       }
     }
   },
@@ -61,9 +78,9 @@ export const createSharedFc = createAsyncThunk(
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data);
       } else {
-        return rejectWithValue(error.message);
+        return rejectWithValue(error);
       }
     }
   },

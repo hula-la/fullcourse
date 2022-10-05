@@ -52,7 +52,7 @@ const MySharedFc = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mySharedFcList } = useSelector((state) => state.share);
-  const [fcLength, setFcLength] = useState(3);
+  const [fcLength, setFcLength] = useState();
   // carousel 설정
   const settings = {
     dots: true,
@@ -67,7 +67,7 @@ const MySharedFc = () => {
   }, [dispatch]);
   useEffect(() => {
     if (mySharedFcList) {
-      setFcLength(mySharedFcList.content.length);
+      setFcLength(mySharedFcList.length);
     }
   }, [mySharedFcList]);
   const onClickSharedFc = (fullcourse, e) => {
@@ -78,7 +78,7 @@ const MySharedFc = () => {
     <Wrapper>
       <TitleText content="공유한 풀코스" />
 
-      {mySharedFcList && mySharedFcList.content.length >= 3 ? (
+      {mySharedFcList ? (
         <Slider
           className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
           {...{
@@ -89,7 +89,7 @@ const MySharedFc = () => {
             slidesToScroll: 1,
           }}
         >
-          {mySharedFcList.content.map((fullcourse, index) => {
+          {mySharedFcList.map((fullcourse, index) => {
             return (
               <div
                 className="card"
