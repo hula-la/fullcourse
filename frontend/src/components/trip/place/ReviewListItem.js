@@ -96,7 +96,7 @@ const ReviewListItem = ({ review, placeType, cnt }) => {
       <Content>
         <hr className="line"></hr>
         <div className="reviewTop">
-          <h5>{review.nickname}</h5>
+          <h5>{review.nickname} <span>{review.isVisited ? '🚩' : null}</span></h5>
           {userInfo && userInfo.email === review.email ? (
             <button onClick={() => onClickDelete(review)}>삭제</button>
           ) : null}
