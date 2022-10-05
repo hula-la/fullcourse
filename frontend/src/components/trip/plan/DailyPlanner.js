@@ -260,17 +260,12 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
 
     const sortAndDisplayItem = (e) => {
       const container = e.target.closest('.planner-list');
-      console.log("뭐가문제야",e.target)
-      console.log("안녕난 아 왜 컨테이너",container)
       const item = document.querySelector('.dragging');
       // console.log("여긴가")
       const afterElement = getDragAfterElement(container, e.clientY);
       if (afterElement) {
         container.insertBefore(item, afterElement);
-        console.log("여긴가",item,afterElement)
-        console.log("뭐냐", item)
       } else {
-        console.log("아니이거되야하는데",item)
         container.appendChild(item);
       }
       e.preventDefault();
