@@ -11,6 +11,10 @@ const MemoBlock = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url('/img/memo.jpg');
+  .btn-wrapper{
+    display: grid;
+    justify-content: center;
+  }
 `;
 
 const PlaceWrapper = styled.div`
@@ -21,10 +25,10 @@ const PlaceWrapper = styled.div`
   margin: 10px 15px;
   align-items: center;
   justify-content: space-evenly;
-  div {
+  /* div {
     width: 100%;
     text-align: left;
-  }
+  } */
   .day {
     font-size: 1.2rem;
   }
@@ -46,6 +50,7 @@ const PlaceWrapper = styled.div`
     color: #0aa1dd;
   }
 `;
+
 const MemoWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,6 +58,7 @@ const MemoWrapper = styled.div`
   padding: 0 20px;
   padding-bottom: 15px;
   border-top: 2px solid #0aa1dd;
+
 `;
 
 const Img = styled.div`
@@ -80,7 +86,8 @@ const Comment = styled.div`
   border: 3px dashed #0aa1dd;
   background-color: #fff;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
-  font-size: 1.2rem;
+  font-size: 1rem;
+  padding: 1rem;
 `;
 
 const Button = styled.div`
@@ -178,8 +185,12 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
       {!isUpdate ? (
         <MemoBlock>
           <PlaceWrapper>
-            <Button onClick={onClickUpdate}>수정하기</Button>
+
             <div className="name">{placeName}</div>
+            {img || comment ? (
+              <div className="btn-wrapper">
+                <Button onClick={onClickUpdate}>수정하기</Button>
+              </div>):null}
             {visited ? <span className="visit">방문 인증완료 </span> : null}
           </PlaceWrapper>
           {img || comment ? (
@@ -204,7 +215,9 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
               </Comment>
             </MemoWrapper>
           ) : (
-            <Button onClick={onClickMemo}>기록하기 📚</Button>
+            <div className="btn-wrapper">
+              <Button onClick={onClickMemo}>기록하기 📚</Button>
+            </div>
           )}
         </MemoBlock>
       ) : (
