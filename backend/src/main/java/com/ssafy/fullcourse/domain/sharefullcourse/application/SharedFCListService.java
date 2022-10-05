@@ -58,12 +58,12 @@ public class SharedFCListService {
     }
 
     //내 공유 풀코스 조회
-    public Page<SharedFCListDto> getSharedFCListByUser(String email, Pageable pageable){
+    public List<SharedFCListDto> getSharedFCListByUser(String email){
         User user = userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException());
 
-        Page<SharedFullCourse> page = sharedFCRepository.findByUser(user, pageable);
-        return page.map(share -> new SharedFCListDto(share,
-                share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
+        List<SharedFullCourse> list = sharedFCRepository.findByUser(user);
+        return list.stream().map(share -> new SharedFCListDto(share,
+                share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList()))).collect(Collectors.toList());
     }
 
     // 공유 풀코스 태그&날짜 조회

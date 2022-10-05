@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,9 +77,9 @@ public class FullCourseService {
     }
 
 
-    public Page<FullCourseRes> getFullCourse(String email, Pageable pageable) {
-        Page<FullCourse> fcs = fullCourseRepository.findByUser_Email(email, pageable);
-        return fcs.map(FullCourseRes::new);
+    public List<FullCourseRes> getFullCourse(String email) {
+        List<FullCourse> fcs = fullCourseRepository.findByUser_Email(email);
+        return fcs.stream().map(FullCourseRes::new).collect(Collectors.toList());
     }
 
     public FullCourseTotalRes getFullCourseDetailById(Long fcId) {
