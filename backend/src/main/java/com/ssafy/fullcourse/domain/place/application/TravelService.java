@@ -27,11 +27,11 @@ public class TravelService {
     private final TravelLikeRepository travelLikeRepository;
     private final UserRepository userRepository;
 
-    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getTravelList(Pageable pageable, String keyword, String tag, Float maxDist, Float lat, Float lng) throws Exception {
         boolean checkDist = false, checkTag = false;
         List<String> tagList = null;
         StringTokenizer st = null;
-        if (maxDist != 0 && lat != 0 && lng != 0) checkDist = true;
+        if (maxDist > 0.5 && lat != 0 && lng != 0) checkDist = true;
         if (!tag.equals("")) checkTag = true;
         System.out.println(maxDist + " " + lat + " " + lng);
 

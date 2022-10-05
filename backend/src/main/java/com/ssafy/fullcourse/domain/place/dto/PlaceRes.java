@@ -48,6 +48,7 @@ public class PlaceRes {
         this.lat = place.getLat();
         this.lng = place.getLng();
         this.reviewCnt = place.getReviewCnt();
+        this.imgUrl = place.getImgUrl();
         this.likeCnt = place.getLikeCnt();
         this.addedCnt = place.getAddedCnt();
         this.reviewScore = place.getReviewScore();

@@ -29,7 +29,7 @@ public class HotelService {
     private final HotelLikeRepository hotelLikeRepository;
     private final UserRepository userRepository;
 
-    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Float maxDist, Float lat, Float lng) throws Exception {
         Page<Hotel> page;
         List<Hotel> list;
         if (keyword.equals("")) {
@@ -37,7 +37,7 @@ public class HotelService {
         } else {
             list = hotelRepository.findByNameContaining(keyword);
         }
-        if(maxDist != 0) {
+        if(maxDist > 0.5) {
             list = extractByDist(list, lat, lng, maxDist);
         }
         if(pageable.getSort().toString().equals("likeCnt: DESC")){
@@ -87,7 +87,7 @@ public class HotelService {
         return response;
     }
 
-    public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Integer maxDist){
+    public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Float maxDist){
         for (int i = 0; i < list.size(); i++) {
             Hotel h = list.get(i);
             Double dist = Math.sqrt(Math.pow((h.getLat() - lat) * 88.9036, 2) + Math.pow((h.getLng() - lng) * 111.3194, 2));
