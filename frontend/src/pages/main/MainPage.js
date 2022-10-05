@@ -16,8 +16,8 @@ import Swal from 'sweetalert2';
 
 const Container = styled.div`
   overflow-x: hidden;
-  display: grid;
-  grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분
+  /* display: grid; */
+  /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
   background: radial-gradient(
     ellipse at center,
     #fffeea 0%,
@@ -40,7 +40,7 @@ const Container = styled.div`
 
 const Introduce = styled.div`
   align-items: center;
-  height: 100vh;
+  height: 100%;
   @media only screen and (min-device-width: 479px) {
     display: flex;
   }

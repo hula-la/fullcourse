@@ -15,13 +15,13 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100vh;
+  height: 100%;
 
   
 
   .planButtonContainer {
     position: absolute;
-    top: 2%;
+    top: 3%;
     right: 3%;
   }
 
@@ -64,7 +64,7 @@ right:5%; */
 // cursor:pointer;
 // `
 const SurveyHeader = styled.div`
-  height: 18%;
+  height: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,7 +264,7 @@ const LikePlaceList = styled.div`
   }
 
   .likePlaceBox {
-    height: 65%;
+    height: 80%;
     width: 50%;
     max-width: 50rem;
   }
@@ -297,14 +297,29 @@ const LikePlaceList = styled.div`
     &:hover {
       border: 4px solid #333333 !important;
     }
+    /* 스크롤바 */
+    &::-webkit-scrollbar-thumb {
+      background-clip: padding-box;
+  
+      background-color: white;
+      /* 스크롤바 둥글게 설정    */
+      border-radius: 1rem;
+      border: 2px solid black;
+    }
+    @media only screen and (min-device-width: 479px) {
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+    }
+  
+    /* 스크롤바 뒷 배경 설정*/
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
   }
 
   /* 스크롤바 설정*/
-  @media only screen and (min-device-width: 479px) {
-    .likePlaceContainer::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
 
   /* 스크롤바 막대 설정*/
   /* .likePlaceContainer::-webkit-scrollbar-thumb{
@@ -313,20 +328,7 @@ const LikePlaceList = styled.div`
 
   } */
 
-  .likePlaceContainer::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
 
-    background-color: white;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 1rem;
-    border: 4px solid transparent;
-  }
-
-  /* 스크롤바 뒷 배경 설정*/
-
-  .likePlaceContainer::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
 
   .buttonContainer {
     position: absolute;
@@ -346,6 +348,11 @@ const LikePlaceList = styled.div`
     background: #e2dfff;
     margin-top: 1rem;
     font-weight: bold;
+  }
+
+  .tooltip-left.max-place{
+    top: -12px;
+    right: 115%;
   }
 `;
 
@@ -536,7 +543,7 @@ const SurveyPage = () => {
             >
               {likePlaceList.length} /5
             </div>
-            <div className="tooltiptext tooltip-left">
+            <div className="tooltiptext tooltip-left max-place">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>
           </div>

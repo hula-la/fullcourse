@@ -30,8 +30,10 @@ const Wrapper = styled.div`
     position: relative;
     border-radius: 1rem;
     border: 0.3rem solid #0AA1DD;
+    background: white;
 
   overflow-y: auto;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: 15px;
@@ -52,7 +54,7 @@ const Wrapper = styled.div`
 
   &::-webkit-scrollbar-track {
     border-radius: 10px;
-    background-color: #d4d4d4;
+    background-color: transparent;
   }
   }
 `;
@@ -106,16 +108,16 @@ const Layout = () => {
       <div className='navStan'>
         <NavBar>
           <Link to="/">
-        <div className='navItem'><span>메인<br/>페이지</span>🍗</div>
+        <div className='navItem'><span>메인<br/>페이지</span>🚩</div>
           </Link>
           <Link to="/trip/plan">
-        <div className='navItem'><span>풀코스<br/>짜기</span>🔨</div>
+        <div className='navItem'><span>풀코스<br/>짜기</span>📝</div>
           </Link>
           <Link to="/fullcourse">
-        <div className='navItem'><span>풀코스<br/>탐색</span>📌</div>
+        <div className='navItem'><span>풀코스<br/>탐색</span>🔎</div>
           </Link>
           <Link to="/user/profile/1">
-        <div className='navItem'><span>마이<br/>페이지</span>🔎</div>
+        <div className='navItem'><span>마이<br/>페이지</span>😎</div>
           </Link>
       </NavBar>
       <div className='innerBox'>
