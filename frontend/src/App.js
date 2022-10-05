@@ -5,6 +5,7 @@ import { fetchUserInfo } from './features/user/userActions';
 import './App.css';
 // Main
 import Layout from './layout/Layout';
+import BrowserLayout from './layout/browser/BrowserLayout';
 import MainPage from './pages/main/MainPage';
 import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
@@ -26,6 +27,12 @@ import NotFound from './pages/NotFound';
 import ProtectedLoginRoute from './private/ProtectedLoginRoute';
 import ProtectedRoute from './private/ProtectedRoute';
 
+// 모바일&웹 뷰
+import {
+  BrowserView,
+  MobileView,
+} from "react-device-detect";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -35,38 +42,74 @@ function App() {
 
   return (
     <div className="App">
+      <MobileView>
+        <Routes>
+          {/* Main */}
+          <Route path="" element={<MainPage />} />
+          {/* user */}
+          <Route path="user" element={<Layout />}>
+            <Route element={<ProtectedLoginRoute />}>
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="profile/:pageNum" element={<ProfilePage />} />
+              <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+            </Route>
+          </Route>
+          <Route path="fullcourse" element={<OnlyHeaderLayout />}>
+            <Route path="" element={<ShareFcPage />} />
+            <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
+          </Route>
+          {/* trip */}
+          <Route path="trip" element={<OnlyHeaderLayout />}>
+            <Route element={<ProtectedRoute />}>
+              <Route path="plan" element={<PlanPage />} />
+              {/* survey 일정짜기 전 설문조사 */}
+              <Route path="survey" element={<SurveyPage />} />
+              <Route path="recommend" element={<RecommendPage />} />
+            </Route>
+          </Route>
+
+          {/* <Route path="ar" element={<ArPage />} /> */}
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </MobileView>
+      <BrowserView>
       <Routes>
-        {/* Main */}
-        <Route path="" element={<MainPage />} />
-        {/* user */}
-        <Route path="user" element={<Layout />}>
-          <Route element={<ProtectedLoginRoute />}>
-            <Route path="login" element={<LoginPage />} />
+          {/* Main */}
+          <Route path="" element={<BrowserLayout />}>
+            <Route path="" element={<MainPage />} />
           </Route>
-          <Route element={<ProtectedRoute />}>
-            <Route path="profile/:pageNum" element={<ProfilePage />} />
-            <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+          {/* user */}
+          <Route path="user" element={<BrowserLayout />}>
+            <Route element={<ProtectedLoginRoute />}>
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="profile/:pageNum" element={<ProfilePage />} />
+              <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="fullcourse" element={<OnlyHeaderLayout />}>
-          <Route path="" element={<ShareFcPage />} />
-          <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
-        </Route>
-        {/* trip */}
-        <Route path="trip" element={<OnlyHeaderLayout />}>
-          <Route element={<ProtectedRoute />}>
-            <Route path="plan" element={<PlanPage />} />
-            {/* survey 일정짜기 전 설문조사 */}
-            <Route path="survey" element={<SurveyPage />} />
-            <Route path="recommend" element={<RecommendPage />} />
+          <Route path="fullcourse" element={<BrowserLayout />}>
+            <Route path="" element={<ShareFcPage />} />
+            <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
           </Route>
-        </Route>
+          {/* trip */}
+          <Route path="trip" element={<BrowserLayout />}>
+            <Route element={<ProtectedRoute />}>
+              <Route path="plan" element={<PlanPage />} />
+              {/* survey 일정짜기 전 설문조사 */}
+              <Route path="survey" element={<SurveyPage />} />
+              <Route path="recommend" element={<RecommendPage />} />
+            </Route>
+          </Route>
 
-        <Route path="ar" element={<ArPage />} />
-        <Route path="wc" element={<WordcloudPage />} />
+          {/* <Route path="ar" element={<ArPage />} /> */}
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserView>
     </div>
   );
 }

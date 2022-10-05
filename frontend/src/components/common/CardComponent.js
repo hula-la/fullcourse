@@ -31,7 +31,7 @@ const Wapper = styled.div`
     width: 10px;
   }
 
-  .scrollBar::-webkit-scrollbar-thumb {
+  .scrollBar::-webkit-scrollbar- {
     background-clip: padding-box;
 
     background-color: rgba(217, 239, 255, 1);
