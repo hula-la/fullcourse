@@ -41,7 +41,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div>
       <MobileView>
         <Routes>
           {/* Main */}
@@ -76,6 +76,9 @@ function App() {
         </Routes>
       </MobileView>
       <BrowserView>
+      <div className='App'>
+        <div>
+          
       <Routes>
           {/* Main */}
           <Route path="" element={<BrowserLayout />}>
@@ -109,6 +112,8 @@ function App() {
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </div>
+        </div>
       </BrowserView>
     </div>
   );

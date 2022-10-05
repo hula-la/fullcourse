@@ -108,6 +108,7 @@ const tripSlice = createSlice({
     //여행 디테일 정보 조회
     [fetchPlaceDetail.fulfilled]: (state, { payload }) => {
       state.placeDetail = payload.data;
+      console.log("detail",payload.data)
     },
     [fetchPlaceDetail.rejected]: (state, { payload }) => {
       state.errorCode = payload;
