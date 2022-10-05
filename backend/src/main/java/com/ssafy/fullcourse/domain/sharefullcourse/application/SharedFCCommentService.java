@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class SharedFCCommentService {
         List<SharedFCCommentRes> commentResList =
                 sharedFCCommentRepository.findAllBySharedFullCourse_SharedFcId(sharedFcId).stream().map(
                         comment->SharedFCCommentRes.of(comment)).collect(Collectors.toList());
-
+        Collections.reverse(commentResList);
         return commentResList;
     }
 
@@ -48,7 +50,7 @@ public class SharedFCCommentService {
 
 
         SharedFCComment sharedFCComment = SharedFCComment.of(sharedFullCourse, sharedFCCommentReq.getComment(),user);
-
+        sharedFCComment.setRegDate(new Date());
         SharedFCComment saved = sharedFCCommentRepository.save(sharedFCComment);
         if(saved == null) throw new ServerError("댓글 등록 중 에러 발생");
         return sharedFCRepository.updateCommentCnt(saved.getSharedFullCourse().getSharedFcId(),1);
