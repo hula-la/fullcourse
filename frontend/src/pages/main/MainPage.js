@@ -353,7 +353,7 @@ const MainPage = () => {
             <StartBtn onClick={onClickStart}>시작하기</StartBtn>
           ) : (
             <Link to={'/user/login'}>
-              <StartBtn>시작하기</StartBtn>
+              <StartBtn>로그인하기</StartBtn>
             </Link>
           )}
           <a

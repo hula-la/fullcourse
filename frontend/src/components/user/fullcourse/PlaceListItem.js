@@ -157,14 +157,14 @@ const PlaceImg = styled.div`
     cursor: pointer;
   }
   .placeImgB {
-    width: 10rem;
-    height: 10rem;
+    width: 7rem;
+    height: 7rem;
   }
   .placeMemo {
     visibility: hidden;
     position: absolute;
-    top: 11rem;
-    right: 70%;
+    top: 4rem;
+    right: 42%;
     translate: 0 -50%;
     z-index: 5;
     width: 16rem;
@@ -180,6 +180,7 @@ const PlaceImg = styled.div`
   .placeMemo > div {
     border-top: 2px dashed #0aa1dd;
     padding: 1.2rem;
+    font-size: 0.8rem;
   }
 `;
 
