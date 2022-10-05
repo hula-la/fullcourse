@@ -8,6 +8,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import ko from 'date-fns/locale/ko'; //달력 한글 포맷
 
 import Swal from 'sweetalert2';
+import { setStartDate, setEndDate } from '../../../features/trip/tripSlice';
 
 const Modalbackdrop = styled.div`
   width: 10vw;
@@ -69,26 +70,13 @@ const OkBtn = styled.button`
 
 const AlertText = styled.div`
   margin-right: 28vw;
-  font-size: 2.1vmin;
+  font-size: 2vmin;
   line-height: 4vh;
   color: #4e4e4e;
 `
 
 const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
-  // const getMaxDate = (date) => {
 
-  //   if (!date) {
-  //     return date
-  //   }
-
-  //   //5일제한
-  //   const startTime = new Date(date).getTime()
-  //   const month = date.getMonth();
-  //   const year = date.getFullYear();
-  //   return new Date(startTime + 4 * 24 * 60 * 60 * 1000)
-  // }
-
-  // const maxDate = React.useMemo(() => getMaxDate(range[0].startDate), [range])
 
   return (
     <Modalbackdrop ref={refOne}>
@@ -111,6 +99,7 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
             <AlertText>
               최대 일정 : 5일
             </AlertText>
+            {/* 날짜 수정 닫기누르면 유지되게 리팩 필요 */}
             {/* <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn> */}
             <OkBtn
               onClick={() => {
@@ -125,11 +114,15 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
                   });
                 } else {
                   setOpen((open) => !open);
+                  setStartDate(range[0].startDate)
+                  setEndDate(range[0].endDate)
+                 
                 }
               }}
             >
               적용하기
             </OkBtn>
+            {/* {range[0].startDate} */}
           </div>
         </ModalView>
       )}

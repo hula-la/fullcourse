@@ -224,39 +224,7 @@ const PlaceBar = ({ map }) => {
     setRecentLng(avgLng);
   };
 
-  // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  // const addPlaceToPlanner = (
-  //   placeId,
-  //   placeName,
-  //   placeImg,
-  //   placeLat,
-  //   placeLng,
-  //   id,
-  //   e,
-  // ) => {
-  //   e.preventDefault();
-  //   let placeItemObj = new Object();
-  //   placeItemObj.placeId = placeId;
-  //   placeItemObj.name = placeName;
-  //   placeItemObj.imgUrl = placeImg;
-  //   placeItemObj.draggable = true;
-  //   placeItemObj.lat = placeLat;
-  //   placeItemObj.lng = placeLng;
-  //   placeItemObj.id = id;
-
-  //   dispatch(setPlaceItem(placeItemObj));
-  // };
-
-  // const addMarker = (lat, lng) => {
-  //   const position = { lat: lat, lng: lng };
-  //   const marker = new window.google.maps.Marker({
-  //     map,
-  //     position: position,
-  //   });
-  //   console.log(typeof marker);
-  //   marker['position'] = position;
-  //   dispatch(setMarkers(marker));
-  // };
+ 
 
   useEffect(() => {
     if (travelPlaceList !== null) {

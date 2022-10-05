@@ -40,6 +40,12 @@ const PlusBtn = styled(AiOutlinePlusCircle)`
   cursor: pointer;
   font-size: 3vmin;
   color: #e36387;
+  &:hover {
+    color: #ae4e69;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const DetailBtn = styled(IoIosInformationCircleOutline)`
@@ -47,6 +53,12 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
   font-size: 3.2vmin;
   color: #0aa1dd;
   margin-right: 0.5vh;
+  &:hover {
+    color: #0b739c;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const Like = styled(AiFillHeart)`
@@ -201,6 +213,7 @@ const PlaceListItem = ({
                 e,
               );
               addMarker(place.lat, place.lng, place.name, e);
+
             }}
           />
         </Box>
