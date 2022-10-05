@@ -16,7 +16,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100vh;
+  height: 100%;
 `;
 
 const PlanButton = styled.div`
@@ -164,7 +164,7 @@ const LikePlaceList = styled.div`
     font-weight: bold;
   }
   .likePlaceBox {
-    height: 65%;
+    height: 80%;
     width: 50%;
     max-width: 50rem;
   }
@@ -196,35 +196,26 @@ const LikePlaceList = styled.div`
     &:hover {
       border: 4px solid #333333 !important;
     }
-  }
-
-  /* 스크롤바 설정*/
-  @media only screen and (min-device-width: 800px) {
-    .likePlaceContainer::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
-
-  /* 스크롤바 막대 설정*/
-  /* .likePlaceContainer::-webkit-scrollbar-thumb{
+    /* 스크롤바 */
+    &::-webkit-scrollbar-thumb {
+      background-clip: padding-box;
   
-    background-color: transparent;
-
-  } */
-
-  .likePlaceContainer::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-
-    background-color: white;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 1rem;
-    border: 4px solid transparent;
-  }
-
-  /* 스크롤바 뒷 배경 설정*/
-
-  .likePlaceContainer::-webkit-scrollbar-track {
-    border-radius: 10px;
+      background-color: white;
+      /* 스크롤바 둥글게 설정    */
+      border-radius: 1rem;
+      border: 2px solid black;
+    }
+    /* @media only screen and (min-device-width: 479px) { */
+      &::-webkit-scrollbar {
+        width: 10px;
+      /* } */
+    }
+  
+    /* 스크롤바 뒷 배경 설정*/
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
   }
 
   .buttonContainer {
