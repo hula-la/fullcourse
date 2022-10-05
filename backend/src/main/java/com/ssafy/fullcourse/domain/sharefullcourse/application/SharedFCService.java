@@ -65,9 +65,13 @@ public class SharedFCService {
         SharedFullCourse sharedFullCourse = opt.orElseThrow(()->new SharedFCNotFoundException());
 
         Boolean isLike = false;
+
+        System.out.println(opt.get().getSharedFcId()+" "+email);
         if(sharedFCLikeRepository.findByUser_EmailAndSharedFullCourse(email,sharedFullCourse).isPresent()){
             isLike = true;
         }
+
+        System.out.println("상세정보 isLike입니다 "+isLike);
 
         SharedFCGetRes res = SharedFCGetRes.of(sharedFullCourse, isLike);
         sharedFCRepository.updateViewCnt(sharedFcId);
