@@ -16,7 +16,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: calc(100vh - 80px);
+  height: 100vh;
 `;
 
 const PlanButton = styled.div`
@@ -115,8 +115,8 @@ const LikePlaceList = styled.div`
     height: 100%;
     object-fit: cover;
 
-    width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
-    height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+    width: calc(100vh * 0.25 * 0.6 - 2rem);
+    height: calc(100vh * 0.25 * 0.6 - 2rem);
   }
 
   .continueBtn {
@@ -179,11 +179,23 @@ const LikePlaceList = styled.div`
     /* height: 65%;
     width: 50%;
     max-width: 50rem; */
-    background: #e2dfff;
+    /* background: #e2dfff; */
     border-radius: 1rem;
     /* height:10%; */
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
+    border: 4px solid transparent;
+
+    /* background: url(/img/surveyIcon/likePlaceContainer.png); */
+    /* background-size: 100% 100%; */
+
+    img{
+      border: double 7px #333333;
+    }
+
+    &:hover {
+      border: 4px solid #333333 !important;
+    }
   }
 
   /* 스크롤바 설정*/

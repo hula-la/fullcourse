@@ -15,7 +15,9 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: calc(100vh - 80px);
+  height: 100vh;
+
+  
 
   .planButtonContainer {
     position: absolute;
@@ -26,6 +28,15 @@ const Wrapper = styled.div`
   .maxLike {
     color: red;
   }
+
+  
+
+  .box1{
+  border-width: 3px 4px 3px 5px;
+  border-radius:95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(2deg);
+  border: 5px solid black;
+}
 `;
 
 const PlanButton = styled.div`
@@ -214,8 +225,8 @@ const LikePlaceList = styled.div`
     height: 100%;
     object-fit: cover;
 
-    width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
-    height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+    width: calc(100vh * 0.25 * 0.6 - 2rem);
+    height: calc(100vh * 0.25 * 0.6 - 2rem);
   }
 
   .imgContainer {
@@ -268,11 +279,24 @@ const LikePlaceList = styled.div`
     /* height: 65%;
     width: 50%;
     max-width: 50rem; */
-    background: #e2dfff;
+    /* background: #e2dfff; */
     border-radius: 1rem;
     /* height:10%; */
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
+    border: 4px solid transparent;
+
+    /* background: url(/img/surveyIcon/likePlaceContainer.png);
+    background-size: 100% 100%; */
+    border-radius: 1rem;
+
+    img{
+      border: double 7px #333333;
+    }
+
+    &:hover {
+      border: 4px solid #333333 !important;
+    }
   }
 
   /* 스크롤바 설정*/
@@ -441,7 +465,7 @@ const SurveyPage = () => {
         number < randomPlaceList.length)
         ? (
           <>
-            <span className="placeImgContainer">
+            <span className="placeImgContainer box1">
               <img className="placeImg" src={randomPlaceList[number].imgUrl} />
               <figcaption>
                 <div>{randomPlaceList[number].name}</div>
