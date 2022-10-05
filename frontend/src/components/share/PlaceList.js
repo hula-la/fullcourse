@@ -52,6 +52,7 @@ const PlaceList = ({ placeList }) => {
                 key={index}
                 placeKey={placeKey}
                 place={placeList[placeKey]}
+                index={index}
               />
             );
           })}
