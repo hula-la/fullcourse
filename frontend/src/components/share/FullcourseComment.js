@@ -15,7 +15,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const CommentBlock = styled.div`
 display: flex;
-    height: calc(100vh - 80px);
+    height: 100vh;
     flex-direction: column;
 
   width: 30%;

@@ -164,8 +164,9 @@ const StartPlaceList = () => {
                 width: '16.5vw',
                 marginTop: isMobile ? '5vh' : '10vh',
                 transition: 'transform 0.3s',
+                border: '1px solid transparent',
                 '&:hover': {
-                  border: '1px solid #0AA1DD',
+                  border: '1px solid #0AA1DD !important',
                   transform: 'translateY(-2px)',
                   cursor: 'pointer',
                 },

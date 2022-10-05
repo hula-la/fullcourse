@@ -28,21 +28,21 @@ const Side = styled.div`
   @keyframes slideUp {
     from {
       top: 30vh;
-      height: calc(55vh - 80px);
+      height: 55vh;
     }
     to {
       top: 0;
-      height: calc(85vh - 80px);
+      height: 85vh;
     }
   }
   @keyframes slideDown {
     from {
       top: 0;
-      height: calc(85vh - 80px);
+      height: 85vh;
     }
     to {
       top: 30vh;
-      height: calc(55vh - 80px);
+      height: 55vh;
     }
   }
 
@@ -51,13 +51,13 @@ const Side = styled.div`
     animation: slideUp;
     animation-duration: 1s;
     /* background: #fffef4; */
-    height: calc(85vh - 80px);
+    height: 85vh;
   }
   .minPlan {
     top: 30vh;
     animation: slideDown;
     animation-duration: 1s;
-    height: calc(55vh - 80px);
+    height: 55vh;
   }
 
   .daynonelist {
