@@ -385,8 +385,8 @@ const FullcourseComment = ({ sharedFcInfo }) => {
                       alt="profileImg"
                     />
                     <div className="commentContentContainer">
-                      <span id="userNickname">{comment.nickname} </span>
-                      
+                      <span id="userNickname">{comment.nickname}</span>
+                      <span> {comment.regDate.substr(0, 10)} {comment.regDate.substr(11,8)}</span>
                     <span className="commentContent">{comment.comment}</span>
 
                     </div>
