@@ -14,6 +14,8 @@ const initialState = {
   mySharedFcList: null,
   sharedFcInfo: null,
   error: null,
+  errorCode: null,
+  errorMessage: null,
   sharedFcLikeList: null,
   tagList: [
     ['키워드', '필수', '핫플', '야경', '인생샷명소', '뷰맛집', '맛집'],
@@ -97,6 +99,10 @@ const shareSlice = createSlice({
       state.willShareFcId = payload.fcId;
       state.willShareThumbnail = payload.thumbnail;
     },
+    resetError: (state) => {
+      state.errorCode = null;
+      state.errorMessage = null;
+    },
   },
   extraReducers: {
     // 공유풀코스 목록 조회
@@ -155,7 +161,9 @@ const shareSlice = createSlice({
       };
     },
     [createSharedFcLike.rejected]: (state, { payload }) => {
-      state.error = payload;
+      state.errorCode = payload.statusCode;
+      state.errorMessage = payload.message;
+      console.log(state.errorMessage);
     },
     // 나의 공유풀코스 목록 조회
     [fetchMySharedFc.fulfilled]: (state, { payload }) => {
@@ -172,6 +180,7 @@ export const {
   checkAllDay,
   selectSort,
   selectFcId,
+  resetError,
 } = shareSlice.actions;
 
 export default shareSlice.reducer;

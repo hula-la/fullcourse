@@ -6,11 +6,13 @@ import {
   checkAllDay,
   checkDay,
   makeDayTagList,
+  resetError,
 } from '../../features/share/shareSlice';
 import { createSharedFcLike } from '../../features/share/shareActions';
 import { Schedule } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Swal from 'sweetalert2';
 
 const Side = styled.div`
   display: flex;
@@ -117,6 +119,20 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
   const { dayTagList2 } = useSelector((state) => state.share);
   const { checkedDay } = useSelector((state) => state.share);
+  const { errorCode } = useSelector((state) => state.share);
+  const { errorMessage } = useSelector((state) => state.share);
+
+  useEffect(() => {
+    if (errorCode) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMessage,
+        footer: '<a href="/user/login">로그인 하러가기</a>',
+      });
+      dispatch(resetError());
+    }
+  }, [errorCode]);
 
   useEffect(() => {
     if (sharedFcInfo) {
@@ -132,9 +148,8 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
     dispatch(checkAllDay());
   };
 
-  const onClickLike = async () => {
-    const payload = await dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
-    console.log(payload);
+  const onClickLike = () => {
+    dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
   };
 
   return (
