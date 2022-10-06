@@ -15,11 +15,13 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Wrapper = styled.div`
-    margin: 2vw;
+  margin: 2vw;
   padding: 0 4vw;
   background: #fff;
   border-radius: 1rem;
   box-shadow: 3px 3px 5px 3px #00000038;
+  padding-bottom: 1.5rem;
+
   .slick-prev:before,
   .slick-next:before {
     color: #a4d8ff;
@@ -31,11 +33,15 @@ const Wrapper = styled.div`
   }
   .slider {
     margin: 1vw auto;
-    width: 100%;
+    width: 80%;
   }
   .slider-small {
     margin: 1vw auto;
-    width: 70%;
+    width: 30%;
+  }
+  .slider-middle {
+    margin: 1vw auto;
+    width: 60%;
   }
   .card {
     width: auto !important;
@@ -84,7 +90,7 @@ const MySharedFc = () => {
 
       {mySharedFcList && mySharedFcList.length > 0 ? (
         <Slider
-          className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
+          className={!isMobile ? fcLength == 1 ? 'slider-small' : 'slider-middle':'slider'}
           {...{
             dots: true,
             infinite: true,
