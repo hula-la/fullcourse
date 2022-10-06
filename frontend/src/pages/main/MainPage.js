@@ -43,9 +43,10 @@ padding-bottom: 7rem;
 const Introduce = styled.div`
 position: relative;
   align-items: center;
-  height: 100%;
   @media only screen and (min-device-width: 479px) {
+    height: calc(95vh - 20px);
     display: flex;
+    /* height: 100%; */
   }
 
   background-color: #ffffff;
@@ -54,11 +55,13 @@ position: relative;
 const VideoContainer = styled.div`
   overflow: hidden; //넘치는 부분 스크롤바 없애기
   width: 70vw;
+  height: calc(95vh - 20px);
   /* height: 100vh; */
   //스마트폰 미디어 쿼리
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     position: relative;
     width: 100vw;
+    height: 100%;
   }
   video {
     height: 100%;

@@ -24,6 +24,7 @@ import ArPage from './pages/ar/ArPage';
 import WordcloudPage from './pages/wordcloud/WordcloudPage';
 // 404
 import NotFound from './pages/NotFound';
+import MobileNotFound from './pages/MobileNotFound';
 import ProtectedLoginRoute from './private/ProtectedLoginRoute';
 import ProtectedRoute from './private/ProtectedRoute';
 
@@ -72,7 +73,7 @@ function App() {
 
           {/* <Route path="ar" element={<ArPage />} /> */}
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<MobileNotFound />} />
         </Routes>
       </MobileView>
       <BrowserView>
@@ -110,7 +111,9 @@ function App() {
 
           {/* <Route path="ar" element={<ArPage />} /> */}
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="" element={<BrowserLayout />}>
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
         </div>
         </div>
