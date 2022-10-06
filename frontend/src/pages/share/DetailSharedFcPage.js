@@ -23,6 +23,10 @@ const Wrapper = styled.div`
 }
 `
 const DetailBlock = styled.div`
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
