@@ -93,7 +93,7 @@ const MyLikeSharedFc = () => {
       <TitleText content="찜한 풀코스" />
       {sharedFcLikeList && sharedFcLikeList.length > 0 ? (
         <Slider
-          className={!isMobile ? fcLength == 1 ? 'slider-small' : 'slider-middle':'slider'}
+          className={isMobile || fcLength >=3 ? 'slider' : fcLength == 1 ? 'slider-small' : 'slider-middle'}
           {...{
             dots: true,
             infinite: true,

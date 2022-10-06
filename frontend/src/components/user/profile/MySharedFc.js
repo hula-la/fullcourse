@@ -90,7 +90,7 @@ const MySharedFc = () => {
 
       {mySharedFcList && mySharedFcList.length > 0 ? (
         <Slider
-          className={!isMobile ? fcLength == 1 ? 'slider-small' : 'slider-middle':'slider'}
+        className={isMobile || fcLength >=3 ? 'slider' : fcLength == 1 ? 'slider-small' : 'slider-middle'}
           {...{
             dots: true,
             infinite: true,

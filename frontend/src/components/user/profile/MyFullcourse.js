@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   }
   .slider {
     margin: 1vw auto;
-    width: 90%;
+    width: 80%;
   }
   .slider-small {
     margin: 1vw auto;
@@ -161,7 +161,8 @@ const MyFullcourse = ({ userInfo }) => {
         : null}
       {myFullcourseList && myFullcourseList.length > 0 ? (
           <div>
-            <Slider className={!isMobile? fcLength === 1 ? "slider-small" : "slider-middle":"slider" }
+            <Slider
+            className={isMobile || fcLength >=3 ? 'slider' : fcLength == 1 ? 'slider-small' : 'slider-middle'}
             {...{
                 dots: true,
                 infinite: true,
