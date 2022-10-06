@@ -224,9 +224,9 @@ const MobileComment = ({ sharedFcInfo }) => {
         imageUrl: sharedFcInfo.thumbnail,
         link: {
           mobileWebUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.sharedFcId,
           webUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.sharedFcId,
         },
       },
     });
