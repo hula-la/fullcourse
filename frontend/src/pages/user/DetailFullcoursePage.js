@@ -5,9 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import FullcourseMap from '../../components/user/fullcourse/FullcourseMap';
 import FullcourseSide from '../../components/user/fullcourse/FullcourseSide';
 import FullcourseMemo from '../../components/user/fullcourse/FullcourseMemo';
+
+// 모바일 컴포넌트
+import MobileFullcourseMap from '../../components/user/fullcourse/mobile/MobileFullcourseMap';
+import MobileFullcourseHeader from '../../components/user/fullcourse/mobile/MobileFullcourseHeader';
+import MobileFullcourseMemo from '../../components/user/fullcourse/mobile/MobileFullcourseMemo';
 import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
-import { fetchDiary } from '../../features/user/userActions';
 
 // 모바일&웹 뷰
 import {
@@ -83,15 +87,14 @@ const DetailFullcoursePage = () => {
       </BrowserView>
 
       {/* 모바일뷰 */}
-      {/* <MobileView>
-      <FullcourseSide
+      <MobileView>
+      <MobileFullcourseHeader
         days={days}
-        userInfo={userInfo}
         fullcourseDetail={fullcourseDetail}
-      />
-      <FullcourseMap />
-      <FullcourseMemo fullcourseDetail={fullcourseDetail} />
-      </MobileView> */}
+        />
+        <MobileFullcourseMap />
+      <MobileFullcourseMemo fullcourseDetail={fullcourseDetail} />
+      </MobileView>
     </>
   );
 };

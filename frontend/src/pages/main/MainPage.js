@@ -152,6 +152,10 @@ const PreviewBox = styled.div`
   &:hover .previewTip {
     visibility: visible;
   }
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    text-align: center;
+  }
 `;
 
 const DropDownIcon = styled(KeyboardDoubleArrowDown)`
@@ -159,6 +163,10 @@ const DropDownIcon = styled(KeyboardDoubleArrowDown)`
   padding-top: 1.4vh;
   /* 아래에서 motion은 main.css 에서 import 해오는 동작임 - 리액트에서 css animation을 쓸때는 @keyframes를 활용해야함  */
   animation: motion 0.7s linear 0s infinite alternate;
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    padding-top: 0vh;
+  }
 `;
 
 const PreviewTip = styled.p`

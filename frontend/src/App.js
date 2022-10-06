@@ -29,10 +29,7 @@ import ProtectedLoginRoute from './private/ProtectedLoginRoute';
 import ProtectedRoute from './private/ProtectedRoute';
 
 // 모바일&웹 뷰
-import {
-  BrowserView,
-  MobileView,
-} from "react-device-detect";
+import { BrowserView, MobileView } from 'react-device-detect';
 
 function App() {
   const dispatch = useDispatch();
@@ -54,7 +51,10 @@ function App() {
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path="profile/:pageNum" element={<ProfilePage />} />
-              <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
+              <Route
+                path="fullcourse/:fcId"
+                element={<DetailFullcoursePage />}
+              />
             </Route>
           </Route>
           <Route path="fullcourse" element={<OnlyHeaderLayout />}>
@@ -77,45 +77,50 @@ function App() {
         </Routes>
       </MobileView>
       <BrowserView>
-      <div className='App'>
-        <div>
-          
-      <Routes>
-          {/* Main */}
-          <Route path="" element={<BrowserLayout />}>
-            <Route path="" element={<MainPage />} />
-          </Route>
-          {/* user */}
-          <Route path="user" element={<BrowserLayout />}>
-            <Route element={<ProtectedLoginRoute />}>
-              <Route path="login" element={<LoginPage />} />
-            </Route>
-            <Route element={<ProtectedRoute />}>
-              <Route path="profile/:pageNum" element={<ProfilePage />} />
-              <Route path="fullcourse/:fcId" element={<DetailFullcoursePage />} />
-            </Route>
-          </Route>
-          <Route path="fullcourse" element={<BrowserLayout />}>
-            <Route path="" element={<ShareFcPage />} />
-            <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
-          </Route>
-          {/* trip */}
-          <Route path="trip" element={<BrowserLayout />}>
-            <Route element={<ProtectedRoute />}>
-              <Route path="plan" element={<PlanPage />} />
-              {/* survey 일정짜기 전 설문조사 */}
-              <Route path="survey" element={<SurveyPage />} />
-              <Route path="recommend" element={<RecommendPage />} />
-            </Route>
-          </Route>
+        <div className="App">
+          <div>
+            <Routes>
+              {/* Main */}
+              <Route path="" element={<BrowserLayout />}>
+                <Route path="" element={<MainPage />} />
+              </Route>
+              {/* user */}
+              <Route path="user" element={<BrowserLayout />}>
+                <Route element={<ProtectedLoginRoute />}>
+                  <Route path="login" element={<LoginPage />} />
+                </Route>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="profile/:pageNum" element={<ProfilePage />} />
+                  <Route
+                    path="fullcourse/:fcId"
+                    element={<DetailFullcoursePage />}
+                  />
+                </Route>
+              </Route>
+              <Route path="fullcourse" element={<BrowserLayout />}>
+                <Route path="" element={<ShareFcPage />} />
+                <Route
+                  path="detail/:sharedFcId"
+                  element={<DetailSharedFcPage />}
+                />
+              </Route>
+              {/* trip */}
+              <Route path="trip" element={<BrowserLayout />}>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="plan" element={<PlanPage />} />
+                  {/* survey 일정짜기 전 설문조사 */}
+                  <Route path="survey" element={<SurveyPage />} />
+                  <Route path="recommend" element={<RecommendPage />} />
+                </Route>
+              </Route>
 
-          {/* <Route path="ar" element={<ArPage />} /> */}
+              {/* <Route path="ar" element={<ArPage />} /> */}
 
-          <Route path="" element={<BrowserLayout />}>
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-        </div>
+              <Route path="" element={<BrowserLayout />}>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </div>
         </div>
       </BrowserView>
     </div>

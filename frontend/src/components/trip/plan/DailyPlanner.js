@@ -14,7 +14,7 @@ import './trip.css';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { GrPowerReset } from 'react-icons/gr';
 import format from 'date-fns/format';
-import { setDates } from '../../../features/trip/tripSlice';
+import { setDates, setFcId } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   background-color: #e8f9fd;
@@ -380,6 +380,7 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
           height: 500,
         });
         navigate(`/user/fullcourse/${res.data}`);
+        dispatch(setFcId(res.data))
         deleteAll();
         clearMarker();
       });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SideBar from '../../components/user/profile/SideBar';
@@ -13,14 +13,14 @@ import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 const Wrapper = styled.div`
   display: flex;
-  
+
   /* flex-direction: column; */
   /* height: 1300px; */
   justify-content: start;
   padding-bottom: 10vh;
   /* background: url('/img/mypage.png'); */
-  background:  url('/img/memo.jpg');
-  
+  background: url('/img/memo.jpg');
+
   height: auto;
   min-height: 100%;
 
@@ -57,8 +57,10 @@ const ProfilePage = () => {
   const onClickPageThree = () => {
     navigate(`/user/profile/3`, { replace: true });
   };
+
   return (
     <Wrapper
+      id="scroll"
       style={isMobile ? { flexDirection: 'column' } : { flexDirection: 'row' }}
     >
       {!isMobile ? (

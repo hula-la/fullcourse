@@ -9,6 +9,7 @@ import {
   postDiary,
   getPlaceReview,
   deletePlaceReview,
+  deleteFc
 } from '../../api/trip';
 
 //여행명소리스트 불러오기
@@ -168,10 +169,26 @@ export const fetchPlaceReview = createAsyncThunk(
 
 //리뷰삭제
 export const dropPlaceReview = createAsyncThunk(
-  'share/dropPlaceReview',
+  'trip/dropPlaceReview',
   async ({ placeType, reviewId }, { rejectWithValue }) => {
     try {
       const { data } = await deletePlaceReview(placeType, reviewId);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+//풀코스삭제
+export const dropFc = createAsyncThunk(
+  'trip/dropFc',
+  async (fcId, { rejectWithValue }) => {
+    try {
+      const { data } = await deleteFc(fcId);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

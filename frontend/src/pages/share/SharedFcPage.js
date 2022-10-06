@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 const InputWrapper = styled.div`
   margin: 0 20%;
   position: relative;
+  padding-top:2vh;
   
   
   .icon {
@@ -24,7 +25,14 @@ const InputWrapper = styled.div`
     right: 50px;
     top: 5px;
     cursor: pointer;
+    @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+      position: relative;
+      right: -92px;
+      bottom: 43px;
+      cursor: pointer;
+    }
   }
+
 `;
 const PaginationWrapper = styled.div`
   display: flex;
@@ -42,7 +50,7 @@ const Input = styled.input`
   text-align: center;
   border: 0.5px solid #0aa1dd;
   border-radius: 5rem;
-  background-color: rgba(217, 239, 255, 1);
+  background-color: #fff;
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
   font-family: Tmoney;
   outline: none;
@@ -52,6 +60,9 @@ const Input = styled.input`
     transition: 0.5s;
   }
   .input {
+  }
+  @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+    font-size:0.5rem;
   }
 `;
 const Button = styled.button`

@@ -5,8 +5,12 @@ import styled from 'styled-components';
 const LoginBox = styled.div`
   display: flex;
 
+  position: absolute;
+    height: 100%;
+    width: 100%;
+
   .loginImg {
-    height: 90vh;
+    height:100%;
     width: 60%;
     @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
       position: relative;
