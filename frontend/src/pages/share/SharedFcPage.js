@@ -25,7 +25,14 @@ const InputWrapper = styled.div`
     right: 50px;
     top: 5px;
     cursor: pointer;
+    @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+      position: relative;
+      right: -92px;
+      bottom: 43px;
+      cursor: pointer;
+    }
   }
+
 `;
 const PaginationWrapper = styled.div`
   display: flex;
@@ -53,6 +60,9 @@ const Input = styled.input`
     transition: 0.5s;
   }
   .input {
+  }
+  @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+    font-size:0.5rem;
   }
 `;
 const Button = styled.button`
