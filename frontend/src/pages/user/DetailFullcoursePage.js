@@ -10,6 +10,7 @@ import FullcourseMemo from '../../components/user/fullcourse/FullcourseMemo';
 import MobileFullcourseMap from '../../components/user/fullcourse/mobile/MobileFullcourseMap';
 import MobileFullcourseHeader from '../../components/user/fullcourse/mobile/MobileFullcourseHeader';
 import MobileFullcourseMemo from '../../components/user/fullcourse/mobile/MobileFullcourseMemo';
+import FullcoursePlan from '../../components/user/fullcourse/mobile/FullcoursePlan';
 import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
 
@@ -18,6 +19,12 @@ import {
   BrowserView,
   MobileView,
 } from "react-device-detect";
+
+const Wrapper = styled.div`
+.detailContent{
+  position:relative;
+}
+`
 
 const DetailBlock = styled.div`
   display: flex;
@@ -71,7 +78,7 @@ const DetailFullcoursePage = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       {/* 브라우저뷰 */}
       <BrowserView>
         <DetailBlock>
@@ -92,14 +99,17 @@ const DetailFullcoursePage = () => {
         days={days}
         fullcourseDetail={fullcourseDetail}
         />
+        <div className='detailContent'>
+
         <MobileFullcourseMap />
-        {/* <MobilePlan
+        <FullcoursePlan
           days={days}
-          sharedFcInfo={sharedFcInfo}
-          /> */}
+          fullcourseDetail={fullcourseDetail}
+          />
       <MobileFullcourseMemo fullcourseDetail={fullcourseDetail} />
+        </div>
       </MobileView>
-    </>
+    </Wrapper>
   );
 };
 
