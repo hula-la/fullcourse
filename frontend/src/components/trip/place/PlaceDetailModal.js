@@ -33,6 +33,7 @@ const ModalView = styled.div.attrs((props) => ({
 }))`
   text-align: center;
   text-decoration: none;
+  min-width: 300px;
   /* padding: 3.5rem 4rem; */
   /* background-color: #ffffff; 눈편한흰색*/
   background-color: #e8f9fd;
@@ -40,6 +41,10 @@ const ModalView = styled.div.attrs((props) => ({
   color: #333333;
   position: relative;
   width: 30vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 600px) {
+    min-width: 70vw;
+
+  }
   height: 70vh;
   /* overflow-y: scroll; */
   /* border: 3px dashed #0aa1dd; */

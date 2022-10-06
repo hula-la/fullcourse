@@ -15,7 +15,11 @@ import MobileComment from './MobileComment';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const Wrapper = styled.div`
+  background:#e2f1fa;
   justify-content: center;
+
+  box-shadow: 1px 1px 4px 1px #686868;
+  z-index: 5;
 
   display: flex;
   flex-direction: column;
@@ -40,7 +44,7 @@ const Wrapper = styled.div`
 
   .clearIconBox{
     right: 1rem;
-    top:0.2rem;
+    top:1rem;
     position: absolute;
     z-index: 10;
   }
