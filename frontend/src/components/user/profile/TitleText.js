@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 const Text = styled.div`
   /* height: 5vh; */
-  margin: 3vh 0;
+  margin-top: 3vh;
+  padding-bottom: 2vh;
   background: url('/img/baseline.png') center no-repeat;
   background-position-y: 0;
   background-position-x: 0;
@@ -15,7 +16,6 @@ const Text = styled.div`
   font-family: Tmoney;
   color: #333333;
   text-align: start;
-  padding: 0;
 `;
 
 const TitleText = (props) => {

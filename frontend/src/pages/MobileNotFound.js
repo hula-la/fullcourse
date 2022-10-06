@@ -35,7 +35,7 @@ button{
 }
 `
 
-const NotFound = () => {
+const MobileNotFound = () => {
   const navigate = useNavigate()
   return (
     <Wrapper>
@@ -49,4 +49,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default MobileNotFound;

@@ -65,6 +65,11 @@ const Wrapper = styled.div`
     right: 0.4rem;
     bottom: 2rem;
   }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const NavBar = styled.div`

@@ -17,6 +17,7 @@ const Wrapper = styled.div`
 const InputWrapper = styled.div`
   margin: 0 20%;
   position: relative;
+  padding-top:2vh;
   
   
   .icon {
@@ -42,7 +43,7 @@ const Input = styled.input`
   text-align: center;
   border: 0.5px solid #0aa1dd;
   border-radius: 5rem;
-  background-color: rgba(217, 239, 255, 1);
+  background-color: #fff;
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
   font-family: Tmoney;
   outline: none;
