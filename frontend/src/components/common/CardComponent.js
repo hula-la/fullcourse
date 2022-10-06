@@ -110,6 +110,16 @@ const Tags = styled.div`
   display: -webkit-box;
   min-height: 52px;
   margin-top: 1vh;
+
+  &::-webkit-scrollbar-thumb {
+    background: #dc3d59;
+    border-radius: 45px;
+    border: 4px solid white;
+  }
+
+  &::-webkit-scrollbar {
+    background: white;
+}
 `;
 
 const Tag = styled.div`

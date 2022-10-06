@@ -10,12 +10,18 @@ import styled from 'styled-components';
 import { dropFc } from '../../../features/trip/tripActions';
 
 const Side = styled.div`
+position:relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 30%;
   height: 89vh;
   background-color: #dfefff;
+  .clearBtnContainer{
+    position: absolute;
+    right:1rem;
+    top:1rem;
+  }
   #userInfo {
     display: flex;
     flex-direction: row;
@@ -45,8 +51,8 @@ const Side = styled.div`
   }
   #fullcourseInfo {
     display: flex;
-    margin: auto 0;
-    padding: 0.6rem 0.5rem 0rem 0.5rem;
+    margin-right:0.5rem;
+    padding: 0 0.5rem 0rem 0.5rem;
     font-size: 1.5rem;
     border-bottom: 4px solid #0aa1dd;
     align-items: center;
@@ -58,6 +64,8 @@ const Side = styled.div`
     justify-content: center;
     flex-direction: row;
     height: 22%;
+
+    align-items: center;
   }
   .daynonelist {
     list-style: none;
@@ -114,7 +122,6 @@ const Button = styled.div`
   font-size: 0.9rem;
   width: 4vw;
   height: 4vh;
-  margin-top: 8.5vh;
   /* line-height: 4vh; */
 
   cursor: pointer;
@@ -194,12 +201,19 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
             <p id="userName">{userInfo.nickname}</p>
             
           </div> */}
+          <div id="info-wrapper">
+          📝
           <div id="fullcourseInfo">
             {startDate} → {endDate}
           </div>
-          
-         
+          <div>의 일정 📝</div>
+        </div>
+          <div className='clearBtnContainer'>
           <Button onClick={onClickDelete}>삭제</Button>
+
+          </div>
+
+         
           {/* {userInfo && userInfo.email === fullcourseDetail.email ? (
            
           ) : null} */}

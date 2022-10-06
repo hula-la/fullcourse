@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
-import { createDiary } from '../../../features/trip/tripActions';
+import { createDiary } from '../../../../features/trip/tripActions';
 import styled from 'styled-components';
-import { clickUpdate } from '../../../features/trip/tripSlice';
+import { clickUpdate } from '../../../../features/trip/tripSlice';
 
 const MemoBlock = styled.div`
-  width: 25%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-image: url('/img/memo.jpg');
@@ -26,7 +26,7 @@ const PlaceWrapper = styled.div`
   justify-content: space-evenly;
   div {
     width: 100%;
-    text-align: left;
+    /* text-align: left; */
   }
   .day {
     font-size: 1.2rem;
@@ -100,6 +100,7 @@ const Comment = styled.textarea`
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
   font-size: 0.9rem;
   font-family: 'Tmoney';
+  padding: 0.5rem;
 `;
 
 const Button = styled.div`
@@ -119,7 +120,7 @@ const Button = styled.div`
   }
 `;
 
-const UpdateMemo = () => {
+const MobileUpdateMemo = () => {
   const dispatch = useDispatch();
   const { fullcourseDetail } = useSelector((state) => state.trip);
   const { showMemo } = useSelector((state) => state.user);
@@ -208,4 +209,4 @@ const UpdateMemo = () => {
   );
 };
 
-export default UpdateMemo;
+export default MobileUpdateMemo;

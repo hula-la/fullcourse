@@ -15,6 +15,12 @@ const MemoBlock = styled.div`
     display: grid;
     justify-content: center;
   }
+
+  .memoDetailContainer img{
+    width: 100%;
+    margin: 3rem 0;
+
+  }
 `;
 
 const PlaceWrapper = styled.div`
@@ -215,9 +221,17 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
               </Comment>
             </MemoWrapper>
           ) : (
+              <>
             <div className="btn-wrapper">
-              <Button onClick={onClickMemo}>기록하기 📚</Button>
+                <Button onClick={onClickMemo}>기록하기 📚</Button>
+                
+
+
             </div>
+                  <div className="memoDetailContainer">
+                    <img src="/img/memoDetail.png" />
+                  </div> 
+              </>
           )}
         </MemoBlock>
       ) : (

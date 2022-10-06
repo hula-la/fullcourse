@@ -1,0 +1,61 @@
+import React from 'react';
+import MobilePlaceListItem from './MobilePlaceListItem';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  padding: 1rem 0.5rem;
+  overflow-y: auto;
+  height:78%;
+  .scroll {
+    display: inline-block;
+    width: 150px;
+    height: 250px;
+    padding: 20px;
+    overflow-y: scroll;
+    border: 1px solid black;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Nanum Gothic';
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  /* 스크롤바 설정*/
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* 스크롤바 막대 설정*/
+  ::-webkit-scrollbar-thumb {
+    background-color: #0aa1dd;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 뒷 배경 설정*/
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #d4d4d4;
+  }
+`;
+
+const MobilePlaceList = ({ placeList }) => {
+  return (
+    <Wrapper>
+      {placeList ? (
+        <div>
+          {Object.keys(placeList).map((placeKey, index) => {
+            return (
+              <MobilePlaceListItem
+                key={index}
+                placeKey={placeKey}
+                place={placeList[placeKey]}
+              />
+            );
+          })}
+        </div>
+      ) : null}
+    </Wrapper>
+  );
+};
+
+export default React.memo(MobilePlaceList);
