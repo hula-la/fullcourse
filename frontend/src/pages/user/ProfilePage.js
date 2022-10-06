@@ -13,11 +13,15 @@ import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 const Wrapper = styled.div`
   display: flex;
+  
   /* flex-direction: column; */
   /* height: 1300px; */
   justify-content: start;
   padding-bottom: 10vh;
   background: url('/img/mypage.png');
+  height: auto;
+  min-height: 100%;
+
   #view {
     width: 80%;
   }

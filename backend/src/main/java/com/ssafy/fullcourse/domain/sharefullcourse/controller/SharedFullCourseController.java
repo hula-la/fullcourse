@@ -1,5 +1,7 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
+import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseRes;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
@@ -33,6 +35,8 @@ public class SharedFullCourseController {
     private final SharedFCCommentService sharedFCCommentService;
     private final SharedFCListService sharedFCListService;
 
+    private final FullCourseService fullCourseService;
+
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")
     @ApiOperation(value = "공유풀코스 등록", notes = "풀코스 id, 제목, 상세내용, 썸네일 이미지, 태그 리스트를 입력받아 공유 풀코스를 동록합니다.")
@@ -44,11 +48,17 @@ public class SharedFullCourseController {
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
-        // 공유 풀코스 등록시 유저의 풀코스리스트, 공유풀코스리스트 반환
+
+
+
+        // 공유 풀코스 등록시
         SharedFullCourse sharedFC = sharedFCService.createSharedFC(sharedFCDto, tags, email);
+// 유저의 풀코스리스트, 공유풀코스리스트 반환
+        List<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email);
+        List<FullCourseRes> FCList = fullCourseService.getFullCourse(email);
         if (sharedFC != null) {
-            HashMap<String, Object> map = sharedFCService.getList(email);
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", map));
+//            HashMap<String, Object> map = sharedFCService.getList(email);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", new SharedFCPostDto(sharedFCList,FCList)));
         } else {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "공유 풀코스 생성 중 오류", null));
         }
@@ -159,9 +169,8 @@ public class SharedFullCourseController {
 
     // 찜한 풀코스 리스트 조회
     @GetMapping("/fullcourse/like")
-    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
-//        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, keyword,pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email) {
+        List<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email);
 
         if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
@@ -169,8 +178,8 @@ public class SharedFullCourseController {
 
     // 나의 공유 풀코스 조회
     @GetMapping("/fullcourse/my")
-    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@AuthenticationPrincipal String email, Pageable pageable){
-        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email, pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@AuthenticationPrincipal String email){
+        List<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
