@@ -271,7 +271,7 @@ const DetailHeader = styled.div`
     display: flex;
     align-items: center;
   }
-  #btn-del{
+  .btn-del{
     border: none;
     background: none;
     color: #8e8e8e;
