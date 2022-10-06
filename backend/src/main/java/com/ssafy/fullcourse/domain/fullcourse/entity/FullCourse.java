@@ -58,7 +58,7 @@ public class FullCourse {
 
     public FullCourseTotalRes toDto(HashMap<Integer, List<FullCourseDetailRes>> places){
         return FullCourseTotalRes.builder()
-                .userId(this.user.getUserId())
+                .userEmail(this.user.getEmail())
                 .regDate(this.regDate)
                 .startDate(this.startDate)
                 .endDate(this.endDate)

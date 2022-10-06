@@ -15,7 +15,9 @@ import StartPlaceList from './StartPlaceList';
 import Swal from 'sweetalert2';
 
 const Container = styled.div`
-  overflow-x: hidden;
+  position: relative;
+  padding-bottom: 7rem;
+
   /* display: grid; */
   /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
   background: radial-gradient(
@@ -39,6 +41,7 @@ const Container = styled.div`
 `;
 
 const Introduce = styled.div`
+  position: relative;
   align-items: center;
   height: 100%;
   @media only screen and (min-device-width: 479px) {
@@ -51,7 +54,7 @@ const Introduce = styled.div`
 const VideoContainer = styled.div`
   overflow: hidden; //넘치는 부분 스크롤바 없애기
   width: 70vw;
-  height: 100vh;
+  /* height: 100vh; */
   //스마트폰 미디어 쿼리
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     position: relative;
@@ -72,6 +75,7 @@ const MainTitle = styled.div`
   /* 전체를 감싼 div에 크기를 부여해주어야 위아래로 같이 안움직이고 아이콘만 위아래로 움직임 */
   width: 30vw;
   height: 50vh;
+  justify-content: center;
 
   margin: auto;
 
@@ -184,25 +188,26 @@ const StartPlaces = styled.div`
 `;
 
 const Ocean = styled.div`
-  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+  /* @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     height: 2%;
     width: 100%;
     position: absolute;
     top: 465vh;
-  }
+  } */
 `;
 
 const Wave = styled.div`
-  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+  /* @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     height: 10%;
     width: 100%;
     position: absolute;
     top: 455vh;
-  }
+  } */
 `;
 
 const Explore = styled.div`
-  position: fixed;
+  display: none;
+  /* position: fixed; */
   right: 50px;
   bottom: 50px;
   width: 40px;
@@ -312,12 +317,14 @@ const MainPage = () => {
       imageHeight: 280,
       imageAlt: 'character',
       showCancelButton: true,
+      showCloseButton: true,
       cancelButtonText: '추천 안 받아!',
       confirmButtonText: '고고고',
       showLoaderOnConfirm: true,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate('/trip/survey');
+      } else if (result.isDismissed && result.dismiss === 'close') {
       } else {
         navigate('/trip/plan');
       }

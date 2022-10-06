@@ -42,7 +42,7 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> findFullCourse(@PathVariable Long fcId) {
+    public ResponseEntity<BaseResponseBody> findFullCourse(@PathVariable Long fcId, @AuthenticationPrincipal String email) {
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", fullCourseService.getFullCourseDetailById(fcId)));
     }
@@ -62,7 +62,7 @@ public class FullCourseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> deleteFullCourse(@PathVariable Long fcId) {
+    public ResponseEntity<BaseResponseBody> deleteFullCourse(@PathVariable Long fcId, @AuthenticationPrincipal String email) {
 
         fullCourseService.deleteFullCourse(fcId);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", "삭제"));

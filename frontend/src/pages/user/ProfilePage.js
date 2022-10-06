@@ -18,7 +18,9 @@ const Wrapper = styled.div`
   /* height: 1300px; */
   justify-content: start;
   padding-bottom: 10vh;
-  background: url('/img/mypage.png');
+  /* background: url('/img/mypage.png'); */
+  background:  url('/img/memo.jpg');
+  
   height: auto;
   min-height: 100%;
 
