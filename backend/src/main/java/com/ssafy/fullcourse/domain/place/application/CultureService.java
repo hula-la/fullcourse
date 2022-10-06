@@ -47,6 +47,8 @@ public class CultureService {
             Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
         } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
             Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
+        } else if (pageable.getSort().toString().equals("reviewScore: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewScore() - o1.getReviewScore()));
         }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
