@@ -35,6 +35,9 @@ const Wrapper = styled.div`
   .slider {
     margin: 1vw auto;
     width: 80%;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+      width: 90%;
+    }
   }
   .slider-small {
     margin: 1vw auto;

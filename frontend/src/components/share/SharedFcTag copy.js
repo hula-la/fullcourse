@@ -97,16 +97,16 @@ const FullcourseTag = () => {
   return (
     <Wrapper>
       <div className="selected">
-      <ul className="selected-list">
-        {checkedTagList ? checkedTagList.map((tag,index)=>{
-          return(
-            
-          <div>
-            <FullcourseTagItem  tag={tag} index={index}/>
-            </div>)
-          }):null}
-        </ul>
-      </div>
+        <ul className="selected-list">
+          {checkedTagList ? checkedTagList.map((tag,index)=>{
+            return(
+              
+            <div>
+              <FullcourseTagItem  tag={tag} index={index}/>
+              </div>)
+            }):null}
+          </ul>
+        </div>
       <div className="tag">
         {tagList.map((arr, index) => {
           return (
