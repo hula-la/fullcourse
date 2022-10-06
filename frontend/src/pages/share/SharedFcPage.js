@@ -9,17 +9,15 @@ import { fetchSharedFc } from '../../features/share/shareActions';
 import { Pagination } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-
 const Wrapper = styled.div`
   background: url('/img/memo.jpg');
-`
+`;
 
 const InputWrapper = styled.div`
   margin: 0 20%;
   position: relative;
-  padding-top:2vh;
-  
-  
+  padding-top: 2vh;
+
   .icon {
     position: relative;
     right: 50px;
@@ -32,7 +30,6 @@ const InputWrapper = styled.div`
       cursor: pointer;
     }
   }
-
 `;
 const PaginationWrapper = styled.div`
   display: flex;
@@ -62,7 +59,7 @@ const Input = styled.input`
   .input {
   }
   @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
-    font-size:0.5rem;
+    font-size: 0.5rem;
   }
 `;
 const Button = styled.button`
