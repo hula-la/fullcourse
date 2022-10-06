@@ -14,8 +14,7 @@ import StartPlaceList from './StartPlaceList';
 
 import Swal from 'sweetalert2';
 
-import ReactAudioPlayer from 'react-audio-player';
-import pado from './../../sound/pado.mp3'
+
 
 const Container = styled.div`
   position: relative;
