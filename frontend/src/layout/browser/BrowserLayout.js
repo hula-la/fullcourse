@@ -63,8 +63,11 @@ const Wrapper = styled.div`
 
   .logButton {
     position: fixed;
-    right: 0.4rem;
+    right: 1%;
     bottom: 2rem;
+    width:2.5rem;
+    /* height: 2.5rem; */
+    cursor: pointer;
   }
 
   a {
@@ -200,13 +203,15 @@ const Layout = () => {
       </div>
 
       {userInfo ? (
-        <button className="logButton" onClick={onClickLogout}>
-          로그아웃
-        </button>
+        <img className="logButton" onClick={onClickLogout} src="img\logoutBtn.png"/>
+        // <button className="logButton" onClick={onClickLogout}>
+        //   로그아웃
+        // </button>
       ) : (
-        <button className="logButton" onClick={(e) => navigate('/user/login')}>
-          로그인
-        </button>
+        // <button className="logButton" onClick={(e) => navigate('/user/login')}>
+        //   로그인
+        //   </button>
+          <img className="logButton" onClick={(e) => navigate('/user/login')} src="img\loginBtn.png"/>
       )}
     </Wrapper>
   );

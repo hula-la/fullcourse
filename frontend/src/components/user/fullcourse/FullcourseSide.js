@@ -8,6 +8,8 @@ import {
 } from '../../../features/share/shareSlice';
 import styled from 'styled-components';
 import { dropFc } from '../../../features/trip/tripActions';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Side = styled.div`
   display: flex;
@@ -119,16 +121,17 @@ const Button = styled.div`
 
   cursor: pointer;
   &:hover {
-    border:2px solid #f73131;
+    border: 2px solid #f73131;
     transition: 0.3s;
   }
 `;
 
 const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
+  const params = useParams();
+  const fcId = params.fcId;
   const { dayTagList2 } = useSelector((state) => state.share);
   const { checkedDay } = useSelector((state) => state.share);
-  const { fcId } = useSelector((state) => state.trip);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -157,19 +160,38 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
     }
   }, [fullcourseDetail]);
 
-  const onClickDelete = () => {
-    dispatch(dropFc(fcId))
-
-    // dispatch(
-    //   dropPlaceReview({
-    //     placeType,
-    //     reviewId,
-    //   }),
-    // )
-    //   .unwrap()
-    //   .then((res) => {
-    //     dispatch(fetchPlaceReview({ placeId, placeType }));
-    //   });
+  const onClickDelete = async () => {
+    Swal.fire({
+      title: '정말 삭제하시겠습니까?',
+      imageUrl: 'img/boogie.jpg',
+      imageWidth: 400,
+      imageHeight: 280,
+      imageAlt: 'character',
+      showCancelButton: true,
+      showCloseButton: true,
+      cancelButtonText: '취소',
+      confirmButtonText: '삭제',
+      showLoaderOnConfirm: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { payload } = await dispatch(dropFc(fcId));
+        if (payload.message === 'Success') {
+          Swal.fire({
+            icon: 'success',
+            title: '삭제 완료!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '삭제 실패!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -197,8 +219,7 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
           <div id="fullcourseInfo">
             {startDate} → {endDate}
           </div>
-          
-         
+
           <Button onClick={onClickDelete}>삭제</Button>
           {/* {userInfo && userInfo.email === fullcourseDetail.email ? (
            
