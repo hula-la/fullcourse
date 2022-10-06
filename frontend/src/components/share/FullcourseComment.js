@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   createSharedFcComment,
   createSharedFcLike,
+  dropSharedFc,
   dropSharedFcComment,
+  fetchMySharedFc,
 } from '../../features/share/shareActions';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -271,7 +274,7 @@ const DetailHeader = styled.div`
     display: flex;
     align-items: center;
   }
-  #btn-del{
+  #btn-del {
     border: none;
     background: none;
     color: #8e8e8e;
@@ -281,9 +284,11 @@ const DetailHeader = styled.div`
 const FullcourseComment = ({ sharedFcInfo }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
   const [comment, setComment] = useState('');
   const { Kakao } = window;
   const { userInfo } = useSelector((state) => state.user);
+  const sharedFcId = params.sharedFcId;
 
   useEffect(() => {
     if (sharedFcInfo) {
@@ -332,6 +337,44 @@ const FullcourseComment = ({ sharedFcInfo }) => {
     );
   };
 
+  const onClickDeleteFc = async () => {
+    Swal.fire({
+      title: '정말 삭제하시겠습니까?',
+      imageUrl: '/img/boogie.jpg',
+      imageWidth: 400,
+      imageHeight: 280,
+      imageAlt: 'character',
+      showCancelButton: true,
+      showCloseButton: true,
+      cancelButtonText: '취소',
+      confirmButtonText: '삭제',
+      showLoaderOnConfirm: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { payload } = await dispatch(dropSharedFc(sharedFcId));
+        console.log(payload);
+        if (payload.message === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: '삭제 완료!',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(async (result) => {
+            await dispatch(fetchMySharedFc());
+            navigate('/user/profile/1');
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '삭제 실패!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
+  };
+
   const onClickLike = () => {
     dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
   };
@@ -355,9 +398,10 @@ const FullcourseComment = ({ sharedFcInfo }) => {
             </div>
             <div className="regDate">{sharedFcInfo.regDate.slice(0, 10)}</div>
             <div>
-              <button className="btn-del">삭제</button>
+              <button className="btn-del" onClick={onClickDeleteFc}>
+                삭제
+              </button>
             </div>
-            
           </DetailHeader>
 
           <div className="detail">{sharedFcInfo.detail}</div>
