@@ -203,7 +203,7 @@ const Layout = () => {
       </div>
 
       {userInfo ? (
-        <img className="logButton" onClick={onClickLogout} src="./img/logoutBtn.png"/>
+        <img className="logButton" onClick={onClickLogout} src="/img/logoutBtn.png"/>
         // <button className="logButton" onClick={onClickLogout}>
         //   로그아웃
         // </button>
@@ -211,7 +211,7 @@ const Layout = () => {
         // <button className="logButton" onClick={(e) => navigate('/user/login')}>
         //   로그인
         //   </button>
-          <img className="logButton" onClick={(e) => navigate('/user/login')} src="./img/loginBtn.png"/>
+          <img className="logButton" onClick={(e) => navigate('/user/login')} src="/img/loginBtn.png"/>
       )}
     </Wrapper>
   );
