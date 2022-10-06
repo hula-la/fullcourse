@@ -101,3 +101,8 @@ export const deletePlaceReview = async (placeType, reviewId) => {
   const res = await client.delete(`api/review/${placeType}/${reviewId}`);
   return res;
 };
+//풀코스삭제
+export const deleteFc = async (fcId) => {
+  const res = await client.delete(`api/fullcourse/${fcId}`);
+  return res;
+};

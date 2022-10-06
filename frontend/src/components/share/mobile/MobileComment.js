@@ -225,10 +225,10 @@ const MobileComment = ({ sharedFcInfo }) => {
           link: {
             mobileWebUrl:
               'https://j7e106.p.ssafy.io/fullcourse/detail/' +
-              sharedFcInfo.sharedFcInfo.sharedFcId,
+              sharedFcInfo.sharedFcId,
             webUrl:
               'https://j7e106.p.ssafy.io/fullcourse/detail/' +
-              sharedFcInfo.sharedFcInfo.sharedFcId,
+              sharedFcInfo.sharedFcId,
           },
         },
       });

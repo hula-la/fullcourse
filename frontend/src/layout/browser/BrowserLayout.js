@@ -1,6 +1,7 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Outlet, NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { logout } from '../../features/user/userSlice';
 
@@ -59,6 +60,17 @@ const Wrapper = styled.div`
       background-color: transparent;
     }
   }
+
+  .logButton {
+    position: fixed;
+    right: 0.4rem;
+    bottom: 2rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const NavBar = styled.div`
@@ -109,6 +121,21 @@ const NavBar = styled.div`
 
 const Layout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { userInfo } = useSelector((state) => state.user);
+
+  const onClickLogout = async (e) => {
+    await dispatch(logout());
+    navigate('/');
+  };
+
+  useEffect(() => {
+    document.getElementById('outletBox').scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [pathname]);
   return (
     <Wrapper>
       <div className="navStan">
@@ -166,20 +193,21 @@ const Layout = () => {
               😎
             </NavLink>
           </div>
-          <div>
-            <div className="navItem" onClick={(e) => dispatch(logout())}>
-              <span>
-                로그
-                <br />
-                아웃
-              </span>
-            </div>
-          </div>
         </NavBar>
-        <div className="innerBox">
+        <div id="outletBox" className="innerBox">
           <Outlet />
         </div>
       </div>
+
+      {userInfo ? (
+        <button className="logButton" onClick={onClickLogout}>
+          로그아웃
+        </button>
+      ) : (
+        <button className="logButton" onClick={(e) => navigate('/user/login')}>
+          로그인
+        </button>
+      )}
     </Wrapper>
   );
 };

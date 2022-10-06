@@ -17,7 +17,7 @@ const Wrapper = styled.div`
     height: 35px;
     border-radius: 3rem;
     border: 1px solid #0aa1dd;
-    background-color: rgba(217, 239, 255, 1);
+    background-color: #fff;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
     cursor: pointer;
     z-index: 99;
