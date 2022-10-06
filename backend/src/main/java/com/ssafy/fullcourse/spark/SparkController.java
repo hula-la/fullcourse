@@ -28,11 +28,11 @@ public class SparkController {
     @GetMapping("/count")
     public void count() {
         Komoran komoran = new Komoran(DEFAULT_MODEL.FULL); //Full, Light
-        komoran.setUserDic("C:\\dev\\FullCourse\\backend\\src\\main\\java\\com\\ssafy\\fullcourse\\spark\\user.dic"); // UserDic 경로지정
+        komoran.setUserDic("/Users/son/SSAFY/FullCourse/backend/src/main/java/com/ssafy/fullcourse/spark/user.dic"); // UserDic 경로지정
 
         String str = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader("C:\\dev\\FullCourse\\backend\\src\\main\\java\\com\\ssafy\\fullcourse\\spark\\wordcloud.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("/Users/son/SSAFY/FullCourse/backend/src/main/java/com/ssafy/fullcourse/spark/wordcloud_data.txt"));
             br.readLine();
 
             String st;
@@ -59,6 +59,7 @@ public class SparkController {
 
     @GetMapping("/{place}")
     public Map<Object, Object> getWordCloud(@PathVariable String place) {
+        place = place.replace(" ","");
         return redisUtil.getStringHash(place.trim());
     }
 }
