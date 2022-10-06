@@ -13,7 +13,7 @@ const Side = styled.div`
   background-color: #fff;
   padding-top: 1rem;
   padding-right: 1rem;
-  margin-top: 3rem;
+  margin-top: 10vh;
   margin-left: 2rem;
   border-radius: 1rem;
   box-shadow: 3px 3px 5px 3px #00000038;

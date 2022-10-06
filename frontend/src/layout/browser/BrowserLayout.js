@@ -30,7 +30,7 @@ const Wrapper = styled.div`
     position: relative;
     border-radius: 1rem;
     border: 0.3rem solid #0AA1DD;
-    background: white;
+    background: url('img/memo.jpg');
 
   overflow-y: auto;
   overflow-x: hidden;
