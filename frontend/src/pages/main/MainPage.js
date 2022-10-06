@@ -22,10 +22,11 @@ const Container = styled.div`
   /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
   background: radial-gradient(
     ellipse at center,
-    #fffeea 0%,
-    #fffeea 35%,
-    #b7e8eb 100%
+    #ffffff 0%,
+    #ffffff 35%,
+    #a7e4f4 100%
   );
+
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     overflow-x: hidden;
     /* overflow: overlay; */
@@ -33,10 +34,11 @@ const Container = styled.div`
     grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
     background: radial-gradient(
       ellipse at center,
-      #fffeea 0%,
-      #fffeea 35%,
-      #b7e8eb 100%
+      #ffffff 0%,
+      #ffffff 35%,
+      #a7e4f4 100%
     );
+    /* background-color : #e5f3fe; */
   }
 `;
 
@@ -323,7 +325,7 @@ const MainPage = () => {
     Swal.fire({
       title: '추천 받으실?',
       // text: '추천을 받으실?',
-      imageUrl: 'img/boogie.jpg',
+      imageUrl: '/img/boogie.jpg',
       imageWidth: 400,
       imageHeight: 280,
       imageAlt: 'character',

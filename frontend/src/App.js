@@ -10,6 +10,7 @@ import MainPage from './pages/main/MainPage';
 import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
 import LoginPage from './pages/user/LoginPage';
+import MobileLoginPage from './pages/user/MobileLoginPage';
 import ProfilePage from './pages/user/ProfilePage';
 import ShareFcPage from './pages/share/SharedFcPage';
 import DetailSharedFcPage from './pages/share/DetailSharedFcPage';
@@ -47,7 +48,7 @@ function App() {
           {/* user */}
           <Route path="user" element={<Layout />}>
             <Route element={<ProtectedLoginRoute />}>
-              <Route path="login" element={<LoginPage />} />
+              <Route path="login" element={<MobileLoginPage />} />
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path="profile/:pageNum" element={<ProfilePage />} />

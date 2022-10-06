@@ -85,7 +85,7 @@ const Line = styled.div`
     height: 100%;
 
     position: absolute;
-    left: 9px;
+    left: 31px;
     top: 0;
   }
   .start {

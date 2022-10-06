@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { logout } from '../../features/user/userSlice';
+import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const Wrapper = styled.div`
   width: 93vw;
@@ -65,7 +67,7 @@ const Wrapper = styled.div`
     position: fixed;
     right: 1%;
     bottom: 2rem;
-    width:2.5rem;
+    width: 2.5rem;
     /* height: 2.5rem; */
     cursor: pointer;
   }
@@ -127,10 +129,25 @@ const Layout = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { userInfo } = useSelector((state) => state.user);
+  const [isChecked, setIsChecked] = useState(true);
 
   const onClickLogout = async (e) => {
-    await dispatch(logout());
-    navigate('/');
+    Swal.fire({
+      title: '로그아웃 하시겠습니까?',
+      imageUrl: '/img/boogie.jpg',
+      imageWidth: 400,
+      imageHeight: 280,
+      imageAlt: 'character',
+      showCancelButton: true,
+      cancelButtonText: '취소',
+      confirmButtonText: '로그아웃',
+      showLoaderOnConfirm: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(logout());
+        navigate('/');
+      }
+    });
   };
 
   useEffect(() => {
@@ -138,20 +155,27 @@ const Layout = () => {
       top: 0,
       behavior: 'smooth',
     });
+
+    if (pathname === '/') {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
   }, [pathname]);
+
   return (
     <Wrapper>
       <div className="navStan">
         <NavBar>
           <div>
-            <NavLink to="/" activeclassname="active" className="navItem">
+            <Link className={'navItem' + (isChecked ? ' active' : '')} to="/">
               <span>
                 메인
                 <br />
                 페이지
               </span>
               🚩
-            </NavLink>
+            </Link>
           </div>
           <div>
             <NavLink
@@ -203,15 +227,17 @@ const Layout = () => {
       </div>
 
       {userInfo ? (
-        <img className="logButton" onClick={onClickLogout} src="/img/logoutBtn.png"/>
-        // <button className="logButton" onClick={onClickLogout}>
-        //   로그아웃
-        // </button>
+        <img
+          className="logButton"
+          onClick={onClickLogout}
+          src="/img/logoutBtn.png"
+        />
       ) : (
-        // <button className="logButton" onClick={(e) => navigate('/user/login')}>
-        //   로그인
-        //   </button>
-          <img className="logButton" onClick={(e) => navigate('/user/login')} src="/img/loginBtn.png"/>
+        <img
+          className="logButton"
+          onClick={(e) => navigate('/user/login')}
+          src="/img/loginBtn.png"
+        />
       )}
     </Wrapper>
   );

@@ -70,14 +70,12 @@ const OkBtn = styled.button`
 
 const AlertText = styled.div`
   margin-right: 28vw;
-  font-size: 2vmin;
+  font-size: 1.5vmin;
   line-height: 4vh;
   color: #4e4e4e;
-`
+`;
 
 const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
-
-
   return (
     <Modalbackdrop ref={refOne}>
       {open && (
@@ -96,9 +94,7 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
             className="DateRange"
           />
           <div className="Btns">
-            <AlertText>
-              최대 일정 : 5일
-            </AlertText>
+            <AlertText>최대 일정 : 5일</AlertText>
             {/* 날짜 수정 닫기누르면 유지되게 리팩 필요 */}
             {/* <CloseBtn onClick={() => setOpen((open) => !open)}>닫기</CloseBtn> */}
             <OkBtn
@@ -114,9 +110,8 @@ const CalendarModal = ({ refOne, open, range, setOpen, setRange, tripDay }) => {
                   });
                 } else {
                   setOpen((open) => !open);
-                  setStartDate(range[0].startDate)
-                  setEndDate(range[0].endDate)
-                 
+                  setStartDate(range[0].startDate);
+                  setEndDate(range[0].endDate);
                 }
               }}
             >

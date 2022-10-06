@@ -379,8 +379,12 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
           text: '부기와 함께 떠나볼까요?',
           height: 500,
         });
-        navigate(`/user/fullcourse/${res.data}`);
+
+
         dispatch(setFcId(res.data))
+
+        navigate('/user/profile/1');
+
         deleteAll();
         clearMarker();
       });
