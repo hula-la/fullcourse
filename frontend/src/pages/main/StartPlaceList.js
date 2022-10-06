@@ -71,7 +71,7 @@ const Text = styled.span`
 const CardTitle = styled.div`
   font-family: Tmoney;
   font-size: 4vmin;
-  color: #333333;
+  color: black;
   margin-top: 2vh;
 `;
 
