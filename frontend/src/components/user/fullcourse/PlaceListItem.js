@@ -69,7 +69,7 @@ const PlaceItem = styled.div`
   position: relative;
   cursor: pointer;
 
-  margin: 0 20px;
+  padding: 0 20px;
   /* padding: 10px 0; */
   .memo {
     display: flex;
