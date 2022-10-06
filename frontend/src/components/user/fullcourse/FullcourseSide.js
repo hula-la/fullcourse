@@ -163,7 +163,7 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const onClickDelete = async () => {
     Swal.fire({
       title: '정말 삭제하시겠습니까?',
-      imageUrl: 'img/boogie.jpg',
+      imageUrl: '/img/boogie.jpg',
       imageWidth: 400,
       imageHeight: 280,
       imageAlt: 'character',

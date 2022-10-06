@@ -20,23 +20,25 @@ const Container = styled.div`
 
   /* display: grid; */
   /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
-  background: radial-gradient(
+  /* background: radial-gradient(
     ellipse at center,
     #fffeea 0%,
     #fffeea 35%,
     #b7e8eb 100%
-  );
+  ); */
+  background-color :#e5f3fe;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     overflow-x: hidden;
     /* overflow: overlay; */
     display: grid;
     grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
-    background: radial-gradient(
+    /* background: radial-gradient(
       ellipse at center,
       #fffeea 0%,
       #fffeea 35%,
       #b7e8eb 100%
-    );
+    ); */
+    background-color : #e5f3fe;
   }
 `;
 
@@ -49,7 +51,8 @@ const Introduce = styled.div`
     /* height: 100%; */
   }
 
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color :#e5f3fe;
 `;
 
 const VideoContainer = styled.div`
@@ -323,7 +326,7 @@ const MainPage = () => {
     Swal.fire({
       title: '추천 받으실?',
       // text: '추천을 받으실?',
-      imageUrl: 'img/boogie.jpg',
+      imageUrl: '/img/boogie.jpg',
       imageWidth: 400,
       imageHeight: 280,
       imageAlt: 'character',
