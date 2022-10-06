@@ -28,12 +28,6 @@ public class UserDto {
 
     public User toEntity(LoginType loginType){
 
-//        Authority authority = Authority.builder()
-//                .authorityName("ROLE_USER")
-//                .build();
-
-
-
         return User.builder()
                 .email(this.getEmail())
                 .socialId(this.getSocialId())
@@ -42,7 +36,6 @@ public class UserDto {
                 .loginType(loginType)
                 .gender(this.getGender())
                 .ageRange(this.getAgeRange())
-//                .authorities(Collections.singleton(authority))
                 .build();
     }
 }
