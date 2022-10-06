@@ -19,6 +19,7 @@ const userSlice = createSlice({
     },
     changeShowMemo: (state, { payload }) => {
       state.showMemo = { ...state.showMemo, ...payload };
+      console.log(payload);
     },
   },
   extraReducers: {

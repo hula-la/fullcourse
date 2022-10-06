@@ -11,6 +11,10 @@ const MemoBlock = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url('/img/memo.jpg');
+  .btn-wrapper {
+    display: grid;
+    justify-content: center;
+  }
 `;
 
 const PlaceWrapper = styled.div`
@@ -170,8 +174,10 @@ const UpdateMemo = () => {
   return (
     <MemoBlock>
       <PlaceWrapper>
-        <Button onClick={onClickUpdate}>수정완료</Button>
         <div className="name">{placeName}</div>
+        <div className="btn-wrapper">
+          <Button onClick={onClickUpdate}>수정완료</Button>
+        </div>
         {visited ? <span className="visit">방문 인증완료 </span> : null}
       </PlaceWrapper>
       <MemoWrapper>

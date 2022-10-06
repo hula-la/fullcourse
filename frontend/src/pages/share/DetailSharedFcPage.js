@@ -23,9 +23,14 @@ const Wrapper = styled.div`
 }
 `
 const DetailBlock = styled.div`
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: 100%;
 `;;
 
 const FullcourseDetail = () => {
@@ -51,14 +56,14 @@ const FullcourseDetail = () => {
   return (
     <Wrapper>
       <BrowserView>
-    <DetailBlock>
-        <FullcourseSide
-          fullcourseDetail={fullcourseDetail}
-          sharedFcInfo={sharedFcInfo}
-        />
-        <FullcourseMap />
-        <FullcourseComment sharedFcInfo={sharedFcInfo} />
-    </DetailBlock>
+        <DetailBlock>
+            <FullcourseSide
+              fullcourseDetail={fullcourseDetail}
+              sharedFcInfo={sharedFcInfo}
+            />
+            <FullcourseMap />
+            <FullcourseComment sharedFcInfo={sharedFcInfo} />
+        </DetailBlock>
       </BrowserView>
       <MobileView>
         <MobileDetailHeader

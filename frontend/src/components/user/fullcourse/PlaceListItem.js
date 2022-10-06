@@ -211,6 +211,7 @@ const PlaceListItem = ({ placeKey, place }) => {
         lng: place[index]['place']['lng'],
       }),
     );
+    dispatch(changeShowMemo({ first: parseInt(placeKey), last: index }));
   };
 
   const onClickMemo = (fcDetailId, e) => {
@@ -281,7 +282,7 @@ const PlaceListItem = ({ placeKey, place }) => {
             </PlaceInfo>
             {p.img || p.comment ? (
               <PlaceImg>
-                <img className="placeImg" src={p.img} />
+                <img className="placeImg" src="/img/dojang.png" />
               </PlaceImg>
             ) : (
               <Button onClick={(e) => onClickMemo(p.fcdId, e)}>

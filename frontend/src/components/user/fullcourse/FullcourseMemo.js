@@ -11,7 +11,7 @@ const MemoBlock = styled.div`
   display: flex;
   flex-direction: column;
   background-image: url('/img/memo.jpg');
-  .btn-wrapper{
+  .btn-wrapper {
     display: grid;
     justify-content: center;
   }
@@ -58,7 +58,6 @@ const MemoWrapper = styled.div`
   padding: 0 20px;
   padding-bottom: 15px;
   border-top: 2px solid #0aa1dd;
-
 `;
 
 const Img = styled.div`
@@ -121,6 +120,7 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
   useEffect(() => {
     if (fullcourseDetail) {
       const tmp = fullcourseDetail.places[showMemo['first']][showMemo['last']];
+      console.log(tmp);
       setComment(tmp.comment);
       setImg(tmp.img);
       setVisited(tmp.visited);
@@ -185,12 +185,12 @@ const FullcourseMemo = ({ fullcourseDetail }) => {
       {!isUpdate ? (
         <MemoBlock>
           <PlaceWrapper>
-
             <div className="name">{placeName}</div>
             {img || comment ? (
               <div className="btn-wrapper">
                 <Button onClick={onClickUpdate}>수정하기</Button>
-              </div>):null}
+              </div>
+            ) : null}
             {visited ? <span className="visit">방문 인증완료 </span> : null}
           </PlaceWrapper>
           {img || comment ? (

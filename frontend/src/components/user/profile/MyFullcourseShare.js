@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import FullcourseTagItem from '../../share/SharedFcTagItem'
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { createSharedFc } from '../../../features/share/shareActions';
 import EditIcon from '@mui/icons-material/Edit';
+import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import Swal from 'sweetalert2';
 
@@ -159,13 +161,34 @@ const AlertDiv = styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: flex-start;
-    width: 70%;
+    /* width: 70%; */
     margin: 0 auto;
     padding: 20px 0;
+    width: 97%;
     /* border-bottom: 2px solid #d9d9d9; */
     background-color: #ffff;
     border-radius: 1rem;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+    max-height: 200px;
+    overflow: auto;
+    
+  /* 스크롤바 설정*/
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* 스크롤바 막대 설정*/
+  ::-webkit-scrollbar-thumb {
+    background-color: #e36387;
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 뒷 배경 설정*/
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #d4d4d4;
+  }
   }
 
   .nonelist {
@@ -175,6 +198,15 @@ const AlertDiv = styled.div`
     flex-wrap: wrap;
     justify-content: start;
     margin: 0px 0px;
+  }
+  .nonelist > li:first-child{
+    width: 95%;
+    pointer-events: none;
+    
+    .listitem{
+      background : #e36387;
+      color:#fff;
+    }
   }
 `;
 const Button = styled.button`
@@ -254,20 +286,20 @@ const MyFullcourseShare = (props) => {
     }
   };
 
-  // const onClickShare = async (e) => {
-  //   e.preventDefault();
-  //   const { payload } = await dispatch(
-  //     createSharedFc({
-  //       day: days,
-  //       fcId: willShareFcId,
-  //       title: inputs.title,
-  //       detail: inputs.content,
-  //       tags: fullcourseTags,
-  //       thumbnail: willShareThumbnail,
-  //     }),
-  //   );
-  //   console.log(payload);
-  // };
+  const onClickShare = async (e) => {
+    e.preventDefault();
+    const { payload } = await dispatch(
+      createSharedFc({
+        day: days,
+        fcId: willShareFcId,
+        title: inputs.title,
+        detail: inputs.content,
+        tags: fullcourseTags,
+        thumbnail: willShareThumbnail,
+      }),
+    );
+    console.log(payload);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -353,21 +385,27 @@ const MyFullcourseShare = (props) => {
                     }}
                   />
                 </div>
-                {/* <div className="tag">
-                  {tagList.map((arr, index) => {
-                    return (
-                      <ul className="nonelist" key={index}>
-                        {arr.map((tag, index) => {
-                          return (
-                            <li key={index}>
-                              <FullcourseTagItem tag={tag} index={index} />
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    );
-                  })}
-                </div> */}
+                <div>
+                  <label>
+                      <LoyaltyIcon/>
+                      <span>어울리는 태그들을 선택해주세요</span>
+                    </label>
+                  <div className="tag">
+                    {tagList.map((arr, index) => {
+                      return (
+                        <ul className="nonelist" key={index}>
+                          {arr.map((tag, index) => {
+                            return (
+                              <li key={index}>
+                                <FullcourseTagItem tag={tag} index={index} />
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      );
+                    })}
+                  </div>
+                </div>
                 <footer>
                   <Button>공유하기</Button>
                 </footer>
