@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   background: #fff;
   border-radius: 1rem;
   box-shadow: 3px 3px 5px 3px #00000038;
+  padding-bottom: 1.5rem;
 
   .slick-prev:before,
   .slick-next:before {
@@ -33,11 +34,15 @@ const Wrapper = styled.div`
   }
   .slider {
     margin: 1vw auto;
-    width: 100%;
+    width: 80%;
   }
   .slider-small {
     margin: 1vw auto;
-    width: 70%;
+    width: 30%;
+  }
+  .slider-middle {
+    margin: 1vw auto;
+    width: 60%;
   }
   .card {
     width: auto !important;
@@ -75,7 +80,6 @@ const MyLikeSharedFc = () => {
 
   useEffect(() => {
     if (sharedFcLikeList) {
-      console.log(sharedFcLikeList.length);
       setFcLength(sharedFcLikeList.length);
     }
   }, [sharedFcLikeList]);
@@ -89,7 +93,7 @@ const MyLikeSharedFc = () => {
       <TitleText content="찜한 풀코스" />
       {sharedFcLikeList && sharedFcLikeList.length > 0 ? (
         <Slider
-          className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
+          className={isMobile || fcLength >=3 ? 'slider' : fcLength == 1 ? 'slider-small' : 'slider-middle'}
           {...{
             dots: true,
             infinite: true,
