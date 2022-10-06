@@ -94,7 +94,7 @@ const ShareInfo = styled.div`
 const Plan = styled.div`
   border-radius: 1rem;
   padding: 1rem;
-  height: 100%;
+  height: 82%;
   margin: 0.6rem;
   box-shadow: -1px 1px 5px 1px #0000029e;
   background: white;

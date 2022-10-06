@@ -14,12 +14,28 @@ import FullcoursePlan from '../../components/user/fullcourse/mobile/FullcoursePl
 import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
 
+import ClearIcon from '@mui/icons-material/Clear';
+
 // 모바일&웹 뷰
-import { BrowserView, MobileView } from 'react-device-detect';
+import {
+  BrowserView,
+  MobileView,
+} from "react-device-detect";
+import { clickChangeView } from '../../features/share/shareSlice';
 
 const Wrapper = styled.div`
 .detailContent{
   position:relative;
+}
+.closeBtn{
+  position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    &:hover {
+      color: #000;
+    }
+
 }
 `
 
@@ -36,7 +52,7 @@ const DetailFullcoursePage = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
   const { fullcourseDetail } = useSelector((state) => state.trip);
-  // const { places } = useSelector((state) => state.trip.fullcourseDetail);
+  const { changeView } = useSelector((state) => state.share)
   const [days, setDays] = useState(null);
 
   const fcId = params.fcId;
@@ -74,6 +90,10 @@ const DetailFullcoursePage = () => {
     return Math.round(differenceMs / ONE_DAY) + 1;
   };
 
+  const onClick = () => {
+    dispatch(clickChangeView())
+  }
+
   return (
     <Wrapper>
       {/* 브라우저뷰 */}
@@ -91,19 +111,26 @@ const DetailFullcoursePage = () => {
 
       {/* 모바일뷰 */}
       <MobileView>
-        <MobileFullcourseHeader
-          days={days}
-          fullcourseDetail={fullcourseDetail}
+      {!changeView ? (
+        <>
+      <MobileFullcourseHeader
+        days={days}
+        fullcourseDetail={fullcourseDetail}
         />
         <div className='detailContent'>
-
         <MobileFullcourseMap />
         <FullcoursePlan
           days={days}
           fullcourseDetail={fullcourseDetail}
           />
-      <MobileFullcourseMemo fullcourseDetail={fullcourseDetail} />
-        </div>
+          </div>
+          </>
+        ) :
+          (<>
+          <div className='closeBtn' onClick={onClick}><ClearIcon/></div>
+            <MobileFullcourseMemo fullcourseDetail={fullcourseDetail} /></>)}
+          
+      
       </MobileView>
     </Wrapper>
   );

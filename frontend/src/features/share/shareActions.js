@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  deleteSharedFc,
   deleteSharedFcComment,
   getMyFullcourse,
   getMySharedFc,
@@ -158,6 +159,22 @@ export const fetchMySharedFc = createAsyncThunk(
   async (tmp, { rejectWithValue }) => {
     try {
       const { data } = await getMySharedFc();
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  },
+);
+
+export const dropSharedFc = createAsyncThunk(
+  'share/dropSharedFc',
+  async (sharedFcId, { rejectWithValue }) => {
+    try {
+      const { data } = await deleteSharedFc(sharedFcId);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {

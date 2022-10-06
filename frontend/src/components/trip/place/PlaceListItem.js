@@ -52,7 +52,7 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
   cursor: pointer;
   font-size: 3.2vmin;
   color: #0aa1dd;
-  margin-right: 0.5vh;
+  margin-right: 0.1vh;
   &:hover {
     color: #0b739c;
     font-weight: bold;
@@ -162,11 +162,12 @@ const PlaceListItem = ({
           backgroundColor: 'white',
         }}
       >
-        <AspectRatio ratio="1" sx={{ width: 90, marginRight:'1vh' }}>
+
+        <AspectRatio ratio="1" sx={{ minHeight:75, minWidth: 75,  }}>
           {place.imgUrl!==null ? (<img src={place.imgUrl} alt="" />):(<img src={randomImgUrl} alt="" />)}
         </AspectRatio>
 
-        <Box sx={{ width: '10vw' }}>
+        <Box sx={{ width: '10vw', marginLeft:'4px' }}>
           <PlaceName>{place.name}</PlaceName>
           <LikeContent>
             <Like />
@@ -179,7 +180,7 @@ const PlaceListItem = ({
             />
           </LikeContent>
         </Box>
-        <Box sx={{ marginTop: '6.5vh', display: 'flex', marginLeft: '1vw' }}>
+        <Box sx={{ marginTop: '6.5vh', display: 'flex', marginRight: '4px' }}>
           <DetailBtn
             onClick={(e) => {
               openDetailModal();

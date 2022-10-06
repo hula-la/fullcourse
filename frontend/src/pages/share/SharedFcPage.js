@@ -8,6 +8,7 @@ import TitleText from '../../components/user/profile/TitleText';
 import { fetchSharedFc } from '../../features/share/shareActions';
 import { Pagination } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { BrowserView, MobileView } from 'react-device-detect';
 
 const Wrapper = styled.div`
   background: url('/img/memo.jpg');
@@ -34,7 +35,8 @@ const InputWrapper = styled.div`
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px 0;
+  margin-top: 30px;
+  padding-bottom:30px;
 `;
 
 const Input = styled.input`
@@ -174,40 +176,81 @@ const FullcourseShare = () => {
   };
 
   return (
-    <Wrapper>
-      <InputWrapper>
-        <TitleText className="ttl" content="풀코스 검색"></TitleText>
-        <div className="input">
-          <Input
-            placeholder="가고싶은 장소를 입력하세요"
-            onFocus={onFocus}
-            onChange={onChange}
-            onKeyPress={onKeyPress}
-          ></Input>
+    <div>
+    <BrowserView>
+      <Wrapper>
+        <InputWrapper>
+          <TitleText className="ttl" content="풀코스 검색"></TitleText>
+          <div className="input">
+            <Input
+              placeholder="가고싶은 장소를 입력하세요"
+              onFocus={onFocus}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            ></Input>
 
-          <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
-        </div>
-      </InputWrapper>
+            <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
+          </div>
+        </InputWrapper>
 
-      <FullcourseTag />
-      <SortSelect />
-      <SharedFcList />
+        <FullcourseTag />
+        <SortSelect />
+        <SharedFcList />
 
-      <PaginationWrapper>
-        {sharedFcList ? (
-          <Pagination
-            page={pageNum}
-            count={maxPageNum}
-            color="primary"
-            showFirstButton
-            showLastButton
-            defaultPage={1}
-            boundaryCount={2}
-            onChange={onClickPage}
-          />
-        ) : null}
-      </PaginationWrapper>
-    </Wrapper>
+        <PaginationWrapper>
+          {sharedFcList ? (
+            <Pagination
+              page={pageNum}
+              count={maxPageNum}
+              color="primary"
+              showFirstButton
+              showLastButton
+              defaultPage={1}
+              boundaryCount={2}
+              onChange={onClickPage}
+            />
+          ) : null}
+        </PaginationWrapper>
+      </Wrapper>
+    </BrowserView>
+
+    <MobileView>
+      <Wrapper>
+        <InputWrapper>
+          <TitleText className="ttl" content="풀코스 검색"></TitleText>
+          <div className="input">
+            <Input
+              placeholder="가고싶은 장소를 입력하세요"
+              onFocus={onFocus}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            ></Input>
+
+            <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
+          </div>
+        </InputWrapper>
+
+        <FullcourseTag />
+        <SortSelect />
+        <SharedFcList />
+
+        <PaginationWrapper>
+          {sharedFcList ? (
+            <Pagination
+              page={pageNum}
+              count={maxPageNum}
+              color="primary"
+              showFirstButton
+              showLastButton
+              defaultPage={1}
+              boundaryCount={2}
+              onChange={onClickPage}
+            />
+          ) : null}
+        </PaginationWrapper>
+      </Wrapper>
+      </MobileView>
+    </div>
   );
 };
 

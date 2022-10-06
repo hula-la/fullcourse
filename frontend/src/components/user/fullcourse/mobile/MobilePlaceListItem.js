@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createDiary } from '../../../features/trip/tripActions';
+import { createDiary } from '../../../../features/trip/tripActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import { changeShowMemo } from '../../../features/user/userSlice';
-import { moveMap } from '../../../features/share/shareSlice';
+import { changeShowMemo } from '../../../../features/user/userSlice';
+import { clickChangeView, moveMap } from '../../../../features/share/shareSlice';
 
 const Wrapper = styled.div`
   position: relative;
@@ -85,7 +85,7 @@ const Line = styled.div`
     height: 100%;
 
     position: absolute;
-    left: 31px;
+    left: 30px;
     top: 0;
   }
   .start {
@@ -200,17 +200,11 @@ const Button = styled.div`
   }
 `;
 
-const PlaceListItem = ({ placeKey, place }) => {
+const MobilePlaceListItem = ({ placeKey, place }) => {
   const dispatch = useDispatch();
 
-  // 지도 중심 이동시키기
   const onClickPlace = (index) => {
-    dispatch(
-      moveMap({
-        lat: place[index]['place']['lat'],
-        lng: place[index]['place']['lng'],
-      }),
-    );
+    dispatch(clickChangeView())
     dispatch(changeShowMemo({ first: parseInt(placeKey), last: index }));
   };
 
@@ -296,4 +290,4 @@ const PlaceListItem = ({ placeKey, place }) => {
   );
 };
 
-export default PlaceListItem;
+export default MobilePlaceListItem;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import PlaceList from '../PlaceList';
+import MobilePlaceList from './MobilePlaceList';
 
 import {
   checkAllDay,
@@ -172,7 +172,7 @@ const FullcoursePlan = ({ days, fullcourseDetail }) => {
             })}
           </ul>
           {fullcourseDetail ? (
-            <PlaceList placeList={fullcourseDetail.places} />
+            <MobilePlaceList placeList={fullcourseDetail.places} />
           ) : null}
         </Plan>
       </div>
