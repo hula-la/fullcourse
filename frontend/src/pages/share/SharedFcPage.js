@@ -9,9 +9,16 @@ import { fetchSharedFc } from '../../features/share/shareActions';
 import { Pagination } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
+
 const Wrapper = styled.div`
+  background: url('/img/memo.jpg');
+`
+
+const InputWrapper = styled.div`
   margin: 0 20%;
   position: relative;
+  
+  
   .icon {
     position: relative;
     right: 50px;
@@ -159,8 +166,8 @@ const FullcourseShare = () => {
   };
 
   return (
-    <div>
-      <Wrapper>
+    <Wrapper>
+      <InputWrapper>
         <TitleText className="ttl" content="풀코스 검색"></TitleText>
         <div className="input">
           <Input
@@ -172,7 +179,7 @@ const FullcourseShare = () => {
 
           <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
         </div>
-      </Wrapper>
+      </InputWrapper>
 
       <FullcourseTag />
       <SortSelect />
@@ -192,7 +199,7 @@ const FullcourseShare = () => {
           />
         ) : null}
       </PaginationWrapper>
-    </div>
+    </Wrapper>
   );
 };
 

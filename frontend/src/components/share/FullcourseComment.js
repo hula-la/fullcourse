@@ -292,10 +292,10 @@ const FullcourseComment = ({ sharedFcInfo }) => {
           link: {
             mobileWebUrl:
               'https://j7e106.p.ssafy.io/fullcourse/detail/' +
-              sharedFcInfo.fcId,
+              sharedFcInfo.sharedFcId,
             webUrl:
               'https://j7e106.p.ssafy.io/fullcourse/detail/' +
-              sharedFcInfo.fcId,
+              sharedFcInfo.sharedFcId,
           },
         },
       });
@@ -370,9 +370,9 @@ const FullcourseComment = ({ sharedFcInfo }) => {
         <div
           id="btnKakao"
           className="btnContainer"
-          onClick={() => {
-            shareKakao(sharedFcInfo);
-          }}
+          // onClick={() => {
+          //   shareKakao(sharedFcInfo);
+          // }}
         >
           {sharedFcInfo ? <ShareIcon /> : null}
           <span id="btnKakaoCap">공유하기</span>
