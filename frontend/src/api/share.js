@@ -1,5 +1,9 @@
-import { ContentPasteOffOutlined } from '@mui/icons-material';
 import client from './client';
+
+export const getMyFullcourse = async () => {
+  const res = await client.get(`api/fullcourse/my`);
+  return res;
+};
 
 export const getSharedFc = async (data, page, sort) => {
   const res = await client.post('api/share/fullcourse/search', data, {
@@ -16,15 +20,8 @@ export const getSharedFcDetail = async (sharedFcId, email) => {
 };
 
 export const postSharedFc = async (data) => {
-  const res = await client
-    .post('api/share/fullcourse', data)
-    .then((data) => {
-      console.log('성공');
-    })
-    .catch((err) => {
-      console.log(err.response.data);
-    });
-
+  const res = await client.post('api/share/fullcourse', data);
+  console.log(res);
   return res;
 };
 
@@ -47,7 +44,6 @@ export const getSharedFcLikeList = async () => {
 
 export const postSharedFcLike = async (sharedFcId) => {
   const res = await client.post(`api/share/like/${sharedFcId}`);
-  console.log(res)
   return res;
 };
 

@@ -29,7 +29,7 @@ const LikeContent = styled.div`
     padding: 0;
   }
   p {
-    margin:0;
+    margin: 0;
     margin-right: 0.3vw;
     padding: 0;
     font-size: 2vmin;
@@ -40,6 +40,12 @@ const PlusBtn = styled(AiOutlinePlusCircle)`
   cursor: pointer;
   font-size: 3vmin;
   color: #e36387;
+  &:hover {
+    color: #ae4e69;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const DetailBtn = styled(IoIosInformationCircleOutline)`
@@ -47,6 +53,12 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
   font-size: 3.2vmin;
   color: #0aa1dd;
   margin-right: 0.5vh;
+  &:hover {
+    color: #0b739c;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const Like = styled(AiFillHeart)`
@@ -84,7 +96,6 @@ const PlaceListItem = ({
     e,
   ) => {
     e.preventDefault();
-    console.log('얘가이걸 못받음', placeType);
     let placeItemObj = new Object();
     placeItemObj.placeId = placeId;
     placeItemObj.name = placeName;
@@ -107,6 +118,26 @@ const PlaceListItem = ({
     marker['placeName'] = name;
     dispatch(setMarkers(marker));
   };
+  
+  const [randomImgUrl, setRandomImgUrl] = useState('')
+  const cultureImg = ['/img/default/culture1.png','/img/default/culture2.png','/img/default/culture3.png','/img/default/culture4.png']
+  const foodImg = ['/img/default/food1.png','/img/default/food2.png','/img/default/food3.png','/img/default/food4.png']
+  const hotelImg = ['/img/default/hotel1.png','/img/default/hotel2.png','/img/default/hotel3.png','/img/default/hotel4.png']
+  useEffect((
+  )=>{
+    if (placeType==='restaurant') {
+      const randomValue = foodImg[Math.floor(Math.random() * foodImg.length)];
+      setRandomImgUrl(randomValue)
+    }
+    else if (placeType==='culture') {
+      const randomValue = cultureImg[Math.floor(Math.random() * cultureImg.length)];
+      setRandomImgUrl(randomValue)
+    }
+    else if (placeType==='hotel') {
+      const randomValue = hotelImg[Math.floor(Math.random() * hotelImg.length)];
+      setRandomImgUrl(randomValue)
+    }
+  },[place.imgUrl])
 
   return (
     <div>
@@ -117,8 +148,8 @@ const PlaceListItem = ({
         row
         sx={{
           width: '18vw',
-          height: '9.5vh',
-          gap: 2,
+          height: '12vh',
+          // gap: 2,
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           ':hover': {
             boxShadow: 'md',
@@ -131,8 +162,8 @@ const PlaceListItem = ({
           backgroundColor: 'white',
         }}
       >
-        <AspectRatio ratio="1" sx={{ width: 90 }}>
-          <img src={place.imgUrl} alt="" />
+        <AspectRatio ratio="1" sx={{ width: 90, marginRight:'1vh' }}>
+          {place.imgUrl!==null ? (<img src={place.imgUrl} alt="" />):(<img src={randomImgUrl} alt="" />)}
         </AspectRatio>
 
         <Box sx={{ width: '10vw' }}>
@@ -161,6 +192,7 @@ const PlaceListItem = ({
               imgUrl={place.imgUrl}
               placeType={placeType}
               placeId={place.placeId}
+              randomImgUrl={randomImgUrl}
             />
           ) : null}
           <PlusBtn
@@ -178,6 +210,7 @@ const PlaceListItem = ({
                 e,
               );
               addMarker(place.lat, place.lng, place.name, e);
+
             }}
           />
         </Box>

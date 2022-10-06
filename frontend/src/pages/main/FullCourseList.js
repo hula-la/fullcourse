@@ -66,7 +66,6 @@ const FullCourseList = () => {
   }, [dispatch]);
 
   const onClickFullcourse = (sharedFcId) => {
-    console.log('3');
     navigate(`/fullcourse/detail/${sharedFcId}`);
   };
 

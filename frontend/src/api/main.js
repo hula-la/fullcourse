@@ -12,6 +12,5 @@ export const getSharedFc = async () => {
       params: { page: 0, size: 3, sort: 'likeCnt,desc' },
     },
   );
-  console.log(res);
   return res;
 };

@@ -16,7 +16,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: calc(100vh - 80px);
+  height: 100%;
 `;
 
 const PlanButton = styled.div`
@@ -33,7 +33,7 @@ const PlanButton = styled.div`
   font-size: 0.8rem;
   border: 2px solid;
 
-  &:hover{
+  &:hover {
     transform: scale(1.1);
     animation-duration: 0.2s;
   }
@@ -107,23 +107,23 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
-.likeCnt{
-  padding: 0.4rem;
-}
+  .likeCnt {
+    padding: 0.4rem;
+  }
   img {
     border-radius: 0.8rem;
     height: 100%;
     object-fit: cover;
 
-    width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
-    height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+    width: calc(100vh * 0.25 * 0.6 - 2rem);
+    height: calc(100vh * 0.25 * 0.6 - 2rem);
   }
 
-  .continueBtn{
+  .continueBtn {
     cursor: pointer;
 
     &:hover {
-      background:#c8c3ff;
+      background: #c8c3ff;
     }
   }
 
@@ -163,8 +163,8 @@ const LikePlaceList = styled.div`
     margin: 0 1rem;
     font-weight: bold;
   }
-  .likePlaceBox{
-    height: 65%;
+  .likePlaceBox {
+    height: 80%;
     width: 50%;
     max-width: 50rem;
   }
@@ -179,40 +179,43 @@ const LikePlaceList = styled.div`
     /* height: 65%;
     width: 50%;
     max-width: 50rem; */
-    background: #e2dfff;
+    /* background: #e2dfff; */
     border-radius: 1rem;
     /* height:10%; */
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
-  }
-
-  /* 스크롤바 설정*/
-  @media only screen and (min-device-width: 800px) {
-    .likePlaceContainer::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
-
-  /* 스크롤바 막대 설정*/
-  /* .likePlaceContainer::-webkit-scrollbar-thumb{
-  
-    background-color: transparent;
-
-  } */
-
-  .likePlaceContainer::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-
-    background-color: white;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 1rem;
     border: 4px solid transparent;
-  }
 
-  /* 스크롤바 뒷 배경 설정*/
+    /* background: url(/img/surveyIcon/likePlaceContainer.png); */
+    /* background-size: 100% 100%; */
 
-  .likePlaceContainer::-webkit-scrollbar-track {
-    border-radius: 10px;
+    img{
+      border: double 7px #333333;
+    }
+
+    &:hover {
+      border: 4px solid #333333 !important;
+    }
+    /* 스크롤바 */
+    &::-webkit-scrollbar-thumb {
+      background-clip: padding-box;
+  
+      background-color: white;
+      /* 스크롤바 둥글게 설정    */
+      border-radius: 1rem;
+      border: 2px solid black;
+    }
+    /* @media only screen and (min-device-width: 479px) { */
+      &::-webkit-scrollbar {
+        width: 10px;
+      /* } */
+    }
+  
+    /* 스크롤바 뒷 배경 설정*/
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
   }
 
   .buttonContainer {
@@ -255,11 +258,18 @@ const RecommendPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { recommendPlaceList } = useSelector((state) => state.survey);
+  const { randomPlaceList } = useSelector((state) => state.survey);
+  const { number } = useSelector((state) => state.survey);
   const { likePlaceList } = useSelector((state) => state.survey);
   const { placeId } = location.state;
   const { likePlaceIndex } = useSelector((state) => state.survey);
 
   const { markers, map } = useSelector((state) => state.trip);
+
+  useEffect(() => {
+    console.log(randomPlaceList.length);
+    console.log(number);
+  }, [number]);
 
   useEffect(() => {
     if (placeId) {
@@ -275,14 +285,14 @@ const RecommendPage = () => {
     dispatch(deletePlace(likePlaceList[index]));
   };
 
-  const addMarker = (lat, lng) => {
+  const addMarker = (lat, lng, name) => {
     const position = { lat: lat, lng: lng };
     const marker = new window.google.maps.Marker({
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
+    marker['placeName'] = name;
     dispatch(setMarkers(marker));
   };
 
@@ -291,7 +301,6 @@ const RecommendPage = () => {
     likePlaceIndex.forEach((id) => {
       const placeId = id;
       const placeType = 'travel';
-      console.log('placeId', placeId);
       dispatch(fetchPlaceDetail({ placeId, placeType }))
         .unwrap()
         .then((res) => {
@@ -303,8 +312,10 @@ const RecommendPage = () => {
           placeItemObj.draggable = true;
           placeItemObj.lat = data.lat;
           placeItemObj.lng = data.lng;
+          placeItemObj.type = placeType
           dispatch(setPlaceItem(placeItemObj));
-          addMarker(data.lat, data.lng);
+          addMarker(data.lat, data.lng, data.name);
+          console.log("setting이 잘되나",placeItemObj)
         });
     });
     navigate('/trip/plan');
@@ -324,7 +335,7 @@ const RecommendPage = () => {
         일정짜기 <SkipNextIcon />
       </PlanButton>
 
-      {recommendPlaceList && (
+      {recommendPlaceList.length!=0 && (
         <>
           <RecommendHeader>
             <div className="title">
@@ -341,10 +352,10 @@ const RecommendPage = () => {
       )}
 
       <LikePlaceList>
-      <div className="tooltip likePlaceBox">
-                <span className="tooltiptext tooltip-top">
-                  <p>당신이 선택한 장소들이 담깁니다.</p>
-                </span>
+        <div className="tooltip likePlaceBox">
+          <span className="tooltiptext tooltip-top">
+            <p>당신이 선택한 장소들이 담깁니다.</p>
+          </span>
           {likePlaceList.length >= 0 && (
             <>
               <div className="likePlaceContainer">
@@ -368,18 +379,21 @@ const RecommendPage = () => {
               </div>
             </>
           )}
-
         </div>
         <div className="buttonContainer">
-        <div className="tooltip">
-          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
-            {likePlaceList.length} /5
-          </div>
+          <div className="tooltip">
+            <div
+              className={
+                likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`
+              }
+            >
+              {likePlaceList.length} /5
+            </div>
             <div className="tooltiptext tooltip-left">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>
           </div>
-          <button className='continueBtn' onClick={onClickContinue}>
+          <button className="continueBtn" onClick={onClickContinue}>
             계속 <span>▶</span>
           </button>
         </div>

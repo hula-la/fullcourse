@@ -59,11 +59,12 @@ const ModalView = styled.div.attrs((props) => ({
     border-radius: 30px;
   }
 
-  .placeImg {
+  .place-img {
     max-width: 100%;
     height: 30vh;
     border-radius: 2vh 2vh 0 0;
     min-height: 30vh;
+    min-width: 100%;
   }
 
   .box {
@@ -105,7 +106,9 @@ const LikeYes = styled(AiFillHeart)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
-  &:hover { transform: scale(1.05) }
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 const LikeNo = styled(AiOutlineHeart)`
   font-size: 4.5vmin;
@@ -115,7 +118,9 @@ const LikeNo = styled(AiOutlineHeart)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
-  &:hover { transform: scale(1.05) }
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 const ReviewList = styled(AiOutlineComment)`
   font-size: 4.5vmin;
@@ -125,7 +130,9 @@ const ReviewList = styled(AiOutlineComment)`
   cursor: pointer;
   margin: 0 1vw;
   background-color: #ffe3e1;
-  &:hover { transform: scale(1.05) }
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 const Review = styled(AiOutlineStar)`
   font-size: 4.5vmin;
@@ -135,10 +142,18 @@ const Review = styled(AiOutlineStar)`
   margin: 0 1vw;
   background-color: #ffe3e1;
   cursor: pointer;
-  &:hover { transform: scale(1.05) }
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
-const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
+const PlaceDetailModal = ({
+  openDetailModal,
+  imgUrl,
+  placeId,
+  placeType,
+  randomImgUrl,
+}) => {
   const { placeDetail, reviews } = useSelector((state) => state.trip);
   const [isLiked, setIsLiked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -170,7 +185,12 @@ const PlaceDetailModal = ({ openDetailModal, imgUrl, placeId, placeType }) => {
     <ModalBackdrop>
       <ModalView>
         <BackIcon onClick={closePlaceDetailModal} />
-        <img className="placeImg" src={imgUrl} alt="place detail image" />
+        {imgUrl !== null ? (
+          <img src={imgUrl} className="place-img" alt="" />
+        ) : (
+          <img src={randomImgUrl} className="place-img" alt="" />
+        )}
+
         <div className="box">
           <IconBox>
             {placeDetail ? (

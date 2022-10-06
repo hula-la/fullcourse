@@ -12,7 +12,6 @@ const mainSlice = createSlice({
   extraReducers: {
     [fetchSharedFc.fulfilled]: (state, { payload }) => {
       state.sharedFcList = payload.data;
-      console.log(payload);
     },
     [fetchSharedFc.rejected]: (state, { payload }) => {
       state.error = payload.error;

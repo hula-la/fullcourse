@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRandomPlace } from '../../features/survey/surveyActions';
-import { deletePlace, passPlace } from '../../features/survey/surveySlice';
+import { deletePlace, passPlace,setNumber } from '../../features/survey/surveySlice';
 import styled from 'styled-components';
 
 //액션 임포트
@@ -15,17 +15,28 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 const Wrapper = styled.div`
   position: relative;
-  height: calc(100vh - 80px);
+  height: 100%;
+
+  
 
   .planButtonContainer {
     position: absolute;
-    top: 2%;
+    top: 3%;
     right: 3%;
   }
 
   .maxLike {
     color: red;
   }
+
+  
+
+  .box1{
+  border-width: 3px 4px 3px 5px;
+  border-radius:95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(2deg);
+  border: 5px solid black;
+}
 `;
 
 const PlanButton = styled.div`
@@ -42,7 +53,7 @@ right:5%; */
   font-size: 0.8rem;
   border: 2px solid;
 
-  &:hover{
+  &:hover {
     transform: scale(1.1);
     animation-duration: 0.2s;
   }
@@ -53,7 +64,7 @@ right:5%; */
 // cursor:pointer;
 // `
 const SurveyHeader = styled.div`
-  height: 18%;
+  height: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -205,17 +216,17 @@ const LikePlaceList = styled.div`
   /* div{
   height: 100%;
 } */
-.likeCnt{
-  padding: 0.4rem;
-}
+  .likeCnt {
+    padding: 0.4rem;
+  }
 
   img {
     border-radius: 0.8rem;
     height: 100%;
     object-fit: cover;
 
-    width: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
-    height: calc((100vh - 80px) * 0.25 * 0.6 - 2rem);
+    width: calc(100vh * 0.25 * 0.6 - 2rem);
+    height: calc(100vh * 0.25 * 0.6 - 2rem);
   }
 
   .imgContainer {
@@ -252,8 +263,8 @@ const LikePlaceList = styled.div`
     font-weight: bold;
   }
 
-  .likePlaceBox{
-    height: 65%;
+  .likePlaceBox {
+    height: 80%;
     width: 50%;
     max-width: 50rem;
   }
@@ -268,19 +279,47 @@ const LikePlaceList = styled.div`
     /* height: 65%;
     width: 50%;
     max-width: 50rem; */
-    background: #e2dfff;
+    /* background: #e2dfff; */
     border-radius: 1rem;
     /* height:10%; */
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
+    border: 4px solid transparent;
+
+    /* background: url(/img/surveyIcon/likePlaceContainer.png);
+    background-size: 100% 100%; */
+    border-radius: 1rem;
+
+    img{
+      border: double 7px #333333;
+    }
+
+    &:hover {
+      border: 4px solid #333333 !important;
+    }
+    /* 스크롤바 */
+    &::-webkit-scrollbar-thumb {
+      background-clip: padding-box;
+  
+      background-color: white;
+      /* 스크롤바 둥글게 설정    */
+      border-radius: 1rem;
+      border: 2px solid black;
+    }
+    @media only screen and (min-device-width: 479px) {
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+    }
+  
+    /* 스크롤바 뒷 배경 설정*/
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
   }
 
   /* 스크롤바 설정*/
-  @media only screen and (min-device-width: 479px) {
-    .likePlaceContainer::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
 
   /* 스크롤바 막대 설정*/
   /* .likePlaceContainer::-webkit-scrollbar-thumb{
@@ -289,20 +328,7 @@ const LikePlaceList = styled.div`
 
   } */
 
-  .likePlaceContainer::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
 
-    background-color: white;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 1rem;
-    border: 4px solid transparent;
-  }
-
-  /* 스크롤바 뒷 배경 설정*/
-
-  .likePlaceContainer::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
 
   .buttonContainer {
     position: absolute;
@@ -323,6 +349,11 @@ const LikePlaceList = styled.div`
     margin-top: 1rem;
     font-weight: bold;
   }
+
+  .tooltip-left.max-place{
+    top: -12px;
+    right: 115%;
+  }
 `;
 
 const SurveyPage = () => {
@@ -337,12 +368,25 @@ const SurveyPage = () => {
   const { markers, map } = useSelector((state) => state.trip);
 
   useEffect(() => {
+    // if (number == randomPlaceList.length) {
+    //   alert("마지막 장소입니다.");
+    //   setNumber(randomPlaceList.length - 1);
+    // }
+    console.log(randomPlaceList.length);
+    console.log(number);
+  }, [number]);
+
+  useEffect(() => {
     dispatch(fetchRandomPlace());
   }, [dispatch]);
 
   useEffect(() => {
-    if (randomPlaceList) {
-      if (likePlaceIndex.includes(randomPlaceList[number].placeId)) {
+    if (randomPlaceList.length != 0) {
+      if (number == randomPlaceList.length) {
+        dispatch(setNumber(randomPlaceList.length - 1));
+        alert("마지막 장소입니다.");
+      }
+      else if (likePlaceIndex.includes(randomPlaceList[number].placeId)) {
         dispatch(passPlace());
       }
     }
@@ -360,7 +404,6 @@ const SurveyPage = () => {
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
     dispatch(setMarkers(marker));
   };
@@ -370,7 +413,6 @@ const SurveyPage = () => {
     likePlaceIndex.forEach((id) => {
       const placeId = id;
       const placeType = 'travel';
-      console.log('placeId', placeId);
       dispatch(fetchPlaceDetail({ placeId, placeType }))
         .unwrap()
         .then((res) => {
@@ -426,9 +468,11 @@ const SurveyPage = () => {
         </div>
       </SurveyHeader>
       <RandomPlaceList>
-        {randomPlaceList ? (
+        {(randomPlaceList.length != 0 &&
+        number < randomPlaceList.length)
+        ? (
           <>
-            <span className="placeImgContainer">
+            <span className="placeImgContainer box1">
               <img className="placeImg" src={randomPlaceList[number].imgUrl} />
               <figcaption>
                 <div>{randomPlaceList[number].name}</div>
@@ -463,9 +507,9 @@ const SurveyPage = () => {
       </RandomPlaceList>
       <LikePlaceList>
         <div className="tooltip likePlaceBox">
-                <span className="tooltiptext tooltip-top">
-                  <p>당신이 선택한 장소들이 담깁니다.</p>
-                </span>
+          <span className="tooltiptext tooltip-top">
+            <p>당신이 선택한 장소들이 담깁니다.</p>
+          </span>
           {likePlaceList.length >= 0 && (
             <>
               <div className="likePlaceContainer">
@@ -489,14 +533,17 @@ const SurveyPage = () => {
               </div>
             </>
           )}
-
         </div>
         <div className="buttonContainer">
           <div className="tooltip">
-          <div className={likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`}>
-            {likePlaceList.length} /5
-          </div>
-            <div className="tooltiptext tooltip-left">
+            <div
+              className={
+                likePlaceList.length == 5 ? `maxLike likeCnt` : `likeCnt`
+              }
+            >
+              {likePlaceList.length} /5
+            </div>
+            <div className="tooltiptext tooltip-left max-place">
               <p>최대 5개의 장소를 선택해보세요.</p>
             </div>
           </div>

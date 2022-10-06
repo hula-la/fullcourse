@@ -19,12 +19,12 @@ const Layout = () => {
   return (
     <Wrapper>
       <div className="content">
-        <Header />
+        {/* <Header /> */}
         <div>
           <Outlet />
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </Wrapper>
   );
 };

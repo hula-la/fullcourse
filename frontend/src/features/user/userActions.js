@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteUser,
-  getMyFullcourse,
   getUserInfo,
   loginKakao,
   loginNaver,
@@ -45,22 +44,6 @@ export const fetchUserInfo = createAsyncThunk(
   async (temp, { rejectWithValue }) => {
     try {
       const { data } = await getUserInfo();
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  },
-);
-
-export const fetchMyFullcourse = createAsyncThunk(
-  'user/fetchMyfullcourse',
-  async (tmp, { rejectWithValue }) => {
-    try {
-      const { data } = await getMyFullcourse();
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
