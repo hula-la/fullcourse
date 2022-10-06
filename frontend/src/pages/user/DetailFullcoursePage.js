@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FullcourseMap from '../../components/user/fullcourse/FullcourseMap';
 import FullcourseSide from '../../components/user/fullcourse/FullcourseSide';
@@ -15,10 +15,7 @@ import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
 
 // 모바일&웹 뷰
-import {
-  BrowserView,
-  MobileView,
-} from "react-device-detect";
+import { BrowserView, MobileView } from 'react-device-detect';
 
 const Wrapper = styled.div`
 .detailContent{
@@ -36,6 +33,7 @@ const DetailBlock = styled.div`
 const DetailFullcoursePage = () => {
   const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
   const { fullcourseDetail } = useSelector((state) => state.trip);
   // const { places } = useSelector((state) => state.trip.fullcourseDetail);
@@ -43,13 +41,12 @@ const DetailFullcoursePage = () => {
 
   const fcId = params.fcId;
 
-  useEffect(() => {
-    dispatch(fetchFullcourseDetail(fcId));
+  useEffect(async () => {
+    const { payload } = await dispatch(fetchFullcourseDetail(fcId));
+    if (payload.message !== 'Success') {
+      navigate('/404');
+    }
   }, [dispatch, fcId]);
-
-  // useEffect(() => {
-  //   dispatch(fetchDiary(fullcourseDetail.fcdId));
-  // }, [dispatch, fcId]);
 
   useEffect(() => {
     if (fullcourseDetail) {
@@ -82,7 +79,6 @@ const DetailFullcoursePage = () => {
       {/* 브라우저뷰 */}
       <BrowserView>
         <DetailBlock>
-
           <FullcourseSide
             days={days}
             userInfo={userInfo}
@@ -95,9 +91,9 @@ const DetailFullcoursePage = () => {
 
       {/* 모바일뷰 */}
       <MobileView>
-      <MobileFullcourseHeader
-        days={days}
-        fullcourseDetail={fullcourseDetail}
+        <MobileFullcourseHeader
+          days={days}
+          fullcourseDetail={fullcourseDetail}
         />
         <div className='detailContent'>
 

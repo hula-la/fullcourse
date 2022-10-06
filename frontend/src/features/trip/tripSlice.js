@@ -37,7 +37,7 @@ const initialState = {
   errorCode: null,
   errorMessage: null,
 
-  fcId: null
+  fcId: null,
 };
 
 const tripSlice = createSlice({
@@ -83,8 +83,8 @@ const tripSlice = createSlice({
       state.errorMessage = null;
     },
     setFcId: (state, action) => {
-      state.fcId = action.payload
-    }
+      state.fcId = action.payload;
+    },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
@@ -97,7 +97,7 @@ const tripSlice = createSlice({
     // 상세 풀코스 정보 조회
     [fetchFullcourseDetail.fulfilled]: (state, { payload }) => {
       state.fullcourseDetail = payload.data;
-      console.log(state.fullcourseDetail)
+      console.log(state.fullcourseDetail);
     },
     [fetchFullcourseDetail.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -114,7 +114,7 @@ const tripSlice = createSlice({
     //여행 디테일 정보 조회
     [fetchPlaceDetail.fulfilled]: (state, { payload }) => {
       state.placeDetail = payload.data;
-      console.log("detail",payload.data)
+      console.log('detail', payload.data);
     },
     [fetchPlaceDetail.rejected]: (state, { payload }) => {
       state.errorCode = payload;
@@ -158,7 +158,7 @@ export const {
   deleteAllPlace,
   clickUpdate,
   resetError,
-  setFcId
+  setFcId,
 } = tripSlice.actions;
 
 export default tripSlice.reducer;
