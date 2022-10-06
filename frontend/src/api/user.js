@@ -15,11 +15,6 @@ export const getUserInfo = async () => {
   return res;
 };
 
-export const getMyFullcourse = async () => {
-  const res = await client.get(`api/fullcourse/my`);
-  return res;
-};
-
 export const updateUserInfo = async (nickname, imgFile) => {
   const formData = new FormData();
   formData.append('file', imgFile);

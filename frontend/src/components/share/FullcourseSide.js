@@ -125,9 +125,11 @@ const FullcourseSide = ({ sharedFcInfo, fullcourseDetail }) => {
   useEffect(() => {
     if (errorCode) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: errorMessage,
+        imageUrl: '/img/boogie2.png',
+        imageHeight: 300,
+        imageAlt: 'A tall image',
+        text: '로그인이 필요한 서비스에요😂',
+        height: 300,
         footer: '<a href="/user/login">로그인 하러가기</a>',
       });
       dispatch(resetError());

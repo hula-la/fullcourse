@@ -28,7 +28,6 @@ const Button = styled.button`
 const StyledButton = ({ content }) => {
   const navigate = useNavigate();
   const onClickSeeMore = () => {
-    console.log('3');
     navigate('/fullcourse');
   };
   return <Button onClick={onClickSeeMore}>{content}</Button>;

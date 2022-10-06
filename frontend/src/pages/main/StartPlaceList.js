@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import './main.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,9 @@ import CardContent from '@mui/joy/CardContent';
 import { fetchPlaceDetail } from '../../features/trip/tripActions';
 import { setPlaceItem, setMarkers } from '../../features/trip/tripSlice';
 
+
+import { resetError } from '../../features/trip/tripSlice';
+import Swal from 'sweetalert2';
 const useStyles = makeStyles((theme) => ({
   cardMobile: {
     // 테스트용 css
@@ -100,6 +103,24 @@ const StartPlaceList = () => {
     ['/img/startplace/Gamcheon.jpg', '감천', 'Gamcheon', 64],
   ];
 
+  const { errorCode } = useSelector((state) => state.trip);
+  const { errorMessage } = useSelector((state) => state.trip);
+
+
+  useEffect(() => {
+    if (errorCode) {
+      Swal.fire({
+        imageUrl: '/img/boogie2.png',
+        imageHeight: 300,
+        imageAlt: 'A tall image',
+        text: '로그인이 필요한 서비스에요😂',
+        height: 300,
+        footer: '<a href="/user/login">로그인 하러가기</a>',
+      });
+      dispatch(resetError());
+    }
+  }, [errorCode]);
+
   const navigate = useNavigate();
 
   const { markers, map } = useSelector((state) => state.trip);
@@ -113,7 +134,6 @@ const StartPlaceList = () => {
       map,
       position: position,
     });
-    console.log(typeof marker);
     marker['position'] = position;
     marker['placeName'] = name;
 
@@ -123,11 +143,9 @@ const StartPlaceList = () => {
   const setStartPlaceInfo = (id, e) => {
     const placeId = id;
     const placeType = 'travel';
-    console.log('placeId', placeId);
     dispatch(fetchPlaceDetail({ placeId, placeType }))
       .unwrap()
       .then((res) => {
-        console.log('되나', res.data);
         let placeItemObj = new Object();
         const data = res.data;
         placeItemObj.placeId = placeId;
@@ -167,8 +185,9 @@ const StartPlaceList = () => {
                 width: '16.5vw',
                 marginTop: isMobile ? '5vh' : '10vh',
                 transition: 'transform 0.3s',
+                border: '1px solid transparent',
                 '&:hover': {
-                  border: '1px solid #0AA1DD',
+                  border: '1px solid #0AA1DD !important',
                   transform: 'translateY(-2px)',
                   cursor: 'pointer',
                 },

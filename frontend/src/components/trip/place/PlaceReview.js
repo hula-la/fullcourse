@@ -144,13 +144,11 @@ const PlaceReview = ({ openReviewModal, placeId, placeType, setIsOpen }) => {
     const reader = new FileReader();
     const file = imgRef.current.files[0];
 
-    console.log(file);
     setImageFile(file);
 
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImageUrl(reader.result);
-      console.log('이미지주소', reader.result);
     };
   };
 
@@ -163,9 +161,9 @@ const PlaceReview = ({ openReviewModal, placeId, placeType, setIsOpen }) => {
   };
 
   const submitReview = (placeType, placeId, e) => {
-
-
-    dispatch(createReview({ imageFile, reviewComment,value, placeId, placeType }));
+    dispatch(
+      createReview({ imageFile, reviewComment, value, placeId, placeType }),
+    );
   };
 
   const onChangeStar = (e) => {
@@ -228,7 +226,12 @@ const PlaceReview = ({ openReviewModal, placeId, placeType, setIsOpen }) => {
           placeholder={'내용을 입력하세요'}
           onChange={onChangeInput}
         ></StyledInput>
-        <OkBtn onClick={(e) => {submitReview(placeType, placeId, e); sendToBack()}}>
+        <OkBtn
+          onClick={(e) => {
+            submitReview(placeType, placeId, e);
+            sendToBack();
+          }}
+        >
           작성완료
         </OkBtn>
       </ModalView>

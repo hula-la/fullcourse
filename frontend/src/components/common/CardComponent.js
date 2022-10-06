@@ -31,7 +31,7 @@ const Wapper = styled.div`
     width: 10px;
   }
 
-  .scrollBar::-webkit-scrollbar-thumb {
+  .scrollBar::-webkit-scrollbar- {
     background-clip: padding-box;
 
     background-color: rgba(217, 239, 255, 1);
@@ -129,9 +129,7 @@ const CardComponent = (props) => {
   const onClick = () => {
     navigate(`../../../fullcourse/detail/${props.fullcourse.sharedFcId}`);
   };
-  useEffect(() => {
-    console.log(props.fullcourse.user);
-  }, []);
+
   return (
     <Wapper>
       <Card
@@ -146,7 +144,7 @@ const CardComponent = (props) => {
           marginTop: '1vh',
           ':hover': {
             boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 10%);',
-            // transform: 'scale(1.05)',
+          
             cursor: 'pointer',
           },
         }}

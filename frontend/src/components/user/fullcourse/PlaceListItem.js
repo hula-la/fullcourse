@@ -4,6 +4,7 @@ import { createDiary } from '../../../features/trip/tripActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import { changeShowMemo } from '../../../features/user/userSlice';
+import { moveMap } from '../../../features/share/shareSlice';
 
 const Wrapper = styled.div`
   position: relative;
@@ -55,10 +56,10 @@ const PlaceIdx = styled.div`
   }
 
   .idx3 {
-    background: green;
+    background: #655aff;
   }
   .idx4 {
-    background: pink;
+    background: #e574ff;
   }
 `;
 
@@ -75,9 +76,7 @@ const PlaceItem = styled.div`
     justify-content: space-between;
   }
   &:hover {
-    div > p {
-      color: #0aa1dd;
-    }
+    background: #e2f1fa85;
   }
 `;
 
@@ -114,10 +113,10 @@ const Line = styled.div`
   }
 
   .idx3 {
-    border-left: 2px solid green;
+    border-left: 2px solid #655aff;
   }
   .idx4 {
-    border-left: 2px solid pink;
+    border-left: 2px solid #e574ff;
   }
 `;
 
@@ -203,10 +202,15 @@ const Button = styled.div`
 
 const PlaceListItem = ({ placeKey, place }) => {
   const dispatch = useDispatch();
-  const [hover, setHover] = useState();
 
-  const onClickPlaceItem = (index, e) => {
-    dispatch(changeShowMemo({ first: parseInt(placeKey), last: index }));
+  // 지도 중심 이동시키기
+  const onClickPlace = (index) => {
+    dispatch(
+      moveMap({
+        lat: place[index]['place']['lat'],
+        lng: place[index]['place']['lng'],
+      }),
+    );
   };
 
   const onClickMemo = (fcDetailId, e) => {
@@ -255,7 +259,7 @@ const PlaceListItem = ({ placeKey, place }) => {
       <p className="day">{parseInt(placeKey) + 1}Day</p>
       {place.map((p, index) => {
         return (
-          <PlaceItem onClick={(e) => onClickPlaceItem(index, e)}>
+          <PlaceItem onClick={(e) => onClickPlace(index, e)}>
             <Line>
               <div
                 className={`idx${placeKey} ${

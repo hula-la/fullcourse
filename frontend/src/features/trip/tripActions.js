@@ -18,7 +18,6 @@ export const fetchTravelPlace = createAsyncThunk(
     { placeType, pageNum, sortReq, keyword, maxDist, recentLat, recentLng },
     { rejectWithValue },
   ) => {
-    console.log('요청잘가나', sortReq);
     try {
       const { data } = await getTravelPlaceList(
         placeType,
@@ -29,8 +28,6 @@ export const fetchTravelPlace = createAsyncThunk(
         recentLat,
         recentLng,
       );
-      console.log('이거가능한가?');
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -63,10 +60,8 @@ export const fetchFullcourseDetail = createAsyncThunk(
 export const createTrip = createAsyncThunk(
   'trip/createTrip',
   async (createTripPostReq, { rejectWithValue }) => {
-    console.log('여행요청객체', createTripPostReq);
     try {
       const { data } = await postTrip(createTripPostReq);
-      console.log('일정생성에 성공했다네!!');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -82,10 +77,8 @@ export const createTrip = createAsyncThunk(
 export const fetchPlaceDetail = createAsyncThunk(
   'trip/fetchPlaceDetail',
   async ({ placeId, placeType }, { rejectWithValue }) => {
-    console.log('placeType', placeType);
     try {
       const { data } = await getPlaceDetail(placeId, placeType);
-      console.log('이거 장소상세정보 되나');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -103,7 +96,6 @@ export const createPlaceLike = createAsyncThunk(
   async ({ placeId, placeType }, { rejectWithValue }) => {
     try {
       const { data } = await postPlaceLike(placeId, placeType);
-      console.log('좋아요 성공');
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -123,8 +115,6 @@ export const createReview = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      console.log(value, imageFile, reviewComment, placeId, placeType);
-      console.log('제발성공');
       const { data } = await postReview(
         imageFile,
         reviewComment,
@@ -132,7 +122,6 @@ export const createReview = createAsyncThunk(
         placeId,
         placeType,
       );
-      console.log('data뭐지', data);
       return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -147,7 +136,6 @@ export const createReview = createAsyncThunk(
 export const createDiary = createAsyncThunk(
   'user/createDiary',
   async ({ img, content, fcDetailId }, { rejectWithValue }) => {
-    console.log(content);
     try {
       const { data } = await postDiary(img, content, fcDetailId);
       return data;
@@ -165,7 +153,6 @@ export const createDiary = createAsyncThunk(
 export const fetchPlaceReview = createAsyncThunk(
   'trip/fetchPlaceReview',
   async ({ placeId, placeType }, { rejectWithValue }) => {
-    console.log('어디서멈춤', placeId, placeType);
     try {
       const { data } = await getPlaceReview(placeId, placeType);
       return data;

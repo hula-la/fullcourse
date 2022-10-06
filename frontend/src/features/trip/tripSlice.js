@@ -32,6 +32,10 @@ const initialState = {
   isUpdate: false,
 
   reviews: null,
+
+  error: null,
+  errorCode: null,
+  errorMessage: null,
 };
 
 const tripSlice = createSlice({
@@ -51,7 +55,6 @@ const tripSlice = createSlice({
       state.tripDates = action.payload;
     },
     setPlaceItem: (state, action) => {
-      console.log('setPlaceItem');
       state.placeItem.push(action.payload);
     },
     setInitMap: (state, action) => {
@@ -68,18 +71,20 @@ const tripSlice = createSlice({
       state.markers = action.payload;
     },
     deleteAllPlace: (state, action) => {
-      console.log('전체삭제');
       state.placeItem = [];
     },
     clickUpdate: (state) => {
       state.isUpdate = !state.isUpdate;
+    },
+    resetError: (state) => {
+      state.errorCode = null;
+      state.errorMessage = null;
     },
   },
   extraReducers: {
     //여행명소 리스트 목록 조회
     [fetchTravelPlace.fulfilled]: (state, { payload }) => {
       state.travelPlaceList = payload.data;
-      console.log(state.travelPlaceList);
     },
     [fetchTravelPlace.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -87,7 +92,6 @@ const tripSlice = createSlice({
     // 상세 풀코스 정보 조회
     [fetchFullcourseDetail.fulfilled]: (state, { payload }) => {
       state.fullcourseDetail = payload.data;
-      console.log(state.fullcourseDetail);
     },
     [fetchFullcourseDetail.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -104,14 +108,13 @@ const tripSlice = createSlice({
     //여행 디테일 정보 조회
     [fetchPlaceDetail.fulfilled]: (state, { payload }) => {
       state.placeDetail = payload.data;
-      console.log('여행디테일', payload.data);
+      console.log("detail",payload.data)
     },
     [fetchPlaceDetail.rejected]: (state, { payload }) => {
-      state.error = payload.error;
+      state.errorCode = payload;
     },
     //여행지 좋아요
     [createPlaceLike.fulfilled]: (state, { payload }) => {
-      console.log('좋아요데이터', payload.data);
       state.isLiked = payload.data;
     },
     [createPlaceLike.rejected]: (state, { payload }) => {
@@ -124,7 +127,6 @@ const tripSlice = createSlice({
     //장소리뷰
     [fetchPlaceReview.fulfilled]: (state, { payload }) => {
       state.reviews = payload.data;
-      console.log('장소리뷰', payload.data);
     },
     [fetchPlaceReview.rejected]: (state, { payload }) => {
       state.error = payload.error;
@@ -149,6 +151,7 @@ export const {
   deleteMarkers,
   deleteAllPlace,
   clickUpdate,
+  resetError
 } = tripSlice.actions;
 
 export default tripSlice.reducer;

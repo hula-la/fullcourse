@@ -10,7 +10,7 @@ const Container = styled.div`
   margin-top: 1vh;
   border-radius: 1rem;
   border: 3px dashed #A5F1E9;
-  height: 85vh; 
+  height: 86.5vh; 
   margin-left:1vh;
   margin-right: 1vh;
 

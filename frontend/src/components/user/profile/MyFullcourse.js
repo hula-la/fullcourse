@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMyFullcourse } from '../../../features/user/userActions';
+import { fetchMyFullcourse } from '../../../features/share/shareActions';
 import MyFullcourseShare from './MyFullcourseShare';
 import styled from 'styled-components';
 import MyfullcourseItem from './MyFullcourseItem';
@@ -85,7 +85,7 @@ const MyFullcourse = ({ userInfo }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { myFullcourseList } = useSelector((state) => state.user);
+  const { myFullcourseList } = useSelector((state) => state.share);
   const [modalOpen, setModalOpen] = useState(false);
 
   const modalHeader = '공유하기';
@@ -124,7 +124,7 @@ const MyFullcourse = ({ userInfo }) => {
     <Wrapper>
       <TitleText content="나의 풀코스" />
       {myFullcourseList
-        ? myFullcourseList.content.map((fullcourse, index) => {
+        ? myFullcourseList.map((fullcourse, index) => {
             return (
               <MyFullcourseShare
                 open={modalOpen}
@@ -137,10 +137,10 @@ const MyFullcourse = ({ userInfo }) => {
           })
         : null}
       {myFullcourseList ? (
-        myFullcourseList.content.length >= 3 ? (
+        myFullcourseList.length >= 3 ? (
           <div>
             <Slider className="slider" {...settings}>
-              {myFullcourseList.content.map((fullcourse, index) => {
+              {myFullcourseList.map((fullcourse, index) => {
                 return (
                   <div key={index}>
                     <MyfullcourseItem key={index} fullcourse={fullcourse} />
@@ -160,10 +160,10 @@ const MyFullcourse = ({ userInfo }) => {
               })}
             </Slider>
           </div>
-        ) : myFullcourseList.content.length > 0 ? (
+        ) : myFullcourseList.length > 0 ? (
           <div>
             <Flex>
-              {myFullcourseList.content.map((fullcourse, index) => {
+              {myFullcourseList.map((fullcourse, index) => {
                 return (
                   <div>
                     <MyfullcourseItem key={index} fullcourse={fullcourse} />

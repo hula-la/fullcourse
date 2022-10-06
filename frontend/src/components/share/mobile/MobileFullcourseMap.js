@@ -46,7 +46,6 @@ const FullcourseMap = () => {
       });
       setLinePath(newLinePath);
     } else {
-      console.log(3);
     }
   }, [fullcourseDetail]);
 
