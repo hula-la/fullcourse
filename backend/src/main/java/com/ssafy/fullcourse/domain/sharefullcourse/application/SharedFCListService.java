@@ -4,6 +4,7 @@ import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCListDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCSearchReq;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.SharedFCTagDto;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCLike;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFCTag;
 import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCLikeRepository;
 import com.ssafy.fullcourse.domain.sharefullcourse.repository.SharedFCRepositoryCustom;
@@ -45,25 +46,25 @@ public class SharedFCListService {
                 share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
 
-    public Page<SharedFCListDto> getSharedFCLikeList(String email, String keyword, Pageable pageable) {
+    public List<SharedFCListDto> getSharedFCLikeList(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if(!user.isPresent()) return null;
         User findUser = user.get();
 
 
-        Page<SharedFCLike> page = sharedFCLikeRepository.findFCLikeByUser(findUser, pageable);
-
-        return page.map(share -> new SharedFCListDto(share.getSharedFullCourse(),
-                share.getSharedFullCourse().getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
+        List<SharedFCLike> list = sharedFCLikeRepository.findFCLikeByUser(findUser);
+        return list.stream().map(share->new SharedFCListDto(share.getSharedFullCourse(),share.getSharedFullCourse().getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList()))).collect(Collectors.toList());
+//        return list.stream().map(share -> new SharedFCListDto(share.getSharedFullCourse(),
+//                share.getSharedFullCourse().getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
     }
 
     //내 공유 풀코스 조회
-    public Page<SharedFCListDto> getSharedFCListByUser(String email, Pageable pageable){
+    public List<SharedFCListDto> getSharedFCListByUser(String email){
         User user = userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException());
 
-        Page<SharedFullCourse> page = sharedFCRepository.findByUser(user, pageable);
-        return page.map(share -> new SharedFCListDto(share,
-                share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList())));
+        List<SharedFullCourse> list = sharedFCRepository.findByUser(user);
+        return list.stream().map(share -> new SharedFCListDto(share,
+                share.getSharedFCTags().stream().map(SharedFCTagDto::new).collect(Collectors.toList()))).collect(Collectors.toList());
     }
 
     // 공유 풀코스 태그&날짜 조회

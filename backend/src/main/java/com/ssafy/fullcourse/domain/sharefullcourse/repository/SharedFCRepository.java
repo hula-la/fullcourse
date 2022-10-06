@@ -17,7 +17,7 @@ import java.util.List;
 public interface SharedFCRepository extends JpaRepository<SharedFullCourse, Long>{
     SharedFullCourse findBySharedFcId(Long shareFcId);
     SharedFullCourse findByFullCourseFcId(Long fcId);
-    Page<SharedFullCourse> findByUser(User user, Pageable pageable);
+    List<SharedFullCourse> findByUser(User user);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE shared_full_course sfc SET sfc.like_cnt = sfc.like_cnt + :count where shared_fc_id = :sharedFcId",nativeQuery = true)

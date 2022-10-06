@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,5 +16,5 @@ public interface SharedFCLikeRepository extends JpaRepository<SharedFCLike,Long>
 
     Optional<SharedFCLike> findByUser_EmailAndSharedFullCourse(String email, SharedFullCourse sharedFullCourse);
 
-    Page<SharedFCLike> findFCLikeByUser(User user, Pageable pageable);
+    List<SharedFCLike> findFCLikeByUser(User user);
 }
