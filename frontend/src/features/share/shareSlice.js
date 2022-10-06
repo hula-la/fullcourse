@@ -62,6 +62,7 @@ const initialState = {
   moveLat: null,
   moveLng: null,
   shareCheckedTagList: [],
+  changeView: false,
 };
 
 const shareSlice = createSlice({
@@ -122,6 +123,9 @@ const shareSlice = createSlice({
       state.moveLat = payload.lat;
       state.moveLng = payload.lng;
     },
+    clickChangeView: (state, { payload }) => {
+      state.changeView = !state.changeView
+    }
   },
   extraReducers: {
     [fetchMyFullcourse.fulfilled]: (state, { payload }) => {
@@ -211,6 +215,7 @@ export const {
   resetError,
   moveMap,
   checkShareTag,
+  clickChangeView
 } = shareSlice.actions;
 
 export default shareSlice.reducer;
