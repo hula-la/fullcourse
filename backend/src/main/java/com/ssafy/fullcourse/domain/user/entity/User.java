@@ -51,9 +51,6 @@ public class User {
     @Column(nullable = false, length = 20)
     private LoginType loginType;
 
-//    @OneToMany(mappedBy = "user")
-//    private Set<Authority> authorities;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<RestaurantReview> restaurantReviews = new ArrayList<>();
 
