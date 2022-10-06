@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Outlet, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { logout } from '../../features/user/userSlice';
 
@@ -59,6 +59,12 @@ const Wrapper = styled.div`
       background-color: transparent;
     }
   }
+
+  .logButton {
+    position: fixed;
+    right: 0.4rem;
+    bottom: 2rem;
+  }
 `;
 
 const NavBar = styled.div`
@@ -109,6 +115,8 @@ const NavBar = styled.div`
 
 const Layout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.user);
   return (
     <Wrapper>
       <div className="navStan">
@@ -167,7 +175,7 @@ const Layout = () => {
             </NavLink>
           </div>
           <div>
-            <div className="navItem" onClick={(e) => dispatch(logout())}>
+            <div className="navItem">
               <span>
                 로그
                 <br />
@@ -180,6 +188,16 @@ const Layout = () => {
           <Outlet />
         </div>
       </div>
+
+      {userInfo ? (
+        <button className="logButton" onClick={(e) => dispatch(logout())}>
+          로그아웃
+        </button>
+      ) : (
+        <button className="logButton" onClick={(e) => navigate('/login')}>
+          로그인
+        </button>
+      )}
     </Wrapper>
   );
 };
