@@ -271,6 +271,11 @@ const DetailHeader = styled.div`
     display: flex;
     align-items: center;
   }
+  #btn-del{
+    border: none;
+    background: none;
+    color: #8e8e8e;
+  }
 `;
 
 const FullcourseComment = ({ sharedFcInfo }) => {
@@ -349,6 +354,10 @@ const FullcourseComment = ({ sharedFcInfo }) => {
               <div id="userNickName">{sharedFcInfo.user.nickname}</div>
             </div>
             <div className="regDate">{sharedFcInfo.regDate.slice(0, 10)}</div>
+            <div>
+              <button className="btn-del">삭제</button>
+            </div>
+            
           </DetailHeader>
 
           <div className="detail">{sharedFcInfo.detail}</div>

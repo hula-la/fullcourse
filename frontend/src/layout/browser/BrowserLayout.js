@@ -5,6 +5,7 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { logout } from '../../features/user/userSlice';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const Wrapper = styled.div`
   width: 93vw;
@@ -131,8 +132,22 @@ const Layout = () => {
   const [isChecked, setIsChecked] = useState(true);
 
   const onClickLogout = async (e) => {
-    await dispatch(logout());
-    navigate('/');
+    Swal.fire({
+      title: '로그아웃 하시겠습니까?',
+      imageUrl: '/img/boogie.jpg',
+      imageWidth: 400,
+      imageHeight: 280,
+      imageAlt: 'character',
+      showCancelButton: true,
+      cancelButtonText: '취소',
+      confirmButtonText: '로그아웃',
+      showLoaderOnConfirm: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await dispatch(logout());
+        navigate('/');
+      }
+    });
   };
 
   useEffect(() => {
