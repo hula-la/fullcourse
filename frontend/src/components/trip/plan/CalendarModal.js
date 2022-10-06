@@ -70,7 +70,7 @@ const OkBtn = styled.button`
 
 const AlertText = styled.div`
   margin-right: 28vw;
-  font-size: 2vmin;
+  font-size: 1.5vmin;
   line-height: 4vh;
   color: #4e4e4e;
 `;
