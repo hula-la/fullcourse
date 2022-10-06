@@ -8,8 +8,9 @@ import {
 } from '../../../features/share/shareSlice';
 import styled from 'styled-components';
 import { dropFc } from '../../../features/trip/tripActions';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { fetchMyFullcourse } from '../../../features/share/shareActions';
 
 const Side = styled.div`
   display: flex;
@@ -128,6 +129,7 @@ const Button = styled.div`
 
 const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const params = useParams();
   const fcId = params.fcId;
   const { dayTagList2 } = useSelector((state) => state.share);
@@ -181,6 +183,9 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
             title: '삭제 완료!',
             showConfirmButton: false,
             timer: 1500,
+          }).then(async (result) => {
+            await dispatch(fetchMyFullcourse());
+            navigate('/user/profile/1');
           });
         } else {
           Swal.fire({
@@ -222,7 +227,7 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
 
           <Button onClick={onClickDelete}>삭제</Button>
           {/* {userInfo && userInfo.email === fullcourseDetail.email ? (
-           
+          
           ) : null} */}
         </div>
       ) : null}

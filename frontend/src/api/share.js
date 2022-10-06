@@ -51,3 +51,8 @@ export const getMySharedFc = async () => {
   const res = await client.get('/api/share/fullcourse/my');
   return res;
 };
+
+export const deleteSharedFc = async (sharedFcId) => {
+  const res = await client.delete(`api/share/fullcourse/${sharedFcId}`);
+  return res;
+};
