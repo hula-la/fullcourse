@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Outlet, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { logout } from '../../features/user/userSlice';
 
 const Wrapper = styled.div`
   width: 93vw;
@@ -106,6 +108,7 @@ const NavBar = styled.div`
 `;
 
 const Layout = () => {
+  const dispatch = useDispatch();
   return (
     <Wrapper>
       <div className="navStan">
@@ -162,6 +165,15 @@ const Layout = () => {
               </span>
               😎
             </NavLink>
+          </div>
+          <div>
+            <div className="navItem" onClick={(e) => dispatch(logout())}>
+              <span>
+                로그
+                <br />
+                아웃
+              </span>
+            </div>
           </div>
         </NavBar>
         <div className="innerBox">

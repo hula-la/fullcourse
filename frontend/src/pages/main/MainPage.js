@@ -15,9 +15,9 @@ import StartPlaceList from './StartPlaceList';
 import Swal from 'sweetalert2';
 
 const Container = styled.div`
-position: relative;
-padding-bottom: 7rem;
-  
+  position: relative;
+  padding-bottom: 7rem;
+
   /* display: grid; */
   /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
   background: radial-gradient(
@@ -41,7 +41,7 @@ padding-bottom: 7rem;
 `;
 
 const Introduce = styled.div`
-position: relative;
+  position: relative;
   align-items: center;
   height: 100%;
   @media only screen and (min-device-width: 479px) {
@@ -206,7 +206,7 @@ const Wave = styled.div`
 `;
 
 const Explore = styled.div`
-display: none;
+  display: none;
   /* position: fixed; */
   right: 50px;
   bottom: 50px;
@@ -317,12 +317,14 @@ const MainPage = () => {
       imageHeight: 280,
       imageAlt: 'character',
       showCancelButton: true,
+      showCloseButton: true,
       cancelButtonText: '추천 안 받아!',
       confirmButtonText: '고고고',
       showLoaderOnConfirm: true,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate('/trip/survey');
+      } else if (result.isDismissed && result.dismiss === 'close') {
       } else {
         navigate('/trip/plan');
       }
