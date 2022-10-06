@@ -108,11 +108,13 @@ const Wrapper = styled.div`
     margin: 1rem;
   }
   .selected-list{
+    pointer-events: none;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: 0;
+    padding-right: 40px;
   }
 
   .daynonelist {
@@ -146,6 +148,7 @@ const Wrapper = styled.div`
     padding: 2px 8px;
     color: #dc3d59;
     margin: 0.8rem;
+    cursor:pointer;
   }
   .icon{
     color: #000000;

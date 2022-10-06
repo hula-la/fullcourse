@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createDiary } from '../../../../features/trip/tripActions';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import UpdateMemo from '../UpdateMemo';
+import MobileUpdateMemo from './MobileUpdateMemo';
 import { clickUpdate } from '../../../../features/trip/tripSlice';
 
 const MemoBlock = styled.div`
-  width: 25%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-image: url('/img/memo.jpg');
@@ -221,7 +221,7 @@ const MobileFullcourseMemo = ({ fullcourseDetail }) => {
           )}
         </MemoBlock>
       ) : (
-        <UpdateMemo />
+        <MobileUpdateMemo />
       )}
     </>
   );
