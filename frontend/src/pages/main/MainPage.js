@@ -323,7 +323,7 @@ const MainPage = () => {
     Swal.fire({
       title: '추천 받으실?',
       // text: '추천을 받으실?',
-      imageUrl: 'img/boogie.jpg',
+      imageUrl: '/img/boogie.jpg',
       imageWidth: 400,
       imageHeight: 280,
       imageAlt: 'character',
