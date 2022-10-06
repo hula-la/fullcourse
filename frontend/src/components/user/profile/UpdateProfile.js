@@ -9,10 +9,26 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import Swal from 'sweetalert2';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
+
+
+const useStyles = makeStyles((theme) => ({
+  cardMobile: {
+    // 테스트용 css
+    // width: '100%',
+  },
+}));
 
 const Wrapper = styled.div`
   margin: 3vw auto;
   padding: 2vw;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    margin: 0 auto;
+    width:100%
+  }
 
   input[type='file'] {
     display: none;
@@ -73,6 +89,17 @@ const UpdateProfileForm = styled.form`
   margin: 0 2vw;
   text-align: center;
   width: 90vw;
+
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px 3px #00000038;
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    width: 90%;
+  }
+
+
   max-width: 460px;
   button {
     width: fit-content;
@@ -149,6 +176,9 @@ const UserInfo = styled.div`
 `;
 
 const UpdateProfile = ({ userInfo }) => {
+
+  const isMobile = useMediaQuery('(max-width: 767px)');
+
   const [userImg, setUserImg] = useState(userInfo.imgUrl);
   const [imgFile, setImgFile] = useState(null);
   const [userNickname, setUserNickname] = useState(userInfo.nickname);

@@ -10,8 +10,13 @@ const Side = styled.div`
   justify-content: flex-start;
   width: 15%;
   height: 100%;
+  background-color: #fff;
+  padding-top: 1rem;
+  padding-right: 1rem;
   margin-top: 3rem;
   margin-left: 2rem;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px 3px #00000038;
 
   img {
     width: 2.5rem;
@@ -23,7 +28,9 @@ const Side = styled.div`
   #userInfo {
     display: flex;
     flex-direction: row;
-    padding: 0 0 1rem 1rem;
+
+    margin-left: 1rem;
+    padding-bottom: 1rem  ;
     font-weight: 600;
     border-bottom: 2px solid #a4d8ff;
   }
@@ -58,22 +65,14 @@ const StyledButton = styled.div`
   align-items: center;
   border-radius: 10px;
   :hover {
-    background: linear-gradient(
-      90deg,
-      rgba(217, 239, 255, 1) 0%,
-      rgba(164, 216, 255, 1) 100%
-    );
-    color: darkslategray;
+    background: #69b5dd;
+    color: white;
     box-shadow: 3px 3px 5px rgba(164, 216, 255, 0.64);
     transition: 0.3s;
   }
   &.clicked {
-    background: linear-gradient(
-      90deg,
-      rgba(217, 239, 255, 1) 0%,
-      rgba(164, 216, 255, 1) 100%
-    );
-    color: darkslategray;
+    background: #69b5dd;
+    color: white;
     box-shadow: 3px 3px 5px rgba(164, 216, 255, 0.64);
     font-weight: 700;
     transition: 0.3s;
