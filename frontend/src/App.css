@@ -8,12 +8,13 @@ div{
   text-align: center;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(
+  /* background: radial-gradient(
     ellipse at center,
     #fffeea 0%,
     #fffeea 35%,
     #b7e8eb 100%
-  );
+  ); */
+  background: #dbf8ff;
 }
 
 .App>div{
