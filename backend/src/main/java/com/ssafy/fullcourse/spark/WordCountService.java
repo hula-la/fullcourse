@@ -17,7 +17,6 @@ public class WordCountService {
     public HashMap<String,Long> getCount(List<String> wordList) {
         JavaRDD<String> words = sc.parallelize(wordList);
         Map<String, Long> wordCounts = words.countByValue();
-//        System.out.println("test22 : " + wordCounts);
 
 
         List<Map.Entry<String, Long>> result = new ArrayList<>(wordCounts.entrySet());
@@ -33,7 +32,7 @@ public class WordCountService {
             if(map.size() >= 45) break;
 
             if(result.get(i).getKey().trim().length()==1) continue;
-            map.put(result.get(i).getKey().trim(), result.get(i).getValue());
+            map.put(result.get(i).getKey().trim(), result.get(i).getValue()*2);
         }
 
         return map;
