@@ -37,6 +37,7 @@ const Wrapper = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
 
+
     &::-webkit-scrollbar {
       width: 15px;
       border-radius: 1rem;
@@ -58,6 +59,10 @@ const Wrapper = styled.div`
       border-radius: 10px;
       background-color: transparent;
     }
+  }
+  a{
+    text-decoration: none;
+    color:black;
   }
 `;
 
