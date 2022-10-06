@@ -10,6 +10,11 @@ const Wapper = styled.div`
   padding: 2vh;
   font-size: 9vmin;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   .icon {
     font-size: 30vmin;
   }

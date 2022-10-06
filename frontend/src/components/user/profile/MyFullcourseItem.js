@@ -8,7 +8,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const Wapper = styled.div`
-  margin: 0 25px;
+  margin: 0;
 `;
 
 const FullCourseInfo = styled.div`
