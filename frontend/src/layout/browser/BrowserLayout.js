@@ -127,7 +127,13 @@ const Layout = () => {
       <div className="navStan">
         <NavBar>
           <div>
-            <NavLink to="/" activeclassname="active" className="navItem">
+            <NavLink
+              to="/main"
+              className="navItem"
+              style={({ isActive }) => ({
+                background: isActive ? '#0aa1dd' : 'white',
+              })}
+            >
               <span>
                 메인
                 <br />
