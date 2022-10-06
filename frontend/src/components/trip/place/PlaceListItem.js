@@ -162,7 +162,7 @@ const PlaceListItem = ({
           backgroundColor: 'white',
         }}
       >
-        <AspectRatio ratio="1" sx={{ width: '100vh', marginRight:'1vh' }}>
+        <AspectRatio ratio="1" sx={{ minWidth: '90', marginRight:'1vh' }}>
           {place.imgUrl!==null ? (<img src={place.imgUrl} alt="" />):(<img src={randomImgUrl} alt="" />)}
         </AspectRatio>
 
