@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-h1{
-  padding: 1rem;
-}
+height: 100vh;
+width: 100vw;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+
+text-align: center;
+padding: 0.8rem;
+background: #dceeff;
 img{
-  width: 35%;
+  width: 80%;
+}
+h1{
+  margin: 2rem;
 }
 button{
   font-weight: bold;
