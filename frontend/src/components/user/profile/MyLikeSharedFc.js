@@ -16,7 +16,12 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Wrapper = styled.div`
-  margin: 0 5vw;
+  margin: 2vw;
+  padding: 0 4vw;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px 3px #00000038;
+
   .slick-prev:before,
   .slick-next:before {
     color: #a4d8ff;
@@ -70,7 +75,8 @@ const MyLikeSharedFc = () => {
 
   useEffect(() => {
     if (sharedFcLikeList) {
-      setFcLength(sharedFcLikeList.content.length);
+      console.log(sharedFcLikeList.length);
+      setFcLength(sharedFcLikeList.length);
     }
   }, [sharedFcLikeList]);
 
@@ -81,7 +87,7 @@ const MyLikeSharedFc = () => {
   return (
     <Wrapper>
       <TitleText content="찜한 풀코스" />
-      {sharedFcLikeList ? (
+      {sharedFcLikeList && sharedFcLikeList.length > 0 ? (
         <Slider
           className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
           {...{
@@ -92,7 +98,7 @@ const MyLikeSharedFc = () => {
             slidesToScroll: 1,
           }}
         >
-          {sharedFcLikeList.content.map((fullcourse, index) => {
+          {sharedFcLikeList.map((fullcourse, index) => {
             return (
               <div
                 className="card"

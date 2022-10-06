@@ -15,7 +15,11 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Wrapper = styled.div`
-  margin: 0 5vw;
+    margin: 2vw;
+  padding: 0 4vw;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px 3px #00000038;
   .slick-prev:before,
   .slick-next:before {
     color: #a4d8ff;
@@ -78,7 +82,7 @@ const MySharedFc = () => {
     <Wrapper>
       <TitleText content="공유한 풀코스" />
 
-      {mySharedFcList ? (
+      {mySharedFcList && mySharedFcList.length > 0 ? (
         <Slider
           className={!isMobile && fcLength < 3 ? 'slider-small' : 'slider'}
           {...{

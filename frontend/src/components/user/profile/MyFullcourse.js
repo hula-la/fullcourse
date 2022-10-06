@@ -17,7 +17,13 @@ import { selectFcId } from '../../../features/share/shareSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
-  margin: 0 5vw;
+
+  margin: 2vw;
+  padding: 0 4vw;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px 3px #00000038;
+
   .slick-prev:before,
   .slick-next:before {
     color: #a4d8ff;
@@ -31,13 +37,21 @@ const Wrapper = styled.div`
     margin: 1vw auto;
     width: 90%;
   }
+  .slider-small {
+    margin: 1vw auto;
+    width: 30%;
+  }
+  .slider-middle {
+    margin: 1vw auto;
+    width: 60%;
+  }
 `;
 
 const Flex = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0 3vw;
-  overflow-x: scroll;
+  overflow-x: auto;
   min-width: 138px;
 `;
 
@@ -87,6 +101,7 @@ const MyFullcourse = ({ userInfo }) => {
   const dispatch = useDispatch();
   const { myFullcourseList } = useSelector((state) => state.share);
   const [modalOpen, setModalOpen] = useState(false);
+  const [fcLength, setFcLength] = useState();
 
   const modalHeader = '공유하기';
   const openModal = () => {
@@ -116,6 +131,13 @@ const MyFullcourse = ({ userInfo }) => {
     dispatch(fetchMyFullcourse());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (myFullcourseList) {
+      setFcLength(myFullcourseList.length);
+      console.log(myFullcourseList.length)
+    }
+  }, [myFullcourseList]);
+
   const onClickMakeFc = () => {
     navigate('/trip/plan');
   };
@@ -123,7 +145,7 @@ const MyFullcourse = ({ userInfo }) => {
   return (
     <Wrapper>
       <TitleText content="나의 풀코스" />
-      {myFullcourseList
+      {myFullcourseList && myFullcourseList.length > 0 
         ? myFullcourseList.map((fullcourse, index) => {
             return (
               <MyFullcourseShare
@@ -136,10 +158,16 @@ const MyFullcourse = ({ userInfo }) => {
             );
           })
         : null}
-      {myFullcourseList ? (
-        myFullcourseList.length >= 3 ? (
+      {myFullcourseList && myFullcourseList.length > 0 ? (
           <div>
-            <Slider className="slider" {...settings}>
+            <Slider className={!isMobile? fcLength === 1 ? "slider-small" : "slider-middle":"slider" }
+            {...{
+                dots: true,
+                infinite: true,
+                speed: 300,
+                slidesToShow: isMobile ? 1 : fcLength < 3 ? fcLength : 3,
+                slidesToScroll: 1,
+              }}>
               {myFullcourseList.map((fullcourse, index) => {
                 return (
                   <div key={index}>
@@ -153,39 +181,16 @@ const MyFullcourse = ({ userInfo }) => {
                     ) : new Date() < new Date(fullcourse.startDate) ? (
                       <DisableButton>예정</DisableButton>
                     ) : (
-                      <Button>여행중</Button>
+                      <DisableButton style={{backgroundColor:' rgba(164, 216, 255, 1) '}}>여행중</DisableButton>
                     )}
                   </div>
                 );
               })}
             </Slider>
           </div>
-        ) : myFullcourseList.length > 0 ? (
-          <div>
-            <Flex>
-              {myFullcourseList.map((fullcourse, index) => {
-                return (
-                  <div>
-                    <MyfullcourseItem key={index} fullcourse={fullcourse} />
-
-                    {fullcourse.shared ? (
-                      <DisableButton>공유완료</DisableButton>
-                    ) : new Date(fullcourse.endDate) < new Date() ? (
-                      <Button onClick={onClick}>공유하기</Button>
-                    ) : new Date() < new Date(fullcourse.startDate) ? (
-                      <DisableButton>예정</DisableButton>
-                    ) : (
-                      <Button>여행중</Button>
-                    )}
-                  </div>
-                );
-              })}
-            </Flex>
-          </div>
         ) : (
           <Button onClick={onClickMakeFc}>풀코스 만들러 가기</Button>
-        )
-      ) : null}
+        )}
     </Wrapper>
   );
 };
