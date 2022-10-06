@@ -61,12 +61,21 @@ const initialState = {
   willShareThumbnail: null,
   moveLat: null,
   moveLng: null,
+  shareCheckedTagList: [],
 };
 
 const shareSlice = createSlice({
   name: 'share',
   initialState,
   reducers: {
+    checkShareTag: (state, { payload }) => {
+      if (state.shareCheckedTagList.includes(payload)) {
+        const tmp = state.shareCheckedTagList.filter((el) => el !== payload);
+        state.shareCheckedTagList = tmp;
+      } else {
+        state.shareCheckedTagList = [...state.shareCheckedTagList, payload];
+      }
+    },
     checkTag: (state, { payload }) => {
       if (state.checkedTagList.includes(payload)) {
         const tmp = state.checkedTagList.filter((el) => el !== payload);
@@ -139,9 +148,11 @@ const shareSlice = createSlice({
     [createSharedFc.fulfilled]: (state, { payload }) => {
       state.myFullcourseList = payload.data.fclist;
       state.mySharedFcList = payload.data.sharedFCList;
+      state.shareCheckedTagList = [];
     },
     [createSharedFc.rejected]: (state, { payload }) => {
       console.log(payload);
+      state.shareCheckedTagList = [];
     },
     // 공유풀코스 댓글 생성
     [createSharedFcComment.fulfilled]: (state, { payload }) => {
@@ -199,6 +210,7 @@ export const {
   selectFcId,
   resetError,
   moveMap,
+  checkShareTag,
 } = shareSlice.actions;
 
 export default shareSlice.reducer;
