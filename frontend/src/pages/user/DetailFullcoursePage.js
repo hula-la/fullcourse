@@ -67,20 +67,23 @@ const DetailFullcoursePage = () => {
   };
 
   return (
-    <DetailBlock>
+    <>
       {/* 브라우저뷰 */}
       <BrowserView>
-      <FullcourseSide
-        days={days}
-        userInfo={userInfo}
-        fullcourseDetail={fullcourseDetail}
-      />
-      <FullcourseMap />
-      <FullcourseMemo fullcourseDetail={fullcourseDetail} />
+        <DetailBlock>
+
+          <FullcourseSide
+            days={days}
+            userInfo={userInfo}
+            fullcourseDetail={fullcourseDetail}
+          />
+          <FullcourseMap />
+          <FullcourseMemo fullcourseDetail={fullcourseDetail} />
+        </DetailBlock>
       </BrowserView>
 
       {/* 모바일뷰 */}
-      <MobileView>
+      {/* <MobileView>
       <FullcourseSide
         days={days}
         userInfo={userInfo}
@@ -88,8 +91,8 @@ const DetailFullcoursePage = () => {
       />
       <FullcourseMap />
       <FullcourseMemo fullcourseDetail={fullcourseDetail} />
-      </MobileView>
-    </DetailBlock>
+      </MobileView> */}
+    </>
   );
 };
 

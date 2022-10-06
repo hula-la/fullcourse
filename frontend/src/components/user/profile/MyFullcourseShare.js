@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import FullcourseTagItem from '../../share/SharedFcTagItem'
+import MyFullcourseShareTagItem from './MyFullcourseShareTagItem';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
@@ -171,24 +171,24 @@ const AlertDiv = styled.div`
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
     max-height: 200px;
     overflow: auto;
-    
-  /* 스크롤바 설정*/
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
 
-  /* 스크롤바 막대 설정*/
-  ::-webkit-scrollbar-thumb {
-    background-color: #e36387;
-    /* 스크롤바 둥글게 설정    */
-    border-radius: 10px;
-  }
+    /* 스크롤바 설정*/
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
 
-  /* 스크롤바 뒷 배경 설정*/
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #d4d4d4;
-  }
+    /* 스크롤바 막대 설정*/
+    ::-webkit-scrollbar-thumb {
+      background-color: #e36387;
+      /* 스크롤바 둥글게 설정    */
+      border-radius: 10px;
+    }
+
+    /* 스크롤바 뒷 배경 설정*/
+    ::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: #d4d4d4;
+    }
   }
 
   .nonelist {
@@ -199,13 +199,13 @@ const AlertDiv = styled.div`
     justify-content: start;
     margin: 0px 0px;
   }
-  .nonelist > li:first-child{
+  .nonelist > li:first-child {
     width: 95%;
     pointer-events: none;
-    
-    .listitem{
-      background : #e36387;
-      color:#fff;
+
+    .listitem {
+      background: #e36387;
+      color: #fff;
     }
   }
 `;
@@ -237,7 +237,8 @@ const MyFullcourseShare = (props) => {
   const dispatch = useDispatch();
   const { willShareFcId } = useSelector((state) => state.share);
   const { willShareThumbnail } = useSelector((state) => state.share);
-  const [fullcourseTags, setFullcourseTags] = useState(['부산']);
+  const { tagList } = useSelector((state) => state.share);
+  const { shareCheckedTagList } = useSelector((state) => state.share);
   const [inputs, setInPuts] = useState({
     title: '',
     content: '',
@@ -245,7 +246,6 @@ const MyFullcourseShare = (props) => {
   const [days, setDays] = useState(null);
   const [inputMessage, setInputMessage] = useState('(0/500)');
   const [isErr, setIsErr] = useState(false);
-  const { tagList } = useSelector((state) => state.share);
 
   useEffect(() => {
     const startDate = fullcourse.startDate.slice(0, 10);
@@ -286,21 +286,6 @@ const MyFullcourseShare = (props) => {
     }
   };
 
-  const onClickShare = async (e) => {
-    e.preventDefault();
-    const { payload } = await dispatch(
-      createSharedFc({
-        day: days,
-        fcId: willShareFcId,
-        title: inputs.title,
-        detail: inputs.content,
-        tags: fullcourseTags,
-        thumbnail: willShareThumbnail,
-      }),
-    );
-    console.log(payload);
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     const { payload } = await dispatch(
@@ -309,7 +294,7 @@ const MyFullcourseShare = (props) => {
         fcId: willShareFcId,
         title: inputs.title,
         detail: inputs.content,
-        tags: fullcourseTags,
+        tags: shareCheckedTagList,
         thumbnail: willShareThumbnail,
       }),
     );
@@ -387,9 +372,9 @@ const MyFullcourseShare = (props) => {
                 </div>
                 <div>
                   <label>
-                      <LoyaltyIcon/>
-                      <span>어울리는 태그들을 선택해주세요</span>
-                    </label>
+                    <LoyaltyIcon />
+                    <span>어울리는 태그들을 선택해주세요</span>
+                  </label>
                   <div className="tag">
                     {tagList.map((arr, index) => {
                       return (
@@ -397,7 +382,10 @@ const MyFullcourseShare = (props) => {
                           {arr.map((tag, index) => {
                             return (
                               <li key={index}>
-                                <FullcourseTagItem tag={tag} index={index} />
+                                <MyFullcourseShareTagItem
+                                  tag={tag}
+                                  index={index}
+                                />
                               </li>
                             );
                           })}
