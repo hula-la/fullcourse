@@ -82,7 +82,7 @@ function App() {
             <Routes>
               {/* Main */}
               <Route path="" element={<BrowserLayout />}>
-                <Route path="" element={<MainPage />} />
+                <Route path="main" element={<MainPage />} />
               </Route>
               {/* user */}
               <Route path="user" element={<BrowserLayout />}>
