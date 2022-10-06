@@ -20,11 +20,11 @@ const Container = styled.div`
 
   /* display: grid; */
   /* grid-template-rows: 1fr 0.5fr 2fr; //가로로 구분 */
-  /* background: radial-gradient(
+  background: radial-gradient(
     ellipse at center,
     #ffffff 0%,
     #ffffff 35%,
-    #A7E4F4 100%
+    #a7e4f4 100%
   );
 
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
@@ -32,13 +32,13 @@ const Container = styled.div`
     /* overflow: overlay; */
     display: grid;
     grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
-    /* background: radial-gradient(
+    background: radial-gradient(
       ellipse at center,
-      #fffeea 0%,
-      #fffeea 35%,
-      #b7e8eb 100%
-    ); */
-    background-color : #e5f3fe;
+      #ffffff 0%,
+      #ffffff 35%,
+      #a7e4f4 100%
+    );
+    /* background-color : #e5f3fe; */
   }
 `;
 
@@ -51,8 +51,7 @@ const Introduce = styled.div`
     /* height: 100%; */
   }
 
-  /* background-color: #ffffff; */
-  background-color :#e5f3fe;
+  background-color: #ffffff;
 `;
 
 const VideoContainer = styled.div`
