@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { logout } from '../../features/user/userSlice';
 import { useState } from 'react';
@@ -168,17 +168,14 @@ const Layout = () => {
       <div className="navStan">
         <NavBar>
           <div>
-            <NavLink
-              className={'navItem' + (isChecked ? ' active' : '')}
-              to="/"
-            >
+            <Link className={'navItem' + (isChecked ? ' active' : '')} to="/">
               <span>
                 메인
                 <br />
                 페이지
               </span>
               🚩
-            </NavLink>
+            </Link>
           </div>
           <div>
             <NavLink
