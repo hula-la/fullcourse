@@ -20,8 +20,8 @@ import DetailFullcoursePage from './pages/user/DetailFullcoursePage';
 import SurveyPage from './pages/survey/SurveyPage';
 import RecommendPage from './pages/survey/RecommendPage';
 // ar
-import ArPage from './pages/ar/ArPage';
-import WordcloudPage from './pages/wordcloud/WordcloudPage';
+// import ArPage from './pages/ar/ArPage';
+// import WordcloudPage from './pages/wordcloud/WordcloudPage';
 // 404
 import NotFound from './pages/NotFound';
 import MobileNotFound from './pages/MobileNotFound';

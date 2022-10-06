@@ -9,6 +9,12 @@ import { fetchFullcourseDetail } from '../../features/trip/tripActions';
 import styled from 'styled-components';
 import { fetchDiary } from '../../features/user/userActions';
 
+// 모바일&웹 뷰
+import {
+  BrowserView,
+  MobileView,
+} from "react-device-detect";
+
 const DetailBlock = styled.div`
   display: flex;
   flex-direction: row;
@@ -62,6 +68,8 @@ const DetailFullcoursePage = () => {
 
   return (
     <DetailBlock>
+      {/* 브라우저뷰 */}
+      <BrowserView>
       <FullcourseSide
         days={days}
         userInfo={userInfo}
@@ -69,6 +77,18 @@ const DetailFullcoursePage = () => {
       />
       <FullcourseMap />
       <FullcourseMemo fullcourseDetail={fullcourseDetail} />
+      </BrowserView>
+
+      {/* 모바일뷰 */}
+      <MobileView>
+      <FullcourseSide
+        days={days}
+        userInfo={userInfo}
+        fullcourseDetail={fullcourseDetail}
+      />
+      <FullcourseMap />
+      <FullcourseMemo fullcourseDetail={fullcourseDetail} />
+      </MobileView>
     </DetailBlock>
   );
 };
