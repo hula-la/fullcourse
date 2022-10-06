@@ -93,6 +93,10 @@ const DetailFullcoursePage = () => {
         fullcourseDetail={fullcourseDetail}
         />
         <MobileFullcourseMap />
+        {/* <MobilePlan
+          days={days}
+          sharedFcInfo={sharedFcInfo}
+          /> */}
       <MobileFullcourseMemo fullcourseDetail={fullcourseDetail} />
       </MobileView>
     </>
