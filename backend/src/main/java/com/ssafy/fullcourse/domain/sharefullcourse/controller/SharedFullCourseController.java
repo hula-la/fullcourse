@@ -169,9 +169,8 @@ public class SharedFullCourseController {
 
     // 찜한 풀코스 리스트 조회
     @GetMapping("/fullcourse/like")
-    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
-//        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, keyword,pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email) {
+        List<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email);
 
         if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
