@@ -17,6 +17,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 const Wrapper = styled.div`
   position: relative;
   height: 100%;
+  background: url(/img/memo.jpg);
 `;
 
 const PlanButton = styled.div`
