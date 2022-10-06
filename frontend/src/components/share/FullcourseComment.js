@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,7 +15,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 const CommentBlock = styled.div`
 display: flex;
-    height: 100vh;
+    /* height: 100vh; */
     flex-direction: column;
 
   width: 30%;
@@ -218,7 +218,7 @@ display: flex;
     display: inline-block;
     cursor: pointer;
     /* padding-top: 40px; */
-    margin-right:0.5rem;
+    margin-left:0.5rem;
     /* background-image: url(https://onsikgo.s3.ap-northeast-2.amazonaws.com/icon/icon-kakao.png);
     background-repeat: no-repeat; */
   }
@@ -267,6 +267,28 @@ const FullcourseComment = ({ sharedFcInfo }) => {
   const { Kakao } = window;
   const { userInfo } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (sharedFcInfo) {
+      
+      Kakao.Link.createDefaultButton({
+        container: '#btnKakao',
+        objectType: 'feed',
+        content: {
+          title: sharedFcInfo.title,
+          description: sharedFcInfo.detail,
+          imageUrl: sharedFcInfo.thumbnail,
+          link: {
+            mobileWebUrl:
+              'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+            webUrl:
+              'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
+          },
+        },
+      });
+    }
+    
+  }, [sharedFcInfo]);
+
   const onChangeReply = (e) => {
     setComment(e.target.value);
   };
@@ -297,21 +319,8 @@ const FullcourseComment = ({ sharedFcInfo }) => {
   };
 
   const shareKakao = (sharedFcInfo) => {
-    Kakao.Link.createDefaultButton({
-      container: '#btnKakao',
-      objectType: 'feed',
-      content: {
-        title: sharedFcInfo.title,
-        description: sharedFcInfo.detail,
-        imageUrl: sharedFcInfo.thumbnail,
-        link: {
-          mobileWebUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
-          webUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.fcId,
-        },
-      },
-    });
+    console.log("들어온다");
+    
   };
 
   return (

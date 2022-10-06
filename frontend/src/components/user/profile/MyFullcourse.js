@@ -15,6 +15,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { makeStyles, useMediaQuery } from '@material-ui/core';
 import { selectFcId } from '../../../features/share/shareSlice';
 import { useNavigate } from 'react-router-dom';
+import { GiConsoleController } from 'react-icons/gi';
 
 const Wrapper = styled.div`
 
@@ -23,6 +24,7 @@ const Wrapper = styled.div`
   background: #fff;
   border-radius: 1rem;
   box-shadow: 3px 3px 5px 3px #00000038;
+  padding-bottom: 1.5rem;
 
   .slick-prev:before,
   .slick-next:before {
@@ -35,7 +37,7 @@ const Wrapper = styled.div`
   }
   .slider {
     margin: 1vw auto;
-    width: 90%;
+    width: 80%;
   }
   .slider-small {
     margin: 1vw auto;
@@ -134,7 +136,6 @@ const MyFullcourse = ({ userInfo }) => {
   useEffect(() => {
     if (myFullcourseList) {
       setFcLength(myFullcourseList.length);
-      console.log(myFullcourseList.length)
     }
   }, [myFullcourseList]);
 
@@ -160,7 +161,8 @@ const MyFullcourse = ({ userInfo }) => {
         : null}
       {myFullcourseList && myFullcourseList.length > 0 ? (
           <div>
-            <Slider className={!isMobile? fcLength === 1 ? "slider-small" : "slider-middle":"slider" }
+            <Slider
+            className={isMobile || fcLength >=3 ? 'slider' : fcLength == 1 ? 'slider-small' : 'slider-middle'}
             {...{
                 dots: true,
                 infinite: true,
