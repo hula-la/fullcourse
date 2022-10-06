@@ -179,15 +179,6 @@ const Layout = () => {
               😎
             </NavLink>
           </div>
-          <div>
-            <div className="navItem">
-              <span>
-                로그
-                <br />
-                아웃
-              </span>
-            </div>
-          </div>
         </NavBar>
         <div className="innerBox">
           <Outlet />
