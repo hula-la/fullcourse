@@ -14,6 +14,9 @@ import StartPlaceList from './StartPlaceList';
 
 import Swal from 'sweetalert2';
 
+import ReactAudioPlayer from 'react-audio-player';
+import pado from './../../sound/pado.mp3'
+
 const Container = styled.div`
   position: relative;
   padding-bottom: 7rem;
@@ -354,8 +357,23 @@ const MainPage = () => {
   const onClickProfile = () => {
     navigate('user/profile/1');
   };
+
+  useEffect(() => {
+    var sound = "/sound/pado.mp3"
+    var howl = new window.Howl({
+      src: [sound],
+      autoplay: true,
+      volume: 1.0,
+      loop: true
+      });
+      
+    howl.play()
+    
+  },[])
   return (
     <Container>
+      
+
       <Introduce id="introduce">
         <VideoContainer>
           {/* 비디오파일 여러개 받아서 랜덤으로 재생해야 할 듯_ 유료라서 ㅜㅜ */}
