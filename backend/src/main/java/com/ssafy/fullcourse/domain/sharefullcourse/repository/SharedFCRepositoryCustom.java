@@ -75,7 +75,6 @@ public class SharedFCRepositoryCustom {
     public Page<SharedFullCourse> searchByTagsAndDays(List<String> tags, List<Integer> days, List<String> places,
                                                       Pageable pageable){
 
-        BooleanBuilder builder = new BooleanBuilder();
 
         List<OrderSpecifier> ORDERS = new ArrayList<>();
         if(!pageable.getSort().isEmpty()){
@@ -99,7 +98,7 @@ public class SharedFCRepositoryCustom {
             }
         }
 
-
+        BooleanBuilder builder = new BooleanBuilder();
 
         if(tags.size() != 0) builder.and(sharedFullCourse.sharedFcId.in(
                 JPAExpressions.select(sharedFCTag.sharedFullCourse.sharedFcId)
@@ -155,10 +154,10 @@ public class SharedFCRepositoryCustom {
                     .distinct()
                     .fetch()
                     .stream().filter(item-> !fcIds.contains(item)).collect(Collectors.toList()));
+            System.out.println(fcIds.toString());
+            builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
         }
 
-        System.out.println(fcIds.toString());
-        if(fcIds.size() != 0) builder.and(sharedFullCourse.fullCourse.fcId.in(fcIds));
 
 
         List<SharedFullCourse> result = queryFactory

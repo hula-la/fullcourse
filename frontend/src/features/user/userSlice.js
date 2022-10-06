@@ -26,6 +26,7 @@ const userSlice = createSlice({
     // 유저정보 조회
     [fetchUserInfo.fulfilled]: (state, { payload }) => {
       state.userInfo = payload.data;
+      console.log(state.userInfo)
     },
     [fetchUserInfo.rejected]: (state, { payload }) => {
       state.error = payload.data;

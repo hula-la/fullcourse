@@ -29,7 +29,7 @@ public class ActivityService {
     private final ActivityLikeRepository activityLikeRepository;
     private final UserRepository userRepository;
 
-    public Page<PlaceRes> getActivityList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getActivityList(Pageable pageable, String keyword, Float maxDist, Float lat, Float lng) throws Exception {
         Page<Activity> page = null;
         List<Activity> list = null;
         if (keyword.equals("")) {
@@ -37,15 +37,15 @@ public class ActivityService {
         } else {
             list = activityRepository.findByNameContaining(keyword);
         }
-        if (maxDist != 0) {
+        if (maxDist > 0.5) {
             list = extractByDist(list, lat, lng, maxDist);
-            if(pageable.getSort().toString().equals("likeCnt: DESC")){
-                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
-            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
-            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
-            }
+        }
+        if(pageable.getSort().toString().equals("likeCnt: DESC")){
+            Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+        } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+        } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
         }
         int start = (int) pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
@@ -90,7 +90,7 @@ public class ActivityService {
         return response;
     }
 
-    public static List<Activity> extractByDist(List<Activity> list, Float lat, Float lng, Integer maxDist) {
+    public static List<Activity> extractByDist(List<Activity> list, Float lat, Float lng, Float maxDist) {
         for (int i = 0; i < list.size(); i++) {
             Activity a = list.get(i);
             Double dist =

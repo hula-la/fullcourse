@@ -29,7 +29,7 @@ public class HotelService {
     private final HotelLikeRepository hotelLikeRepository;
     private final UserRepository userRepository;
 
-    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Integer maxDist, Float lat, Float lng) throws Exception {
+    public Page<PlaceRes> getHotelList(Pageable pageable, String keyword, Float maxDist, Float lat, Float lng) throws Exception {
         Page<Hotel> page;
         List<Hotel> list;
         if (keyword.equals("")) {
@@ -37,15 +37,15 @@ public class HotelService {
         } else {
             list = hotelRepository.findByNameContaining(keyword);
         }
-        if(maxDist != 0) {
+        if(maxDist > 0.5) {
             list = extractByDist(list, lat, lng, maxDist);
-            if(pageable.getSort().toString().equals("likeCnt: DESC")){
-                Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
-            } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
-            } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
-                Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
-            }
+        }
+        if(pageable.getSort().toString().equals("likeCnt: DESC")){
+            Collections.sort(list, (o1, o2) -> (int)(o2.getLikeCnt() - o1.getLikeCnt()));
+        } else if (pageable.getSort().toString().equals("addedCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getAddedCnt() - o1.getAddedCnt()));
+        } else if (pageable.getSort().toString().equals("reviewCnt: DESC")) {
+            Collections.sort(list, (o1, o2) -> (int)(o2.getReviewCnt() - o1.getReviewCnt()));
         }
         int start = (int)pageable.getOffset();
         int end = (start + pageable.getPageSize()) > list.size() ? list.size() : (start + pageable.getPageSize());
@@ -87,7 +87,7 @@ public class HotelService {
         return response;
     }
 
-    public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Integer maxDist){
+    public static List<Hotel> extractByDist(List<Hotel> list, Float lat, Float lng, Float maxDist){
         for (int i = 0; i < list.size(); i++) {
             Hotel h = list.get(i);
             Double dist = Math.sqrt(Math.pow((h.getLat() - lat) * 88.9036, 2) + Math.pow((h.getLng() - lng) * 111.3194, 2));

@@ -2,6 +2,7 @@ package com.ssafy.fullcourse.domain.fullcourse.entity;
 
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseDetailRes;
 import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseTotalRes;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,6 +52,9 @@ public class FullCourse {
 
     @OneToMany(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
     private List<FullCourseDetail> fullCourseDetails = new ArrayList<>();
+
+    @OneToOne(mappedBy = "fullCourse", cascade = CascadeType.REMOVE)
+    private SharedFullCourse sharedFullCourse;
 
     public FullCourseTotalRes toDto(HashMap<Integer, List<FullCourseDetailRes>> places){
         return FullCourseTotalRes.builder()

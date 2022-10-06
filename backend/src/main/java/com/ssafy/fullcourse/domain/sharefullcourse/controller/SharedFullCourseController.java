@@ -1,14 +1,12 @@
 package com.ssafy.fullcourse.domain.sharefullcourse.controller;
 
-import com.ssafy.fullcourse.domain.fullcourse.entity.FullCourse;
-import com.ssafy.fullcourse.domain.fullcourse.repository.FullCourseRepository;
+import com.ssafy.fullcourse.domain.fullcourse.application.FullCourseService;
+import com.ssafy.fullcourse.domain.fullcourse.dto.FullCourseRes;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCCommentService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCListService;
 import com.ssafy.fullcourse.domain.sharefullcourse.application.SharedFCService;
 import com.ssafy.fullcourse.domain.sharefullcourse.dto.*;
-import com.ssafy.fullcourse.domain.user.entity.User;
-import com.ssafy.fullcourse.domain.user.exception.UserNotFoundException;
-import com.ssafy.fullcourse.domain.user.repository.UserRepository;
+import com.ssafy.fullcourse.domain.sharefullcourse.entity.SharedFullCourse;
 import com.ssafy.fullcourse.global.error.ServerError;
 import com.ssafy.fullcourse.global.model.BaseResponseBody;
 import io.swagger.annotations.Api;
@@ -17,14 +15,12 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,10 +32,10 @@ import java.util.stream.Collectors;
 public class SharedFullCourseController {
 
     private final SharedFCService sharedFCService;
-    private final FullCourseRepository fullCourseRepository;
     private final SharedFCCommentService sharedFCCommentService;
-    private final UserRepository userRepository;
     private final SharedFCListService sharedFCListService;
+
+    private final FullCourseService fullCourseService;
 
     /** 공유 풀코스 등록 **/
     @PostMapping("/fullcourse")
@@ -52,12 +48,17 @@ public class SharedFullCourseController {
                 .map(tag -> SharedFCTagDto.builder().tagContent(tag).build())
                 .collect(Collectors.toList());
 
-        // 공유 풀코스 등록
-        Long sharedFcId = sharedFCService.createSharedFC(sharedFCDto, tags, email);
-        if (sharedFcId != null) {
-            HashMap<String,Long> res = new HashMap<>();
-            res.put("sharedFcId",sharedFcId);
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", res));
+
+
+
+        // 공유 풀코스 등록시
+        SharedFullCourse sharedFC = sharedFCService.createSharedFC(sharedFCDto, tags, email);
+// 유저의 풀코스리스트, 공유풀코스리스트 반환
+        List<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email);
+        List<FullCourseRes> FCList = fullCourseService.getFullCourse(email);
+        if (sharedFC != null) {
+//            HashMap<String, Object> map = sharedFCService.getList(email);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", new SharedFCPostDto(sharedFCList,FCList)));
         } else {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, "공유 풀코스 생성 중 오류", null));
         }
@@ -70,7 +71,7 @@ public class SharedFullCourseController {
     public ResponseEntity<BaseResponseBody> detailSharedFC(
             @ApiParam(value="공유 풀코스 id", required = true)
             @PathVariable  Long sharedFcId,
-            @RequestParam String email
+            @AuthenticationPrincipal String email
             ) {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCService.detailSharedFC(sharedFcId, email)));
 
@@ -82,7 +83,7 @@ public class SharedFullCourseController {
     public ResponseEntity<BaseResponseBody> updateSharedFC(
             @PathVariable Long sharedFcId,
             @RequestBody SharedFCReq sharedFCReq,
-            @RequestParam String email) {
+            @AuthenticationPrincipal String email) {
 
 
         SharedFCDto sharedFCDto  = SharedFCDto.of(sharedFCReq);
@@ -100,9 +101,8 @@ public class SharedFullCourseController {
     /** 공유 풀코스 삭제 **/
     @DeleteMapping("/fullcourse/{sharedFcId}")
     @ApiOperation(value = "공유풀코스 삭제", notes = "공유 풀코스를 삭제합니다.")
-    public ResponseEntity<BaseResponseBody> deleteSharedFC(@PathVariable Long sharedFcId) {
-
-        sharedFCService.deleteSharedFC(sharedFcId);
+    public ResponseEntity<BaseResponseBody> deleteSharedFC(@AuthenticationPrincipal String email,@PathVariable Long sharedFcId) {
+        sharedFCService.deleteSharedFC(sharedFcId,email);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", null));
 
     }
@@ -162,16 +162,15 @@ public class SharedFullCourseController {
 
     // 공유 풀코스 리스트 조회
     @GetMapping("/fullcourse")
-    public ResponseEntity<BaseResponseBody> getSharedFCList(String email, String keyword, Pageable pageable) {
+    public ResponseEntity<BaseResponseBody> getSharedFCList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
         Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCList(email,keyword,pageable);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 
     // 찜한 풀코스 리스트 조회
     @GetMapping("/fullcourse/like")
-    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email, String keyword, Pageable pageable) {
-//        String email = ((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername();
-        Page<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email, keyword,pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCLikeList(@AuthenticationPrincipal String email) {
+        List<SharedFCListDto> sharedFCLikeList = sharedFCListService.getSharedFCLikeList(email);
 
         if(sharedFCLikeList == null) return ResponseEntity.status(400).body(BaseResponseBody.of(400, "fail", null));
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCLikeList));
@@ -179,8 +178,8 @@ public class SharedFullCourseController {
 
     // 나의 공유 풀코스 조회
     @GetMapping("/fullcourse/my")
-    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@AuthenticationPrincipal String email, Pageable pageable){
-        Page<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email, pageable);
+    public ResponseEntity<BaseResponseBody> getSharedFCByTags(@AuthenticationPrincipal String email){
+        List<SharedFCListDto> sharedFCList = sharedFCListService.getSharedFCListByUser(email);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success", sharedFCList));
     }
 

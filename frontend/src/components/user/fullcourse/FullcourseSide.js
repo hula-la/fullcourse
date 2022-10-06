@@ -7,6 +7,7 @@ import {
   makeDayTagList,
 } from '../../../features/share/shareSlice';
 import styled from 'styled-components';
+import { dropFc } from '../../../features/trip/tripActions';
 
 const Side = styled.div`
   display: flex;
@@ -103,10 +104,31 @@ const Plan = styled.div`
   background-color: #fff;
 `;
 
+const Button = styled.div`
+  /* width: 30%; */
+  padding: 3px;
+  background-color: #fff;
+  border: 2px solid #d9efff;
+  border-radius: 5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  width: 4vw;
+  height: 4vh;
+  margin-top: 8.5vh;
+  /* line-height: 4vh; */
+
+  cursor: pointer;
+  &:hover {
+    border:2px solid #f73131;
+    transition: 0.3s;
+  }
+`;
+
 const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
   const dispatch = useDispatch();
   const { dayTagList2 } = useSelector((state) => state.share);
   const { checkedDay } = useSelector((state) => state.share);
+  const { fcId } = useSelector((state) => state.trip);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -135,6 +157,21 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
     }
   }, [fullcourseDetail]);
 
+  const onClickDelete = () => {
+    dispatch(dropFc(fcId))
+
+    // dispatch(
+    //   dropPlaceReview({
+    //     placeType,
+    //     reviewId,
+    //   }),
+    // )
+    //   .unwrap()
+    //   .then((res) => {
+    //     dispatch(fetchPlaceReview({ placeId, placeType }));
+    //   });
+  };
+
   useEffect(() => {
     dispatch(makeDayTagList(days));
   }, [days]);
@@ -152,14 +189,20 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
         <div id="info-wrapper">
           {/* <div id="userInfo">
             <div id="imgBlock">
-              <img id="profileImg" src={userInfo.imgUrl} alt="profileImg" />
+            <img id="profileImg" src={userInfo.imgUrl} alt="profileImg" />
             </div>
             <p id="userName">{userInfo.nickname}</p>
-
+            
           </div> */}
           <div id="fullcourseInfo">
             {startDate} → {endDate}
           </div>
+          
+         
+          <Button onClick={onClickDelete}>삭제</Button>
+          {/* {userInfo && userInfo.email === fullcourseDetail.email ? (
+           
+          ) : null} */}
         </div>
       ) : null}
       <Plan>

@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -76,9 +77,9 @@ public class FullCourseService {
     }
 
 
-    public Page<FullCourseRes> getFullCourse(String email, Pageable pageable) {
-        Page<FullCourse> fcs = fullCourseRepository.findByUser_Email(email, pageable);
-        return fcs.map(FullCourseRes::new);
+    public List<FullCourseRes> getFullCourse(String email) {
+        List<FullCourse> fcs = fullCourseRepository.findByUser_Email(email);
+        return fcs.stream().map(FullCourseRes::new).collect(Collectors.toList());
     }
 
     public FullCourseTotalRes getFullCourseDetailById(Long fcId) {
@@ -181,9 +182,6 @@ public class FullCourseService {
         String url = null;
         FullCourseDetail fullCourseDetail =
                 fullCourseDetailRepository.findById(fcDetailId).orElseThrow(() -> new FullCourseNotFoundException());
-        if (fullCourseDetail.getImg() != null) {
-            awsS3Service.delete(fullCourseDetail.getImg());
-        }
         if (img != null && !img.isEmpty()) {
             File file = convert(img);
             Metadata metadata = ImageMetadataReader.readMetadata(file);
@@ -199,10 +197,13 @@ public class FullCourseService {
                     confirmVisitByImage(latLng, fcDetailId);
                 }
             }
+            if (fullCourseDetail.getImg() != null) {
+                awsS3Service.delete(fullCourseDetail.getImg());
+            }
             url = awsS3Service.uploadImage(img);
+            fullCourseDetail.setImg(url);
         }
 
-        fullCourseDetail.setImg(url);
         fullCourseDetail.setComment(content);
         fullCourseDetailRepository.save(fullCourseDetail);
         return getFullCourseDetailById(fullCourseDetail.getFullCourse().getFcId());

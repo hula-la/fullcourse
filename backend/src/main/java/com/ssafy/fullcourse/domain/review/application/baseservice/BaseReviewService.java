@@ -1,5 +1,6 @@
 package com.ssafy.fullcourse.domain.review.application.baseservice;
 
+import com.drew.imaging.ImageProcessingException;
 import com.ssafy.fullcourse.domain.place.entity.baseentity.BasePlace;
 import com.ssafy.fullcourse.domain.place.repository.baserepository.BasePlaceRepository;
 import com.ssafy.fullcourse.domain.review.dto.ReviewPostReq;
@@ -25,6 +26,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,6 +64,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         if(!review.isPresent()) throw new ReviewNotFoundException();
 
+        awsS3Service.delete(review.get().getReviewImg());
+
 //        System.out.println(review.get() instanceof CultureReview); //
 
         baseReviewRepository.deleteById(reviewId);
@@ -69,7 +74,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
 
     @Transactional
-    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) {
+    public Long createReview(PlaceEnum Type, Long placeId, String email, ReviewPostReq reviewPostReq, MultipartFile file) throws IOException, ImageProcessingException {
         Optional<P> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         BaseReviewRepository baseReviewRepository = baseReviewRepositoryMap.get(Type.getRepository());
 
@@ -91,7 +96,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
             baseReview.setReviewImg(defaultImg);
         }
 
-
+        baseReview.setRegDate(new Date());
         baseReviewRepository.save(baseReview);
         return baseReview.getReviewId();
     }
@@ -102,7 +107,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         Optional<P> place = basePlaceRepositoryMap.get(Type.getPlace()).findByPlaceId(placeId);
         if(!place.isPresent()) throw new PlaceNotFoundException();
-        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findByPlace(place.get(), pageable);
+        Page<R> page = baseReviewRepositoryMap.get(Type.getRepository()).findByPlaceOrderByRegDateDesc(place.get(), pageable);
+
         return page.map(ReviewRes::new);
     }
 
@@ -115,7 +121,7 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
         R review = reviewOpt.get();
         
         
-        String imgUrl = defaultImg;
+        String imgUrl;
         
         
         if(file != null) {
@@ -123,6 +129,8 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
                 awsS3Service.delete(review.getReviewImg());
             }
             imgUrl = awsS3Service.uploadImage(file);
+        } else {
+            imgUrl = review.getReviewImg();
         }
         
         
@@ -160,21 +168,5 @@ public class BaseReviewService<R extends BaseReview, P extends BasePlace, RL ext
 
         return true;
     }
-
-//    public String saveImg(MultipartFile file){
-//
-//        if(file == null) {
-//            findUser.update(userDto.getNickname(), findUser.getImgUrl());
-//        } else {
-//            if (!findUser.getImgUrl().equals(defaultImg)) {
-//                awsS3Service.delete(findUser.getImgUrl());
-//            }
-//            userDto.setFile(file);
-//            findUser.update(userDto.getNickname(), awsS3Service.uploadImage(userDto.getFile()));
-//        }
-//
-//        userRepository.save(findUser);
-//        return imgPath;
-//    }
 
 }
