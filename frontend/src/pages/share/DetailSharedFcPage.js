@@ -45,7 +45,7 @@ const FullcourseDetail = () => {
     const { payload } = await dispatch(
       fetchSharedFcDetail({ sharedFcId, email }),
     );
-    if (payload.message !== 'Success') {
+    if (payload.message !== 'success') {
       navigate('/404');
     }
   }, [dispatch]);
