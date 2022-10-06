@@ -40,6 +40,12 @@ const PlusBtn = styled(AiOutlinePlusCircle)`
   cursor: pointer;
   font-size: 3vmin;
   color: #e36387;
+  &:hover {
+    color: #ae4e69;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const DetailBtn = styled(IoIosInformationCircleOutline)`
@@ -47,6 +53,12 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
   font-size: 3.2vmin;
   color: #0aa1dd;
   margin-right: 0.5vh;
+  &:hover {
+    color: #0b739c;
+    font-weight: bold;
+    
+    
+  }
 `;
 
 const Like = styled(AiFillHeart)`
@@ -136,8 +148,8 @@ const PlaceListItem = ({
         row
         sx={{
           width: '18vw',
-          height: '9.5vh',
-          gap: 2,
+          height: '12vh',
+          // gap: 2,
           boxShadow: '1px 2px 4px 1px rgb(0 0 0 / 10%);',
           ':hover': {
             boxShadow: 'md',
@@ -150,11 +162,8 @@ const PlaceListItem = ({
           backgroundColor: 'white',
         }}
       >
-        <AspectRatio ratio="1" sx={{ width: 90 }}>
+        <AspectRatio ratio="1" sx={{ width: 90, marginRight:'1vh' }}>
           {place.imgUrl!==null ? (<img src={place.imgUrl} alt="" />):(<img src={randomImgUrl} alt="" />)}
-          {/* <img src={randomImgUrl} alt="" /> */}
-          {/* <img src={imgUrl} alt="" /> */}
-          {/* {randomImgUrl} */}
         </AspectRatio>
 
         <Box sx={{ width: '10vw' }}>
@@ -201,6 +210,7 @@ const PlaceListItem = ({
                 e,
               );
               addMarker(place.lat, place.lng, place.name, e);
+
             }}
           />
         </Box>

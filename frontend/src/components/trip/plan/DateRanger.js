@@ -84,7 +84,7 @@ const DateRanger = () => {
   ]);
 
   // open close
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const refOne = useRef(null);
   useEffect(() => {
