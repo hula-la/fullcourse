@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -213,24 +213,27 @@ const MobileComment = ({ sharedFcInfo }) => {
   const onClickLike = () => {
     dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
   };
-
-  const shareKakao = (sharedFcInfo) => {
-    Kakao.Link.createDefaultButton({
-      container: '#btnKakao',
-      objectType: 'feed',
-      content: {
-        title: sharedFcInfo.title,
-        description: sharedFcInfo.detail,
-        imageUrl: sharedFcInfo.thumbnail,
-        link: {
-          mobileWebUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.sharedFcId,
-          webUrl:
-            'https://j7e106.p.ssafy.io/fullcourse/detail/' + sharedFcInfo.sharedFcId,
+  useEffect(() => {
+    if (sharedFcInfo) {
+      Kakao.Link.createDefaultButton({
+        container: '#btnKakao',
+        objectType: 'feed',
+        content: {
+          title: sharedFcInfo.title,
+          description: sharedFcInfo.detail,
+          imageUrl: sharedFcInfo.thumbnail,
+          link: {
+            mobileWebUrl:
+              'https://j7e106.p.ssafy.io/fullcourse/detail/' +
+              sharedFcInfo.sharedFcInfo.sharedFcId,
+            webUrl:
+              'https://j7e106.p.ssafy.io/fullcourse/detail/' +
+              sharedFcInfo.sharedFcInfo.sharedFcId,
+          },
         },
-      },
-    });
-  };
+      });
+    }
+  }, [sharedFcInfo]);
 
   return (
     <CommentBlock>
@@ -254,9 +257,10 @@ const MobileComment = ({ sharedFcInfo }) => {
         ) : null}
         </div>
         <div  id="btnKakao" className='btnContainer'
-          onClick={() => {
-            shareKakao(sharedFcInfo);
-          }}>
+          // onClick={() => {
+          //   shareKakao(sharedFcInfo);
+          // }}
+          >
         {sharedFcInfo ? (
           <ShareIcon
             />
