@@ -12,7 +12,10 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Slider } from '@material-ui/core';
 
 const PlaceContainer = styled.div`
-  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 86.5vh;
   background-color: #e8f9fd;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -47,30 +50,35 @@ const PlaceContainer = styled.div`
 const SortBox = styled.div`
   margin-top: 1vh;
   display: flex;
-  align-items: end;
-  justify-content: center;
-  margin-left: 2vh;
-  margin: 0;
+  margin-left: 1.5vw;
+
+  
+  
   .slider {
     width: 5vw;
-    margin: 0;
+    /* margin: 0; */
+    margin-right: 2vh;
     margin-bottom: 1vh;
+  }
+  .sortSelect {
+    margin-left: 2vh;
+    padding: 0;
   }
 `;
 
 const TypeContainer = styled.div`
-  width: 13vw;
-  height: 10vh;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.2vh;
+  height: 7vh;
+  margin-top: 1vh;
+
+  justify-content: space-between;
 `;
 
 const PlaceTypes = styled.button`
   border: #0aa1dd 1px solid;
+  margin: 2vh 0.5vh;
 
   border-radius: 0.5rem;
-  width: 4vw;
+  width: 3vw;
   height: 4vh;
   font-size: small;
   font-weight: bold;
@@ -101,9 +109,9 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: 20vw;
+  width: 16vw;
 
-  height: 4vh;
+  height: 3.5vh;
   margin-left: 1.25vw;
   margin-top: 1vh;
   padding: 3px;
@@ -123,7 +131,7 @@ const Input = styled.input`
 `;
 
 const PageBox = styled.div`
-  margin-top: 60vh;
+  margin-top: 65vh;
   margin-bottom: 5vh;
   width: 50vh;
   display: flex;
@@ -143,7 +151,7 @@ const PlaceBar = ({ map }) => {
     'custom',
   ]);
 
-  const showPlaceTypes = ['여행', '문화', '숙소', '맛집', '체험', '커스텀'];
+  const showPlaceTypes = ['여행', '문화', '숙소', '맛집', '체험'];
   const [maxPageNum, setMaxPageNum] = useState(null);
   const [pageNum, setPageNum] = useState(0);
   const { travelPlaceList } = useSelector((state) => state.trip);
@@ -179,7 +187,7 @@ const PlaceBar = ({ map }) => {
   };
 
   const onClickSlider = () => {
-    // setKeyword('')
+    
     setPageNum(0);
     const dailyItem = [...document.querySelectorAll('.daily')].map(
       (plannerBox) => {
@@ -223,40 +231,6 @@ const PlaceBar = ({ map }) => {
     const avgLng = resLng / lngs.length;
     setRecentLng(avgLng);
   };
-
-  // const placeItem = [] //슬라이스를 안쓰니까 담는 클릭을 할 때마다 placeItem이 초기화됨
-  // const addPlaceToPlanner = (
-  //   placeId,
-  //   placeName,
-  //   placeImg,
-  //   placeLat,
-  //   placeLng,
-  //   id,
-  //   e,
-  // ) => {
-  //   e.preventDefault();
-  //   let placeItemObj = new Object();
-  //   placeItemObj.placeId = placeId;
-  //   placeItemObj.name = placeName;
-  //   placeItemObj.imgUrl = placeImg;
-  //   placeItemObj.draggable = true;
-  //   placeItemObj.lat = placeLat;
-  //   placeItemObj.lng = placeLng;
-  //   placeItemObj.id = id;
-
-  //   dispatch(setPlaceItem(placeItemObj));
-  // };
-
-  // const addMarker = (lat, lng) => {
-  //   const position = { lat: lat, lng: lng };
-  //   const marker = new window.google.maps.Marker({
-  //     map,
-  //     position: position,
-  //   });
-  //   console.log(typeof marker);
-  //   marker['position'] = position;
-  //   dispatch(setMarkers(marker));
-  // };
 
   useEffect(() => {
     if (travelPlaceList !== null) {
@@ -339,41 +313,40 @@ const PlaceBar = ({ map }) => {
 
   return (
     <PlaceContainer className="place-container">
-      {/* {maxDist} */}
+   
+      <TypeContainer>
+        {showPlaceTypes.map((item, id) => (
+          <PlaceTypes
+            key={id}
+            className={id === isActive ? 'type-selected' : ''}
+            onClick={(e) => {
+              changePlaceList(id, e);
+            }}
+          >
+            {item}
+          </PlaceTypes>
+        ))}
+      </TypeContainer>
       <SortBox>
-        <TypeContainer>
-          {showPlaceTypes.map((item, id) => (
-            <PlaceTypes
-              key={id}
-              className={id === isActive ? 'type-selected' : ''}
-              onClick={(e) => {
-                changePlaceList(id, e);
-              }}
-            >
-              {item}
-            </PlaceTypes>
-          ))}
-        </TypeContainer>
-        <div>
-          <Slider
-            className="slider"
-            getAriaValueText={onHandleSlider}
-            step={5}
-            marks={marks}
-            onClick={onClickSlider}
-          />
-          <SortSelect
-            sort={sort}
-            setSort={setSort}
-            setSortReq={setSortReq}
-            placeType={placeType}
-            setPageNum={setPageNum}
-            setMaxDist={setMaxDist}
-            setRecentLat={setRecentLat}
-            setRecentLng={setRecentLng}
-            setKeyword={setKeyword}
-          ></SortSelect>
-        </div>
+        <Slider
+          className="slider"
+          getAriaValueText={onHandleSlider}
+          step={5}
+          marks={marks}
+          onClick={onClickSlider}
+        />
+        <SortSelect
+          className="sortSelect"
+          sort={sort}
+          setSort={setSort}
+          setSortReq={setSortReq}
+          placeType={placeType}
+          setPageNum={setPageNum}
+          setMaxDist={setMaxDist}
+          setRecentLat={setRecentLat}
+          setRecentLng={setRecentLng}
+          setKeyword={setKeyword}
+        ></SortSelect>
       </SortBox>
       <Wrapper>
         <Input

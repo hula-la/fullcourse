@@ -13,11 +13,13 @@ import {
 import './trip.css';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { GrPowerReset } from 'react-icons/gr';
+import format from 'date-fns/format';
+import { setDates } from '../../../features/trip/tripSlice';
 
 const PlannerContent = styled.div`
   background-color: #e8f9fd;
   margin-top: 1vh;
-  padding: 1vh;
+  /* padding: 1vh; */
   overflow-y: scroll;
   height: 70vh;
   border-radius: 0 0 1rem 1rem;
@@ -38,24 +40,42 @@ const PlannerContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .sticky {
+    position:sticky;
+    top:0px;
+
+  }
 `;
 const PlaceBucket = styled.div`
-  margin-top: 1vh;
+  margin-top: 2vh;
   width: 20vw;
   height: 60vh;
+  border: 1.5px solid #a4d8ff;
   background-color: #ffffff;
   .bucketBox {
     min-height: 5vh;
   }
   .deleteIcon path {
     stroke: #0aa1dd;
+    &:hover {
+
+    stroke: #06739e;
+
   }
+
+  }
+
 `;
 
 const DeleteBtn = styled(TiDeleteOutline)`
   font-size: 2.5vmin;
   color: #eb1d36;
   cursor: pointer;
+  &:hover {
+    color: #bb172a;
+    
+  }
 `;
 
 const ResetBtn = styled(GrPowerReset)`
@@ -103,7 +123,7 @@ const SaveBtn = styled.button`
   height: 6vh;
   padding: 0.7vh;
   margin-top: 1vh;
-  margin-bottom: 1vh;
+  margin-bottom: 1.5vh;
   border-radius: 0.3rem;
   font-family: Tmoney;
   font-size: 1.8vmin;
@@ -191,7 +211,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
   };
 
   useEffect(() => {
-    init();
     //드래그앤 드롭 바닐라 자스
     const plannerContent = document.querySelector('.planner-content');
     plannerContent.addEventListener('dragstart', (e) => {
@@ -282,6 +301,23 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
     };
   }, [placeItem]);
 
+  const getDates = (startDate, endDate) => {
+    const dateRange = [];
+    while (startDate <= endDate) {
+      const date = format(new window.Date(startDate), 'yyyy-MM-dd');
+      dateRange.push(date);
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return dateRange;
+  };
+  useEffect(() => {
+    var sD = new window.Date();
+    var eD = new window.Date();
+    eD.setDate(sD.getDate() + 2);
+    const dayRange = getDates(sD, eD);
+    dispatch(setDates(dayRange));
+  }, []);
+
   //여행 일정 객체 생성 관련1
   var newObj = {};
   var newTrip = {
@@ -361,96 +397,9 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       });
   };
 
-  //하나씩 삭제시키는거 넣어서 아마 없어도 될것 같은데 코드는 남겨놓음, 장소전체삭제
   const clearMarker = () => {
     dispatch(clearMarkers());
   };
-
-  // //루트렌더 //출발 도착 넣으면 대중교통 길찾기 해주는 기능 있으면 좋긴할듯?
-  // const renderRoute = () => {
-  //   const map = new window.google.maps.Map(mapRef.current, {
-  //     center: { lat: 35.1165, lng: 129.0401 },
-  //     zoom: 11,
-  //   });
-  //   console.log('useState잘되나', placeLocations);
-  //   const directionsService = new window.google.maps.DirectionsService();
-  //   const directionsRenderer = new window.google.maps.DirectionsRenderer();
-
-  //   //경유지추가
-  //   const stopovers =
-  //     placeLocations &&
-  //     placeLocations.slice(1, placeLocations.length - 1).map((item, idx) => {
-  //       return { stopover: true, location: { lat: parseFloat(item.lat), lng: parseFloat(item.lng) } };
-  //     });
-
-  //     // placeLocations.map((item, idx) => {
-  //     //   return { stopver: true, location: { lat: item.lat, lng: item.lng } };
-  //     // });
-
-  //   console.log('경유지잘담기나', stopovers);
-
-  //   if (placeLocations) {
-  //     const request = {
-  //       origin: {
-  //         lat: parseFloat(placeLocations[0].lat),
-  //         lng: parseFloat(placeLocations[1].lng),
-  //       },
-  //       destination: {
-  //         lat: parseFloat(placeLocations[placeLocations.length - 1].lat),
-  //         lng: parseFloat(placeLocations[placeLocations.length - 1].lng),
-  //       },
-  //       waypoints: stopovers,
-  //       travelMode: window.google.maps.TravelMode.WALKING, //하... 구글맵 한국에서는 대중교통 기능에서만 곡선경로 해주는 거였구, 그리고 대중교통에서는 경유지 추가가 안된대 ㅜㅜ 두개사이만 가능함.. 왜 walking driving 한국에 지원안해주냐 구글 좀 해줘라 좀
-  //       unitSystem: window.google.maps.UnitSystem.IMPERIAL,
-  //     };
-  //     console.log('요청뭐지', request);
-  //     directionsService.route(request, function (result, status) {
-  //       if (status === 'OK') {
-  //         directionsRenderer.setMap(map);
-  //         directionsRenderer.setDirections(result);
-  //       } else {
-  //         alert(status);
-  //       }
-  //     });
-  //   }
-  // };
-  function touchHandler(event) {
-    var touch = event.changedTouches[0];
-
-    var simulatedEvent = document.createEvent('MouseEvent');
-    simulatedEvent.initMouseEvent(
-      {
-        touchstart: 'dragstart',
-        touchmove: 'dragover',
-        // touchmove: 'dragging',
-        touchend: 'dragend',
-      }[event.type],
-      true,
-      true,
-      window,
-      1,
-      touch.screenX,
-      touch.screenY,
-      touch.clientX,
-      touch.clientY,
-      false,
-      false,
-      false,
-      false,
-      0,
-      null,
-    );
-
-    touch.target.dispatchEvent(simulatedEvent);
-    event.cancelable && event.preventDefault();
-  }
-
-  function init() {
-    document.addEventListener('touchstart', touchHandler, true);
-    document.addEventListener('touchmove', touchHandler, true);
-    document.addEventListener('touchend', touchHandler, true);
-    document.addEventListener('touchcancel', touchHandler, true);
-  }
 
   const drawPolyline = () => {
     const map = new window.google.maps.Map(mapRef.current, {
@@ -526,11 +475,10 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
       .querySelectorAll('.list-item')
       .forEach((placeItem) => placeItem.remove());
     clearMarker();
-    // dispatch(deleteAllPlace());
   };
   return (
     <PlannerContent className="planner-content">
-      <PlaceBucket className="planner-box bucket">
+      <PlaceBucket className="planner-box bucket sticky">
         <MainTitle>
           장소를 추가해보세요
           <ResetBtn onClick={clearPlaceItems} className="deleteIcon" />
@@ -562,7 +510,6 @@ const DailyPlanner = ({ map, setMap, mapRef }) => {
             ))}
         </div>
       </PlaceBucket>
-
       {tripDates &&
         tripDates.map((item, idx) => (
           <PlannerBox key={idx} className="planner-box daily" id={item}>

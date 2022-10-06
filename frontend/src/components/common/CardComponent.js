@@ -144,7 +144,7 @@ const CardComponent = (props) => {
           marginTop: '1vh',
           ':hover': {
             boxShadow: '0px 3px 9px 5px rgb(0 0 0 / 10%);',
-            // transform: 'scale(1.05)',
+          
             cursor: 'pointer',
           },
         }}

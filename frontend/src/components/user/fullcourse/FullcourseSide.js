@@ -11,10 +11,10 @@ import styled from 'styled-components';
 const Side = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   width: 30%;
   height: 89vh;
-  background-color : #dfefff;
+  background-color: #dfefff;
   #userInfo {
     display: flex;
     flex-direction: row;
@@ -49,12 +49,14 @@ const Side = styled.div`
     font-size: 1.5rem;
     border-bottom: 4px solid #0aa1dd;
     align-items: center;
+    justify-content: center;
     height: fit-content;
   }
-  #info-wrapper{
+  #info-wrapper {
     display: flex;
+    justify-content: center;
     flex-direction: row;
-    height:22%
+    height: 22%;
   }
   .daynonelist {
     list-style: none;
@@ -148,16 +150,16 @@ const FullcourseSide = ({ days, userInfo, fullcourseDetail }) => {
     <Side>
       {userInfo && fullcourseDetail ? (
         <div id="info-wrapper">
-          <div id="userInfo">
+          {/* <div id="userInfo">
             <div id="imgBlock">
               <img id="profileImg" src={userInfo.imgUrl} alt="profileImg" />
             </div>
             <p id="userName">{userInfo.nickname}</p>
 
-          </div>
+          </div> */}
           <div id="fullcourseInfo">
-              {startDate} → {endDate}
-            </div>
+            {startDate} → {endDate}
+          </div>
         </div>
       ) : null}
       <Plan>

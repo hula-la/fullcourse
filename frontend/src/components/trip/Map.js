@@ -11,7 +11,7 @@ const MapContainer = styled.div`
   border-bottom: 3px dashed #A5F1E9;
 
   margin-top: 1vh;
-  height:85vh
+  height:86.5vh
 `;
 
 const Map = ({ map, setMap, mapRef }) => {
