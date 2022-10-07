@@ -33,6 +33,8 @@ bottom: 1%;
 width: 40px;
 height: 40px;
 
+z-index:4;
+
 @media only screen and (max-device-width: 479px) {
   display: block;
 }

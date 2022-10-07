@@ -51,6 +51,7 @@ const Container = styled.div`
     font-weight: bold;
     text-align: center;
   }
+  
 `;
 
 const Introduce = styled.div`
@@ -111,7 +112,7 @@ const MainTitle = styled.div`
 const Logo = styled.img`
   width: 80%;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
-    width: 113%;
+    width: 94%%;
     margin-top: 3vh;
   }
 `;
@@ -328,10 +329,17 @@ const MainPage = () => {
 
         <MobileView>
           <MainTitle>
-          <div className='mobileTitle'>
+            <div className='mobileTitle'>
 
-          일정 짜기 서비스는 PC에서만 이용가능합니다.
+            <div>
+
+            <Logo src="/img/logo2.png" alt="logo2_img" />
+            </div>
+            <div className='mobileTitle'>
+
+          일정 짜기 서비스는 PC에서만<br/> 이용가능합니다.
           </div>
+            </div>
 
           </MainTitle>
         </MobileView>
@@ -341,7 +349,9 @@ const MainPage = () => {
         <FullCourseList />
       </FullCourses>
       <StartPlaces>
+        <BrowserView>
         <StartPlaceList />
+        </BrowserView>
         <Wave className="wave wave1"></Wave>
         <Wave className="wave wave2"></Wave>
         <Wave className="wave wave3"></Wave>

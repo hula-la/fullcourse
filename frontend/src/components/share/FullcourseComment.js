@@ -400,11 +400,15 @@ const FullcourseComment = ({ sharedFcInfo }) => {
               <div id="userNickName">{sharedFcInfo.user.nickname}</div>
             </div>
             <div className="regDate">{sharedFcInfo.regDate.slice(0, 10)}</div>
-            <div>
+
+            {userInfo && userInfo.email === sharedFcInfo.user.email ? (
+              <div>
               <button className="btn-del" onClick={onClickDeleteFc}>
                 삭제
               </button>
             </div>
+            ) : null}
+            
           </DetailHeader>
 
           <div className="detail">{sharedFcInfo.detail}</div>
