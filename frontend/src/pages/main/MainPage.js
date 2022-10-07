@@ -93,7 +93,7 @@ const MainTitle = styled.div`
     width: 230px;
     background-color: white;
     border-radius: 80vw;
-    padding: 10vw;
+    /* padding: 10vw; */
   }
 `;
 
