@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import KeyboardDoubleArrowDown from '@mui/icons-material/KeyboardDoubleArrowDown';
 import ExploreIcon from '@mui/icons-material/Explore';
@@ -13,6 +13,7 @@ import FullCourseList from './FullCourseList';
 import StartPlaceList from './StartPlaceList';
 
 import Swal from 'sweetalert2';
+import ReactHowler from "react-howler";
 
 
 
@@ -318,10 +319,12 @@ const Explore = styled.div`
 `;
 
 const MainPage = () => {
+  const [playing, setIsPlaying] = useState(true);
   const section1 = useRef(null);
   const section2 = useRef(null);
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
+
 
   const onClickStart = () => {
     Swal.fire({
@@ -357,21 +360,20 @@ const MainPage = () => {
     navigate('user/profile/1');
   };
 
+
+
   useEffect(() => {
-    var sound = "/sound/pado.mp3"
-    var howl = new window.Howl({
-      src: [sound],
-      autoplay: true,
-      volume: 1.0,
-      loop: true
-      });
-      
-    howl.play()
+
+
     
   },[])
   return (
     <Container>
-      
+       <ReactHowler
+        src="/sound/pado.mp3"
+        playing={playing}
+
+      />
 
       <Introduce id="introduce">
         <VideoContainer>
