@@ -101,7 +101,7 @@ const MobileFullcourseMap = () => {
     var container = document.getElementById('map');
     var options = {
       center: new kakao.maps.LatLng(35.17962489619582, 129.07480154639234),
-      level: 6,
+      level: 10,
     };
 
     var map = new kakao.maps.Map(container, options);

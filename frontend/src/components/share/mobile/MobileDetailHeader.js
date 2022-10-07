@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   makeDayTagList,
+  resetError,
 } from '../../../features/share/shareSlice';
+import Swal from 'sweetalert2';
 import { createSharedFcLike } from '../../../features/share/shareActions';
 // import MobileComment from './MobileComment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -128,6 +130,7 @@ const SharedTitle = styled.div`
 `;
 
 const MobileDetailHeader = ({ sharedFcInfo }) => {
+  const { errorCode } = useSelector((state) => state.share);
   const [isComment, setIsComment] = useState(false);
   const dispatch = useDispatch();
 
@@ -136,6 +139,20 @@ const MobileDetailHeader = ({ sharedFcInfo }) => {
       dispatch(makeDayTagList(sharedFcInfo.day));
     }
   }, [sharedFcInfo]);
+
+  useEffect(() => {
+    if (errorCode) {
+      Swal.fire({
+        imageUrl: '/img/boogie2.png',
+        imageHeight: 300,
+        imageAlt: 'A tall image',
+        text: '로그인이 필요한 서비스에요😂',
+        height: 300,
+        footer: '<a href="/user/login">로그인 하러가기</a>',
+      });
+      dispatch(resetError());
+    }
+  }, [errorCode]);
 
   const onClickLike = () => {
     dispatch(createSharedFcLike(sharedFcInfo.sharedFcId));
