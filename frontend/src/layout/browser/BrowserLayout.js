@@ -174,7 +174,7 @@ const Layout = () => {
                 <br />
                 페이지
               </span>
-              🚩
+              🏠
             </Link>
           </div>
           <div>
