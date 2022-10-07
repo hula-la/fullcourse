@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import FullcourseTag from '../../components/share/SharedFcTag';
 import SharedFcList from '../../components/share/SharedFcList';
+import MobileSharedFcList from '../../components/share/mobile/MobileSharedFcList';
+import MobileFullcourseTag from '../../components/share/mobile/MobileSharedFcTag';
+
 import SortSelect from '../../components/share/SortSelect';
 import TitleText from '../../components/user/profile/TitleText';
 import { fetchSharedFc } from '../../features/share/shareActions';
@@ -15,7 +18,7 @@ const Wrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  margin: 0 20%;
+  margin: 0 10vw;
   position: relative;
   padding-top: 2vh;
 
@@ -32,6 +35,7 @@ const InputWrapper = styled.div`
     }
   }
 `;
+
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -59,11 +63,72 @@ const Input = styled.input`
     transition: 0.5s;
   }
   .input {
+    display: flex;
+    justify-content: center;
   }
   @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
     font-size: 0.5rem;
   }
 `;
+
+const MobileInput = styled.input`
+  width: 100%;
+  min-width: 250px;
+  height: 40px;
+  margin: 10px 10px 10px 0em;
+  padding: 3px;
+  font-size: 0.8rem;
+  text-align: center;
+  border: 0.5px solid #0aa1dd;
+  border-radius: 5rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
+  font-family: Tmoney;
+  outline: none;
+  &:focus {
+    background-color: #eef8ff;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 30%);
+    transition: 0.5s;
+  }
+  .input {
+    display: flex;
+    justify-content: center;
+  }
+  @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+    font-size: 0.5rem;
+  }
+`;
+
+
+const MobileInputWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 2vh;
+
+  .icon {
+    position: absolute;
+    left: 85%;
+  }
+
+    position: relative;
+    cursor: pointer;
+    @media only screen and (min-device-width: 479px) and (max-device-width: 800px) {
+      position: relative;
+      cursor: pointer;
+    }
+  .input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+`;
+
+
 const Button = styled.button`
   margin-bottom: 4vh;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
@@ -216,23 +281,23 @@ const FullcourseShare = () => {
 
     <MobileView>
       <Wrapper>
-        <InputWrapper>
+        <MobileInputWrapper>
           <TitleText className="ttl" content="풀코스 검색"></TitleText>
           <div className="input">
-            <Input
+            <MobileInput
               placeholder="가고싶은 장소를 입력하세요"
               onFocus={onFocus}
               onChange={onChange}
               onKeyPress={onKeyPress}
-            ></Input>
+            ></MobileInput>
 
             <SearchOutlinedIcon className="icon" onClick={onClickSearch} />
           </div>
-        </InputWrapper>
+        </MobileInputWrapper>
 
-        <FullcourseTag />
+        <MobileFullcourseTag />
         <SortSelect />
-        <SharedFcList />
+        <MobileSharedFcList />
 
         <PaginationWrapper>
           {sharedFcList ? (
