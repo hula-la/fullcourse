@@ -13,6 +13,7 @@ const MemoBlock = styled.div`
   .btn-wrapper {
     display: grid;
     justify-content: center;
+    text-align: center;
   }
 `;
 
@@ -26,7 +27,7 @@ const PlaceWrapper = styled.div`
   justify-content: space-evenly;
   div {
     width: 100%;
-    text-align: left;
+    text-align: center;
   }
   .day {
     font-size: 1.2rem;

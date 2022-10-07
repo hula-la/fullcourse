@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import KeyboardDoubleArrowDown from '@mui/icons-material/KeyboardDoubleArrowDown';
 import ExploreIcon from '@mui/icons-material/Explore';
@@ -13,6 +13,12 @@ import FullCourseList from './FullCourseList';
 import StartPlaceList from './StartPlaceList';
 
 import Swal from 'sweetalert2';
+import ReactHowler from "react-howler";
+
+
+
+// 모바일&웹 뷰
+import { BrowserView, MobileView } from 'react-device-detect';
 
 const Container = styled.div`
   position: relative;
@@ -30,7 +36,7 @@ const Container = styled.div`
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     overflow-x: hidden;
     /* overflow: overlay; */
-    display: grid;
+    /* display: grid; */
     grid-template-rows: 0.2fr 0.2fr 1.5fr; //가로로 구분
     background: radial-gradient(
       ellipse at center,
@@ -39,6 +45,11 @@ const Container = styled.div`
       #a7e4f4 100%
     );
     /* background-color : #e5f3fe; */
+  }
+
+  .mobileTitle{
+    font-weight: bold;
+    text-align: center;
   }
 `;
 
@@ -93,7 +104,7 @@ const MainTitle = styled.div`
     width: 230px;
     background-color: white;
     border-radius: 80vw;
-    padding: 10vw;
+    /* padding: 10vw; */
   }
 `;
 
@@ -218,108 +229,14 @@ const Wave = styled.div`
   } */
 `;
 
-const Explore = styled.div`
-  display: none;
-  /* position: fixed; */
-  right: 50px;
-  bottom: 50px;
-  width: 40px;
-  height: 40px;
-
-  &:hover,
-  .explore:hover {
-    .explore {
-      display: block;
-    }
-  }
-
-  .explore {
-    position: relative;
-    width: 40px;
-    height: 40px;
-
-    display: none;
-
-    position: absolute;
-    bottom: 0;
-    right: 0;
-
-    &-thing {
-      position: absolute;
-      width: 80%;
-      height: 80%;
-      top: 10%;
-      left: 10%;
-
-      &:nth-child(1) {
-        transform: translateX(-50px);
-        animation: icon1 0.5s;
-        padding-right: calc(10% + 10px);
-        color: #666;
-        cursor: pointer;
-        &:hover {
-          color: #e36387;
-        }
-      }
-
-      &:nth-child(2) {
-        transform: translateY(-50px);
-        animation: icon2 0.5s;
-        padding-bottom: calc(10% + 10px);
-        color: #666;
-        cursor: pointer;
-        &:hover {
-          color: #0aa1dd;
-        }
-      }
-    }
-  }
-
-  .explore-link {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    color: #233e8b;
-    cursor: pointer;
-    transition: ease 0.3s;
-    transform: scale(1) rotate(0deg);
-
-    &:hover {
-      transition: ease 0.3s;
-      transform: scale(1.1) rotate(45deg);
-    }
-  }
-
-  @keyframes icon1 {
-    0% {
-      opacity: 0;
-      transform: translateX(0);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateX(-50px);
-    }
-  }
-  @keyframes icon2 {
-    0% {
-      opacity: 0;
-      transform: translateY(0px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(-50px);
-    }
-  }
-`;
 
 const MainPage = () => {
+  const [playing, setIsPlaying] = useState(true);
   const section1 = useRef(null);
   const section2 = useRef(null);
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.user);
+
 
   const onClickStart = () => {
     Swal.fire({
@@ -354,8 +271,22 @@ const MainPage = () => {
   const onClickProfile = () => {
     navigate('user/profile/1');
   };
+
+
+
+  useEffect(() => {
+
+
+    
+  },[])
   return (
     <Container>
+       <ReactHowler
+        src="/sound/pado.mp3"
+        playing={playing}
+
+      />
+
       <Introduce id="introduce">
         <VideoContainer>
           {/* 비디오파일 여러개 받아서 랜덤으로 재생해야 할 듯_ 유료라서 ㅜㅜ */}
@@ -365,6 +296,8 @@ const MainPage = () => {
           </video>
         </VideoContainer>
         {/* <div className="wrapper"></div> */}
+
+        <BrowserView>
         <MainTitle ref={section1}>
           {/* public 경로 사용하는 법 */}
           <Logo src="/img/logo2.png" alt="logo2_img" />
@@ -389,6 +322,20 @@ const MainPage = () => {
             {/* 둘러보기는 툴팁으로 넣자 */}
           </a>
         </MainTitle>
+
+        </BrowserView>
+
+
+        <MobileView>
+          <MainTitle>
+          <div className='mobileTitle'>
+
+          일정 짜기 서비스는 PC에서만 이용가능합니다.
+          </div>
+
+          </MainTitle>
+        </MobileView>
+
       </Introduce>
       <FullCourses ref={section2}>
         <FullCourseList />
@@ -401,7 +348,7 @@ const MainPage = () => {
         <Wave className="wave wave4"></Wave>
         <Ocean className="ocean"></Ocean>
       </StartPlaces>
-      <Explore>
+      {/* <Explore>
         <div className="explore">
           <AccountCircleIcon
             onClick={onClickProfile}
@@ -413,7 +360,7 @@ const MainPage = () => {
           />
         </div>
         <ExploreIcon className="explore-link" />
-      </Explore>
+      </Explore> */}
     </Container>
   );
 };

@@ -16,6 +16,7 @@ const Container = styled.div`
   padding: 10vh;
   @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
     margin: 5vh 2vh;
+    padding: 0;
   }
 `;
 

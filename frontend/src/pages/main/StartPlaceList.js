@@ -42,6 +42,12 @@ const Container = styled.div`
     font-size: 3vmin;
     margin-top: 0.5vh;
   }
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+    .JoyCard-root{
+      width: 80%;
+    }
+  }
 `;
 const Title = styled.div`
   display: flex;

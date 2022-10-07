@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import TitleText from '../user/profile/TitleText';
-import SharedFcDayTagItem from './SharedFcDayTagItem';
-import FullcourseTagItem from './SharedFcTagItem';
+import TitleText from '../../user/profile/TitleText';
+import SharedFcDayTagItem from '../SharedFcDayTagItem';
+import FullcourseTagItem from '../SharedFcTagItem';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Wrapper = styled.div`
@@ -41,30 +41,34 @@ const Wrapper = styled.div`
     border-radius: 0 0 1rem 1rem;
     flex-direction: column;
     justify-content: start;
-    align-items: flex-start;
-    width: 70%;
+    align-items: center;
+    width: 100%;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 20px 10px;
     /* border-bottom: 2px solid #d9d9d9; */
     background-color: #ffff;
     /* border-radius: 1rem; */
     border-radius: 0 0 1rem 1rem;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 10%);
     animation: fadeInDown 0.5s;
+    height: 300px;
+    overflow-y:auto
   }
 
   .nonelist {
     list-style: none;
     display: flex;
-
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
     margin: 0px 0px;
+    font-size: 13px;
+    width: 73vw;
+    max-width: 610px;
   }
 
   .tag-open{
     display: flex;
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
     justify-content: center;
     align-items: center;
@@ -74,7 +78,7 @@ const Wrapper = styled.div`
   }
   .tag-close{
     display: flex;
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
     justify-content: center;
     align-items: center;
@@ -82,11 +86,10 @@ const Wrapper = styled.div`
     border-radius: 1rem;
     flex-direction: column;
     margin-bottom: 1rem;
-    
   }
 
   .selected{
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
     background-color: #fff;
     /* border-radius: 1rem; */
@@ -98,7 +101,7 @@ const Wrapper = styled.div`
     padding:0.8rem;
   }
   .selected-open{
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
     background-color: #fff;
     /* border-radius: 1rem; */
@@ -124,9 +127,11 @@ const Wrapper = styled.div`
     flex-wrap: wrap;
     justify-content: start;
     margin: 0;
+    font-size: 13px;
   }
-  .nonelist > li:first-child {
-    width: 100px;
+  .nonelist > div:first-child {
+
+    width: 100%;
     pointer-events: none;
     text-align: center;
     div > div {
@@ -135,7 +140,8 @@ const Wrapper = styled.div`
     }
   }
 
-  .daynonelist > li:first-child {
+  .daynonelist > div:first-child {
+    display:none;
     width: 100px;
     pointer-events: none;
     text-align: center;
@@ -153,10 +159,11 @@ const Wrapper = styled.div`
     color: #dc3d59;
     margin: 0.8rem;
     cursor:pointer;
+    font-size:13px;
   }
   .icon{
     color: #000000;
-}
+  }
 `;
 
 const Text = styled.div`
@@ -168,7 +175,7 @@ const Text = styled.div`
   padding: 0;
 `;
 
-const FullcourseTag = () => {
+const MobileFullcourseTag = () => {
   const { tagList } = useSelector((state) => state.share);
   const { dayTagList } = useSelector((state) => state.share);
   const { checkedTagList } = useSelector((state) => state.share);
@@ -179,15 +186,15 @@ const FullcourseTag = () => {
   return (
     <Wrapper>
       <div className="tag-close"> 
-        <ul className="daynonelist">
+        <div className="daynonelist">
           {dayTagList.map((tag, index) => {
             return (
-              <li key={index}>
+              <div key={index}>
                 <SharedFcDayTagItem tag={tag} />
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
 
       <div className={open?"tag-open":"tag-close"}>
@@ -205,15 +212,15 @@ const FullcourseTag = () => {
       <div className={open?"tag open":"tag"}>
         {tagList.map((arr, index) => {
           return (
-            <ul className="nonelist" key={index}>
+            <div className="nonelist" key={index}>
               {arr.map((tag, index) => {
                 return (
-                  <li key={index}>
+                  <div key={index}>
                     <FullcourseTagItem tag={tag} index={index} />
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
           );
         })}
         
@@ -222,4 +229,4 @@ const FullcourseTag = () => {
   );
 };
 
-export default FullcourseTag;
+export default MobileFullcourseTag;

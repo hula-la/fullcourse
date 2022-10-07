@@ -7,7 +7,6 @@ import './App.css';
 import Layout from './layout/Layout';
 import BrowserLayout from './layout/browser/BrowserLayout';
 import MainPage from './pages/main/MainPage';
-import OnlyHeaderLayout from './layout/OnlyHeaderLayout';
 // User
 import LoginPage from './pages/user/LoginPage';
 import MobileLoginPage from './pages/user/MobileLoginPage';
@@ -32,6 +31,7 @@ import ProtectedRoute from './private/ProtectedRoute';
 // 모바일&웹 뷰
 import { BrowserView, MobileView } from 'react-device-detect';
 
+
 function App() {
   const dispatch = useDispatch();
 
@@ -39,12 +39,17 @@ function App() {
     dispatch(fetchUserInfo());
   }, [dispatch]);
 
+  
+
+
   return (
     <div>
       <MobileView>
         <Routes>
           {/* Main */}
+          <Route path="" element={<Layout />}>
           <Route path="" element={<MainPage />} />
+          </Route>
           {/* user */}
           <Route path="user" element={<Layout />}>
             <Route element={<ProtectedLoginRoute />}>
@@ -58,12 +63,12 @@ function App() {
               />
             </Route>
           </Route>
-          <Route path="fullcourse" element={<OnlyHeaderLayout />}>
+          <Route path="fullcourse" element={<Layout />}>
             <Route path="" element={<ShareFcPage />} />
             <Route path="detail/:sharedFcId" element={<DetailSharedFcPage />} />
           </Route>
           {/* trip */}
-          <Route path="trip" element={<OnlyHeaderLayout />}>
+          <Route path="trip" element={<Layout />}>
             <Route element={<ProtectedRoute />}>
               <Route path="plan" element={<PlanPage />} />
               {/* survey 일정짜기 전 설문조사 */}
@@ -76,6 +81,7 @@ function App() {
 
           <Route path="*" element={<MobileNotFound />} />
         </Routes>
+        
       </MobileView>
       <BrowserView>
         <div className="App">
