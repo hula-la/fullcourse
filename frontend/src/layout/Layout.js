@@ -8,6 +8,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 import { Link, useNavigate } from 'react-router-dom';
 import ShareIcon from '@mui/icons-material/Share';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 
@@ -192,7 +193,7 @@ const navigate = useNavigate();
             onClick={onClickShare}
             className="explore-thing"
           />
-          <AirplanemodeActiveIcon
+          <HomeIcon
             onClick={scrollToTop}
             className="explore-thing"
           />
