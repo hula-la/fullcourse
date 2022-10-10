@@ -6,7 +6,7 @@
 
 😼 **BE: 손효재 (팀장), 김수진, 남한솔, 이연의**
 
-📽 **UCC 및 프로젝트 설명 링크**
+📽 **[프로젝트 UCC 영상 보러가기](https://www.youtube.com/watch?v=DfcWpjBElUs)**
 
 ![logo2](README.assets/logo2.png)
 
