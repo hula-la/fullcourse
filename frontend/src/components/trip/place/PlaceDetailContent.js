@@ -21,6 +21,10 @@ const PlaceTitle = styled.div`
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 60%, #a5f1e9 50%);
   font-weight: bold;
   color: #333333;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 22vw;
+
+  }
 `;
 const PlaceSubTitle = styled.div`
   text-align: start;

@@ -80,9 +80,10 @@ const PlaceItem = styled.div`
 const DetailBtn = styled(IoIosInformationCircleOutline)`
   cursor: pointer;
   font-size: 3.2vmin;
-  @media only screen and (min-device-width: 375px) and (max-device-width: 479px) {
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
     font-size: 5.2vmin;
   }
+
   color: #0aa1dd;
   margin-right: 0.5vh;
 

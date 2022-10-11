@@ -41,8 +41,8 @@ const ModalView = styled.div.attrs((props) => ({
   color: #333333;
   position: relative;
   width: 30vw;
-  @media only screen and (min-device-width: 330px) and (max-device-width: 600px) {
-    min-width: 70vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 85vw;
 
   }
   height: 70vh;
@@ -82,6 +82,10 @@ const ModalView = styled.div.attrs((props) => ({
     span {
       margin-top: 1vh;
     }
+    @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 23vw;
+
+  }
   }
 `;
 
@@ -109,6 +113,9 @@ const LikeYes = styled(AiFillHeart)`
   border: 4px solid #ffe3e1;
   border-radius: 100%;
   margin: 0 1vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    margin: 0 4vw;
+  }
   background-color: #ffe3e1;
   cursor: pointer;
   &:hover {
@@ -121,6 +128,9 @@ const LikeNo = styled(AiOutlineHeart)`
   border: 4px solid #ffe3e1;
   border-radius: 100%;
   margin: 0 1vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    margin: 0 4vw;
+  }
   background-color: #ffe3e1;
   cursor: pointer;
   &:hover {
@@ -134,6 +144,9 @@ const ReviewList = styled(AiOutlineComment)`
   border-radius: 100%;
   cursor: pointer;
   margin: 0 1vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    margin: 0 4vw;
+  }
   background-color: #ffe3e1;
   &:hover {
     transform: scale(1.05);
@@ -145,6 +158,9 @@ const Review = styled(AiOutlineStar)`
   border: 4px solid #ffe3e1;
   border-radius: 100%;
   margin: 0 1vw;
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    margin: 0 4vw;
+  }
   background-color: #ffe3e1;
   cursor: pointer;
   &:hover {
