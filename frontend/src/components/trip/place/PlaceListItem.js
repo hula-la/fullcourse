@@ -59,6 +59,9 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
     
     
   }
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    font-size: 5.2vmin;
+  }
 `;
 
 const Like = styled(AiFillHeart)`

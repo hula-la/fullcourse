@@ -24,6 +24,11 @@ const ModalView = styled.div.attrs((props) => ({
 
   width: 30vw;
 
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 85vw;
+
+  }
+
   max-height: 70vh;
   min-height: 70vh;
   overflow-y: scroll;
@@ -88,6 +93,11 @@ const ReviewTitle = styled.div`
   }
   margin-top: 6vh;
   margin-left: 5vh;
+
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 16vw;
+
+  }
 `;
 
 const ReviewListModal = ({

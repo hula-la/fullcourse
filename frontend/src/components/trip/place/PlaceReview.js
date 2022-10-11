@@ -39,6 +39,11 @@ const ModalView = styled.div.attrs((props) => ({
   flex-direction: column;
   align-items: center;
 
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 85vw;
+
+  }
+
   position: absolute;
   left: 0;
   top: 0;
@@ -54,6 +59,11 @@ const ModalView = styled.div.attrs((props) => ({
     width: 21vw;
     height: 40%;
     margin-top: 4vh;
+
+    @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 55vw;
+
+  }
   }
 `;
 
@@ -71,6 +81,11 @@ const ImgBtn = styled(BiImageAdd)`
   font-size: 4vmin;
   color: #0aa1dd;
   margin-top: 2vh;
+
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    font-size: 6vmin;
+
+  }
 `;
 
 const StyledInput = styled.textarea`
@@ -85,6 +100,11 @@ const StyledInput = styled.textarea`
   font-family: Tmoney;
   margin-top: 1vh;
   color: #333333;
+
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 55vw;
+
+  }
 
   &:hover {
     border: 2.5px solid #00cfb4;
@@ -125,6 +145,11 @@ const OkBtn = styled.button`
     color: #4e4e4e;
   }
   margin-top: 2vh;
+
+  @media only screen and (min-device-width: 330px) and (max-device-width: 400px) {
+    width: 15vw;
+
+  }
 `;
 
 //필요한거 img, content, placeId, placeType

@@ -174,6 +174,9 @@ const DetailBtn = styled(IoIosInformationCircleOutline)`
     background: #d0d0ff;
     border-radius: 50%;
   }
+  @media only screen and (min-device-width: 330px) and (max-device-width: 479px) {
+    font-size: 5.2vmin;
+  }
 `;
 
 const Tag = styled.div`
